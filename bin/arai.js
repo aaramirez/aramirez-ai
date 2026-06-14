@@ -85,10 +85,10 @@ function isDir(path) {
 
 function installOpenCodeGlobal() {
   const target = AGENT_PATHS.opencode.global;
-  const source = join(REPO_ROOT, 'agents', 'opencode');
+  const source = join(REPO_ROOT, 'platforms', 'opencode');
 
   if (!isDir(source)) {
-    log(`agents/opencode/ not found in repo`, 'err');
+    log(`platforms/opencode/ not found in repo`, 'err');
     return false;
   }
 
@@ -98,16 +98,16 @@ function installOpenCodeGlobal() {
   }
 
   symlinkTarget(source, target);
-  log(`Symlinked agents/opencode/ → ~/.config/opencode/`, 'ok');
+  log(`Symlinked platforms/opencode/ → ~/.config/opencode/`, 'ok');
   return true;
 }
 
 function installOpenCodeProject(projectDir, copyMode = false) {
   const projectRoot = resolve(projectDir);
-  const source = join(REPO_ROOT, 'agents', 'opencode');
+  const source = join(REPO_ROOT, 'platforms', 'opencode');
 
   if (!isDir(source)) {
-    log(`agents/opencode/ not found`, 'err');
+    log(`platforms/opencode/ not found`, 'err');
     return false;
   }
 
@@ -157,9 +157,9 @@ function installOpenCodeProject(projectDir, copyMode = false) {
 }
 
 function installAgent(agent, scope, dir, copyMode) {
-  const agentDir = join(REPO_ROOT, 'agents', agent);
+  const agentDir = join(REPO_ROOT, 'platforms', agent);
   if (!isDir(agentDir)) {
-    log(`Agent '${agent}' not found at agents/${agent}/`, 'err');
+    log(`Agent '${agent}' not found at platforms/${agent}/`, 'err');
     return;
   }
 
@@ -176,7 +176,7 @@ function installAgent(agent, scope, dir, copyMode) {
         run(`mv "${target}" "${target}.bak"`);
       }
       symlinkTarget(agentDir, target);
-      log(`Symlinked agents/${agent}/ → ${target}`, 'ok');
+      log(`Symlinked platforms/${agent}/ → ${target}`, 'ok');
     }
   } else if (scope === 'project') {
     if (agent === 'opencode') {
@@ -187,7 +187,7 @@ function installAgent(agent, scope, dir, copyMode) {
       const targetDir = join(projectRoot, info.projectDir);
       ensureDir(targetDir);
       cpSync(agentDir, targetDir, { recursive: true });
-      log(`Copied agents/${agent}/ → ${targetDir}`, 'ok');
+      log(`Copied platforms/${agent}/ → ${targetDir}`, 'ok');
     }
   }
 }
@@ -213,7 +213,7 @@ function showStatus() {
   for (const agent of AGENTS) {
     const info = AGENT_PATHS[agent];
     const target = info.global;
-    const agentDir = join(REPO_ROOT, 'agents', agent);
+    const agentDir = join(REPO_ROOT, 'platforms', agent);
     const exists = isDir(agentDir);
 
     let status = 'not configured';
@@ -271,7 +271,7 @@ function transformSkills(targetAgent) {
   }
 
   if (targetAgent === 'cursor') {
-    const cursorRulesDir = join(REPO_ROOT, 'agents', 'cursor', 'rules');
+    const cursorRulesDir = join(REPO_ROOT, 'platforms', 'cursor', 'rules');
     ensureDir(cursorRulesDir);
 
     for (const skill of skills) {
@@ -283,10 +283,10 @@ function transformSkills(targetAgent) {
       const cursorRule = `# ${skill}\n\n${description}\n\n${stripFrontmatter(content)}\n`;
       writeFileSync(join(cursorRulesDir, `${skill}.md`), cursorRule);
     }
-    log(`Transformed ${skills.length} skills → agents/cursor/rules/`, 'ok');
+    log(`Transformed ${skills.length} skills → platforms/cursor/rules/`, 'ok');
 
   } else if (targetAgent === 'codex') {
-    const codexDir = join(REPO_ROOT, 'agents', 'codex');
+    const codexDir = join(REPO_ROOT, 'platforms', 'codex');
     ensureDir(codexDir);
 
     for (const skill of skills) {
@@ -295,7 +295,7 @@ function transformSkills(targetAgent) {
       const content = readFileSync(skillPath, 'utf8');
       writeFileSync(join(codexDir, `${skill}.md`), stripFrontmatter(content));
     }
-    log(`Transformed ${skills.length} skills → agents/codex/`, 'ok');
+    log(`Transformed ${skills.length} skills → platforms/codex/`, 'ok');
 
   } else {
     log(`Unknown target agent: ${targetAgent}`, 'err');

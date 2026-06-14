@@ -14,7 +14,7 @@ aramirez-ai/
 │   ├── scripts/      # Scripts ejecutables (bash/node/py)
 │   └── rules/        # Reglas de estilo, arquitectura y documentación
 │
-├── agents/           ★ Específico por agente
+├── platforms/        ★ Específico por plataforma
 │   ├── opencode/     # opencode.json, agents, commands, plugins, mcp, themes
 │   ├── claude/       # CLAUDE.md
 │   ├── cursor/       # .cursorrules + rules/ transformados
@@ -77,8 +77,8 @@ arai install opencode --project . --copy
 shared/skills/git/SKILL.md
   ├── opencode: consume directo (nativo)
   ├── claude:   consume directo (nativo)
-  ├── cursor:   arai transform skills --to cursor → agents/cursor/rules/
-  └── codex:    arai transform skills --to codex  → agents/codex/
+  ├── cursor:   arai transform skills --to cursor → platforms/cursor/rules/
+  └── codex:    arai transform skills --to codex  → platforms/codex/
 ```
 
 ### Herencia de configuración (opencode)
