@@ -1,0 +1,23 @@
+{
+  "name": "aramirez-ai",
+  "version": "1.0.0",
+  "description": "Centralized AI agent configuration: opencode, claude, cursor, codex",
+  "type": "module",
+  "bin": {
+    "arai": "bin/arai.js"
+  },
+  "scripts": {
+    "install:opencode": "arai install opencode --global",
+    "install:claude": "arai install claude --global",
+    "install:cursor": "arai install cursor --global",
+    "transform": "arai transform skills --all",
+    "status": "arai status",
+    "update": "arai update"
+  },
+  "dependencies": {
+    "commander": "^12.0.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

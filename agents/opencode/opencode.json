@@ -1,0 +1,109 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "anthropic/claude-sonnet-4-6",
+  "small_model": "anthropic/claude-haiku-4-5",
+  "default_agent": "build",
+  "shell": "/bin/zsh",
+
+  "instructions": ["AGENTS.md"],
+
+  "skills": {
+    "paths": [
+      ".opencode/skills",
+      "/Users/administrador/.config/opencode/skills"
+    ]
+  },
+
+  "references": {
+    "shared-scripts": {
+      "path": "/Users/administrador/P/opencode/aramirez-ai/shared/scripts",
+      "description": "Reusable automation scripts (deploy, test, etc.)"
+    },
+    "shared-rules": {
+      "path": "/Users/administrador/P/opencode/aramirez-ai/shared/rules",
+      "description": "Coding standards, architecture, and documentation rules"
+    },
+    "shared-prompts": {
+      "path": "/Users/administrador/P/opencode/aramirez-ai/shared/prompts",
+      "description": "Reusable prompt fragments for common patterns"
+    }
+  },
+
+  "agent": {
+    "build": {
+      "mode": "primary",
+      "description": "Default build agent for coding tasks"
+    },
+    "plan": {
+      "mode": "primary",
+      "description": "Planning agent for architecture and design",
+      "permission": { "edit": "deny" }
+    },
+    "reviewer": {
+      "mode": "subagent",
+      "description": "Code review specialist. Use for PR reviews and quality checks.",
+      "model": "anthropic/claude-sonnet-4-6",
+      "permission": { "edit": "deny" }
+    },
+    "tester": {
+      "mode": "subagent",
+      "description": "Testing specialist. Use for writing and running tests.",
+      "model": "anthropic/claude-haiku-4-5",
+      "permission": { "bash": "allow" }
+    },
+    "docs": {
+      "mode": "subagent",
+      "description": "Documentation specialist. Use for README, docs, and changelogs.",
+      "model": "anthropic/claude-haiku-4-5",
+      "permission": { "edit": "allow", "bash": "deny" }
+    }
+  },
+
+  "command": {
+    "test": {
+      "description": "Run test suite for current project",
+      "template": "Run the test suite for this project. First detect the test framework, then run all tests and report results."
+    },
+    "deploy": {
+      "description": "Deploy current project",
+      "template": "Deploy the current project. Check the project type and deployment config, then execute the appropriate deploy command."
+    },
+    "commit": {
+      "description": "Create a conventional commit",
+      "template": "Stage all changes and create a conventional commit with an appropriate type and scope based on the changes."
+    }
+  },
+
+  "mcp": {
+    "playwright": {
+      "type": "local",
+      "command": ["npx", "-y", "@playwright/mcp"],
+      "enabled": false,
+      "env": {}
+    }
+  },
+
+  "permission": {
+    "bash": {
+      "git *": "allow",
+      "npm *": "allow",
+      "npx *": "ask",
+      "*": "ask"
+    },
+    "edit": "ask",
+    "read": "allow"
+  },
+
+  "formatter": true,
+  "lsp": true,
+
+  "compaction": {
+    "auto": true,
+    "tail_turns": 10
+  },
+
+  "tool_output": {
+    "max_lines": 1000,
+    "max_bytes": 40960
+  }
+}
