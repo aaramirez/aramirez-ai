@@ -1,6 +1,6 @@
 # Curso de Desarrollo con IA — Programa con Agentes
 
-Bienvenido al curso de 3 días sobre **desarrollo de software asistido por IA**, basado en las sesiones en vivo de Midudev.
+Bienvenido al curso sobre **desarrollo de software asistido por IA**, basado en sesiones en vivo de Midudev y complementado con contenido de diversas fuentes.
 
 ## 📋 Temario
 
@@ -31,6 +31,11 @@ Usa multiagentes para desarrollar mejor.
 4. [[Módulo 3 — Multiagentes/04-Caso-practico-completo|Caso práctico completo]]
 5. [[Módulo 3 — Multiagentes/05-Produccion-y-mantenimiento|Producción y mantenimiento]]
 
+### 🚀 [[Módulo 4 — AI-Native/01-Empresas-AI-Native|Módulo 4 — AI-Native]]
+El negocio del desarrollo con IA.
+
+1. [[Módulo 4 — AI-Native/01-Empresas-AI-Native|Empresas AI-Native]]
+
 ### 📚 [[Recursos/Glosario|Recursos]]
 
 - [[Recursos/Glosario|Glosario]]
@@ -52,4 +57,4 @@ Aprender a desarrollar software de calidad usando **agentes de IA** como herrami
 
 ---
 
-*Curso original por Midudev. Adaptado a formato Obsidian.*
+*Basado en contenido de Midudev y otras fuentes. Adaptado a formato Obsidian.*

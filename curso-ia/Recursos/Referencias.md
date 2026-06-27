@@ -24,10 +24,14 @@
 
 ## Cursos y contenido
 
-- [Midudev - YouTube](https://youtube.com/@midudev) — Autor del curso original
+- [Midudev - YouTube](https://youtube.com/@midudev) — Autor de las sesiones principales
 - [Curso Día 1](https://www.youtube.com/watch?v=GarWqdHzwac) — De prompts sueltos a programar con criterio
 - [Curso Día 2](https://www.youtube.com/watch?v=irR8437xihg) — Programa con agentes sin perder el control
 - [Curso Día 3](https://www.youtube.com/watch?v=kcSKbwVYXCg) — Usa multiagentes para desarrollar mejor
+
+## Otras fuentes
+
+- [Cómo crear una empresa AI-Native](https://www.youtube.com/watch?v=5t2VEkhnHl0) — Empresas unipersonales, productividad por empleado y tasas de conversión en productos nativos de IA
 
 ## Este repositorio
 

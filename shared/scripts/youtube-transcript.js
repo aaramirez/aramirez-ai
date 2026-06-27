@@ -58,6 +58,45 @@ function httpGet(url) {
   });
 }
 
+function removeRepeatedNgrams(text) {
+  const words = text.split(/\s+/);
+  const out = [];
+  let i = 0;
+
+  while (i < words.length) {
+    let bestN = 0;
+    let bestReps = 0;
+
+    for (let n = 1; n <= 12 && i + 2 * n <= words.length; n++) {
+      const a = words.slice(i, i + n).join(' ');
+      const b = words.slice(i + n, i + 2 * n).join(' ');
+      if (a === b) {
+        let reps = 1;
+        while (i + n * (reps + 1) <= words.length &&
+               a === words.slice(i + n * reps, i + n * (reps + 1)).join(' ')) {
+          reps++;
+        }
+        if (reps > bestReps) {
+          bestN = n;
+          bestReps = reps;
+        }
+      }
+    }
+
+    if (bestReps > 0) {
+      for (let w = 0; w < bestN; w++) {
+        out.push(words[i + w]);
+      }
+      i += bestN * (1 + bestReps);
+    } else {
+      out.push(words[i]);
+      i++;
+    }
+  }
+
+  return out.join(' ');
+}
+
 async function fetchTranscript(videoId, lang = 'es') {
   const url = `https://${API_HOST}/transcript/${videoId}.txt?lang=${lang}`;
   const raw = await httpGet(url);
@@ -90,13 +129,18 @@ async function fetchTranscript(videoId, lang = 'es') {
     return null;
   }).filter(Boolean);
 
-  // Deduplicate consecutive identical text (auto-gen artifact)
+  // Deduplicate consecutive identical segments
   const deduped = [];
   for (const seg of segments) {
     const last = deduped[deduped.length - 1];
     if (!last || last.text !== seg.text) {
       deduped.push(seg);
     }
+  }
+
+  // Remove word-level repeated n-grams (auto-gen artifact)
+  for (const seg of deduped) {
+    seg.text = removeRepeatedNgrams(seg.text);
   }
 
   const cleanText = deduped.map(s => s.text).join(' ');
