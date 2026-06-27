@@ -10,21 +10,21 @@
   "skills": {
     "paths": [
       ".opencode/skills",
-      "/Users/administrador/.config/opencode/skills"
+      "~/.config/opencode/skills"
     ]
   },
 
   "references": {
     "shared-scripts": {
-      "path": "/Users/administrador/P/opencode/aramirez-ai/shared/scripts",
+      "path": "../shared/scripts",
       "description": "Reusable automation scripts (deploy, test, etc.)"
     },
     "shared-rules": {
-      "path": "/Users/administrador/P/opencode/aramirez-ai/shared/rules",
+      "path": "../shared/rules",
       "description": "Coding standards, architecture, and documentation rules"
     },
     "shared-prompts": {
-      "path": "/Users/administrador/P/opencode/aramirez-ai/shared/prompts",
+      "path": "../shared/prompts",
       "description": "Reusable prompt fragments for common patterns"
     }
   },
@@ -80,8 +80,18 @@
       "command": ["npx", "-y", "@playwright/mcp"],
       "enabled": false,
       "env": {}
+    },
+    "github": {
+      "type": "remote",
+      "url": "https://api.github.com/mcp",
+      "enabled": false,
+      "headers": {
+        "Authorization": "Bearer {env:GITHUB_TOKEN}"
+      }
     }
   },
+
+  "plugins": ["plugins/example.ts"],
 
   "permission": {
     "bash": {

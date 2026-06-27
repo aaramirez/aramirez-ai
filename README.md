@@ -15,13 +15,14 @@ aramirez-ai/
 │   └── rules/        # Reglas de estilo, arquitectura y documentación
 │
 ├── platforms/        ★ Específico por plataforma
-│   ├── opencode/     # opencode.json, agents, commands, plugins, mcp, themes
+│   ├── opencode/     # opencode.json, agents, commands, plugins, mcp, skills
 │   ├── claude/       # CLAUDE.md
 │   ├── cursor/       # .cursorrules + rules/ transformados
 │   └── codex/        # Codex config
 │
 ├── transforms/       # Scripts de transformación SKILL.md → formatos destino
 │
+├── AGENTS.md         # Instrucciones para agentes AI
 └── bin/arai.js       # CLI multi-agente
 ```
 
@@ -65,7 +66,10 @@ arai install opencode --project . --copy
 | `arai install opencode --project .` | Instala en proyecto (env var) |
 | `arai install opencode --project . --copy` | Instala en proyecto (copia) |
 | `arai uninstall opencode` | Elimina instalación global |
-| `arai update` | `git pull` + re-aplica todo |
+| `arai uninstall opencode --project .` | Elimina config de proyecto (modo env-var) |
+| `arai uninstall opencode --project . --copy` | Elimina `.opencode/` y `opencode.json` del proyecto |
+| `arai update` | `git pull` + `npm install` |
+| `arai sync [agent]` | Re-aplica config de proyecto (útil tras update en modo --copy) |
 | `arai transform skills --to cursor` | Transforma SKILL.md → reglas Cursor |
 | `arai transform skills --all` | Transforma a todos los formatos |
 
@@ -75,28 +79,38 @@ arai install opencode --project . --copy
 
 ```
 shared/skills/git/SKILL.md
-  ├── opencode: consume directo (nativo)
+  ├── opencode: consume vía symlink en ~/.config/opencode/skills/ o .opencode/skills/
   ├── claude:   consume directo (nativo)
   ├── cursor:   arai transform skills --to cursor → platforms/cursor/rules/
   └── codex:    arai transform skills --to codex  → platforms/codex/
 ```
 
+Las skills se copian automáticamente a `.opencode/skills/` durante
+`arai install opencode --project . --copy`. En modo global (`--global`),
+el symlink `~/.config/opencode/skills` → `shared/skills/` las hace accesibles.
+
 ### Herencia de configuración (opencode)
 
 ```
 remote (.well-known/opencode)
-  └── global (~/.config/opencode/)       ← arai install --global
+  └── global (~/.config/opencode/)       ← arai install --global (symlink a platforms/opencode/)
        └── proyecto (opencode.json)       ← arai install --project --copy
+```
+
+Tras `arai update`, re-aplica la config en proyectos con:
+```bash
+cd mi-proyecto
+arai sync opencode
 ```
 
 ## Agentes disponibles
 
 ### opencode
 
-- **opencode.json** — config con `$schema`, skills paths, MCP, permisos
+- **opencode.json** — config con `$schema`, skills paths, MCP, plugins, permisos
 - **Agentes**: build, plan, reviewer, tester, docs
 - **Comandos**: `/test`, `/deploy`, `/commit`
-- **Plugins**: example.ts (template)
+- **Plugins**: example.ts (template, cargado vía `opencode.json`)
 - **MCP**: playwright, github (deshabilitados por defecto)
 
 ### Claude Code
