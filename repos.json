@@ -13,5 +13,10 @@
     "name": "Gentleman-Programming/gentle-ai",
     "url": "https://github.com/Gentleman-Programming/gentle-ai.git",
     "description": "Gentle AI development tools and patterns — reference for AI-assisted coding workflows"
+  },
+  {
+    "name": "GrupoConex/gda-ai",
+    "url": "https://github.com/GrupoConex/gda-ai.git",
+    "description": "GDA AI — reference for AI development workflows and patterns"
   }
 ]
