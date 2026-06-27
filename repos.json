@@ -3,5 +3,10 @@
     "name": "anthropics/skills",
     "url": "https://github.com/anthropics/skills.git",
     "description": "Anthropic official example skills — reference for SKILL.md format, patterns, MCP servers"
+  },
+  {
+    "name": "VoltAgent/awesome-claude-code-subagents",
+    "url": "https://github.com/VoltAgent/awesome-claude-code-subagents.git",
+    "description": "Curated list of Claude Code subagents — reference for agent design, prompts, and workflows"
   }
 ]
