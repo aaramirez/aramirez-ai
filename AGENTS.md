@@ -54,3 +54,5 @@ arai status
 - Use conventional commits
 - Keep skills in SKILL.md format
 - Update AGENTS.md if workflow changes
+- **Proactive Skills**: Every time a new problem or workflow is resolved, consider and propose the creation of a new **skill** (and optional script) so that the solution becomes reusable across all agents.
+- **Cross-Platform Compatibility**: All proposed code, scripts, configurations, and tools **must run on both macOS and Windows**. Avoid OS-specific shell commands unless wrapped in cross-platform scripts (e.g. Node.js or Python).

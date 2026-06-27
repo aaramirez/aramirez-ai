@@ -1,0 +1,55 @@
+# Curso de Desarrollo con IA — Programa con Agentes
+
+Bienvenido al curso de 3 días sobre **desarrollo de software asistido por IA**, basado en las sesiones en vivo de Midudev.
+
+## 📋 Temario
+
+### 📦 [[Módulo 1 — Fundamentos/01-De-prompt-a-programacion|Módulo 1 — Fundamentos]]
+De prompts sueltos a programar con criterio.
+
+1. [[Módulo 1 — Fundamentos/01-De-prompt-a-programacion|De prompt a programación]]
+2. [[Módulo 1 — Fundamentos/02-Prompts-efectivos|Prompts efectivos]]
+3. [[Módulo 1 — Fundamentos/03-Herramientas-y-MCP|Herramientas y MCP]]
+4. [[Módulo 1 — Fundamentos/04-Criterio-y-buenas-practicas|Criterio y buenas prácticas]]
+5. [[Módulo 1 — Fundamentos/05-Especificaciones|Especificaciones]]
+
+### 🤖 [[Módulo 2 — Agentes/01-Que-es-un-agente|Módulo 2 — Agentes]]
+Programa con agentes sin perder el control.
+
+1. [[Módulo 2 — Agentes/01-Que-es-un-agente|¿Qué es un agente?]]
+2. [[Módulo 2 — Agentes/02-Configuracion-de-agentes|Configuración de agentes]]
+3. [[Módulo 2 — Agentes/03-Planificacion-con-agentes|Planificación con agentes]]
+4. [[Módulo 2 — Agentes/04-Testing-y-calidad|Testing y calidad]]
+5. [[Módulo 2 — Agentes/05-Documentacion-automatica|Documentación automática]]
+
+### 🧠 [[Módulo 3 — Multiagentes/01-Arquitectura-multiagente|Módulo 3 — Multiagentes]]
+Usa multiagentes para desarrollar mejor.
+
+1. [[Módulo 3 — Multiagentes/01-Arquitectura-multiagente|Arquitectura multiagente]]
+2. [[Módulo 3 — Multiagentes/02-Subagentes-y-roles|Subagentes y roles]]
+3. [[Módulo 3 — Multiagentes/03-Orquestacion-y-flujos|Orquestación y flujos]]
+4. [[Módulo 3 — Multiagentes/04-Caso-practico-completo|Caso práctico completo]]
+5. [[Módulo 3 — Multiagentes/05-Produccion-y-mantenimiento|Producción y mantenimiento]]
+
+### 📚 [[Recursos/Glosario|Recursos]]
+
+- [[Recursos/Glosario|Glosario]]
+- [[Recursos/Referencias|Referencias]]
+- [[Recursos/Comandos-utiles|Comandos útiles]]
+
+---
+
+## 🎯 Objetivo del curso
+
+Aprender a desarrollar software de calidad usando **agentes de IA** como herramientas de trabajo, no como sustitutos. El curso cubre desde la escritura de prompts efectivos hasta la orquestación de múltiples agentes especializados.
+
+## 🔗 Herramientas principales
+
+- **Claude Code / opencode** — Asistente de codificación con IA
+- **MCP** — Model Context Protocol para conectar herramientas
+- **Git** — Control de versiones
+- **Node.js / Python** — Entornos de ejecución
+
+---
+
+*Curso original por Midudev. Adaptado a formato Obsidian.*

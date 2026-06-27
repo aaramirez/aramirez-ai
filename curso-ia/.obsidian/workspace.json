@@ -1,0 +1,213 @@
+{
+  "main": {
+    "id": "3b3d8e07665f0c7e",
+    "type": "split",
+    "children": [
+      {
+        "id": "2145b6ed3fbd4894",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "ba2a208c2bee9c43",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Módulo 1 - Fundamentos/01-De-prompt-a-programacion.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "01-De-prompt-a-programacion"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "86e47b8c25431d0e",
+    "type": "split",
+    "children": [
+      {
+        "id": "9f6a6eb4d9da41e4",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "613ee77011b2c015",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "a34389c1c64c2e34",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "c0cdb3af6ca7f54e",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "acdb0bbd61fa944e",
+    "type": "split",
+    "children": [
+      {
+        "id": "36d5b0ce04190550",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "03045414d02f99fb",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Módulo 1 - Fundamentos/01-De-prompt-a-programacion.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for 01-De-prompt-a-programacion"
+            }
+          },
+          {
+            "id": "9e2edf15106281ff",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "Módulo 1 - Fundamentos/01-De-prompt-a-programacion.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from 01-De-prompt-a-programacion"
+            }
+          },
+          {
+            "id": "f34971352a3c17e8",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "466ead2c6de7bd27",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "3007cf7d222ddf8d",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "Módulo 1 - Fundamentos/01-De-prompt-a-programacion.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline of 01-De-prompt-a-programacion"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false
+    }
+  },
+  "active": "ba2a208c2bee9c43",
+  "lastOpenFiles": [
+    "Index.md",
+    "Welcome.md",
+    "Recursos/Comandos-utiles.md",
+    "Recursos/Referencias.md",
+    "Recursos/Glosario.md",
+    "Módulo 3 - Multiagentes/05-Produccion-y-mantenimiento.md",
+    "Módulo 3 - Multiagentes/04-Caso-practico-completo.md",
+    "Módulo 3 - Multiagentes/03-Orquestacion-y-flujos.md",
+    "Módulo 3 - Multiagentes/02-Subagentes-y-roles.md",
+    "Módulo 3 - Multiagentes/01-Arquitectura-multiagente.md",
+    "Módulo 2 - Agentes/05-Documentacion-automatica.md",
+    "Módulo 2 - Agentes/04-Testing-y-calidad.md",
+    "Módulo 2 - Agentes/03-Planificacion-con-agentes.md",
+    "Módulo 2 - Agentes/02-Configuracion-de-agentes.md",
+    "Módulo 2 - Agentes/01-Que-es-un-agente.md",
+    "Módulo 1 - Fundamentos/05-Especificaciones.md",
+    "Módulo 1 - Fundamentos/04-Criterio-y-buenas-practicas.md",
+    "Módulo 1 - Fundamentos/03-Herramientas-y-MCP.md",
+    "Módulo 1 - Fundamentos/02-Prompts-efectivos.md",
+    "Módulo 1 - Fundamentos/01-De-prompt-a-programacion.md",
+    "Recursos",
+    "Módulo 3 - Multiagentes",
+    "Módulo 2 - Agentes",
+    "Módulo 1 - Fundamentos"
+  ]
+}
