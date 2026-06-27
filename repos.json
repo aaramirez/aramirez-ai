@@ -1,0 +1,7 @@
+[
+  {
+    "name": "anthropics/skills",
+    "url": "https://github.com/anthropics/skills.git",
+    "description": "Anthropic official example skills — reference for SKILL.md format, patterns, MCP servers"
+  }
+]

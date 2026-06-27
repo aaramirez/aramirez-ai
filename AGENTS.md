@@ -56,3 +56,42 @@ arai status
 - Update AGENTS.md if workflow changes
 - **Proactive Skills**: Every time a new problem or workflow is resolved, consider and propose the creation of a new **skill** (and optional script) so that the solution becomes reusable across all agents.
 - **Cross-Platform Compatibility**: All proposed code, scripts, configurations, and tools **must run on both macOS and Windows**. Avoid OS-specific shell commands unless wrapped in cross-platform scripts (e.g. Node.js or Python).
+
+## Reference repos
+
+Reference repositories are cloned under `repos/` (gitignored). Use them as a source of patterns, scripts, examples, and configurations — but never modify them directly.
+
+### Adding a new repo
+
+1. Add an entry to `repos.json` (project root):
+   ```json
+   {
+     "name": "owner/repo",
+     "url": "https://github.com/owner/repo.git",
+     "description": "What this repo is useful for"
+   }
+   ```
+2. Run the sync script:
+   ```bash
+   node shared/scripts/repos-sync.js
+   ```
+
+### Available commands
+
+```bash
+# Sync all repos
+node shared/scripts/repos-sync.js
+
+# Sync a specific repo
+node shared/scripts/repos-sync.js anthropics/skills
+
+# List configured repos with clone status
+node shared/scripts/repos-sync.js --list
+```
+
+### How to reference
+
+When using code from a reference repo, always cite the source in comments or documentation:
+```
+// Adapted from repos/anthropics/skills/skills/mcp-builder/SKILL.md
+```
