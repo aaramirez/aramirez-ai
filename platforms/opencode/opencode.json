@@ -40,10 +40,21 @@
       "description": "Planning agent for architecture and design",
       "permission": { "edit": "deny" }
     },
+    "build-sonnet": {
+      "mode": "primary",
+      "description": "Build agent using Claude Sonnet 4.6",
+      "model": "anthropic/claude-sonnet-4-6"
+    },
+    "plan-sonnet": {
+      "mode": "primary",
+      "description": "Planning agent using Claude Sonnet 4.6",
+      "model": "anthropic/claude-sonnet-4-6",
+      "permission": { "edit": "deny" }
+    },
     "reviewer": {
       "mode": "subagent",
       "description": "Code review specialist. Use for PR reviews and quality checks.",
-  "model": "opencode/big-pickle",
+      "model": "anthropic/claude-sonnet-4-6",
       "permission": { "edit": "deny" }
     },
     "tester": {

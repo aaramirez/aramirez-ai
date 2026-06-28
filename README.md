@@ -376,8 +376,10 @@ arai transform skills --all
 
 | Nombre | Modo | Descripción | Modelo | Permisos |
 |--------|------|-------------|--------|----------|
-| **build** | `primary` | Default build agent for coding tasks | — | — |
-| **plan** | `primary` | Planning agent for architecture and design | — | `edit: deny` |
+| **build** | `primary` | Default build agent for coding tasks | `big-pickle` | — |
+| **plan** | `primary` | Planning agent for architecture and design | `big-pickle` | `edit: deny` |
+| **build-sonnet** | `primary` | Build agent using Claude Sonnet 4.6 | `claude-sonnet-4-6` | — |
+| **plan-sonnet** | `primary` | Planning agent using Claude Sonnet 4.6 | `claude-sonnet-4-6` | `edit: deny` |
 | **reviewer** | `subagent` | Code review specialist. Use for PR reviews and quality checks. | `claude-sonnet-4-6` | `edit: deny` |
 | **tester** | `subagent` | Testing specialist. Use for writing and running tests. | `claude-haiku-4-5` | `bash: allow` |
 | **docs** | `subagent` | Documentation specialist. Use for README, docs, and changelogs. | `claude-haiku-4-5` | `edit: allow`, `bash: deny` |
