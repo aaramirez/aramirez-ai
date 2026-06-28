@@ -100,9 +100,12 @@ arai list skills
 | **plan** | primary | `big-pickle` | `edit: deny` |
 | **build-sonnet** | primary | `claude-sonnet-4-6` | — |
 | **plan-sonnet** | primary | `claude-sonnet-4-6` | `edit: deny` |
-| **reviewer** | subagent | `claude-sonnet-4-6` | `edit: deny` |
-| **tester** | subagent | `claude-haiku-4-5` | `bash: allow` |
-| **docs** | subagent | `claude-haiku-4-5` | `edit: allow`, `bash: deny` |
+| **reviewer** | subagent | `big-pickle` | `edit: deny` |
+| **reviewer-sonnet** | subagent | `claude-sonnet-4-6` | `edit: deny` |
+| **tester** | subagent | `big-pickle` | `bash: allow` |
+| **tester-sonnet** | subagent | `claude-sonnet-4-6` | `bash: allow` |
+| **docs** | subagent | `big-pickle` | `edit: allow`, `bash: deny` |
+| **docs-sonnet** | subagent | `claude-sonnet-4-6` | `edit: allow`, `bash: deny` |
 
 ## When working
 

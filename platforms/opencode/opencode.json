@@ -54,19 +54,34 @@
     "reviewer": {
       "mode": "subagent",
       "description": "Code review specialist. Use for PR reviews and quality checks.",
+      "permission": { "edit": "deny" }
+    },
+    "reviewer-sonnet": {
+      "mode": "subagent",
+      "description": "Code review specialist using Claude Sonnet 4.6",
       "model": "anthropic/claude-sonnet-4-6",
       "permission": { "edit": "deny" }
     },
     "tester": {
       "mode": "subagent",
       "description": "Testing specialist. Use for writing and running tests.",
-      "model": "anthropic/claude-haiku-4-5",
+      "permission": { "bash": "allow" }
+    },
+    "tester-sonnet": {
+      "mode": "subagent",
+      "description": "Testing specialist using Claude Sonnet 4.6",
+      "model": "anthropic/claude-sonnet-4-6",
       "permission": { "bash": "allow" }
     },
     "docs": {
       "mode": "subagent",
       "description": "Documentation specialist. Use for README, docs, and changelogs.",
-      "model": "anthropic/claude-haiku-4-5",
+      "permission": { "edit": "allow", "bash": "deny" }
+    },
+    "docs-sonnet": {
+      "mode": "subagent",
+      "description": "Documentation specialist using Claude Sonnet 4.6",
+      "model": "anthropic/claude-sonnet-4-6",
       "permission": { "edit": "allow", "bash": "deny" }
     }
   },

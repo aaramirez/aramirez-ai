@@ -380,9 +380,12 @@ arai transform skills --all
 | **plan** | `primary` | Planning agent for architecture and design | `big-pickle` | `edit: deny` |
 | **build-sonnet** | `primary` | Build agent using Claude Sonnet 4.6 | `claude-sonnet-4-6` | — |
 | **plan-sonnet** | `primary` | Planning agent using Claude Sonnet 4.6 | `claude-sonnet-4-6` | `edit: deny` |
-| **reviewer** | `subagent` | Code review specialist. Use for PR reviews and quality checks. | `claude-sonnet-4-6` | `edit: deny` |
-| **tester** | `subagent` | Testing specialist. Use for writing and running tests. | `claude-haiku-4-5` | `bash: allow` |
-| **docs** | `subagent` | Documentation specialist. Use for README, docs, and changelogs. | `claude-haiku-4-5` | `edit: allow`, `bash: deny` |
+| **reviewer** | `subagent` | Code review specialist. Use for PR reviews and quality checks. | `big-pickle` | `edit: deny` |
+| **reviewer-sonnet** | `subagent` | Code review specialist using Claude Sonnet 4.6 | `claude-sonnet-4-6` | `edit: deny` |
+| **tester** | `subagent` | Testing specialist. Use for writing and running tests. | `big-pickle` | `bash: allow` |
+| **tester-sonnet** | `subagent` | Testing specialist using Claude Sonnet 4.6 | `claude-sonnet-4-6` | `bash: allow` |
+| **docs** | `subagent` | Documentation specialist. Use for README, docs, and changelogs. | `big-pickle` | `edit: allow`, `bash: deny` |
+| **docs-sonnet** | `subagent` | Documentation specialist using Claude Sonnet 4.6 | `claude-sonnet-4-6` | `edit: allow`, `bash: deny` |
 
 **Default agent**: `build`
 
