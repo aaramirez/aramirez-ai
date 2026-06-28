@@ -1079,7 +1079,9 @@ program
   .option('--copy', 'Copy files instead of using env vars (project mode only)')
   .action((agent, opts) => {
     if (!AGENTS.includes(agent)) {
-      log(`Unknown agent: ${agent}. Valid: ${AGENTS.join(', ')}`, 'err');
+      log(`Unknown agent: ${agent}`, 'err');
+      log(`Valid platform agents: ${AGENTS.join(', ')}`, 'info');
+      log(`Sub-agents like '${agent}' are defined inside opencode.json and come with \`arai install opencode\`.`, 'info');
       return;
     }
     if (!opts.global && !opts.project) {
@@ -1148,10 +1150,7 @@ skillsCmd
     skillsSync(opts.project || null, opts.skill || null);
   });
 
-skillsCmd
-  .command('list')
-  .description('List available skills in shared/skills/')
-  .action(listSkills);
+
 
 program
   .command('kb')

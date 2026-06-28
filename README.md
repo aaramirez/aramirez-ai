@@ -83,7 +83,6 @@ Muestra el estado de todos los agentes instalados y su configuración.
 | `arai sync [agent]` | Re-aplica config de proyecto |
 | `arai skills sync` | Sincroniza skills a opencode |
 | `arai skills sync --skill <name>` | Sincroniza solo una skill específica |
-| `arai skills list` | Lista skills disponibles |
 | `arai kb install [dir]` | Crea vault Obsidian (kb/) |
 | `arai init <dir>` | Scaffolding de nuevo proyecto |
 | `arai template list` | Lista plantillas disponibles |
@@ -115,6 +114,8 @@ Instala la configuración de un agente AI.
 | `--copy` | (requiere `--project`) Copia archivos en lugar de usar env var |
 
 **Soportado para**: `opencode`, `claude`, `cursor`, `codex`
+
+> Nota: Subagentes como `plan`, `reviewer`, `tester`, `docs` se definen dentro de `opencode.json` y vienen incluidos al instalar opencode. No se instalan por separado.
 
 ```bash
 arai install opencode --global
@@ -214,16 +215,6 @@ arai skills sync                        # todas, global
 arai skills sync --project .            # todas al proyecto actual
 arai skills sync --skill pdf-extraction --project .   # solo una
 ```
-
-#### `arai skills list`
-
-Lista las skills disponibles en `shared/skills/` con su descripción.
-
-```bash
-arai skills list
-```
-
-Equivalente a `arai list skills`.
 
 #### `arai list <resource>`
 
