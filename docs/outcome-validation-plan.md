@@ -434,12 +434,12 @@ if (!USE_AI) { test.skip('skipped: set TEST_AI=true to run'); }
 
 | Task | Status | Notes |
 |------|--------|-------|
-| 3a. CLI generate output content depth | ⬜ | |
-| 3b. Template partial snapshot tests | ⬜ | |
-| 3c. Init output deep validation | ⬜ | |
-| Create `tests/integration/outcome-generate.test.js` | ⬜ | |
-| Create `tests/integration/outcome-init.test.js` | ⬜ | |
-| **Run `npm test` — all pass** | ⬜ | |
+| 3a. CLI generate output content depth | 🟢 | 9 tests: skill license+headings, agent frontmatter fields, command description+template, brand all fields, kb structure+wikilinks+JSON+force |
+| 3b. Template partial snapshot tests | 🟢 | 12 tests: AGENTS.md project name/description/sections/CLI table/agents table, agent .md frontmatter, skill .md frontmatter |
+| 3c. Init output deep validation | 🟢 | 8 tests: full template agents/commands count, agent modes/permissions, 8 skills exactly, brand structure, platform subdirs; minimal limits, no full-only features |
+| Create `tests/integration/outcome-generate.test.js` | 🟢 | 9 tests |
+| Create `tests/integration/outcome-init.test.js` | 🟢 | 17 tests |
+| **Run `npm test` — all pass** | 🟢 | 268 / 268 pass (was 242) |
 
 ## Phase 4 — Execution status
 
