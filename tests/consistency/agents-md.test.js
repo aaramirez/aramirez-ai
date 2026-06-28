@@ -21,22 +21,32 @@ describe('AGENTS.md consistency (repo root)', () => {
     }
   });
 
-  test('all directory paths in structure diagram exist', () => {
-    // Find directory paths in the structure diagram
-    const dirLines = agentsContent.split('\n').filter(l => l.includes('├──') || l.includes('└──'));
-    for (const line of dirLines) {
-      const pathMatch = line.match(/[│└├ ]{3,}(.+?)(\s+#|$)/);
-      if (pathMatch) {
-        const entry = pathMatch[1].replace(/\/$/, '');
-        // Skip files with extensions (they're files, not dirs)
-        if (entry.includes('.')) continue;
-        // Skip entries that are comments or descriptions
-        if (entry.startsWith('#')) continue;
-        // Convert entry to possible path
-        // Entries like "bin/arai.js" have a dot
-        // Directories like "shared/" would be "shared"
+  test('all entries in structure diagram correspond to existing files/dirs', () => {
+    const diagramLines = agentsContent.split('\n')
+      .filter(l => /[├└]──/.test(l));
+    const errors = [];
+    const pathStack = [];
+    const INDENT_UNIT = 4;
+
+    for (const line of diagramLines) {
+      // Count leading box-drawing chars + spaces before ├ or └
+      const indentMatch = line.match(/^([│\s]*)/);
+      const indent = indentMatch ? indentMatch[1].length : 0;
+      const depth = Math.floor(indent / INDENT_UNIT);
+
+      const entryMatch = line.match(/[├└]──\s+(.+?)(?:\s{2,}|$)/);
+      if (!entryMatch) continue;
+      const entry = entryMatch[1].replace(/\/$/, '').trim();
+      if (entry.startsWith('#') || !entry) continue;
+
+      pathStack[depth] = entry;
+      const relPath = pathStack.slice(0, depth + 1).join('/');
+      const fullPath = join(REPO_ROOT, relPath);
+      if (!existsSync(fullPath)) {
+        errors.push(`Structure diagram entry does not exist: "${relPath}"`);
       }
     }
+    assert.ok(errors.length === 0, errors.join('\n'));
   });
 
   test('AGENTS.md does not mention removed platforms (claude, cursor, codex)', () => {

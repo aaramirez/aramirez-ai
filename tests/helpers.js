@@ -79,3 +79,33 @@ export function assertExitCode(result, code) {
 export function assertOk(condition, message) {
   assert.ok(condition, message);
 }
+
+/**
+ * Parse YAML frontmatter from a markdown file (between --- delimiters).
+ * Handles flat keys and one level of indented objects (e.g., permission:).
+ */
+export function parseFrontmatter(filePath) {
+  const content = readFileSync(filePath, 'utf8');
+  const match = content.match(/^---\n([\s\S]+?)\n---/);
+  if (!match) return {};
+  const body = match[1];
+  const result = {};
+  const lines = body.split('\n');
+  let currentKey = null;
+  for (const line of lines) {
+    if (/^\s/.test(line) && currentKey) {
+      const indentedMatch = line.match(/^\s{2,}(\S+?):\s*(.*)/);
+      if (indentedMatch) {
+        if (!result[currentKey]) result[currentKey] = {};
+        result[currentKey][indentedMatch[1]] = indentedMatch[2] || '';
+      }
+    } else {
+      const topMatch = line.match(/^(\S+?):\s*(.*)/);
+      if (topMatch) {
+        currentKey = topMatch[1];
+        result[currentKey] = topMatch[2] || '';
+      }
+    }
+  }
+  return result;
+}

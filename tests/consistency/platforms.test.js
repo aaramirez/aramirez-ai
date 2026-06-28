@@ -2,7 +2,7 @@ import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
 import { existsSync, readFileSync, readdirSync, statSync } from 'fs';
 import { join } from 'path';
-import { REPO_ROOT } from '../helpers.js';
+import { REPO_ROOT, parseFrontmatter } from '../helpers.js';
 
 const OPENCODE_DIR = join(REPO_ROOT, 'platforms', 'opencode');
 const CONFIG_PATH = join(OPENCODE_DIR, 'opencode.json');
@@ -55,6 +55,36 @@ describe('platforms/opencode consistency', () => {
       const agentName = file.replace(/\.md$/, '');
       assert.ok(config.agent?.[agentName],
         `Agent file ${file} exists but no matching entry in opencode.json`);
+    }
+  });
+
+  test('every subagent in opencode.json has a matching .md file (bidirectional)', () => {
+    const agentsDir = join(OPENCODE_DIR, 'agents');
+    if (!existsSync(agentsDir)) return;
+    const mdFiles = new Set(readdirSync(agentsDir)
+      .filter(f => f.endsWith('.md'))
+      .map(f => f.replace(/\.md$/, '')));
+    for (const [name, agent] of Object.entries(config.agent || {})) {
+      if (agent.mode !== 'subagent') continue;
+      assert.ok(mdFiles.has(name),
+        `Subagent "${name}" in opencode.json has no .md file in agents/`);
+    }
+  });
+
+  test('agent .md frontmatter permission matches opencode.json entry', () => {
+    const agentsDir = join(OPENCODE_DIR, 'agents');
+    if (!existsSync(agentsDir)) return;
+    const mdFiles = readdirSync(agentsDir).filter(f => f.endsWith('.md'));
+    for (const file of mdFiles) {
+      const agentName = file.replace(/\.md$/, '');
+      const expectedPerm = config.agent?.[agentName]?.permission;
+      if (!expectedPerm) continue;
+      const fm = parseFrontmatter(join(agentsDir, file));
+      const mdPerm = fm.permission || {};
+      for (const key of Object.keys(expectedPerm)) {
+        assert.equal(mdPerm[key], expectedPerm[key],
+          `Permission mismatch for ${agentName}.${key}: .md says "${mdPerm[key]}", opencode.json says "${expectedPerm[key]}"`);
+      }
     }
   });
 
