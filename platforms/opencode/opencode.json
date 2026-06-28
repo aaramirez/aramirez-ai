@@ -10,7 +10,8 @@
   "skills": {
     "paths": [
       ".opencode/skills",
-      "~/.config/opencode/skills"
+      "~/.config/opencode/skills",
+      "../shared/skills"
     ]
   },
 
