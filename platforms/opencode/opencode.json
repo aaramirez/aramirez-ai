@@ -43,7 +43,7 @@
     "reviewer": {
       "mode": "subagent",
       "description": "Code review specialist. Use for PR reviews and quality checks.",
-      "model": "anthropic/claude-sonnet-4-6",
+  "model": "opencode/big-pickle",
       "permission": { "edit": "deny" }
     },
     "tester": {
