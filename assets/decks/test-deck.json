@@ -1,0 +1,30 @@
+{
+  "output": "assets/docs/test-deck.pdf",
+  "mostrar_paginas": true,
+  "slides": [
+    { "type": "portada", "titulo": "Presentación de prueba", "subtitulo": "Pipeline de documentación aramirez-ai" },
+    { "type": "seccion", "titulo": "1. Introducción", "indice": "SECCIÓN 01" },
+    { "type": "bullets", "titulo": "Objetivos", "items": ["Validar el pipeline Node.js", "Probar formatos JSON y Markdown", "Verificar 12 tipos de gráficos SVG"] },
+    { "type": "kpis", "titulo": "Métricas", "kpis": [
+      { "valor": "12", "etiqueta": "Chart types" },
+      { "valor": "20+", "etiqueta": "Slide types" },
+      { "valor": "0", "etiqueta": "Dependencias npm" },
+      { "valor": "100%", "etiqueta": "Cobertura" }
+    ]},
+    { "type": "grafico", "titulo": "Resultados por mes", "chart": { "tipo": "barras", "datos": [["Ene",30],["Feb",55],["Mar",42],["Abr",78],["May",63]] } },
+    { "type": "grafico", "titulo": "Distribución", "chart": { "tipo": "donut", "datos": [["Alpha",40],["Beta",30],["Gamma",20],["Delta",10]], "centerLabel": "100" } },
+    { "type": "grafico", "titulo": "Progreso semanal", "chart": { "tipo": "lineas", "datos": [["S1",15],["S2",30],["S3",22],["S4",45],["S5",38],["S6",60]] } },
+    { "type": "destacado", "valor": "98%", "titulo": "Satisfacción general", "subtitulo": "Basado en encuestas internas del último trimestre" },
+    { "type": "cita", "texto": "La mejor documentación es la que se genera automáticamente.", "autor": "Alexander Ramírez" },
+    { "type": "timeline", "titulo": "Cronograma", "hitos": [
+      { "fecha": "Ene", "titulo": "Inicio" },
+      { "fecha": "Mar", "titulo": "Prototipo" },
+      { "fecha": "Jun", "titulo": "Release" }
+    ]},
+    { "type": "tarjetas", "titulo": "Equipo", "columnas_grid": 3, "tarjetas": [
+      { "titulo": "Frontend", "items": ["React", "TypeScript", "Tailwind"] },
+      { "titulo": "Backend", "items": ["Node.js", "PostgreSQL", "Redis"] },
+      { "titulo": "DevOps", "items": ["Docker", "CI/CD", "AWS"] }
+    ]}
+  ]
+}

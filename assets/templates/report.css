@@ -1,0 +1,354 @@
+/*
+  Estilo de marca Fibex para documentos/reportes ejecutivos (motor build-report).
+  Formato Letter (8.5x11in). Cada slide se renderiza como una página individual
+  (misma filosofía que deck.css pero para documentos).
+  Este archivo se embebe automáticamente al generar el PDF.
+*/
+:root {
+  --ink: #23264f;
+  --muted: #5b6080;
+  --body: #3a3f63;
+  --body-light: #4a4f73;
+  --bg: #ffffff;
+  --bg-soft: #f6f8fc;
+  --accent: #3b5bdb;
+  --accent-soft: #e7ecff;
+  --line: #d9dee8;
+  --shadow-sm: 0 2px 8px rgba(35,38,79,0.08);
+  --radius: 10px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  font-family: Helvetica, Arial, "Helvetica Neue", sans-serif;
+  color: var(--body);
+  font-size: 10pt;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+@page { size: letter; margin: 0; }
+
+/* ---- Página individual ---- */
+.page {
+  width: 8.5in;
+  height: 11in;
+  position: relative;
+  overflow: hidden;
+  page-break-after: always;
+  background: var(--bg);
+}
+.page:last-child { page-break-after: auto; }
+
+/* ---- Header (logo + clasificación) ---- */
+.page-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 0.65in;
+  padding: 0.18in 0.75in 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+.page-header .header-classification {
+  font-size: 7.5pt;
+  color: var(--muted);
+  padding-bottom: 3px;
+}
+.page-header .header-logo img {
+  width: 145px;
+  display: block;
+}
+
+/* ---- Footer (organización + página) ---- */
+.page-footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 0.55in;
+  padding: 0 0.75in 0.18in;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.page-footer .footer-org {
+  font-size: 7.5pt;
+  color: var(--muted);
+  padding-top: 3px;
+}
+.page-footer .footer-page {
+  font-size: 7.5pt;
+  color: var(--muted);
+  padding-top: 3px;
+}
+
+/* ---- Área de contenido ---- */
+.page-body {
+  position: absolute;
+  top: 0.65in;
+  left: 0;
+  right: 0;
+  bottom: 0.55in;
+  padding: 0.35in 0.75in 0.3in;
+  overflow: hidden;
+}
+
+/* ---- Portada ---- */
+.cover-page .page-header { display: none; }
+.cover-page .page-footer { display: none; }
+.cover-page .page-body {
+  top: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding-top: 0.5in;
+}
+.cover-page .cover-logo { margin-bottom: 50px; }
+.cover-page .cover-logo img { width: 280px; }
+.cover-page h1 {
+  font-size: 28pt;
+  font-weight: 800;
+  color: var(--ink);
+  letter-spacing: -0.015em;
+  line-height: 1.12;
+  margin-bottom: 8px;
+}
+.cover-page .cover-subtitle {
+  font-size: 11pt;
+  color: var(--muted);
+  margin-bottom: 44px;
+  max-width: 480px;
+}
+.cover-page .cover-meta {
+  border-collapse: collapse;
+  font-size: 9pt;
+  text-align: left;
+}
+.cover-page .cover-meta td {
+  padding: 6px 13px;
+  vertical-align: top;
+  border: 0.5px solid var(--line);
+}
+.cover-page .cover-meta td:first-child {
+  font-weight: 700;
+  color: var(--ink);
+  background: var(--bg-soft);
+  white-space: nowrap;
+  width: 120px;
+}
+.cover-page .cover-meta td:last-child {
+  color: var(--body-light);
+  min-width: 240px;
+}
+
+/* ---- Sección ---- */
+.section-block { margin: 16px 0 10px; }
+.section-bar {
+  display: inline-block;
+  width: 44px;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--accent);
+  margin-bottom: 8px;
+}
+.section-block h2 {
+  font-size: 16pt;
+  font-weight: 800;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+.section-block .section-sub {
+  font-size: 9.5pt;
+  color: var(--muted);
+  margin-top: 3px;
+}
+
+/* ---- Texto ---- */
+.body-text { margin: 8px 0; }
+.body-text p {
+  margin-bottom: 8px;
+  font-size: 9.5pt;
+  line-height: 1.5;
+  color: var(--body-light);
+}
+
+/* ---- Callout ---- */
+.callout-box {
+  background: var(--bg-soft);
+  border-left: 4px solid var(--accent);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  padding: 18px 22px;
+  margin: 14px 0;
+}
+.callout-box .callout-headline {
+  font-size: 11pt;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.35;
+  margin-bottom: 10px;
+}
+.callout-box .callout-body p {
+  font-size: 9.5pt;
+  color: var(--body-light);
+  line-height: 1.5;
+  margin-bottom: 6px;
+}
+
+/* ---- Viñetas ---- */
+.bullet-list { margin: 8px 0 8px 16px; }
+.bullet-list li {
+  position: relative;
+  list-style: none;
+  padding-left: 20px;
+  margin-bottom: 6px;
+  font-size: 9.5pt;
+  color: var(--body-light);
+  line-height: 1.4;
+}
+.bullet-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 6px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+/* ---- Tabla genérica ---- */
+.data-table { margin: 10px 0; width: 100%; border-collapse: collapse; font-size: 8.5pt; }
+.data-table thead th {
+  text-align: left;
+  background: var(--ink);
+  color: var(--bg);
+  font-weight: 700;
+  padding: 8px 11px;
+  font-size: 8pt;
+}
+.data-table thead th:first-child { border-top-left-radius: 7px; }
+.data-table thead th:last-child { border-top-right-radius: 7px; }
+.data-table tbody td {
+  padding: 7px 11px;
+  color: var(--body-light);
+  border-bottom: 0.5px solid var(--line);
+  vertical-align: top;
+}
+.data-table tbody tr:nth-child(even) td { background: var(--bg-soft); }
+.data-table tbody tr:last-child td:first-child { border-bottom-left-radius: 7px; }
+.data-table tbody tr:last-child td:last-child { border-bottom-right-radius: 7px; }
+
+/* ---- Recomendación ---- */
+.recommendation {
+  border: 0.6px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--bg);
+  padding: 14px 18px;
+  margin: 10px 0;
+  box-shadow: var(--shadow-sm);
+}
+.recommendation h3 {
+  font-size: 11pt;
+  font-weight: 800;
+  color: var(--ink);
+  margin-bottom: 6px;
+  line-height: 1.25;
+}
+.recommendation .rec-field {
+  margin-top: 6px;
+  font-size: 9pt;
+  line-height: 1.4;
+  color: var(--body-light);
+}
+.recommendation .rec-field strong { color: var(--ink); }
+.recommendation .rec-actions { margin: 6px 0 0 13px; }
+.recommendation .rec-actions li {
+  list-style: none;
+  padding-left: 14px;
+  margin-bottom: 3px;
+  font-size: 8.5pt;
+  color: var(--body-light);
+  position: relative;
+}
+.recommendation .rec-actions li::before {
+  content: "\2192";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* ---- Roadmap ---- */
+.roadmap-table { margin: 10px 0; width: 100%; border-collapse: collapse; font-size: 8.5pt; }
+.roadmap-table thead th {
+  text-align: left;
+  background: var(--ink);
+  color: var(--bg);
+  font-weight: 700;
+  padding: 8px 11px;
+  font-size: 8pt;
+}
+.roadmap-table thead th:first-child { border-top-left-radius: 7px; }
+.roadmap-table thead th:last-child { border-top-right-radius: 7px; }
+.roadmap-table tbody td {
+  padding: 9px 11px;
+  color: var(--body-light);
+  border-bottom: 0.5px solid var(--line);
+  vertical-align: top;
+}
+.roadmap-table tbody tr:nth-child(even) td { background: var(--bg-soft); }
+.roadmap-table tbody td:first-child { font-weight: 700; color: var(--ink); white-space: nowrap; }
+.roadmap-table tbody td:nth-child(2) { font-weight: 600; color: var(--body); }
+
+/* ---- KPIs ---- */
+.kpi-table { margin: 10px 0; width: 100%; border-collapse: collapse; font-size: 8.5pt; }
+.kpi-table thead th {
+  text-align: left;
+  background: var(--ink);
+  color: var(--bg);
+  font-weight: 700;
+  padding: 8px 11px;
+  font-size: 8pt;
+}
+.kpi-table thead th:first-child { border-top-left-radius: 7px; }
+.kpi-table thead th:last-child { border-top-right-radius: 7px; }
+.kpi-table tbody td {
+  padding: 8px 11px;
+  color: var(--body-light);
+  border-bottom: 0.5px solid var(--line);
+}
+.kpi-table tbody tr:nth-child(even) td { background: var(--bg-soft); }
+.kpi-table tbody td:last-child { font-weight: 700; color: var(--accent); text-align: center; }
+
+/* ---- Cierre ---- */
+.closing-block {
+  margin: 24px 0;
+  text-align: center;
+  padding: 24px 30px;
+  border-top: 1px solid var(--line);
+}
+.closing-block .closing-icon {
+  font-size: 40pt;
+  color: var(--accent);
+  line-height: 0.6;
+  margin-bottom: 10px;
+  opacity: 0.35;
+}
+.closing-block p {
+  font-size: 10.5pt;
+  color: var(--ink);
+  line-height: 1.45;
+  margin-bottom: 8px;
+  max-width: 560px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ---- Salto de página forzado ---- */
+.page-break { page-break-before: always; }

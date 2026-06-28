@@ -1,0 +1,51 @@
+{
+  "output": "assets/docs/test-report.pdf",
+  "meta": {
+    "title": "Reporte ejecutivo de prueba",
+    "subtitle": "Validación del pipeline de documentación",
+    "organization": "aramirez-ai",
+    "prepared_by": "Pipeline de documentación",
+    "date": "Junio 2026",
+    "classification": "Documento interno - Prueba"
+  },
+  "slides": [
+    { "type": "doc-cover" },
+    { "type": "section", "titulo": "1. Resumen ejecutivo" },
+    { "type": "text", "parrafos": [
+      "Este reporte valida el pipeline de generación de documentos Node.js, portado desde el código Python de gda-ai.",
+      "Se probaron todos los tipos de lámina disponibles: portada, sección, texto, callout, tabla, viñetas, recomendación, roadmap, tabla de KPIs y cierre."
+    ]},
+    { "type": "callout", "headline": "Punto clave", "parrafos": [
+      "El pipeline completo opera con cero dependencias npm. Solo requiere un navegador Chromium para la generación de PDF."
+    ]},
+    { "type": "table", "headers": ["Módulo", "Estado", "Archivos"], "filas": [
+      ["index.js", "Completo", "288 líneas"],
+      ["charts.js", "Completo", "Conflict-free"],
+      ["html-theme.js", "Completo", "474 líneas"],
+      ["report-theme.js", "Completo", "280 líneas"]
+    ]},
+    { "type": "bullets", "items": [
+      "12 tipos de gráficos SVG vectoriales",
+      "20+ tipos de lámina HTML",
+      "10 tipos de lámina de reporte",
+      "3 builders CLI"
+    ]},
+    { "type": "section", "titulo": "2. Recomendaciones" },
+    { "type": "recommendation", "titulo": "Integración continua", "problema": "Los documentos se generan manualmente", "recomendacion": "Automatizar la generación en CI/CD", "acciones": [
+      "Agregar script de build en package.json",
+      "Ejecutar build-deck en cada release",
+      "Publicar PDFs como artifacts"
+    ]},
+    { "type": "roadmap", "fases": [
+      { "periodo": "Q2 2026", "foco": "Pipeline base", "entregables": ["Port completo a Node.js", "Pruebas de integración"] },
+      { "periodo": "Q3 2026", "foco": "Automatización", "entregables": ["CI/CD integration", "Template library"] },
+      { "periodo": "Q4 2026", "foco": "Madurez", "entregables": ["UI web", "Modo colaborativo"] }
+    ]},
+    { "type": "kpi-table", "kpis": [
+      { "dominio": "Pipeline", "metrica": "Tiempo de build", "meta": "< 5s" },
+      { "dominio": "Calidad", "metrica": "Tipos de lámina", "meta": "20+" },
+      { "dominio": "Mantenibilidad", "metrica": "Dependencias npm", "meta": "0" }
+    ]},
+    { "type": "closing", "parrafos": ["Pipeline validado exitosamente. Listo para integrar en el flujo de trabajo del equipo."] }
+  ]
+}

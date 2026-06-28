@@ -1,60 +1,86 @@
 ---
 name: document-generation
-description: Generate branded PDF presentations, PowerPoint decks, HTML web presentations, reports, and images using content builders.
+description: Generate branded PDF presentations, HTML decks, reports, and images using Node.js content builders.
 license: MIT
 ---
 
 # Document generation
 
-Generate branded content using builders in `shared/scripts/`. This pipeline uses source files (JSON, YAML, Markdown, Python) that define the content, which builders render into the final format.
+Generate branded content using builders in `shared/scripts/docgen/`. Source files (JSON, Markdown, JS) define the content, which builders render into the final format.
 
 ## Pipeline
 
 ```
-assets/decks/<name>.{json,md,py}  →  shared/scripts/build-*.py  →  assets/docs/<name>.pdf
-                                                                  →  assets/images/<name>.png
+assets/decks/<name>.{json,md,js}  →  node shared/scripts/docgen/build-*.js  →  assets/docs/<name>.pdf
+                                                                              →  assets/images/<name>.png
 ```
 
 ## Available builders
 
 | Command | Output | Purpose |
 |---|---|---|
-| `build-deck.py` | PDF (16:9) | Presentations via HTML+CSS or SVG engines |
-| `build-image.py` | PNG / SVG | Standalone images, diagrams, profiles |
-| `build-report.py` | PDF Letter | Structured executive reports |
-| `build-pptx.py` | PPTX | Editable PowerPoint presentations |
-| `build-web.py` | HTML | Self-contained navigable web presentation |
-| `validate.py` | — | CI integrity checks (syntax, placeholders, builds) |
+| `build-deck.js` | PDF (16:9) | Presentations via HTML+CSS or SVG engines |
+| `build-image.js` | PNG / SVG | Standalone images, diagrams, profiles |
+| `build-report.js` | PDF Letter | Structured executive reports |
 
 ## Input formats
 
-JSON, YAML (`.yaml`/`.yml`), Markdown (`.md`), Python (`.py`).
+JSON, YAML (`.yaml`/`.yml`), Markdown (`.md`), JS (`.js`/`.mjs` with `buildSlides()` or `buildSvg()`).
 
-## Slide types
+## Slide types (HTML engine)
 
 `portada`, `seccion`, `bullets`, `dos-columnas`, `n-columnas`, `tarjetas`, `kpis`, `personas`, `cita`, `imagen`, `tabla`, `lamina-completa`, `grafico`, `imagen-texto`, `destacado`, `comparativa`, `timeline`, `proceso`/`workflow`, `masonry`, `faq`.
 
-## Chart types
+## Chart types (SVG, zero deps)
 
-`barras`, `barras-agrupadas`, `barras-apiladas`, `donut`, `pastel`, `lineas`, `progreso`, `gauge`, `gantt`, `radar`, `waterfall`, `heatmap`.
+`barras`/`bar`, `barras-agrupadas`/`grouped`, `barras-apiladas`/`stacked`, `donut`, `pastel`/`pie`, `lineas`/`line`, `progreso`/`progress`, `gauge`, `gantt`, `radar`, `waterfall`, `heatmap`, `timeline`.
 
 ## Quick reference
 
 ```bash
-python3 shared/scripts/build-deck.py  assets/decks/mi-deck.json    # PDF
-python3 shared/scripts/build-image.py assets/decks/mi-imagen.py     # PNG/SVG
-python3 shared/scripts/build-pptx.py  assets/decks/mi-deck.json    # PPTX
-python3 shared/scripts/build-web.py   assets/decks/mi-deck.json    # HTML
-python3 shared/scripts/build-report.py assets/decks/mi-reporte.json # PDF Letter
+node shared/scripts/docgen/build-deck.js   assets/decks/mi-deck.json    # PDF
+node shared/scripts/docgen/build-image.js  assets/decks/mi-imagen.json  # PNG/SVG
+node shared/scripts/docgen/build-report.js assets/decks/mi-reporte.json # PDF Letter
 ```
+
+## Report structure (JSON)
+
+```json
+{
+  "output": "assets/docs/reporte.pdf",
+  "meta": {
+    "title": "Título",
+    "subtitle": "Subtítulo",
+    "organization": "Org",
+    "prepared_by": "Autor",
+    "date": "2026",
+    "classification": "Uso interno"
+  },
+  "slides": [
+    { "type": "doc-cover" },
+    { "type": "section", "titulo": "1. Sección" },
+    { "type": "text", "parrafos": ["..."] }
+  ]
+}
+```
+
+Report slide types: `doc-cover`, `section`, `text`, `callout`, `table`, `bullets`, `recommendation`, `roadmap`, `kpi-table`, `closing`.
+
+## Core modules
+
+| Module | Exports |
+|---|---|
+| `index.js` | `loadBrand()`, `brand()`, `esc()`, `svgOpen()`, `svgClose()`, `portada()`, `lamina()`, `slideToSvg()`, `findBrowser()`, `htmlToPdf()`, `svgToPdf()`, `loadSource()`, `loadJson()`, `loadMarkdown()`, `loadJsModule()` |
+| `charts.js` | `renderChart(kind, spec)`, `barChart()`, `donutChart()`, `lineChart()`, `ganttChart()`, `radarChart()`, etc. |
+| `html-theme.js` | `buildHtml(slides, mostrarPaginas)`, `slideToHtml(slide, page)` |
+| `report-theme.js` | `buildHtml(meta, slides)` |
 
 ## Requirements
 
-- Python 3.6+
-- `python-pptx` for PPTX builds (`pip install python-pptx`)
-- `PyYAML` for YAML input (`pip install pyyaml`)
+- Node.js 18+
 - Chromium browser recommended for PDF engine `html`; falls back to `--engine svg` with `rsvg-convert` + `imagemagick`
+- Zero npm dependencies for core pipeline
 
 ## Reference
 
-The document generation builders are adapted from the gda-ai project (`repos/GrupoConex/gda-ai/shared/scripts/`). The core library `deck_lib.py` provides SVG generation, browser detection, HTML→PDF conversion, and chart rendering.
+Adapted from the Python pipeline in gda-ai (`repos/GrupoConex/gda-ai/shared/scripts/`). Brand colors read from `shared/brand.json` at runtime.
