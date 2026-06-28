@@ -1075,7 +1075,7 @@ program
   .command('install <agent>')
   .description('Install an agent configuration (opencode, claude, cursor, codex)')
   .option('--global', 'Install globally')
-  .option('--project <dir>', 'Install in project directory', '.')
+  .option('--project <dir>', 'Install in project directory')
   .option('--copy', 'Copy files instead of using env vars (project mode only)')
   .action((agent, opts) => {
     if (!AGENTS.includes(agent)) {
