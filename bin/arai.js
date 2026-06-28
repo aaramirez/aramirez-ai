@@ -137,7 +137,7 @@ function installOpenCodeProject(projectDir, copyMode = false) {
 
     const configSrc = join(source, 'opencode.json');
     const configDst = join(projectRoot, 'opencode.json');
-    if (existsSync(configSrc) && !existsSync(configDst)) {
+    if (existsSync(configSrc)) {
       writeFileSync(configDst, readFileSync(configSrc, 'utf8'));
     }
 
