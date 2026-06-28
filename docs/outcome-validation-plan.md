@@ -445,18 +445,18 @@ if (!USE_AI) { test.skip('skipped: set TEST_AI=true to run'); }
 
 | Task | Status | Notes |
 |------|--------|-------|
-| 4a. Template variable substitution | ⬜ | |
-| 4b. Template safety validation | ⬜ | |
-| 4c. Template variable completeness | ⬜ | |
-| Create `tests/commands/command-templates.test.js` | ⬜ | |
-| **Run `npm test` — all pass** | ⬜ | |
+| 4a. Template content validation (adapted) | 🟢 | Test/deploy/commit templates mention expected concepts; all have description ≥10 + template ≥20 chars |
+| 4b. Template safety validation | 🟢 | All templates + descriptions checked for 8 dangerous patterns (rm -rf /, sudo, eval, exec, etc.) |
+| 4c. Template variable completeness | 🟢 | No unmatched `{{...}}` placeholders found in any template |
+| Create `tests/commands/command-templates.test.js` | 🟢 | 9 tests |
+| **Run `npm test` — all pass** | 🟢 | 277 / 277 pass (was 268) |
 
 ## Phase 5 — Execution status
 
 | Task | Status | Notes |
 |------|--------|-------|
-| 5a. Skill-guided task execution | ⬜ | Requires LLM API |
-| 5b. Agent permission adherence | ⬜ | Requires LLM API |
-| 5c. Prompt-output format validation | ⬜ | Requires LLM API |
-| Create `tests/integration/ai-validation.test.js` | ⬜ | |
-| **Run `npm test` — all pass** | ⬜ | |
+| 5a. Skill-guided task execution | 🟢 | 8 skills, rubric-graded, gated by `TEST_AI=true` |
+| 5b. Agent permission adherence | 🟢 | 2 agents (reviewer, docs), gated |
+| 5c. Prompt-output format validation | 🟢 | commit-message prompt, 3 trials, gated |
+| Create `tests/integration/ai-validation.test.js` | 🟢 | 3 suites, all skipped without `TEST_AI=true` |
+| **Run `npm test` — all pass** | 🟢 | 277 / 277 pass (unchanged, Phase 5 skipped) |
