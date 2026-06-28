@@ -421,14 +421,14 @@ if (!USE_AI) { test.skip('skipped: set TEST_AI=true to run'); }
 
 | Task | Status | Notes |
 |------|--------|-------|
-| 2a. Build produces non-empty output | ⬜ | |
-| 2b. HTML content validation | ⬜ | |
-| 2c. HTML theme direct output | ⬜ | |
-| 2d. Chart output validation | ⬜ | |
-| 2e. Report theme output validation | ⬜ | |
-| 2f. Pipeline smoke test | ⬜ | |
-| Create `tests/integration/docgen-output.test.js` | ⬜ | |
-| **Run `npm test` — all pass** | ⬜ | |
+| 2a. Build produces non-empty output | 🟡 | Build scripts verified for syntax; full execution requires Chromium for PDF/HTML output |
+| 2b. HTML content validation | 🟢 | Covered via html-theme.js direct import (2c) — all 20+ slide types, chart SVG, brand CSS vars |
+| 2c. HTML theme direct output | 🟢 | 25 tests: buildHtml, slideToHtml for 20+ types, page numbers |
+| 2d. Chart output validation | 🟢 | 16 tests: 13 chart types + renderChart dispatcher + unknown-type error |
+| 2e. Report theme output validation | 🟢 | 12 tests: buildHtml, all 10 report slide types (cover, section, text, callout, table, bullets, recommendation, roadmap, kpi-table, closing) |
+| 2f. Pipeline smoke test | 🟢 | 12 tests: syntax check on all 9 docgen JS files, template existence, build-deck.js module structure |
+| Create `tests/integration/docgen-output.test.js` | 🟢 | 70 tests total |
+| **Run `npm test` — all pass** | 🟢 | 242 / 242 pass (was 172) |
 
 ## Phase 3 — Execution status
 
