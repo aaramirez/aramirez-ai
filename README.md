@@ -580,13 +580,23 @@ La identidad visual se centraliza en `shared/brand.json`:
 
 ```json
 {
-  "name": "Mi Empresa",
-  "primary": "#1a365d",
-  "secondary": "#2b6cb0",
-  "accent": "#ed8936",
-  "text": "#1a202c",
-  "background": "#ffffff",
-  "lightBg": "#f7fafc"
+  "brand": {
+    "name": "Mi Empresa",
+    "colors": {
+      "primary": "#1a365d",
+      "secondary": "#2b6cb0",
+      "accent": "#e53e3e",
+      "text": "#1a202c",
+      "background": "#ffffff",
+      "light-bg": "#f7fafc"
+    },
+    "logo": "assets/images/logo.svg",
+    "logo_white": "assets/images/logo-white.svg",
+    "fonts": {
+      "heading": "Inter, sans-serif",
+      "body": "Inter, sans-serif"
+    }
+  }
 }
 ```
 
@@ -605,22 +615,50 @@ El pipeline docgen consume `shared/brand.json` automáticamente.
 
 ---
 
-## CI validation
+## Test suite
 
-### Validación de estructura del proyecto
+El proyecto incluye **277 tests** con `node:test` (Node.js 22+ built-in, sin dependencias extra).
 
 ```bash
+npm test              # ejecuta toda la suite
+node --test           # alternativa directa
+node --test tests/consistency/   # solo tests de consistencia
+```
+
+### Organización
+
+| Directorio | Tests | Propósito |
+|------------|-------|-----------|
+| `tests/consistency/` | 46 | Estructura de skills, frontmatter YAML de agentes, calidad de contenido, consistencia plataforma→agentes |
+| `tests/integration/` | 99 | Salida del pipeline docgen (HTML, SVG, reportes), validación de generación CLI, validación de init, ciclo de vida completo, validación asistida por IA (gated) |
+| `tests/commands/` | 132 | Comandos CLI: init, install, uninstall, generate, list, status, sync, kb, command-templates |
+
+### CI validation
+
+```bash
+# Validación de estructura del proyecto
 node shared/scripts/ci-validate.js                  # validación básica
 node shared/scripts/ci-validate.js --strict         # warnings fallan también
 node shared/scripts/ci-validate.js --verbose        # muestra todos los checks
-```
 
-### Validación del pipeline docgen
-
-```bash
+# Validación del pipeline docgen
 node shared/scripts/docgen/validate.js              # sintaxis + templates + smoke tests
 node shared/scripts/docgen/validate.js --quick      # solo sintaxis + templates
 ```
+
+### Outcome validation (5 fases)
+
+Fases 1–4 son deterministicas y corren en CI; Fase 5 requiere `TEST_AI=true` + API key.
+
+| Fase | Tests | Estado |
+|------|-------|--------|
+| 1 — Calidad de contenido | 48 tests | 🟢 |
+| 2 — Salida del pipeline docgen | 70 tests | 🟢 |
+| 3 — Profundidad de generate/init | 26 tests | 🟢 |
+| 4 — Seguridad de templates CLI | 9 tests | 🟢 |
+| 5 — Validación asistida por IA | 3 suites (gated) | 🟢 |
+
+Detalle completo en [`docs/outcome-validation-plan.md`](docs/outcome-validation-plan.md).
 
 ---
 

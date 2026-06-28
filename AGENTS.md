@@ -183,6 +183,15 @@ When using code from a reference repo, always cite:
 // Adapted from repos/anthropics/skills/skills/mcp-builder/SKILL.md
 ```
 
+## Test suite
+
+```bash
+npm test                              # full suite (277 tests, node:test)
+node --test tests/consistency/        # consistency subset only
+```
+
+Full outcome-validation plan in [`docs/outcome-validation-plan.md`](docs/outcome-validation-plan.md) (5 phases, phases 1–4 deterministic in CI, phase 5 gated by `TEST_AI=true`).
+
 ## CI validation
 
 ```bash
