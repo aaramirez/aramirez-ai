@@ -14,7 +14,13 @@
     "status": "arai status",
     "update": "arai update",
     "init": "arai init",
-    "templates": "arai template list"
+    "templates": "arai template list",
+    "docgen:deck": "node shared/scripts/docgen/build-deck.js",
+    "docgen:report": "node shared/scripts/docgen/build-report.js",
+    "docgen:image": "node shared/scripts/docgen/build-image.js",
+    "docgen:web": "node shared/scripts/docgen/build-web.js",
+    "docgen:pptx": "node shared/scripts/docgen/build-pptx.js",
+    "docgen:validate": "node shared/scripts/docgen/validate.js"
   },
   "dependencies": {
     "commander": "^12.0.0"
