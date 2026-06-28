@@ -1,5 +1,5 @@
 ---
-name: youtube-transcript
+name: youtube
 description: Use for fetching and processing YouTube video transcriptions to feed into AI models, generate summaries, create course notes, or analyze video content.
 license: MIT
 ---
@@ -46,5 +46,5 @@ Works on macOS, Linux, and Windows — no external dependencies beyond Node.js b
 
 ## Related
 
-- Use with [[git]] skill for commit messages referencing video sources
-- Use with [[code-review]] skill when reviewing code from tutorials
+- Use with [git](git) skill for commit messages referencing video sources
+- Use with [code-review](code-review) skill when reviewing code from tutorials

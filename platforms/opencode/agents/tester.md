@@ -1,7 +1,7 @@
 ---
 description: Testing specialist. Use for writing, running, and debugging tests.
 mode: subagent
-model: anthropic/claude-haiku-4-5
+model: opencode/big-pickle
 permission:
   bash: allow
   edit: allow

@@ -2,9 +2,9 @@
 
 import { Command } from 'commander';
 import { execSync } from 'child_process';
-import { readFileSync, writeFileSync, existsSync, mkdirSync, symlinkSync, unlinkSync, readdirSync, statSync, cpSync } from 'fs';
-import { homedir, platform } from 'os';
-import { join, resolve, relative, dirname, basename } from 'path';
+import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync, statSync, cpSync, rmSync } from 'fs';
+import { homedir } from 'os';
+import { join, resolve, dirname, basename } from 'path';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
@@ -12,42 +12,16 @@ const pkg = require('../package.json');
 const REPO_ROOT = resolve(dirname(import.meta.url.replace('file://', '')), '..');
 const TEMPLATES_DIR = join(REPO_ROOT, 'shared', 'templates');
 const USER_TEMPLATES_DIR = join(homedir(), '.config', 'arai', 'templates');
+const PARTIALS_DIR = join(TEMPLATES_DIR, 'partials');
 
 const program = new Command();
 
 program
   .name('arai')
   .version(pkg.version)
-  .description('aramirez-ai: multi-agent configuration manager (opencode, claude, cursor, codex)');
+  .description('aramirez-ai: opencode AI configuration manager');
 
-const AGENTS = ['opencode', 'claude', 'cursor', 'codex'];
-
-const AGENT_PATHS = {
-  opencode: {
-    global: join(homedir(), '.config', 'opencode'),
-    projectDir: '.opencode',
-    configFile: 'opencode.json',
-    envVar: 'OPENCODE_CONFIG_DIR',
-  },
-  claude: {
-    global: join(homedir(), '.claude'),
-    projectDir: '.claude',
-    configFile: 'CLAUDE.md',
-    envVar: null,
-  },
-  cursor: {
-    global: join(homedir(), '.cursor'),
-    projectDir: '.cursor',
-    configFile: '.cursorrules',
-    envVar: null,
-  },
-  codex: {
-    global: join(homedir(), '.codex'),
-    projectDir: '.codex',
-    configFile: 'codex.md',
-    envVar: null,
-  },
-};
+const VALID_TYPES = ['skill', 'agent', 'script', 'prompt', 'rule'];
 
 /* ─── helpers ─── */
 
@@ -68,208 +42,387 @@ function ensureDir(dir) {
   if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
 }
 
-function symlinkTarget(target, linkPath) {
-  if (existsSync(linkPath)) {
-    const st = statSync(linkPath);
-    if (st.isSymbolicLink()) unlinkSync(linkPath);
-    else if (st.isDirectory()) {
-      run(`rm -rf "${linkPath}"`);
-    }
-  }
-  symlinkSync(target, linkPath);
-}
-
 function isDir(path) {
   return existsSync(path) && statSync(path).isDirectory();
 }
 
-/* ─── install agent ─── */
+function stripFrontmatter(content) {
+  return content.replace(/^---\n[\s\S]*?\n---\n/, '');
+}
 
-function installOpenCodeGlobal() {
-  const target = AGENT_PATHS.opencode.global;
-  const source = join(REPO_ROOT, 'platforms', 'opencode');
+function sourceDirFor(type) {
+  const map = {
+    skill: join(REPO_ROOT, 'shared', 'skills'),
+    agent: join(REPO_ROOT, 'shared', 'agents'),
+    script: join(REPO_ROOT, 'shared', 'scripts'),
+    prompt: join(REPO_ROOT, 'shared', 'prompts'),
+    rule: join(REPO_ROOT, 'shared', 'rules'),
+  };
+  return map[type];
+}
 
-  if (!isDir(source)) {
-    log(`platforms/opencode/ not found in repo`, 'err');
+function destDirFor(type, projectRoot) {
+  const map = {
+    skill: join(projectRoot, '.opencode', 'skills'),
+    agent: join(projectRoot, '.opencode', 'agents'),
+    script: join(projectRoot, 'shared', 'scripts'),
+    prompt: join(projectRoot, 'shared', 'prompts'),
+    rule: join(projectRoot, 'shared', 'rules'),
+  };
+  return map[type];
+}
+
+function nameExists(type, name) {
+  const srcDir = sourceDirFor(type);
+  if (!srcDir || !isDir(srcDir)) return false;
+  const items = readdirSync(srcDir);
+  if (type === 'skill') {
+    return items.includes(name) && isDir(join(srcDir, name));
+  }
+  return items.includes(`${name}.js`) || items.includes(`${name}.md`);
+}
+
+function listNames(type) {
+  const srcDir = sourceDirFor(type);
+  if (!srcDir || !isDir(srcDir)) return [];
+  const items = readdirSync(srcDir).filter(f => f !== '.gitkeep');
+  if (type === 'skill') {
+    return items.filter(f => isDir(join(srcDir, f)));
+  }
+  return items.map(f => f.replace(/\.(js|md)$/, '')).filter(Boolean);
+}
+
+function isInstalled(type, name, projectRoot) {
+  const dest = destDirFor(type, projectRoot);
+  if (!dest) return false;
+  if (type === 'skill') {
+    return isDir(join(dest, name));
+  }
+  const ext = type === 'script' ? '.js' : '.md';
+  return existsSync(join(dest, `${name}${ext}`));
+}
+
+function opencodeInstalled(projectRoot) {
+  return isDir(join(projectRoot, '.opencode')) && existsSync(join(projectRoot, 'opencode.json'));
+}
+
+/* ─── install functions ─── */
+
+function installPlatform(projectRoot) {
+  if (opencodeInstalled(projectRoot)) {
+    log('opencode already installed in this project', 'warn');
     return false;
   }
 
-  if (existsSync(target) && !statSync(target).isSymbolicLink()) {
-    log(`~/.config/opencode already exists and is not a symlink. Backing up...`, 'warn');
-    run(`mv "${target}" "${target}.bak"`);
-  }
-
-  symlinkTarget(source, target);
-  log(`Symlinked platforms/opencode/ → ~/.config/opencode/`, 'ok');
-  return true;
-}
-
-function installOpenCodeProject(projectDir, copyMode = false) {
-  const projectRoot = resolve(projectDir);
   const source = join(REPO_ROOT, 'platforms', 'opencode');
-
   if (!isDir(source)) {
-    log(`platforms/opencode/ not found`, 'err');
+    log('platforms/opencode/ not found in repo', 'err');
     return false;
   }
 
   ensureDir(projectRoot);
 
-  if (copyMode) {
-    const dotOpcodes = ['.opencode', join(projectRoot, '.opencode')];
-    const targetDir = join(projectRoot, '.opencode');
-    ensureDir(targetDir);
+  // Copy .opencode/ directory
+  const dotOpenCode = join(projectRoot, '.opencode');
+  ensureDir(dotOpenCode);
 
-    for (const sub of ['agents', 'commands', 'plugins', 'mcp']) {
-      const src = join(source, sub);
-      const dst = join(targetDir, sub);
-      if (isDir(src) && !existsSync(dst)) {
-        cpSync(src, dst, { recursive: true });
-      }
-    }
-
-    // Copy shared skills from source of truth (not the symlink in platforms/opencode)
-    const skillsSrc = join(REPO_ROOT, 'shared', 'skills');
-    const skillsDst = join(targetDir, 'skills');
-    if (isDir(skillsSrc) && !existsSync(skillsDst)) {
-      cpSync(skillsSrc, skillsDst, { recursive: true });
-    }
-
-    const configSrc = join(source, 'opencode.json');
-    const configDst = join(projectRoot, 'opencode.json');
-    if (existsSync(configSrc)) {
-      writeFileSync(configDst, readFileSync(configSrc, 'utf8'));
-    }
-
-    log(`Copied opencode config to ${projectRoot}/.opencode/`, 'ok');
-  } else {
-    ensureDir(projectRoot);
-    const envFilePath = join(projectRoot, '.env');
-    const envVar = 'OPENCODE_CONFIG_DIR';
-    const configDir = source;
-    const line = `\n# arai: opencode config\nexport ${envVar}="${configDir}"\n`;
-
-    if (existsSync(envFilePath)) {
-      const content = readFileSync(envFilePath, 'utf8');
-      if (!content.includes(envVar)) {
-        writeFileSync(envFilePath, content + line);
-      }
+  for (const sub of ['agents', 'commands']) {
+    const src = join(source, sub);
+    const dst = join(dotOpenCode, sub);
+    if (isDir(src)) {
+      cpSync(src, dst, { recursive: true });
     } else {
-      writeFileSync(envFilePath, line);
+      ensureDir(dst);
     }
-
-    log(`Set ${envVar}=${configDir} in ${envFilePath}`, 'ok');
-    log(`Restart opencode for changes to take effect`, 'info');
   }
 
+  // Copy skills from source of truth
+  const skillsSrc = join(REPO_ROOT, 'shared', 'skills');
+  const skillsDst = join(dotOpenCode, 'skills');
+  ensureDir(skillsDst);
+
+  // Copy opencode.json
+  const configSrc = join(source, 'opencode.json');
+  const configDst = join(projectRoot, 'opencode.json');
+  if (existsSync(configSrc)) {
+    writeFileSync(configDst, readFileSync(configSrc, 'utf8'));
+  }
+
+  log(`Installed opencode config in ${projectRoot}/`, 'ok');
   return true;
 }
 
-function uninstallAgent(agent) {
-  const info = AGENT_PATHS[agent];
-  if (!info) { log(`Agent '${agent}' not supported`, 'err'); return; }
-
-  const target = info.global;
-  const expected = join(REPO_ROOT, 'platforms', agent);
-
-  if (existsSync(target) && statSync(target).isSymbolicLink()) {
-    const link = readlinkSync(target);
-    unlinkSync(target);
-    log(`Removed symlink: ${target} → ${link}`, 'ok');
-
-    const backup = `${target}.bak`;
-    if (existsSync(backup)) {
-      log(`Backup found at ${backup}`, 'info');
-      log(`Restore with: mv "${backup}" "${target}"`, 'info');
-    }
-  } else if (existsSync(target)) {
-    log(`${target} exists and is not a symlink (was it installed manually?)`, 'warn');
-  } else {
-    log(`${agent} is not installed globally`, 'info');
+function installSkill(name, projectRoot) {
+  const srcDir = join(REPO_ROOT, 'shared', 'skills', name);
+  if (!isDir(srcDir)) {
+    log(`Skill '${name}' not found`, 'err');
+    const available = listNames('skill');
+    if (available.length) log(`Available: ${available.join(', ')}`, 'info');
+    return false;
   }
+
+  if (!opencodeInstalled(projectRoot)) {
+    log('Installing opencode platform first...', 'info');
+    installPlatform(projectRoot);
+  }
+
+  const dest = join(projectRoot, '.opencode', 'skills', name);
+  if (existsSync(dest)) {
+    log(`Skill '${name}' already installed`, 'warn');
+    return false;
+  }
+
+  ensureDir(dirname(dest));
+  cpSync(srcDir, dest, { recursive: true });
+  log(`Installed skill '${name}' → .opencode/skills/${name}/`, 'ok');
+  return true;
 }
 
-function uninstallAgentProject(agent, projectDir, copyMode) {
-  const info = AGENT_PATHS[agent];
-  if (!info) { log(`Agent '${agent}' not supported`, 'err'); return; }
+function installAgent(name, projectRoot) {
+  // Check shared/agents/ first, then platforms/opencode/agents/
+  let srcFile = join(REPO_ROOT, 'shared', 'agents', `${name}.md`);
+  if (!existsSync(srcFile)) {
+    srcFile = join(REPO_ROOT, 'platforms', 'opencode', 'agents', `${name}.md`);
+  }
+  if (!existsSync(srcFile)) {
+    log(`Agent '${name}' not found`, 'err');
+    const shared = listNames('agent');
+    if (shared.length) log(`Available agents: ${shared.join(', ')}`, 'info');
+    return false;
+  }
 
-  const projectRoot = resolve(projectDir);
+  if (!opencodeInstalled(projectRoot)) {
+    log('Installing opencode platform first...', 'info');
+    installPlatform(projectRoot);
+  }
 
-  if (agent === 'opencode') {
-    if (copyMode) {
-      const targetDir = join(projectRoot, '.opencode');
-      const configFile = join(projectRoot, 'opencode.json');
-      let removed = false;
+  const destDir = join(projectRoot, '.opencode', 'agents');
+  const destFile = join(destDir, `${name}.md`);
+  if (existsSync(destFile)) {
+    log(`Agent '${name}' already installed`, 'warn');
+    return false;
+  }
 
-      if (existsSync(targetDir)) {
-        run(`rm -rf "${targetDir}"`);
-        log(`Removed ${targetDir}/`, 'ok');
-        removed = true;
-      }
-      if (existsSync(configFile)) {
-        run(`rm "${configFile}"`);
-        log(`Removed ${configFile}`, 'ok');
-        removed = true;
-      }
-      if (!removed) {
-        log(`No opencode project files found in ${projectRoot}`, 'info');
-      }
-    } else {
-      // env-var mode: clean up OPENCODE_CONFIG_DIR from .env
-      const envFilePath = join(projectRoot, '.env');
-      if (existsSync(envFilePath)) {
-        const content = readFileSync(envFilePath, 'utf8');
-        const lines = content.split('\n').filter(line => !line.includes('OPENCODE_CONFIG_DIR') && line.trim());
-        writeFileSync(envFilePath, lines.join('\n') + (lines.length ? '\n' : ''));
-        log(`Removed OPENCODE_CONFIG_DIR from ${envFilePath}`, 'ok');
-      } else {
-        log(`No .env found in ${projectRoot}`, 'info');
-      }
-    }
-  } else {
-    const targetDir = join(projectRoot, info.projectDir);
-    if (existsSync(targetDir)) {
-      run(`rm -rf "${targetDir}"`);
-      log(`Removed ${targetDir}/`, 'ok');
-    } else {
-      log(`No ${info.projectDir}/ found in ${projectRoot}`, 'info');
+  ensureDir(destDir);
+  writeFileSync(destFile, readFileSync(srcFile, 'utf8'));
+
+  // Register in opencode.json
+  const configPath = join(projectRoot, 'opencode.json');
+  if (existsSync(configPath)) {
+    const config = JSON.parse(readFileSync(configPath, 'utf8'));
+    if (!config.agent) config.agent = {};
+    if (!config.agent[name]) {
+      config.agent[name] = {
+        mode: 'subagent',
+        description: `${name.replace(/-/g, ' ')} specialist`,
+        permission: { edit: 'deny' },
+      };
+      writeFileSync(configPath, JSON.stringify(config, null, 2) + '\n');
+      log(`Registered '${name}' in opencode.json`, 'ok');
     }
   }
+
+  log(`Installed agent '${name}' → .opencode/agents/${name}.md`, 'ok');
+  return true;
 }
+
+function installScript(name, projectRoot) {
+  const srcFile = join(REPO_ROOT, 'shared', 'scripts', `${name}.js`);
+  if (!existsSync(srcFile)) {
+    log(`Script '${name}.js' not found`, 'err');
+    const available = listNames('script');
+    if (available.length) log(`Available: ${available.join(', ')}`, 'info');
+    return false;
+  }
+
+  const destDir = join(projectRoot, 'shared', 'scripts');
+  const destFile = join(destDir, `${name}.js`);
+  if (existsSync(destFile)) {
+    log(`Script '${name}' already installed`, 'warn');
+    return false;
+  }
+
+  ensureDir(destDir);
+  writeFileSync(destFile, readFileSync(srcFile, 'utf8'));
+  log(`Installed script '${name}' → shared/scripts/${name}.js`, 'ok');
+  return true;
+}
+
+function installPrompt(name, projectRoot) {
+  const srcFile = join(REPO_ROOT, 'shared', 'prompts', `${name}.md`);
+  if (!existsSync(srcFile)) {
+    log(`Prompt '${name}.md' not found`, 'err');
+    const available = listNames('prompt');
+    if (available.length) log(`Available: ${available.join(', ')}`, 'info');
+    return false;
+  }
+
+  const destDir = join(projectRoot, 'shared', 'prompts');
+  const destFile = join(destDir, `${name}.md`);
+  if (existsSync(destFile)) {
+    log(`Prompt '${name}' already installed`, 'warn');
+    return false;
+  }
+
+  ensureDir(destDir);
+  writeFileSync(destFile, readFileSync(srcFile, 'utf8'));
+  log(`Installed prompt '${name}' → shared/prompts/${name}.md`, 'ok');
+  return true;
+}
+
+function installRule(name, projectRoot) {
+  const srcFile = join(REPO_ROOT, 'shared', 'rules', `${name}.md`);
+  if (!existsSync(srcFile)) {
+    log(`Rule '${name}.md' not found`, 'err');
+    const available = listNames('rule');
+    if (available.length) log(`Available: ${available.join(', ')}`, 'info');
+    return false;
+  }
+
+  const destDir = join(projectRoot, 'shared', 'rules');
+  const destFile = join(destDir, `${name}.md`);
+  if (existsSync(destFile)) {
+    log(`Rule '${name}' already installed`, 'warn');
+    return false;
+  }
+
+  ensureDir(destDir);
+  writeFileSync(destFile, readFileSync(srcFile, 'utf8'));
+  log(`Installed rule '${name}' → shared/rules/${name}.md`, 'ok');
+  return true;
+}
+
+/* ─── uninstall functions ─── */
+
+function uninstallPlatform(projectRoot) {
+  if (!opencodeInstalled(projectRoot)) {
+    log('No opencode installation found in this project', 'info');
+    return false;
+  }
+
+  const dotOpenCode = join(projectRoot, '.opencode');
+  const configFile = join(projectRoot, 'opencode.json');
+
+  if (isDir(dotOpenCode)) {
+    rmSync(dotOpenCode, { recursive: true, force: true });
+  }
+  if (existsSync(configFile)) {
+    rmSync(configFile, { force: true });
+  }
+
+  log(`Uninstalled opencode from ${projectRoot}/`, 'ok');
+  return true;
+}
+
+function uninstallSkill(name, projectRoot) {
+  const dest = join(projectRoot, '.opencode', 'skills', name);
+  if (!isDir(dest)) {
+    log(`Skill '${name}' not installed`, 'info');
+    return false;
+  }
+
+  rmSync(dest, { recursive: true, force: true });
+  log(`Uninstalled skill '${name}' from .opencode/skills/`, 'ok');
+  return true;
+}
+
+function uninstallAgent(name, projectRoot) {
+  const destDir = join(projectRoot, '.opencode', 'agents');
+  const destFile = join(destDir, `${name}.md`);
+  if (!existsSync(destFile)) {
+    log(`Agent '${name}' not installed`, 'info');
+    return false;
+  }
+
+  rmSync(destFile, { force: true });
+
+  // Remove from opencode.json
+  const configPath = join(projectRoot, 'opencode.json');
+  if (existsSync(configPath)) {
+    const config = JSON.parse(readFileSync(configPath, 'utf8'));
+    if (config.agent?.[name]) {
+      delete config.agent[name];
+      writeFileSync(configPath, JSON.stringify(config, null, 2) + '\n');
+      log(`Removed '${name}' from opencode.json`, 'ok');
+    }
+  }
+
+  log(`Uninstalled agent '${name}' from .opencode/agents/`, 'ok');
+  return true;
+}
+
+function uninstallScript(name, projectRoot) {
+  const destFile = join(projectRoot, 'shared', 'scripts', `${name}.js`);
+  if (!existsSync(destFile)) {
+    log(`Script '${name}' not installed`, 'info');
+    return false;
+  }
+
+  rmSync(destFile, { force: true });
+  log(`Uninstalled script '${name}' from shared/scripts/`, 'ok');
+  return true;
+}
+
+function uninstallPrompt(name, projectRoot) {
+  const destFile = join(projectRoot, 'shared', 'prompts', `${name}.md`);
+  if (!existsSync(destFile)) {
+    log(`Prompt '${name}' not installed`, 'info');
+    return false;
+  }
+
+  rmSync(destFile, { force: true });
+  log(`Uninstalled prompt '${name}' from shared/prompts/`, 'ok');
+  return true;
+}
+
+function uninstallRule(name, projectRoot) {
+  const destFile = join(projectRoot, 'shared', 'rules', `${name}.md`);
+  if (!existsSync(destFile)) {
+    log(`Rule '${name}' not installed`, 'info');
+    return false;
+  }
+
+  rmSync(destFile, { force: true });
+  log(`Uninstalled rule '${name}' from shared/rules/`, 'ok');
+  return true;
+}
+
+/* ─── other commands ─── */
 
 function showStatus() {
-  console.log('\n📋 arai status — aramirez-ai\n');
+  const cwd = process.cwd();
+  console.log('\nℹ arai status — aramirez-ai\n');
 
-  for (const agent of AGENTS) {
-    const info = AGENT_PATHS[agent];
-    const target = info.global;
-    const agentDir = join(REPO_ROOT, 'platforms', agent);
-    const exists = isDir(agentDir);
+  const hasOpenCode = opencodeInstalled(cwd);
 
-    let status = 'not configured';
-    if (existsSync(target)) {
-      if (statSync(target).isSymbolicLink()) {
-        const link = readlinkSync(target);
-        status = link === agentDir ? `global symlink ✅` : `global symlink → ${link}`;
-      } else {
-        status = `global dir exists (not symlinked)`;
-      }
-    } else {
-      status = 'not installed globally';
+  if (hasOpenCode) {
+    console.log('  opencode     ✓ installed');
+
+    const agentsDir = join(cwd, '.opencode', 'agents');
+    const skillsDir = join(cwd, '.opencode', 'skills');
+    const configPath = join(cwd, 'opencode.json');
+
+    if (isDir(agentsDir)) {
+      const agents = readdirSync(agentsDir).filter(f => f.endsWith('.md'));
+      console.log(`  agents       ${agents.length} installed (${agents.join(', ') || 'none'})`);
     }
-
-    console.log(`  ${agent.padEnd(10)} ${exists ? '📦' : '⬜'} ${status}`);
+    if (isDir(skillsDir)) {
+      const skills = readdirSync(skillsDir).filter(f => isDir(join(skillsDir, f)));
+      console.log(`  skills       ${skills.length} installed (${skills.join(', ') || 'none'})`);
+    }
+    if (existsSync(configPath)) {
+      const config = JSON.parse(readFileSync(configPath, 'utf8'));
+      const agentCount = Object.keys(config.agent || {}).length;
+      const cmdCount = Object.keys(config.command || {}).length;
+      console.log(`  agents cfg   ${agentCount} registered in opencode.json`);
+      console.log(`  commands     ${cmdCount} registered in opencode.json`);
+    }
+  } else {
+    console.log('  opencode     not installed');
   }
 
-  const envVars = Object.entries(process.env)
-    .filter(([k]) => k.includes('OPENCODE_CONFIG') || k.includes('CLAUDE') || k.includes('CURSOR'))
-    .map(([k, v]) => `    ${k}=${v}`);
-
-  if (envVars.length) {
-    console.log(`\n  Environment:\n${envVars.join('\n')}`);
-  }
-
-  console.log(`\n  Repo: ${REPO_ROOT}`);
+  console.log(`\n  CWD: ${cwd}`);
+  console.log(`  Repo: ${REPO_ROOT}`);
   console.log(`  Node: ${process.version}`);
   console.log('');
 }
@@ -292,124 +445,49 @@ function doUpdate() {
     log('npm install failed. Run it manually.', 'warn');
   }
   log('Update complete', 'ok');
-  log('Tip: run `arai sync` in project dirs that use --copy mode', 'info');
-  verifySymlinks();
 }
 
-function verifySymlinks() {
-  for (const agent of AGENTS) {
-    const info = AGENT_PATHS[agent];
-    const target = info.global;
-    const expected = join(REPO_ROOT, 'platforms', agent);
+function syncProject(projectRoot) {
+  projectRoot = projectRoot || process.cwd();
+  if (!opencodeInstalled(projectRoot)) {
+    log('No opencode installation found. Run `arai install` first.', 'info');
+    return;
+  }
 
-    if (existsSync(target) && statSync(target).isSymbolicLink()) {
-      try {
-        const link = readlinkSync(target);
-        if (link !== expected) {
-          log(`${agent}: symlink → ${link} (moved?). Reinstall with: arai install ${agent} --global`, 'warn');
+  // Re-copy platforms/opencode/ to .opencode/ preserving existing skills/agents
+  const source = join(REPO_ROOT, 'platforms', 'opencode');
+  if (!isDir(source)) {
+    log('platforms/opencode/ not found', 'err');
+    return;
+  }
+
+  const dotOpenCode = join(projectRoot, '.opencode');
+  ensureDir(dotOpenCode);
+
+  for (const sub of ['agents', 'commands']) {
+    const src = join(source, sub);
+    const dst = join(dotOpenCode, sub);
+    if (isDir(src)) {
+      // Only copy files that don't already exist
+      const srcFiles = readdirSync(src).filter(f => f.endsWith('.md'));
+      ensureDir(dst);
+      for (const file of srcFiles) {
+        const dstFile = join(dst, file);
+        if (!existsSync(dstFile)) {
+          writeFileSync(dstFile, readFileSync(join(src, file), 'utf8'));
         }
-      } catch {
-        log(`${agent}: symlink is broken. Reinstall with: arai install ${agent} --global`, 'warn');
       }
     }
   }
-}
 
-function syncAgent(agent) {
-  const info = AGENT_PATHS[agent];
-  if (!info) { log(`Agent '${agent}' not supported`, 'err'); return; }
-
-  const projectRoot = process.cwd();
-
-  if (agent === 'opencode') {
-    const configDst = join(projectRoot, 'opencode.json');
-    const targetDir = join(projectRoot, '.opencode');
-
-    if (!existsSync(configDst) && !existsSync(targetDir)) {
-      log(`No opencode config found in ${projectRoot}`, 'info');
-      return;
-    }
-
-    if (existsSync(targetDir)) {
-      run(`rm -rf "${targetDir}"`);
-    }
-    if (existsSync(configDst)) {
-      run(`rm "${configDst}"`);
-    }
-
-    installOpenCodeProject(projectRoot, true);
-    log(`Re-applied opencode config in ${projectRoot}`, 'ok');
-  } else {
-    const targetDir = join(projectRoot, info.projectDir);
-    if (!existsSync(targetDir)) {
-      log(`No ${info.projectDir}/ found in ${projectRoot}`, 'info');
-      return;
-    }
-    run(`rm -rf "${targetDir}"`);
-    const source = join(REPO_ROOT, 'platforms', agent);
-    cpSync(source, targetDir, { recursive: true });
-    log(`Re-applied ${agent} config in ${projectRoot}`, 'ok');
-  }
-}
-
-function installPlugin(pluginPath) {
-  // Placeholder for future plugin installation
-  log(`Plugin installation not yet implemented: ${pluginPath}`, 'info');
-}
-
-function transformSkills(targetAgent) {
-  const skillsDir = join(REPO_ROOT, 'shared', 'skills');
-  if (!isDir(skillsDir)) {
-    log('No shared/skills/ directory found', 'warn');
-    return;
+  // Re-apply opencode.json (overwrite)
+  const configSrc = join(source, 'opencode.json');
+  const configDst = join(projectRoot, 'opencode.json');
+  if (existsSync(configSrc)) {
+    writeFileSync(configDst, readFileSync(configSrc, 'utf8'));
   }
 
-  const skills = readdirSync(skillsDir).filter(f => isDir(join(skillsDir, f)));
-  if (skills.length === 0) {
-    log('No skills to transform', 'info');
-    return;
-  }
-
-  if (targetAgent === 'cursor') {
-    const cursorRulesDir = join(REPO_ROOT, 'platforms', 'cursor', 'rules');
-    ensureDir(cursorRulesDir);
-
-    for (const skill of skills) {
-      const skillPath = join(skillsDir, skill, 'SKILL.md');
-      if (!existsSync(skillPath)) continue;
-      const content = readFileSync(skillPath, 'utf8');
-      const description = content.match(/^description:\s*(.+)/m)?.[1] || skill;
-
-      const cursorRule = `# ${skill}\n\n${description}\n\n${stripFrontmatter(content)}\n`;
-      writeFileSync(join(cursorRulesDir, `${skill}.md`), cursorRule);
-    }
-    log(`Transformed ${skills.length} skills → platforms/cursor/rules/`, 'ok');
-
-  } else if (targetAgent === 'codex') {
-    const codexDir = join(REPO_ROOT, 'platforms', 'codex');
-    ensureDir(codexDir);
-
-    for (const skill of skills) {
-      const skillPath = join(skillsDir, skill, 'SKILL.md');
-      if (!existsSync(skillPath)) continue;
-      const content = readFileSync(skillPath, 'utf8');
-      writeFileSync(join(codexDir, `${skill}.md`), stripFrontmatter(content));
-    }
-    log(`Transformed ${skills.length} skills → platforms/codex/`, 'ok');
-
-  } else {
-    log(`Unknown target agent: ${targetAgent}`, 'err');
-  }
-}
-
-function readlinkSync(p) {
-  // simple readlink via fs
-  const { readlinkSync: rl } = require('fs');
-  return rl(p);
-}
-
-function stripFrontmatter(content) {
-  return content.replace(/^---\n[\s\S]*?\n---\n/, '');
+  log(`Re-synced opencode config in ${projectRoot}`, 'ok');
 }
 
 /* ─── template system / scaffold ─── */
@@ -439,8 +517,6 @@ function loadTemplates() {
   loadFromDir(USER_TEMPLATES_DIR, false);
   return templates;
 }
-
-const PARTIALS_DIR = join(TEMPLATES_DIR, 'partials');
 
 function resolvePartial(name) {
   const path = join(PARTIALS_DIR, name);
@@ -496,6 +572,11 @@ function scaffoldProject(targetDir, templateName, vars) {
   const absTarget = resolve(targetDir);
   const projectName = basename(absTarget);
   const allVars = { ...vars, project_name: projectName, project_description: vars.description || `${projectName} — AI-enhanced project` };
+
+  if (existsSync(absTarget) && readdirSync(absTarget).length > 0) {
+    log(`Directory ${absTarget} already exists and is not empty`, 'err');
+    return false;
+  }
 
   ensureDir(absTarget);
   log(`Scaffolding '${templateName}' template in ${absTarget}...`, 'info');
@@ -684,8 +765,6 @@ function generateAgent(name, projectDir, description) {
   if (existsSync(filePath)) { log(`Agent '${name}' already exists`, 'warn'); return false; }
 
   const desc = description || `${name.replace(/-/g, ' ')} specialist`;
-
-  // Determine opencode platform dir
   const opencodeDir = join(projectDir, 'platforms', 'opencode');
   const hasOpenCode = existsSync(join(opencodeDir, 'opencode.json'));
 
@@ -704,7 +783,7 @@ function generateAgent(name, projectDir, description) {
       config.agent[name] = {
         mode: 'subagent',
         description: desc,
-        model: 'anthropic/claude-sonnet-4-6',
+        model: 'opencode/big-pickle',
         permission: { edit: 'deny' },
       };
       writeFileSync(configPath, JSON.stringify(config, null, 2) + '\n');
@@ -727,7 +806,6 @@ function generateScript(name, projectDir, description) {
 
   const desc = description || `${name.replace(/-/g, ' ')} utility`;
   writeFileSync(filePath, applyVars(template, { name, description: desc }));
-  // Make executable on Unix
   try { execSync(`chmod +x "${filePath}"`); } catch { /* ok */ }
   log(`Created shared/scripts/${name}.js`, 'ok');
   return true;
@@ -765,13 +843,31 @@ function generateCommand(name, projectDir, description) {
 
 function generateBrand(projectDir, opts) {
   const brandPath = join(projectDir, 'shared', 'brand.json');
+  let brand;
 
   if (!existsSync(brandPath)) {
-    log('shared/brand.json not found. Run `arai init` first with the `full` template.', 'err');
-    return;
+    const defaultBrand = {
+      brand: {
+        name: opts.name || 'My Brand',
+        colors: {
+          primary: '#1a365d',
+          secondary: '#2d69c2',
+          accent: '#e8a838',
+          text: '#1a202c',
+          background: '#ffffff',
+          'light-bg': '#f7fafc',
+        },
+        logo: '',
+        logo_white: '',
+      },
+    };
+    brand = defaultBrand;
+    ensureDir(join(projectDir, 'shared'));
+    writeFileSync(brandPath, JSON.stringify(brand, null, 2) + '\n');
+    log(`Created shared/brand.json with defaults`, 'ok');
+  } else {
+    brand = JSON.parse(readFileSync(brandPath, 'utf8'));
   }
-
-  const brand = JSON.parse(readFileSync(brandPath, 'utf8'));
 
   if (opts.name) brand.brand.name = opts.name;
   if (opts.primary) brand.brand.colors.primary = opts.primary;
@@ -788,28 +884,22 @@ function generateBrand(projectDir, opts) {
   if (opts.logo) {
     const logoPath = resolve(opts.logo);
     if (!existsSync(logoPath)) { log(`Logo not found: ${logoPath}`, 'err'); return; }
-
     const logoExt = basename(logoPath);
     const assetsImages = join(projectDir, 'assets', 'images');
     ensureDir(assetsImages);
     writeFileSync(join(assetsImages, logoExt), readFileSync(logoPath, 'utf8'));
-
-    // Auto-set brand.logo path
     brand.brand.logo = `assets/images/${logoExt}`;
     writeFileSync(brandPath, JSON.stringify(brand, null, 2) + '\n');
     log(`Copied logo → assets/images/${logoExt}`, 'ok');
   }
 
-  // Copy white logo variant if provided
   if (opts.logoWhite) {
     const logoPath = resolve(opts.logoWhite);
     if (!existsSync(logoPath)) { log(`White logo not found: ${logoPath}`, 'err'); return; }
-
     const logoExt = basename(logoPath);
     const assetsImages = join(projectDir, 'assets', 'images');
     ensureDir(assetsImages);
     writeFileSync(join(assetsImages, logoExt), readFileSync(logoPath, 'utf8'));
-
     brand.brand.logo_white = `assets/images/${logoExt}`;
     writeFileSync(brandPath, JSON.stringify(brand, null, 2) + '\n');
     log(`Copied white logo → assets/images/${logoExt}`, 'ok');
@@ -820,7 +910,7 @@ function generateBrand(projectDir, opts) {
 
 /* ─── skills sync ─── */
 
-function skillsSync(targetDir, skillName) {
+function skillsSync(projectDir, skillName) {
   const skillsDir = join(REPO_ROOT, 'shared', 'skills');
   if (!isDir(skillsDir)) { log('No shared/skills/ found', 'err'); return; }
 
@@ -832,11 +922,9 @@ function skillsSync(targetDir, skillName) {
     : allSkills;
   if (!skills) return;
 
-  const dest = targetDir
-    ? resolve(targetDir, '.opencode', 'skills')
-    : join(homedir(), '.config', 'opencode', 'skills');
-
+  const dest = join(resolve(projectDir), '.opencode', 'skills');
   ensureDir(dest);
+
   let count = 0;
   for (const skill of skills) {
     const src = join(skillsDir, skill, 'SKILL.md');
@@ -847,8 +935,7 @@ function skillsSync(targetDir, skillName) {
     count++;
   }
 
-  const label = targetDir ? `${targetDir}/.opencode/skills/` : '~/.config/opencode/skills/';
-  log(`Synced ${count} skill(s) → ${label}`, 'ok');
+  log(`Synced ${count} skill(s) → ${projectDir}/.opencode/skills/`, 'ok');
 }
 
 /* ─── list functions ─── */
@@ -911,24 +998,18 @@ function listCommands() {
 }
 
 function listMcp() {
-  const mcpDir = join(REPO_ROOT, 'platforms', 'opencode', 'mcp');
-  if (!isDir(mcpDir)) { log('No platforms/opencode/mcp/ directory', 'err'); return; }
-  const files = readdirSync(mcpDir).filter(f => f.endsWith('.json'));
-  if (files.length === 0) { log('No MCP servers configured', 'info'); return; }
-  console.log('\nAvailable MCP servers:\n');
-  for (const name of files.sort()) {
-    try {
-      const mcp = JSON.parse(readFileSync(join(mcpDir, name), 'utf8'));
-      const servers = mcp.mcp || mcp.mcpServers || mcp;
-      for (const [key, val] of Object.entries(servers)) {
-        if (!val || typeof val !== 'object') continue;
-        const cmd = Array.isArray(val.command) ? val.command.join(' ') : val.command || val.url || '';
-        console.log(`  ${key.padEnd(20)} ${String(cmd)}`);
-        if (val.enabled === false) console.log(`  ${' '.repeat(20)} (disabled)`);
-      }
-    } catch {
-      console.log(`  ${name.replace(/\.json$/, '')} (invalid JSON)`);
-    }
+  const configPath = join(REPO_ROOT, 'platforms', 'opencode', 'opencode.json');
+  if (!existsSync(configPath)) { log('No opencode.json found', 'err'); return; }
+  const config = JSON.parse(readFileSync(configPath, 'utf8'));
+  const servers = config.mcp || {};
+  const names = Object.keys(servers);
+  if (names.length === 0) { log('No MCP servers configured', 'info'); return; }
+  console.log('\nConfigured MCP servers:\n');
+  for (const [key, val] of Object.entries(servers)) {
+    if (!val || typeof val !== 'object') continue;
+    const cmd = Array.isArray(val.command) ? val.command.join(' ') : val.command || val.url || '';
+    console.log(`  ${key.padEnd(20)} ${String(cmd)}`);
+    if (val.enabled === false) console.log(`  ${' '.repeat(20)} (disabled)`);
   }
   console.log();
 }
@@ -942,7 +1023,7 @@ function kbInstall(targetDir, force) {
     return;
   }
   if (existsSync(dest) && force) {
-    run(`rm -rf "${dest}"`);
+    rmSync(dest, { recursive: true, force: true });
   }
 
   const kbDir = dest;
@@ -953,7 +1034,6 @@ function kbInstall(targetDir, force) {
   ensureDir(join(kbDir, 'Processes'));
   ensureDir(join(kbDir, 'Knowledge'));
 
-  // .obsidian/app.json
   writeFileSync(join(obsidianDir, 'app.json'), JSON.stringify({
     alwaysUpdateLinks: true,
     showLineNumber: false,
@@ -962,7 +1042,6 @@ function kbInstall(targetDir, force) {
     attachmentFolderPath: './assets',
   }, null, 2) + '\n');
 
-  // .obsidian/graph.json
   writeFileSync(join(obsidianDir, 'graph.json'), JSON.stringify({
     collapseFilter: true,
     showTags: true,
@@ -970,14 +1049,12 @@ function kbInstall(targetDir, force) {
     showOrphans: true,
   }, null, 2) + '\n');
 
-  // .obsidian/workspace.json
   writeFileSync(join(obsidianDir, 'workspace.json'), JSON.stringify({
     mode: 'source',
     pinned: true,
     showLineNumber: false,
   }, null, 2) + '\n');
 
-  // Index.md
   writeFileSync(join(kbDir, 'Index.md'), `# Knowledge Base
 
 ## Structure
@@ -992,7 +1069,6 @@ function kbInstall(targetDir, force) {
 This vault uses \`[[wikilinks]]\` for cross-referencing. Keep notes atomic and well-linked.
 `);
 
-  // Sub-index files
   for (const dir of ['Architecture', 'Team', 'Processes', 'Knowledge']) {
     writeFileSync(join(kbDir, dir, 'Index.md'), `# ${dir}\n\n<!-- TODO: populate with ${dir.toLowerCase()} notes -->\n`);
   }
@@ -1001,166 +1077,84 @@ This vault uses \`[[wikilinks]]\` for cross-referencing. Keep notes atomic and w
   log(`Open it in Obsidian: File → Open Vault Folder → ${kbDir}`, 'info');
 }
 
-/* ─── install --project improved ─── */
-
-function detectProjectType(projectDir) {
-  const files = readdirSync(projectDir);
-  if (files.includes('package.json')) {
-    try {
-      const pkg = JSON.parse(readFileSync(join(projectDir, 'package.json'), 'utf8'));
-      if (pkg.dependencies?.next || pkg.devDependencies?.next) return { type: 'nextjs', framework: 'Next.js', test: 'npm test', start: 'npm run dev' };
-      if (pkg.scripts?.dev) return { type: 'node-web', framework: 'Node.js web', test: 'npm test', start: 'npm run dev' };
-      return { type: 'node', framework: 'Node.js', test: pkg.scripts?.test ? 'npm test' : null, start: pkg.scripts?.start ? 'npm start' : null };
-    } catch { return { type: 'node', framework: 'Node.js', test: null, start: null }; }
-  }
-  if (files.includes('pyproject.toml') || files.includes('setup.py') || files.includes('requirements.txt')) {
-    return { type: 'python', framework: 'Python', test: 'pytest', start: null };
-  }
-  if (files.includes('Gemfile') || files.includes('Rakefile')) {
-    return { type: 'ruby', framework: 'Ruby', test: 'rspec', start: null };
-  }
-  if (files.includes('Cargo.toml')) {
-    return { type: 'rust', framework: 'Rust', test: 'cargo test', start: null };
-  }
-  return { type: 'generic', framework: 'Generic', test: null, start: null };
-}
-
-function installAgent(agent, scope, dir, copyMode) {
-  const agentDir = join(REPO_ROOT, 'platforms', agent);
-  if (!isDir(agentDir)) {
-    log(`Agent '${agent}' not found at platforms/${agent}/`, 'err');
-    return;
-  }
-
-  if (scope === 'global') {
-    const info = AGENT_PATHS[agent];
-    if (!info) { log(`Agent '${agent}' not supported`, 'err'); return; }
-
-    if (agent === 'opencode') {
-      installOpenCodeGlobal();
-    } else {
-      const target = info.global;
-      if (existsSync(target) && !statSync(target).isSymbolicLink()) {
-        log(`${target} already exists. Backing up...`, 'warn');
-        run(`mv "${target}" "${target}.bak"`);
-      }
-      symlinkTarget(agentDir, target);
-      log(`Symlinked platforms/${agent}/ → ${target}`, 'ok');
-    }
-  } else if (scope === 'project') {
-    const absDir = resolve(dir);
-    if (agent === 'opencode') {
-      installOpenCodeProject(absDir, copyMode);
-    } else {
-      const info = AGENT_PATHS[agent];
-      const targetDir = join(absDir, info.projectDir);
-      ensureDir(targetDir);
-      cpSync(agentDir, targetDir, { recursive: true });
-      log(`Copied platforms/${agent}/ → ${targetDir}`, 'ok');
-    }
-
-    // Auto-detect project type and suggest config
-    if (existsSync(absDir)) {
-      const projectInfo = detectProjectType(absDir);
-      if (projectInfo.type !== 'generic') {
-        log(`Detected ${projectInfo.framework} project`, 'info');
-      }
-    }
-  }
-}
-
 /* ─── CLI commands ─── */
 
-program
-  .command('install <agent>')
-  .description('Install an agent configuration (opencode, claude, cursor, codex)')
-  .option('--global', 'Install globally')
-  .option('--project <dir>', 'Install in project directory')
-  .option('--copy', 'Copy files instead of using env vars (project mode only)')
-  .action((agent, opts) => {
-    if (!AGENTS.includes(agent)) {
-      log(`Unknown agent: ${agent}`, 'err');
-      log(`Valid platform agents: ${AGENTS.join(', ')}`, 'info');
-      log(`Sub-agents like '${agent}' are defined inside opencode.json and come with \`arai install opencode\`.`, 'info');
-      return;
-    }
-    if (!opts.global && !opts.project) {
-      log('Specify --global or --project <dir>', 'err');
-      return;
-    }
-    const scope = opts.global ? 'global' : 'project';
-    installAgent(agent, scope, opts.project, opts.copy);
-  });
+// --- install ---
 
 program
-  .command('uninstall <agent>')
-  .description('Uninstall an agent configuration (global or project)')
-  .option('--global', 'Uninstall global configuration (default)')
-  .option('--project <dir>', 'Uninstall from project directory')
-  .option('--copy', 'Remove copied files (project mode only)')
-  .action((agent, opts) => {
-    if (!AGENTS.includes(agent)) {
-      log(`Unknown agent: ${agent}. Valid: ${AGENTS.join(', ')}`, 'err');
+  .command('install [type] [name]')
+  .description('Install opencode platform or components (skill, agent, script, prompt, rule)')
+  .option('--project <dir>', 'Project directory', '.')
+  .action((type, name, opts) => {
+    const projectRoot = resolve(opts.project);
+    if (!type) return installPlatform(projectRoot);
+    if (!VALID_TYPES.includes(type)) {
+      log(`Unknown type: '${type}'. Valid: ${VALID_TYPES.join(', ')}`, 'err');
       return;
     }
-    if (opts.project) {
-      uninstallAgentProject(agent, opts.project, opts.copy);
-    } else {
-      uninstallAgent(agent);
+    if (!name) {
+      log(`Missing <name> argument for type '${type}'`, 'err');
+      return;
     }
+    const installers = { skill: installSkill, agent: installAgent, script: installScript, prompt: installPrompt, rule: installRule };
+    installers[type](name, projectRoot);
   });
+
+// --- uninstall ---
+
+program
+  .command('uninstall [type] [name]')
+  .description('Uninstall opencode platform or components (skill, agent, script, prompt, rule)')
+  .option('--project <dir>', 'Project directory', '.')
+  .action((type, name, opts) => {
+    const projectRoot = resolve(opts.project);
+    if (!type) return uninstallPlatform(projectRoot);
+    if (!VALID_TYPES.includes(type)) {
+      log(`Unknown type: '${type}'. Valid: ${VALID_TYPES.join(', ')}`, 'err');
+      return;
+    }
+    if (!name) {
+      log(`Missing <name> argument for type '${type}'`, 'err');
+      return;
+    }
+    const uninstallers = { skill: uninstallSkill, agent: uninstallAgent, script: uninstallScript, prompt: uninstallPrompt, rule: uninstallRule };
+    uninstallers[type](name, projectRoot);
+  });
+
+// --- status ---
 
 program
   .command('status')
-  .description('Show installation status for all agents')
+  .description('Show installation status')
   .action(showStatus);
+
+// --- update ---
 
 program
   .command('update')
   .description('Pull latest changes and install dependencies')
   .action(doUpdate);
 
+// --- sync ---
+
 program
-  .command('sync [agent]')
-  .description('Re-apply project-level config files (useful after update)')
-  .action((agent) => {
-    if (agent) {
-      if (!AGENTS.includes(agent)) {
-        log(`Unknown agent: ${agent}. Valid: ${AGENTS.join(', ')}`, 'err');
-        return;
-      }
-      syncAgent(agent);
-    } else {
-      for (const a of AGENTS) {
-        syncAgent(a);
-      }
+  .command('sync [type] [name]')
+  .description('Sync project config or components (skill)')
+  .option('--project <dir>', 'Project directory', '.')
+  .action((type, name, opts) => {
+    const projectRoot = resolve(opts.project);
+    if (!type) return syncProject(projectRoot);
+    if (!VALID_TYPES.includes(type)) {
+      log(`Unknown type: '${type}'. Valid: ${VALID_TYPES.join(', ')}`, 'err');
+      return;
     }
+    if (type === 'skill') {
+      return skillsSync(projectRoot, name || null);
+    }
+    log(`Sync for type '${type}' not yet implemented`, 'info');
   });
 
-const skillsCmd = program
-  .command('skills')
-  .description('Manage shared skills (sync, list)');
-
-skillsCmd
-  .command('sync')
-  .description('Sync skills to global ~/.config/opencode/skills/ or project .opencode/skills/')
-  .option('--project <dir>', 'Sync to project .opencode/skills/ instead of global')
-  .option('--skill <name>', 'Sync only a specific skill by name')
-  .action((opts) => {
-    skillsSync(opts.project || null, opts.skill || null);
-  });
-
-
-
-program
-  .command('kb')
-  .description('Scaffold an Obsidian knowledge base vault')
-  .command('install [dir]')
-  .description('Create kb/ Obsidian vault in the specified directory (default: current dir)')
-  .option('--force', 'Overwrite existing kb/ directory')
-  .action((dir, opts) => {
-    kbInstall(dir || '.', opts.force);
-  });
+// --- init ---
 
 program
   .command('init <dir>')
@@ -1171,12 +1165,19 @@ program
     scaffoldProject(dir, opts.template, { description: opts.description });
   });
 
+// --- kb ---
+
 program
-  .command('template')
-  .description('Manage project scaffolding templates')
-  .command('list')
-  .description('List available templates')
-  .action(listTemplates);
+  .command('kb')
+  .description('Scaffold an Obsidian knowledge base vault')
+  .command('install [dir]')
+  .description('Create kb/ Obsidian vault in the specified directory')
+  .option('--force', 'Overwrite existing kb/ directory')
+  .action((dir, opts) => {
+    kbInstall(dir || '.', opts.force);
+  });
+
+// --- generate ---
 
 const generateCmd = program
   .command('generate')
@@ -1188,7 +1189,7 @@ generateCmd
   .option('--dir <path>', 'Project root directory', '.')
   .action((name, opts) => {
     const root = findProjectRoot(opts.dir);
-    if (!root) { log('Not inside an arai project (no AGENTS.md found)', 'err'); return; }
+    if (!root) { log('Not inside an arai project. Run `arai init` first.', 'err'); return; }
     generateSkill(name, root);
   });
 
@@ -1199,7 +1200,7 @@ generateCmd
   .option('--description <desc>', 'Agent description')
   .action((name, opts) => {
     const root = findProjectRoot(opts.dir);
-    if (!root) { log('Not inside an arai project (no AGENTS.md found)', 'err'); return; }
+    if (!root) { log('Not inside an arai project. Run `arai init` first.', 'err'); return; }
     generateAgent(name, root, opts.description);
   });
 
@@ -1210,7 +1211,7 @@ generateCmd
   .option('--description <desc>', 'Script description')
   .action((name, opts) => {
     const root = findProjectRoot(opts.dir);
-    if (!root) { log('Not inside an arai project (no AGENTS.md found)', 'err'); return; }
+    if (!root) { log('Not inside an arai project. Run `arai init` first.', 'err'); return; }
     generateScript(name, root, opts.description);
   });
 
@@ -1221,7 +1222,7 @@ generateCmd
   .option('--description <desc>', 'Command description')
   .action((name, opts) => {
     const root = findProjectRoot(opts.dir);
-    if (!root) { log('Not inside an arai project (no AGENTS.md found)', 'err'); return; }
+    if (!root) { log('Not inside an arai project. Run `arai init` first.', 'err'); return; }
     generateCommand(name, root, opts.description);
   });
 
@@ -1240,29 +1241,11 @@ generateCmd
   .option('--logo-white <path>', 'Path to white logo variant')
   .action((opts) => {
     const root = findProjectRoot(opts.dir);
-    if (!root) { log('Not inside an arai project (no AGENTS.md found)', 'err'); return; }
+    if (!root) { log('Not inside an arai project. Run `arai init` first.', 'err'); return; }
     generateBrand(root, opts);
   });
 
-program
-  .command('transform')
-  .description('Transform shared skills to agent-specific formats')
-  .command('skills')
-  .description('Transform shared/skills/ to target agent format')
-  .option('--to <agent>', 'Target agent (cursor, codex)')
-  .option('--all', 'Transform to all supported formats')
-  .action((opts) => {
-    if (opts.all) {
-      transformSkills('cursor');
-      transformSkills('codex');
-    } else if (opts.to) {
-      transformSkills(opts.to);
-    } else {
-      log('Specify --to <agent> or --all', 'err');
-    }
-  });
-
-/* ─── list (umbrella) ─── */
+// --- list ---
 
 const listCmd = program
   .command('list')

@@ -6,7 +6,7 @@ Tres sistemas en un solo repositorio:
 
 | Sistema | Descripción |
 |---------|-------------|
-| **AI Agent Config** | Configuración multi-agente para opencode, Claude Code, Cursor y Codex |
+| **AI Agent Config** | Configuración multi-agente para opencode |
 | **Scaffolding** | `arai init` — genera estructura de agente AI en nuevos proyectos |
 | **Document Pipeline** | Genera PDF, HTML, PNG, PowerPoint desde JSON/Markdown |
 
@@ -31,33 +31,16 @@ Tres sistemas en un solo repositorio:
 
 ## Instalación
 
-### Global (tu máquina)
-
 ```bash
 git clone git@github.com:aaramirez/aramirez-ai.git ~/.config/aramirez
 cd ~/.config/aramirez
 npm install
 npm link
 
-# Instalar agentes
-arai install opencode --global   # symlink → ~/.config/opencode/
-arai install claude --global     # symlink → ~/.claude/
-arai install cursor --global     # symlink → ~/.cursor/
-arai install codex --global      # symlink → ~/.codex/
-```
-
-### Por proyecto
-
-```bash
+# Uso básico en un proyecto
 cd mi-proyecto
-
-# Modo OPENCODE_CONFIG_DIR (sin copias, recomendado para dev)
-arai install opencode --project .
-# → Crea .env con OPENCODE_CONFIG_DIR apuntando al repo
-
-# Modo copia (portable, commiteable)
-arai install opencode --project . --copy
-# → Crea .opencode/agents, .opencode/skills, opencode.json, etc.
+arai install               # instala opencode en el proyecto actual
+# → Crea .opencode/agents, .opencode/skills, opencode.json
 ```
 
 ### Verificar instalación
@@ -66,7 +49,7 @@ arai install opencode --project . --copy
 arai status
 ```
 
-Muestra el estado de todos los agentes instalados y su configuración.
+Muestra el estado de opencode en el directorio actual.
 
 ---
 
@@ -76,79 +59,86 @@ Muestra el estado de todos los agentes instalados y su configuración.
 
 | Comando | Descripción |
 |---------|-------------|
-| `arai install <agent>` | Instala agente (global o por proyecto) |
-| `arai uninstall <agent>` | Elimina instalación de agente |
-| `arai status` | Estado de todos los agentes |
+| `arai install` | Instala plataforma opencode en el proyecto |
+| `arai install <type> <name>` | Instala componente: skill, agent, script, prompt, rule |
+| `arai uninstall` | Elimina plataforma opencode del proyecto |
+| `arai uninstall <type> <name>` | Elimina componente específico |
+| `arai status` | Estado de opencode en el directorio actual |
 | `arai update` | `git pull` + `npm install` en el repo |
-| `arai sync [agent]` | Re-aplica config de proyecto |
-| `arai skills sync` | Sincroniza skills a opencode |
-| `arai skills sync --skill <name>` | Sincroniza solo una skill específica |
+| `arai sync [type] [name]` | Sincroniza proyecto o componente (`skill <name>` para sincronizar una skill) |
 | `arai kb install [dir]` | Crea vault Obsidian (kb/) |
 | `arai init <dir>` | Scaffolding de nuevo proyecto |
-| `arai template list` | Lista plantillas disponibles |
-| `arai list skills` | Lista skills disponibles |
-| `arai list agents` | Lista agentes registrados |
-| `arai list scripts` | Lista scripts disponibles |
-| `arai list templates` | Lista plantillas disponibles |
-| `arai list commands` | Lista comandos opencode |
-| `arai list mcp` | Lista servidores MCP configurados |
+| `arai list skills\|agents\|scripts\|templates\|commands\|mcp` | Lista recursos |
 | `arai generate skill <name>` | Crea nueva skill |
 | `arai generate agent <name>` | Crea nuevo agente |
 | `arai generate script <name>` | Crea nuevo script |
 | `arai generate command <name>` | Crea nuevo comando opencode |
 | `arai generate brand` | Configura identidad visual |
-| `arai transform skills` | Transforma skills a otros formatos |
 
 ---
 
 ### Detalle de comandos
 
-#### `arai install <agent>`
+#### `arai install`
 
-Instala la configuración de un agente AI.
+Instala la plataforma opencode en el proyecto. Siempre copia archivos (no usa env vars).
 
 | Opción | Descripción |
 |--------|-------------|
-| `--global` | Instala globalmente (symlinks en `~/.config/<agent>/`) |
-| `--project <dir>` | Instala en un proyecto (crea `.env` con `OPENCODE_CONFIG_DIR`) |
-| `--copy` | (requiere `--project`) Copia archivos en lugar de usar env var |
-
-**Soportado para**: `opencode`, `claude`, `cursor`, `codex`
-
-> Nota: Subagentes como `plan`, `reviewer`, `tester`, `docs` se definen dentro de `opencode.json` y vienen incluidos al instalar opencode. No se instalan por separado.
+| `--project <dir>` | Directorio del proyecto (default: `.`) |
 
 ```bash
-arai install opencode --global
-arai install claude --global
-arai install opencode --project . --copy
+arai install                    # instala en el directorio actual
+arai install --project ./app    # instala en ./app
 ```
 
-#### `arai uninstall <agent>`
+#### `arai install <type> <name>`
 
-Elimina la instalación de un agente.
+Instala un componente específico. Tipos válidos: `skill`, `agent`, `script`, `prompt`, `rule`.
 
 | Opción | Descripción |
 |--------|-------------|
-| `--global` | Elimina symlinks globales |
-| `--project <dir>` | Elimina config de proyecto |
-| `--copy` | Elimina archivos copiados (`.opencode/`, `opencode.json`) |
+| `--project <dir>` | Directorio del proyecto (default: `.`) |
 
 ```bash
-arai uninstall opencode          # elimina global
-arai uninstall opencode --project .      # elimina env-var config
-arai uninstall opencode --project . --copy  # elimina copia
+arai install skill git          # instala skill git
+arai install agent reviewer     # instala agente reviewer
+arai install script ci-validate # instala script
+arai install prompt commit-message  # instala prompt
+arai install rule code-style    # instala regla de estilo
+```
+
+#### `arai uninstall`
+
+Elimina la plataforma opencode del proyecto.
+
+| Opción | Descripción |
+|--------|-------------|
+| `--project <dir>` | Directorio del proyecto (default: `.`) |
+
+```bash
+arai uninstall                    # elimina del directorio actual
+arai uninstall --project ./app    # elimina de ./app
+```
+
+#### `arai uninstall <type> <name>`
+
+Elimina un componente específico. Tipos válidos: `skill`, `agent`, `script`, `prompt`, `rule`.
+
+```bash
+arai uninstall skill git
+arai uninstall agent reviewer
 ```
 
 #### `arai status`
 
-Muestra el estado de instalación de todos los agentes.
+Muestra el estado de opencode en el directorio actual.
 
 ```
 $ arai status
-✓ opencode  → global (~/.config/opencode/)
-✓ claude    → global (~/.claude/)
-✗ cursor    → no instalado
-✗ codex     → no instalado
+  opencode     ✓ installed
+  agents       3 installed (reviewer, tester, docs)
+  skills       1 installed (git)
 ```
 
 #### `arai update`
@@ -159,13 +149,14 @@ Ejecuta `git pull` + `npm install` en el repositorio y re-aplica configuraciones
 arai update
 ```
 
-#### `arai sync [agent]`
+#### `arai sync [type] [name]`
 
-Re-aplica la configuración de un agente en proyectos. Útil después de `arai update` en modo `--copy`.
+Re-aplica la configuración de opencode en el proyecto actual. Útil después de `arai update`. Si se especifica un tipo y nombre, sincroniza solo ese componente.
 
 ```bash
-arai sync              # sincroniza todos
-arai sync opencode     # solo opencode
+arai sync                    # re-aplica plataforma
+arai sync skill              # sincroniza todas las skills
+arai sync skill pdf-extraction  # sincroniza una skill específica
 ```
 
 #### `arai init <dir>`
@@ -188,32 +179,23 @@ arai init mi-proyecto --description "API REST"
 | Template | Incluye |
 |----------|---------|
 | `minimal` | Skills git + code-review, commit-message prompt, code-style rule, opencode platform |
-| `full` | Todas las skills, scripts, platforms, transforms, branding, assets |
+| `full` | Todas las skills, scripts, opencode platform, branding, assets |
 
 Las plantillas se definen en `shared/templates/<name>/template.json`.  
 Plantillas personalizadas en `~/.config/arai/templates/`.
 
-#### `arai template list`
+#### `arai sync [type] [name]`
 
-Lista todas las plantillas disponibles (built-in y personalizadas).
-
-```bash
-arai template list
-```
-
-#### `arai skills sync`
-
-Sincroniza skills de `shared/skills/` al directorio de opencode.
+Sincroniza la configuración del proyecto o un componente específico.
 
 | Opción | Descripción |
 |--------|-------------|
-| `--project <dir>` | Sincroniza al proyecto en lugar de global |
-| `--skill <name>` | Sincroniza solo una skill específica (por nombre) |
+| `--project <dir>` | Directorio del proyecto (default: `.`) |
 
 ```bash
-arai skills sync                        # todas, global
-arai skills sync --project .            # todas al proyecto actual
-arai skills sync --skill pdf-extraction --project .   # solo una
+arai sync                                      # re-aplica config del proyecto
+arai sync skill                                # sincroniza todas las skills
+arai sync skill pdf-extraction                 # sincroniza solo una skill
 ```
 
 #### `arai list <resource>`
@@ -253,7 +235,7 @@ $ arai list agents
   build                mode: primary    model: -
                        Default build agent for coding tasks
 
-  reviewer             mode: subagent   model: anthropic/claude-sonnet-4-6
+  reviewer             mode: subagent   model: opencode/big-pickle
                        Code review specialist...
 
 $ arai list mcp
@@ -354,20 +336,6 @@ arai generate brand --logo path/to/logo.svg --logo-white path/to/logo-white.svg
 
 Actualiza `shared/brand.json` y copia los logos a `assets/images/`.
 
-#### `arai transform skills`
-
-Transforma skills del formato SKILL.md a formatos específicos de cada plataforma.
-
-| Opción | Descripción |
-|--------|-------------|
-| `--to <agent>` | Transforma a una plataforma específica (`cursor`, `codex`) |
-| `--all` | Transforma a todas las plataformas |
-
-```bash
-arai transform skills --to cursor
-arai transform skills --all
-```
-
 ---
 
 ## Agentes disponibles
@@ -425,22 +393,9 @@ arai transform skills --all
 
 Todas las skills están en `shared/skills/<nombre>/SKILL.md` con formato estándar (frontmatter YAML + markdown).
 
-### Compatibilidad por plataforma
-
-| Skill | opencode | claude | cursor | codex |
-|-------|----------|--------|--------|-------|
-| branding | ✓ | ✓ | ✓ | ✓ |
-| code-review | ✓ | ✓ | ✓ | ✓ |
-| content-ingestion | ✓ | ✓ | ✓ | ✓ |
-| document-generation | ✓ | ✓ | ✓ | ✓ |
-| git | ✓ | ✓ | ✓ | ✓ |
-| kb-management | ✓ | ✓ | ✓ | ✓ |
-| pdf-extraction | ✓ | ✓ | ✓ | ✓ |
-| youtube | ✓ | ✓ | ✓ | ✓ |
-
-Las skills se transforman a formatos específicos con `arai transform skills --all`.
-
 ---
+
+
 
 ## Scripts disponibles
 
@@ -703,7 +658,6 @@ node shared/scripts/repos-sync.js --list
 | Repo | Descripción |
 |------|-------------|
 | `anthropics/skills` | Skills de Anthropic |
-| `VoltAgent/awesome-claude-code-subagents` | Subagentes para Claude Code |
 | `Gentleman-Programming/gentle-ai` | Configuración AI alternativa |
 | `GrupoConex/gda-ai` | Fuente original del docgen pipeline (Python) |
 

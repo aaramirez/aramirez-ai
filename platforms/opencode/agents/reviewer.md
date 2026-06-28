@@ -1,7 +1,7 @@
 ---
 description: Code review specialist. Use for PR reviews, code quality checks, and best practice audits.
 mode: subagent
-model: anthropic/claude-sonnet-4-6
+model: opencode/big-pickle
 permission:
   edit: deny
   bash: deny

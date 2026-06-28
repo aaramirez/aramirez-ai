@@ -1,7 +1,7 @@
 ---
 description: Documentation specialist. Use for README files, API docs, changelogs, and project wikis.
 mode: subagent
-model: anthropic/claude-haiku-4-5
+model: opencode/big-pickle
 permission:
   edit: allow
   bash: deny

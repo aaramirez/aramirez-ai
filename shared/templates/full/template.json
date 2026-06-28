@@ -1,16 +1,15 @@
 {
   "name": "full",
-  "description": "Full AI agent structure: all skills, scripts, platforms, transforms, branding",
+  "description": "Full AI agent structure: all skills, scripts, opencode platform, branding, assets",
   "version": "1.0.0",
   "include": {
     "skills": ["*"],
     "scripts": ["*"],
     "prompts": ["*"],
     "rules": ["*"],
-    "platforms": ["opencode", "claude", "cursor", "codex"],
+    "platforms": ["opencode"],
     "package_json": true,
     "repos_json": true,
-    "transforms": true,
     "branding": true,
     "assets": true
   }

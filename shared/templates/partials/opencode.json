@@ -1,6 +1,6 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "model": "anthropic/claude-sonnet-4-6",
+  "model": "opencode/big-pickle",
   "small_model": "anthropic/claude-haiku-4-5",
   "default_agent": "build",
   "shell": "/bin/zsh",
@@ -10,14 +10,15 @@
   "skills": {
     "paths": [
       ".opencode/skills",
-      "~/.config/opencode/skills"
+      "~/.config/opencode/skills",
+      "../shared/skills"
     ]
   },
 
   "references": {
     "shared-scripts": {
       "path": "../shared/scripts",
-      "description": "Reusable automation scripts"
+      "description": "Reusable automation scripts (deploy, test, etc.)"
     },
     "shared-rules": {
       "path": "../shared/rules",
@@ -42,19 +43,16 @@
     "reviewer": {
       "mode": "subagent",
       "description": "Code review specialist. Use for PR reviews and quality checks.",
-      "model": "anthropic/claude-sonnet-4-6",
       "permission": { "edit": "deny" }
     },
     "tester": {
       "mode": "subagent",
       "description": "Testing specialist. Use for writing and running tests.",
-      "model": "anthropic/claude-haiku-4-5",
       "permission": { "bash": "allow" }
     },
     "docs": {
       "mode": "subagent",
       "description": "Documentation specialist. Use for README, docs, and changelogs.",
-      "model": "anthropic/claude-haiku-4-5",
       "permission": { "edit": "allow", "bash": "deny" }
     }
   },
@@ -90,8 +88,6 @@
       }
     }
   },
-
-  "plugins": ["plugins/example.ts"],
 
   "permission": {
     "bash": {

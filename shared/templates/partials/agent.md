@@ -1,7 +1,6 @@
 ---
 description: {{description}}
 mode: subagent
-model: anthropic/claude-sonnet-4-6
 permission:
   edit: deny
   bash: deny

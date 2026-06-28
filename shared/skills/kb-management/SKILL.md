@@ -30,7 +30,7 @@ kb/
 
 - Keep notes atomic (one concept per note).
 - Use `[[wikilinks]]` to connect related notes.
-- Run `arai status` to check for inconsistencies after structural changes.
+- Check for broken references: run a grep for orphaned `[[wikilinks]]` that point to non-existent notes.
 - Commit workspace and graph state alongside note changes.
 
 ## Best practices

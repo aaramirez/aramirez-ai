@@ -1,71 +1,68 @@
 # aramirez-ai — AI Agent Instructions
 
-This repository is a **centralized multi-agent AI configuration manager** for opencode, Claude Code, Cursor, and Codex. It also powers a **document generation pipeline** (Node.js ESM) and a **project scaffolding CLI** (`arai init`).
+This repository is a **centralized multi-agent AI configuration manager** for opencode. It also powers a **document generation pipeline** (Node.js ESM) and a **project scaffolding CLI** (`arai init`).
 
 ## Repository structure
 
 ```
 aramirez-ai/
-├── shared/           Centralized reusable assets
-│   ├── skills/       SKILL.md format (compatible with opencode + claude)
-│   ├── prompts/      Reusable prompt fragments
-│   ├── scripts/      Executable scripts (Node.js, bash)
-│   ├── rules/        Coding standards, architecture, documentation rules
-│   └── templates/    Project scaffolding templates (init command)
-├── platforms/        Per-agent configurations
-│   ├── opencode/     opencode.json, agents, commands, plugins, mcp, skills
-│   ├── claude/       CLAUDE.md
-│   ├── cursor/       .cursorrules + rules/
-│   └── codex/        Codex config
-├── transforms/       Transformation scripts (SKILL.md → target format)
-├── assets/           Brand logos, CSS templates, test decks, generated docs/images
-│   ├── decks/        Test deck specs (JSON, MD)
-│   ├── templates/    deck.css, report.css
-│   └── docs/         Generated PDFs, HTML
-├── repos/            Cloned reference repos (gitignored)
-├── bin/arai.js       CLI multi-agent installer + scaffolder
-├── AGENTS.md         This file
-└── README.md         Full human documentation (Spanish)
+├── shared/              Centralized reusable assets
+│   ├── skills/          SKILL.md format skill definitions
+│   ├── prompts/         Reusable prompt fragments
+│   ├── scripts/         Executable scripts (Node.js)
+│   │   └── docgen/      Document generation pipeline
+│   ├── rules/           Coding standards, architecture, documentation rules
+│   └── templates/       Project scaffolding templates (init command)
+│       ├── minimal/     Minimal template (core skills + opencode)
+│       ├── full/        Full template (all skills, assets, branding)
+│       └── partials/    Template partials (AGENTS.md, opencode.json, etc.)
+├── platforms/           Agent configurations
+│   └── opencode/        opencode.json, agents, commands
+├── assets/              Brand logos, CSS templates, test decks, generated docs
+│   ├── decks/           Test deck specs (JSON, MD)
+│   ├── templates/       deck.css, report.css
+│   └── docs/            Generated PDFs, HTML
+├── repos/               Cloned reference repos (gitignored)
+├── tests/               Test suite (node:test)
+│   ├── consistency/     File structure and content consistency tests
+│   ├── commands/        CLI command tests
+│   └── integration/     Full lifecycle integration tests
+├── bin/arai.js          CLI installer + scaffolder
+├── AGENTS.md            This file
+└── README.md            Full human documentation (Spanish)
 ```
 
 ## Key principles
 
-- **Write once, use everywhere**: Skills live in `shared/skills/` and are consumed natively or transformed.
-- **Agents are defined in `platforms/opencode/opencode.json`** and `platforms/opencode/agents/*.md`.
-- **Commands** are in `platforms/opencode/commands/*.md`.
-- **CLI tool** `arai` handles install, uninstall, init, generate, transform, sync, status, update.
-- **Scaffolding**: Use `arai init <dir>` to generate the full AI-agent structure in any new project.
-- **Templates** live in `shared/templates/<name>/template.json` and define what to include.
-- **Custom templates** go in `~/.config/arai/templates/` — same format as built-in.
-- **Docgen pipeline** lives in `shared/scripts/docgen/` — all Node.js ESM, zero external deps.
+- **OpenCode only**: The system manages opencode configuration exclusively.
+- **Per-project installs**: `arai install` copies files locally — projects are self-contained.
+- **Always copy mode**: Files are copied, not symlinked or env-var based.
+- **Skills live in `shared/skills/<name>/SKILL.md`** with YAML frontmatter. No transforms needed — opencode reads SKILL.md natively.
+- **Test-driven**: Every change starts with a failing test. Run `npm test` before committing.
+- **Cross-Platform Compatibility**: All code, scripts, and configurations must run on both macOS and Windows.
 
 ## CLI quick reference
 
 | Command | Description |
 |---------|-------------|
-| `arai install <agent> --global` | Install agent globally (opencode, claude, cursor, codex) |
-| `arai install <agent> --project .` | Install agent in project (env var mode) |
-| `arai install <agent> --project . --copy` | Install agent in project (copy mode) |
-| `arai uninstall <agent>` | Uninstall global config |
-| `arai uninstall <agent> --project .` | Uninstall project config |
-| `arai uninstall <agent> --project . --copy` | Remove copied files |
-| `arai status` | Show all agent installation states |
+| `arai init <dir>` | Scaffold new project (`--template minimal\|full`, `--description`) |
+| `arai install` | Install opencode platform in project |
+| `arai install <type> <name>` | Install component: skill, agent, script, prompt, rule |
+| `arai uninstall` | Uninstall opencode platform from project |
+| `arai uninstall <type> <name>` | Uninstall a specific component |
+| `arai status` | Show installation status in current directory |
 | `arai update` | `git pull` + `npm install` |
-| `arai sync [agent]` | Re-apply project config after update |
-| `arai init <dir>` | Scaffold new project (`--template full\|minimal`, `--description`) |
-| `arai template list` | List available scaffolding templates |
-| `arai skills sync` | Sync skills to opencode (`--project .` for project) |
-| `arai skills sync --skill <name>` | Sync a single skill |
+| `arai sync` | Re-apply project-level opencode config |
 | `arai list skills\|agents\|scripts\|templates\|commands\|mcp` | List resources |
-| `arai kb install [dir]` | Create Obsidian vault (`--force` to overwrite) |
-| `arai generate skill <name>` | Create skill (`--dir`, `--description`) |
+| `arai generate skill <name>` | Create skill in `shared/skills/` |
 | `arai generate agent <name>` | Create agent + register in opencode.json |
 | `arai generate script <name>` | Create reusable script |
 | `arai generate command <name>` | Create opencode command |
 | `arai generate brand` | Set brand identity (colors, logos) |
-| `arai transform skills` | Transform skills to platform formats (`--to cursor\|codex`, `--all`) |
+| `arai sync [type] [name]` | Sync project or component (`skill <name>` to sync single skill) |
+| `arai kb install [dir]` | Create Obsidian vault (`--force` to overwrite) |
 
-Full detail for every command is in `README.md`.
+All install/uninstall commands accept `--project <dir>` (default: `.`).
 
 ## Skills
 
@@ -80,45 +77,47 @@ license: MIT
 
 Available skills: **branding**, **code-review**, **content-ingestion**, **document-generation**, **git**, **kb-management**, **pdf-extraction**, **youtube**.
 
-After editing skills, run `arai transform skills --all` to regenerate platform-specific formats.
-
-Sync a single skill to a project:
-```bash
-arai skills sync --skill pdf-extraction --project .
-```
-
-List available skills:
-```bash
-arai list skills
-```
+After creating or editing a skill, run `arai sync skill <name>` to sync it to the opencode skills directory.
 
 ## Agents (opencode.json)
 
-| Agent | Mode | Model | Permissions |
-|-------|------|-------|-------------|
-| **build** (default) | primary | `big-pickle` | — |
-| **plan** | primary | `big-pickle` | `edit: deny` |
-| **reviewer** | subagent | `big-pickle` | `edit: deny` |
-| **tester** | subagent | `big-pickle` | `bash: allow` |
-| **docs** | subagent | `big-pickle` | `edit: allow`, `bash: deny` |
+| Agent | Mode | Permissions |
+|-------|------|-------------|
+| **build** (default) | primary | — |
+| **plan** | primary | `edit: deny` |
+| **reviewer** | subagent | `edit: deny` |
+| **tester** | subagent | `bash: allow` |
+| **docs** | subagent | `edit: allow`, `bash: deny` |
+
+All agents use model `opencode/big-pickle` by default. Agents are defined in `platforms/opencode/opencode.json` and configured with `.md` files in `platforms/opencode/agents/`.
+
+## Install behavior by type
+
+| Type | Source | Destination | Auto-installs opencode? |
+|------|--------|-------------|------------------------|
+| platform | `platforms/opencode/` | `.opencode/` + `opencode.json` | N/A |
+| skill | `shared/skills/<name>/SKILL.md` | `.opencode/skills/<name>/SKILL.md` | Yes |
+| agent | `platforms/opencode/agents/<name>.md` | `.opencode/agents/<name>.md` + `opencode.json` entry | Yes |
+| script | `shared/scripts/<name>.js` | `shared/scripts/<name>.js` | No |
+| prompt | `shared/prompts/<name>.md` | `shared/prompts/<name>.md` | No |
+| rule | `shared/rules/<name>.md` | `shared/rules/<name>.md` | No |
 
 ## When working
 
 - Follow existing code style (see `shared/rules/code-style.md`)
-- Use conventional commits
-- Keep skills in SKILL.md format
-- Update AGENTS.md if workflow changes
-- **Proactive Skills**: Every time a new problem or workflow is resolved, consider and propose the creation of a new **skill** (and optional script) so that the solution becomes reusable across all agents.
-- **Cross-Platform Compatibility**: All proposed code, scripts, configurations, and tools **must run on both macOS and Windows**. Avoid OS-specific shell commands unless wrapped in cross-platform scripts (e.g. Node.js or Python).
+- Add tests for any new CLI behavior (see `tests/` for patterns)
+- Keep skills in SKILL.md format with YAML frontmatter (`name:`, `description:`, `license: MIT`)
+- After editing skills, sync with `arai sync skill`
+- **Proactive Skills**: When a new problem or workflow is resolved, consider creating a new **skill** so the solution becomes reusable across all agents.
 
 ## aramirez-ai as base template for new projects
 
-Use `arai init <dir>` to scaffold a new project with the same AI-agent structure (agents, skills, scripts, branding, CI). The generated project gets the same `shared/`, `platforms/`, `transforms/` structure, pre-configured with aramirez-ai's reusable skills.
+Use `arai init <dir>` to scaffold a new project with the same AI-agent structure. The generated project gets the same `shared/`, `platforms/` structure, pre-configured with aramirez-ai's reusable skills.
 
 ```bash
-arai init my-new-project                # minimal template (default)
-arai init my-new-project --template full # complete structure
-arai install opencode --project .        # add opencode to existing project
+arai init my-new-project                 # minimal template (default)
+arai init my-new-project --template full  # complete structure
+arai install                              # add opencode to existing project
 ```
 
 ## Document generation pipeline
