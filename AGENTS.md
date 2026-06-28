@@ -55,6 +55,9 @@ aramirez-ai/
 | `arai init <dir>` | Scaffold new project (`--template full\|minimal`, `--description`) |
 | `arai template list` | List available scaffolding templates |
 | `arai skills sync` | Sync skills to opencode (`--project .` for project) |
+| `arai skills sync --skill <name>` | Sync a single skill |
+| `arai skills list` | List available skills |
+| `arai list skills\|agents\|scripts\|templates\|commands\|mcp` | List resources |
 | `arai kb install [dir]` | Create Obsidian vault (`--force` to overwrite) |
 | `arai generate skill <name>` | Create skill (`--dir`, `--description`) |
 | `arai generate agent <name>` | Create agent + register in opencode.json |
@@ -79,6 +82,17 @@ license: MIT
 Available skills: **branding**, **code-review**, **content-ingestion**, **document-generation**, **git**, **kb-management**, **pdf-extraction**, **youtube**.
 
 After editing skills, run `arai transform skills --all` to regenerate platform-specific formats.
+
+Sync a single skill to a project:
+```bash
+arai skills sync --skill pdf-extraction --project .
+```
+
+List available skills:
+```bash
+arai skills list
+# or: arai list skills
+```
 
 ## Agents (opencode.json)
 

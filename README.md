@@ -82,9 +82,17 @@ Muestra el estado de todos los agentes instalados y su configuración.
 | `arai update` | `git pull` + `npm install` en el repo |
 | `arai sync [agent]` | Re-aplica config de proyecto |
 | `arai skills sync` | Sincroniza skills a opencode |
+| `arai skills sync --skill <name>` | Sincroniza solo una skill específica |
+| `arai skills list` | Lista skills disponibles |
 | `arai kb install [dir]` | Crea vault Obsidian (kb/) |
 | `arai init <dir>` | Scaffolding de nuevo proyecto |
 | `arai template list` | Lista plantillas disponibles |
+| `arai list skills` | Lista skills disponibles |
+| `arai list agents` | Lista agentes registrados |
+| `arai list scripts` | Lista scripts disponibles |
+| `arai list templates` | Lista plantillas disponibles |
+| `arai list commands` | Lista comandos opencode |
+| `arai list mcp` | Lista servidores MCP configurados |
 | `arai generate skill <name>` | Crea nueva skill |
 | `arai generate agent <name>` | Crea nuevo agente |
 | `arai generate script <name>` | Crea nuevo script |
@@ -194,15 +202,75 @@ arai template list
 
 #### `arai skills sync`
 
-Sincroniza las skills de `shared/skills/` al directorio de opencode.
+Sincroniza skills de `shared/skills/` al directorio de opencode.
 
 | Opción | Descripción |
 |--------|-------------|
 | `--project <dir>` | Sincroniza al proyecto en lugar de global |
+| `--skill <name>` | Sincroniza solo una skill específica (por nombre) |
 
 ```bash
-arai skills sync             # global
-arai skills sync --project . # al proyecto actual
+arai skills sync                        # todas, global
+arai skills sync --project .            # todas al proyecto actual
+arai skills sync --skill pdf-extraction --project .   # solo una
+```
+
+#### `arai skills list`
+
+Lista las skills disponibles en `shared/skills/` con su descripción.
+
+```bash
+arai skills list
+```
+
+Equivalente a `arai list skills`.
+
+#### `arai list <resource>`
+
+Lista recursos disponibles en el repositorio.
+
+| Subcomando | Descripción |
+|------------|-------------|
+| `arai list skills` | Lista skills disponibles con descripción |
+| `arai list agents` | Lista agentes registrados en opencode.json (modo, modelo, descripción) |
+| `arai list scripts` | Lista scripts en shared/scripts/ |
+| `arai list templates` | Lista plantillas de scaffolding |
+| `arai list commands` | Lista comandos opencode registrados |
+| `arai list mcp` | Lista servidores MCP configurados |
+
+```bash
+arai list skills
+arai list agents
+arai list scripts
+arai list templates
+arai list commands
+arai list mcp
+```
+
+### Output de ejemplo
+
+```bash
+$ arai list skills
+
+  branding                 Define and apply brand identity — colors, logos...
+  code-review              Use for reviewing pull requests, performing code...
+  document-generation      Generate branded PDF presentations...
+  ...
+
+$ arai list agents
+
+  build                mode: primary    model: -
+                       Default build agent for coding tasks
+
+  reviewer             mode: subagent   model: anthropic/claude-sonnet-4-6
+                       Code review specialist...
+
+$ arai list mcp
+
+  github               https://api.github.com/mcp
+                       (disabled)
+  playwright           npx -y @playwright/mcp
+                       (disabled)
 ```
 
 #### `arai kb install [dir]`

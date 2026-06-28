@@ -820,12 +820,17 @@ function generateBrand(projectDir, opts) {
 
 /* ─── skills sync ─── */
 
-function skillsSync(targetDir) {
+function skillsSync(targetDir, skillName) {
   const skillsDir = join(REPO_ROOT, 'shared', 'skills');
   if (!isDir(skillsDir)) { log('No shared/skills/ found', 'err'); return; }
 
-  const skills = readdirSync(skillsDir).filter(f => isDir(join(skillsDir, f)));
-  if (skills.length === 0) { log('No skills to sync', 'info'); return; }
+  const allSkills = readdirSync(skillsDir).filter(f => isDir(join(skillsDir, f)));
+  if (allSkills.length === 0) { log('No skills to sync', 'info'); return; }
+
+  const skills = skillName
+    ? (allSkills.includes(skillName) ? [skillName] : (log(`Skill '${skillName}' not found in shared/skills/`, 'err'), null))
+    : allSkills;
+  if (!skills) return;
 
   const dest = targetDir
     ? resolve(targetDir, '.opencode', 'skills')
@@ -843,7 +848,89 @@ function skillsSync(targetDir) {
   }
 
   const label = targetDir ? `${targetDir}/.opencode/skills/` : '~/.config/opencode/skills/';
-  log(`Synced ${count} skills → ${label}`, 'ok');
+  log(`Synced ${count} skill(s) → ${label}`, 'ok');
+}
+
+/* ─── list functions ─── */
+
+function listSkills() {
+  const skillsDir = join(REPO_ROOT, 'shared', 'skills');
+  if (!isDir(skillsDir)) { log('No shared/skills/ directory', 'err'); return; }
+  const skills = readdirSync(skillsDir).filter(f => isDir(join(skillsDir, f)));
+  if (skills.length === 0) { log('No skills found', 'info'); return; }
+  console.log('\nAvailable skills:\n');
+  for (const name of skills) {
+    const skPath = join(skillsDir, name, 'SKILL.md');
+    const desc = existsSync(skPath)
+      ? (readFileSync(skPath, 'utf8').match(/^description:\s*(.+)/m)?.[1] || '')
+      : '';
+    console.log(`  ${name.padEnd(24)} ${desc}`);
+  }
+  console.log();
+}
+
+function listAgents() {
+  const configPath = join(REPO_ROOT, 'platforms', 'opencode', 'opencode.json');
+  if (!existsSync(configPath)) { log('No opencode.json found', 'err'); return; }
+  const config = JSON.parse(readFileSync(configPath, 'utf8'));
+  const agents = config.agent || {};
+  const names = Object.keys(agents);
+  if (names.length === 0) { log('No agents configured in opencode.json', 'info'); return; }
+  console.log('\nRegistered agents:\n');
+  for (const name of names) {
+    const a = agents[name];
+    console.log(`  ${name.padEnd(20)} mode: ${(a.mode || '-').padEnd(10)} model: ${a.model || '-'}`);
+    console.log(`  ${' '.repeat(20)} ${a.description || ''}`);
+    console.log();
+  }
+}
+
+function listScripts() {
+  const scriptsDir = join(REPO_ROOT, 'shared', 'scripts');
+  if (!isDir(scriptsDir)) { log('No shared/scripts/ directory', 'err'); return; }
+  const files = readdirSync(scriptsDir).filter(f => statSync(join(scriptsDir, f)).isFile() && f !== '.gitkeep');
+  if (files.length === 0) { log('No scripts found', 'info'); return; }
+  console.log('\nAvailable scripts:\n');
+  for (const name of files.sort()) {
+    console.log(`  ${name}`);
+  }
+  console.log();
+}
+
+function listCommands() {
+  const cmdsDir = join(REPO_ROOT, 'platforms', 'opencode', 'commands');
+  if (!isDir(cmdsDir)) { log('No platforms/opencode/commands/ directory', 'err'); return; }
+  const files = readdirSync(cmdsDir).filter(f => f.endsWith('.md'));
+  if (files.length === 0) { log('No commands found', 'info'); return; }
+  console.log('\nAvailable opencode commands:\n');
+  for (const name of files.sort()) {
+    const desc = readFileSync(join(cmdsDir, name), 'utf8').match(/^# (.+)/m)?.[1] || name.replace(/\.md$/, '');
+    console.log(`  /${name.replace(/\.md$/, '').padEnd(20)} ${desc}`);
+  }
+  console.log();
+}
+
+function listMcp() {
+  const mcpDir = join(REPO_ROOT, 'platforms', 'opencode', 'mcp');
+  if (!isDir(mcpDir)) { log('No platforms/opencode/mcp/ directory', 'err'); return; }
+  const files = readdirSync(mcpDir).filter(f => f.endsWith('.json'));
+  if (files.length === 0) { log('No MCP servers configured', 'info'); return; }
+  console.log('\nAvailable MCP servers:\n');
+  for (const name of files.sort()) {
+    try {
+      const mcp = JSON.parse(readFileSync(join(mcpDir, name), 'utf8'));
+      const servers = mcp.mcp || mcp.mcpServers || mcp;
+      for (const [key, val] of Object.entries(servers)) {
+        if (!val || typeof val !== 'object') continue;
+        const cmd = Array.isArray(val.command) ? val.command.join(' ') : val.command || val.url || '';
+        console.log(`  ${key.padEnd(20)} ${String(cmd)}`);
+        if (val.enabled === false) console.log(`  ${' '.repeat(20)} (disabled)`);
+      }
+    } catch {
+      console.log(`  ${name.replace(/\.json$/, '')} (invalid JSON)`);
+    }
+  }
+  console.log();
 }
 
 /* ─── kb install ─── */
@@ -1048,15 +1135,23 @@ program
     }
   });
 
-program
+const skillsCmd = program
   .command('skills')
-  .description('Sync shared/skills/ to opencode skill directories')
+  .description('Manage shared skills (sync, list)');
+
+skillsCmd
   .command('sync')
   .description('Sync skills to global ~/.config/opencode/skills/ or project .opencode/skills/')
   .option('--project <dir>', 'Sync to project .opencode/skills/ instead of global')
+  .option('--skill <name>', 'Sync only a specific skill by name')
   .action((opts) => {
-    skillsSync(opts.project || null);
+    skillsSync(opts.project || null, opts.skill || null);
   });
+
+skillsCmd
+  .command('list')
+  .description('List available skills in shared/skills/')
+  .action(listSkills);
 
 program
   .command('kb')
@@ -1167,6 +1262,42 @@ program
       log('Specify --to <agent> or --all', 'err');
     }
   });
+
+/* ─── list (umbrella) ─── */
+
+const listCmd = program
+  .command('list')
+  .description('List available resources (skills, agents, scripts, templates, commands, mcp)');
+
+listCmd
+  .command('skills')
+  .description('List available shared skills')
+  .action(listSkills);
+
+listCmd
+  .command('agents')
+  .description('List agents registered in opencode.json')
+  .action(listAgents);
+
+listCmd
+  .command('scripts')
+  .description('List available scripts in shared/scripts/')
+  .action(listScripts);
+
+listCmd
+  .command('templates')
+  .description('List available scaffolding templates')
+  .action(listTemplates);
+
+listCmd
+  .command('commands')
+  .description('List opencode commands')
+  .action(listCommands);
+
+listCmd
+  .command('mcp')
+  .description('List configured MCP servers')
+  .action(listMcp);
 
 program.parse(process.argv);
 
