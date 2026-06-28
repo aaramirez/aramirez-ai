@@ -20,11 +20,10 @@
     </style>
   </defs>
   <rect width="1600" height="900" fill="url(#bg-grad)"/>
-  <image x="40" y="30" width="120" height="36" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNjAiIHdpZHRoPSIyMDAiIGhlaWdodD0iNjAiPgogIDxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iNjAiIGZpbGw9Im5vbmUiLz4KICA8dGV4dCB4PSIxMDAiIHk9IjM4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjQiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiMxYTM2NWQiPkFSQU1JUkVaLUFJPC90ZXh0PgogIDxyZWN0IHg9IjYwIiB5PSI0OCIgd2lkdGg9IjgwIiBoZWlnaHQ9IjMiIHJ4PSIxLjUiIGZpbGw9IiMyYjZjYjAiLz4KPC9zdmc+Cg==" preserveAspectRatio="xMinYMin meet"/>
   <image x="700" y="200" width="200" height="60" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNjAiIHdpZHRoPSIyMDAiIGhlaWdodD0iNjAiPgogIDxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iNjAiIGZpbGw9Im5vbmUiLz4KICA8dGV4dCB4PSIxMDAiIHk9IjM4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjQiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiMxYTM2NWQiPkFSQU1JUkVaLUFJPC90ZXh0PgogIDxyZWN0IHg9IjYwIiB5PSI0OCIgd2lkdGg9IjgwIiBoZWlnaHQ9IjMiIHJ4PSIxLjUiIGZpbGw9IiMyYjZjYjAiLz4KPC9zdmc+Cg==" preserveAspectRatio="xMidYMid meet"/>
   <text x="800" y="420" text-anchor="middle" class="title">Presentación de prueba</text>
   
-  <text x="800" y="470" text-anchor="middle" class="subtitle">Pipeline de documentación aramirez-ai</text>
+  <text x="800" y="470" text-anchor="middle" class="subtitle">Pipeline de documentación aramirez-ai — Todos los artefactos gda-ai</text>
   <rect x="740" y="510" width="120" height="4" rx="2" fill="#2b6cb0"/>
   <text x="800" y="840" text-anchor="middle" class="small">aramirez-ai</text>
 

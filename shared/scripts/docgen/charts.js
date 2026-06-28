@@ -348,7 +348,7 @@ export function waterfallChart(data, { width = 600, height: chartH = 350 } = {})
   const b = brand();
   const pad = { t: 30, r: 20, b: 50, l: 60 };
   const cw = width - pad.l - pad.r;
-  const ch = height - pad.t - pad.b;
+  const ch = chartH - pad.t - pad.b;
   const vals = data.map(d => d.valor);
   const total = vals.reduce((s, v) => s + Math.abs(v), 0);
   let running = Math.max(...vals.filter(v => v < 0).reduce((a, v) => { a.push((a[a.length - 1] || 0) + v); return a; }, []).map(v => Math.abs(v)), 0);

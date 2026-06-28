@@ -2,29 +2,82 @@
   "output": "assets/docs/test-deck.pdf",
   "mostrar_paginas": true,
   "slides": [
-    { "type": "portada", "titulo": "Presentación de prueba", "subtitulo": "Pipeline de documentación aramirez-ai" },
-    { "type": "seccion", "titulo": "1. Introducción", "indice": "SECCIÓN 01" },
-    { "type": "bullets", "titulo": "Objetivos", "items": ["Validar el pipeline Node.js", "Probar formatos JSON y Markdown", "Verificar 12 tipos de gráficos SVG"] },
-    { "type": "kpis", "titulo": "Métricas", "kpis": [
-      { "valor": "12", "etiqueta": "Chart types" },
-      { "valor": "20+", "etiqueta": "Slide types" },
-      { "valor": "0", "etiqueta": "Dependencias npm" },
-      { "valor": "100%", "etiqueta": "Cobertura" }
+    { "type": "portada", "titulo": "Presentación de prueba", "subtitulo": "Pipeline de documentación aramirez-ai — Todos los artefactos gda-ai" },
+    { "type": "seccion", "titulo": "1. Catálogo de artefactos", "indice": "ARTEFACTOS GDA-AI" },
+    { "type": "bullets", "titulo": "Artefactos del pipeline", "items": [
+      "3 builders: build-deck (PDF), build-image (PNG/SVG), build-report (PDF Letter)",
+      "20+ tipos de lámina HTML para presentaciones",
+      "13 tipos de gráficos SVG (cero dependencias)",
+      "10 tipos de lámina para reportes ejecutivos",
+      "3 formatos de fuente: JSON, Markdown, JS module"
     ]},
-    { "type": "grafico", "titulo": "Resultados por mes", "chart": { "tipo": "barras", "datos": [["Ene",30],["Feb",55],["Mar",42],["Abr",78],["May",63]] } },
-    { "type": "grafico", "titulo": "Distribución", "chart": { "tipo": "donut", "datos": [["Alpha",40],["Beta",30],["Gamma",20],["Delta",10]], "centerLabel": "100" } },
-    { "type": "grafico", "titulo": "Progreso semanal", "chart": { "tipo": "lineas", "datos": [["S1",15],["S2",30],["S3",22],["S4",45],["S5",38],["S6",60]] } },
-    { "type": "destacado", "valor": "98%", "titulo": "Satisfacción general", "subtitulo": "Basado en encuestas internas del último trimestre" },
-    { "type": "cita", "texto": "La mejor documentación es la que se genera automáticamente.", "autor": "Alexander Ramírez" },
-    { "type": "timeline", "titulo": "Cronograma", "hitos": [
-      { "fecha": "Ene", "titulo": "Inicio" },
-      { "fecha": "Mar", "titulo": "Prototipo" },
-      { "fecha": "Jun", "titulo": "Release" }
+    { "type": "seccion", "titulo": "2. Gráficos SVG", "indice": "CHART TYPES" },
+    { "type": "grafico", "titulo": "Barras", "subtitulo": "chart.tipo: barras", "chart": { "tipo": "barras", "datos": [["Ene",30],["Feb",55],["Mar",42],["Abr",78],["May",63],["Jun",91]] } },
+    { "type": "grafico", "titulo": "Barras agrupadas", "subtitulo": "chart.tipo: barras-agrupadas", "chart": { "tipo": "barras-agrupadas", "categorias": ["Q1","Q2","Q3","Q4"], "series": [["Real",[30,55,42,78]],["Proy",[25,50,40,82]]] } },
+    { "type": "grafico", "titulo": "Barras apiladas", "subtitulo": "chart.tipo: barras-apiladas", "chart": { "tipo": "barras-apiladas", "categorias": ["Ene","Feb","Mar"], "series": [["Prod",[30,20,40]],["QA",[10,15,12]],["Ops",[5,8,6]]] } },
+    { "type": "grafico", "titulo": "Donut", "subtitulo": "chart.tipo: donut", "chart": { "tipo": "donut", "datos": [["Frontend",40],["Backend",30],["DevOps",20],["Datos",10]], "centerLabel": "100" } },
+    { "type": "grafico", "titulo": "Pastel / Pie", "subtitulo": "chart.tipo: pastel", "chart": { "tipo": "pastel", "datos": [["Rojo",30],["Azul",25],["Verde",20],["Amarillo",15],["Otro",10]] } },
+    { "type": "grafico", "titulo": "Líneas", "subtitulo": "chart.tipo: lineas", "chart": { "tipo": "lineas", "datos": [["S1",15],["S2",30],["S3",22],["S4",45],["S5",38],["S6",60],["S7",55]] } },
+    { "type": "grafico", "titulo": "Progreso", "subtitulo": "chart.tipo: progreso", "chart": { "tipo": "progreso", "datos": [["Alpha",95],["Beta",72],["Gamma",48],["Delta",33]] } },
+    { "type": "grafico", "titulo": "Gauge", "subtitulo": "chart.tipo: gauge", "chart": { "tipo": "gauge", "valor": 82, "label": "Cumplimiento" } },
+    { "type": "grafico", "titulo": "Timeline", "subtitulo": "chart.tipo: timeline", "chart": { "tipo": "timeline", "hitos": [["Ene","Inicio"],["Mar","Prototipo"],["May","Beta"],["Jul","Release"],["Sep","Iteración 2"]] } },
+    { "type": "grafico", "titulo": "Gantt", "subtitulo": "chart.tipo: gantt", "chart": { "tipo": "gantt", "tareas": [
+      { "nombre": "Requerimientos", "inicio": 0, "duracion": 3 },
+      { "nombre": "Diseño", "inicio": 2, "duracion": 4 },
+      { "nombre": "Desarrollo", "inicio": 5, "duracion": 6 },
+      { "nombre": "Pruebas", "inicio": 9, "duracion": 3 },
+      { "nombre": "Despliegue", "inicio": 11, "duracion": 2 }
+    ]}},
+    { "type": "grafico", "titulo": "Radar", "subtitulo": "chart.tipo: radar", "chart": { "tipo": "radar", "categorias": ["Rendimiento","Seguridad","UX","Escalabilidad","Costo"], "series": [["Actual",[3,4,2,5,3]],["Objetivo",[5,5,4,5,4]]] } },
+    { "type": "grafico", "titulo": "Waterfall", "subtitulo": "chart.tipo: waterfall", "chart": { "tipo": "waterfall", "datos": [
+      { "label": "Base", "valor": 100 },
+      { "label": "Ingresos", "valor": 30 },
+      { "label": "Costos", "valor": -15 },
+      { "label": "Impuestos", "valor": -8 },
+      { "label": "Total", "valor": 107, "tipo": "total" }
+    ]}},
+    { "type": "grafico", "titulo": "Heatmap", "subtitulo": "chart.tipo: heatmap", "chart": { "tipo": "heatmap", "matrix": {
+      "headers_fila": ["Alpha","Beta","Gamma","Delta"],
+      "headers_col": ["Lun","Mar","Mié","Jue","Vie"],
+      "datos": [[5,3,8,2,6],[4,7,2,9,1],[8,1,6,3,7],[2,6,4,8,3]]
+    }}},
+    { "type": "seccion", "titulo": "3. Láminas HTML", "indice": "SLIDE TYPES" },
+    { "type": "bullets", "titulo": "Tipos de lámina HTML disponibles", "items": [
+      "portada — Portada con logo centrado",
+      "seccion — Separador de sección",
+      "bullets — Lista de viñetas",
+      "dos-columnas — Dos columnas con paneles",
+      "n-columnas — N columnas flexibles (2-6)",
+      "tarjetas — Grid de tarjetas",
+      "kpis — Indicadores clave",
+      "personas — Perfiles de persona",
+      "cita — Bloque de cita destacada",
+      "imagen — Figura enmarcada",
+      "tabla — Tabla con cabeceras",
+      "lamina-completa — Full-bleed con overlay",
+      "grafico — Gráfico SVG embebido",
+      "imagen-texto — Imagen + texto lado a lado",
+      "destacado — Hero stat",
+      "comparativa — Comparación antes/después",
+      "timeline — Línea de tiempo SVG",
+      "proceso / workflow — Pasos numerados",
+      "masonry — Galería masonry",
+      "faq — Acordeón de preguntas"
     ]},
-    { "type": "tarjetas", "titulo": "Equipo", "columnas_grid": 3, "tarjetas": [
-      { "titulo": "Frontend", "items": ["React", "TypeScript", "Tailwind"] },
-      { "titulo": "Backend", "items": ["Node.js", "PostgreSQL", "Redis"] },
-      { "titulo": "DevOps", "items": ["Docker", "CI/CD", "AWS"] }
-    ]}
+    { "type": "destacado", "valor": "20+", "titulo": "Tipos de lámina HTML", "subtitulo": "Zero dependencias. Todos los layouts se renderizan con CSS + SVG inline." },
+    { "type": "seccion", "titulo": "4. Láminas de reporte", "indice": "REPORT SLIDE TYPES" },
+    { "type": "bullets", "titulo": "Tipos para reportes ejecutivos", "items": [
+      "doc-cover — Portada con logo centrado y metadatos",
+      "section — Separador con barra de acento",
+      "text — Párrafos de cuerpo",
+      "callout — Caja destacada con headline",
+      "table — Tabla genérica",
+      "bullets — Lista de viñetas",
+      "recommendation — Tarjeta problema/recomendación/acciones",
+      "roadmap — Tabla de fases con entregables",
+      "kpi-table — Tabla de indicadores",
+      "closing — Bloque de cierre con cita"
+    ]},
+    { "type": "cita", "texto": "La mejor documentación es la que se genera desde el código, con cero dependencias, y se reproduce en cualquier entorno.", "autor": "Pipeline aramirez-ai" }
   ]
 }

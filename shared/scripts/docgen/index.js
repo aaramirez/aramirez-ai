@@ -64,8 +64,6 @@ export function esc(text) {
 
 export function svgOpen() {
   const b = brand();
-  const logoPath = b.logo ? resolve(join(REPO_ROOT, b.logo)) : null;
-  const logoData = logoPath && existsSync(logoPath) ? `data:image/svg+xml;base64,${readFileSync(logoPath).toString('base64')}` : '';
 
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${WIDTH} ${HEIGHT}" width="${WIDTH}" height="${HEIGHT}">
   <defs>
@@ -88,8 +86,7 @@ export function svgOpen() {
       .accent { font-family: ${b.fonts.body}; font-size: 20px; fill: ${b.colors.accent}; font-weight: 600; }
     </style>
   </defs>
-  <rect width="${WIDTH}" height="${HEIGHT}" fill="url(#bg-grad)"/>
-  ${logoData ? `<image x="40" y="30" width="120" height="${120 * 0.3}" href="${logoData}" preserveAspectRatio="xMinYMin meet"/>` : ''}`;
+  <rect width="${WIDTH}" height="${HEIGHT}" fill="url(#bg-grad)"/>`;
 }
 
 export function svgClose() {
