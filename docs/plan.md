@@ -15,7 +15,7 @@ arai status                        # show status
 arai update                        # pull + install
 arai list <resource>               # skills, agents, scripts, templates, commands, mcp
 arai generate <type> [name]        # skill, agent, script, command, brand
-arai kb install [dir]              # special: create obsidian vault
+arai generate kb [dir]              # special: create obsidian vault
 ```
 
 All commands share `--project <dir>` (default `.`) where applicable.
@@ -32,7 +32,7 @@ All commands share `--project <dir>` (default `.`) where applicable.
 | `list templates` | ✓ stays | — |
 | `template list` | ✗ remove | Duplicate of `list templates` |
 | `skills sync` | ✗ remove | Replaced by `sync skill` |
-| `kb install [dir]` | ✓ stays | — |
+| `generate kb [dir]` | ✗ changed | Moved from `kb install` to `generate kb` — kb is a generator, not an installable component |
 
 ## Step-by-step
 

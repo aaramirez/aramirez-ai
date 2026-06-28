@@ -65,7 +65,7 @@ This repository is configured with **aramirez-ai** — an opencode AI configurat
 | `arai list skills\|agents\|scripts\|templates\|commands\|mcp` | List available resources |
 | `arai generate skill\|agent\|script\|command <name>` | Generate new components |
 | `arai generate brand` | Configure brand identity |
-| `arai kb install [dir]` | Create Obsidian vault |
+| `arai generate kb [dir]` | Create Obsidian vault (`--force` to overwrite) |
 
 ## When working
 

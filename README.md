@@ -66,7 +66,7 @@ Muestra el estado de opencode en el directorio actual.
 | `arai status` | Estado de opencode en el directorio actual |
 | `arai update` | `git pull` + `npm install` en el repo |
 | `arai sync [type] [name]` | Sincroniza proyecto o componente (`skill <name>` para sincronizar una skill) |
-| `arai kb install [dir]` | Crea vault Obsidian (kb/) |
+| `arai generate kb [dir]` | Crea vault Obsidian (kb/) |
 | `arai init <dir>` | Scaffolding de nuevo proyecto |
 | `arai list skills\|agents\|scripts\|templates\|commands\|mcp` | Lista recursos |
 | `arai generate skill <name>` | Crea nueva skill |
@@ -246,7 +246,7 @@ $ arai list mcp
                        (disabled)
 ```
 
-#### `arai kb install [dir]`
+#### `arai generate kb [dir]`
 
 Crea un vault Obsidian (`kb/`) en el directorio especificado.
 
@@ -255,9 +255,9 @@ Crea un vault Obsidian (`kb/`) en el directorio especificado.
 | `--force` | Sobrescribe si existe |
 
 ```bash
-arai kb install                  # ./kb/
-arai kb install ~/my-vault
-arai kb install --force          # sobrescribe si existe
+arai generate kb                 # ./kb/
+arai generate kb ~/my-vault
+arai generate kb --force         # sobrescribe si existe
 ```
 
 #### `arai generate skill <name>`

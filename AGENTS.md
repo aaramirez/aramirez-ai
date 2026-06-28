@@ -60,7 +60,7 @@ aramirez-ai/
 | `arai generate command <name>` | Create opencode command |
 | `arai generate brand` | Set brand identity (colors, logos) |
 | `arai sync [type] [name]` | Sync project or component (`skill <name>` to sync single skill) |
-| `arai kb install [dir]` | Create Obsidian vault (`--force` to overwrite) |
+| `arai generate kb [dir]` | Create Obsidian vault (`--force` to overwrite) |
 
 All install/uninstall commands accept `--project <dir>` (default: `.`).
 

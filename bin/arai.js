@@ -1014,7 +1014,7 @@ function listMcp() {
   console.log();
 }
 
-/* ─── kb install ─── */
+/* ─── generate kb ─── */
 
 function kbInstall(targetDir, force) {
   const dest = resolve(targetDir || '.', 'kb');
@@ -1165,23 +1165,11 @@ program
     scaffoldProject(dir, opts.template, { description: opts.description });
   });
 
-// --- kb ---
-
-program
-  .command('kb')
-  .description('Scaffold an Obsidian knowledge base vault')
-  .command('install [dir]')
-  .description('Create kb/ Obsidian vault in the specified directory')
-  .option('--force', 'Overwrite existing kb/ directory')
-  .action((dir, opts) => {
-    kbInstall(dir || '.', opts.force);
-  });
-
 // --- generate ---
 
 const generateCmd = program
   .command('generate')
-  .description('Generate AI agent components (skill, agent, script, command)');
+  .description('Generate AI agent components (skill, agent, script, command, brand, kb)');
 
 generateCmd
   .command('skill <name>')
@@ -1243,6 +1231,14 @@ generateCmd
     const root = findProjectRoot(opts.dir);
     if (!root) { log('Not inside an arai project. Run `arai init` first.', 'err'); return; }
     generateBrand(root, opts);
+  });
+
+generateCmd
+  .command('kb [dir]')
+  .description('Create an Obsidian knowledge base vault in the specified directory')
+  .option('--force', 'Overwrite existing kb/ directory')
+  .action((dir, opts) => {
+    kbInstall(dir || '.', opts.force);
   });
 
 // --- list ---
