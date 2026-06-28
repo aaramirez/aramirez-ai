@@ -165,42 +165,6 @@ function installOpenCodeProject(projectDir, copyMode = false) {
   return true;
 }
 
-function installAgent(agent, scope, dir, copyMode) {
-  const agentDir = join(REPO_ROOT, 'platforms', agent);
-  if (!isDir(agentDir)) {
-    log(`Agent '${agent}' not found at platforms/${agent}/`, 'err');
-    return;
-  }
-
-  if (scope === 'global') {
-    const info = AGENT_PATHS[agent];
-    if (!info) { log(`Agent '${agent}' not supported`, 'err'); return; }
-
-    if (agent === 'opencode') {
-      installOpenCodeGlobal();
-    } else {
-      const target = info.global;
-      if (existsSync(target) && !statSync(target).isSymbolicLink()) {
-        log(`${target} already exists. Backing up...`, 'warn');
-        run(`mv "${target}" "${target}.bak"`);
-      }
-      symlinkTarget(agentDir, target);
-      log(`Symlinked platforms/${agent}/ → ${target}`, 'ok');
-    }
-  } else if (scope === 'project') {
-    if (agent === 'opencode') {
-      installOpenCodeProject(dir, copyMode);
-    } else {
-      const info = AGENT_PATHS[agent];
-      const projectRoot = resolve(dir);
-      const targetDir = join(projectRoot, info.projectDir);
-      ensureDir(targetDir);
-      cpSync(agentDir, targetDir, { recursive: true });
-      log(`Copied platforms/${agent}/ → ${targetDir}`, 'ok');
-    }
-  }
-}
-
 function uninstallAgent(agent) {
   const info = AGENT_PATHS[agent];
   if (!info) { log(`Agent '${agent}' not supported`, 'err'); return; }
@@ -854,6 +818,170 @@ function generateBrand(projectDir, opts) {
   log(`Brand config updated. Edit shared/brand.json for advanced changes.`, 'info');
 }
 
+/* ─── skills sync ─── */
+
+function skillsSync(targetDir) {
+  const skillsDir = join(REPO_ROOT, 'shared', 'skills');
+  if (!isDir(skillsDir)) { log('No shared/skills/ found', 'err'); return; }
+
+  const skills = readdirSync(skillsDir).filter(f => isDir(join(skillsDir, f)));
+  if (skills.length === 0) { log('No skills to sync', 'info'); return; }
+
+  const dest = targetDir
+    ? resolve(targetDir, '.opencode', 'skills')
+    : join(homedir(), '.config', 'opencode', 'skills');
+
+  ensureDir(dest);
+  let count = 0;
+  for (const skill of skills) {
+    const src = join(skillsDir, skill, 'SKILL.md');
+    if (!existsSync(src)) continue;
+    const dstDir = join(dest, skill);
+    ensureDir(dstDir);
+    writeFileSync(join(dstDir, 'SKILL.md'), readFileSync(src, 'utf8'));
+    count++;
+  }
+
+  const label = targetDir ? `${targetDir}/.opencode/skills/` : '~/.config/opencode/skills/';
+  log(`Synced ${count} skills → ${label}`, 'ok');
+}
+
+/* ─── kb install ─── */
+
+function kbInstall(targetDir, force) {
+  const dest = resolve(targetDir || '.', 'kb');
+  if (existsSync(dest) && !force) {
+    log(`kb/ already exists at ${dest}. Use --force to overwrite.`, 'warn');
+    return;
+  }
+  if (existsSync(dest) && force) {
+    run(`rm -rf "${dest}"`);
+  }
+
+  const kbDir = dest;
+  const obsidianDir = join(kbDir, '.obsidian');
+  ensureDir(obsidianDir);
+  ensureDir(join(kbDir, 'Architecture'));
+  ensureDir(join(kbDir, 'Team'));
+  ensureDir(join(kbDir, 'Processes'));
+  ensureDir(join(kbDir, 'Knowledge'));
+
+  // .obsidian/app.json
+  writeFileSync(join(obsidianDir, 'app.json'), JSON.stringify({
+    alwaysUpdateLinks: true,
+    showLineNumber: false,
+    useMarkdownLinks: false,
+    showUnsupportedFiles: true,
+    attachmentFolderPath: './assets',
+  }, null, 2) + '\n');
+
+  // .obsidian/graph.json
+  writeFileSync(join(obsidianDir, 'graph.json'), JSON.stringify({
+    collapseFilter: true,
+    showTags: true,
+    showAttachments: true,
+    showOrphans: true,
+  }, null, 2) + '\n');
+
+  // .obsidian/workspace.json
+  writeFileSync(join(obsidianDir, 'workspace.json'), JSON.stringify({
+    mode: 'source',
+    pinned: true,
+    showLineNumber: false,
+  }, null, 2) + '\n');
+
+  // Index.md
+  writeFileSync(join(kbDir, 'Index.md'), `# Knowledge Base
+
+## Structure
+
+- [[Architecture/Index|Architecture]] — system design, decisions, ADRs
+- [[Team/Index|Team]] — profiles, roles, responsibilities
+- [[Processes/Index|Processes]] — workflows, SOPs, runbooks
+- [[Knowledge/Index|Knowledge]] — reference, guides, documentation
+
+## Usage
+
+This vault uses \`[[wikilinks]]\` for cross-referencing. Keep notes atomic and well-linked.
+`);
+
+  // Sub-index files
+  for (const dir of ['Architecture', 'Team', 'Processes', 'Knowledge']) {
+    writeFileSync(join(kbDir, dir, 'Index.md'), `# ${dir}\n\n<!-- TODO: populate with ${dir.toLowerCase()} notes -->\n`);
+  }
+
+  log(`Created Obsidian vault at ${kbDir}`, 'ok');
+  log(`Open it in Obsidian: File → Open Vault Folder → ${kbDir}`, 'info');
+}
+
+/* ─── install --project improved ─── */
+
+function detectProjectType(projectDir) {
+  const files = readdirSync(projectDir);
+  if (files.includes('package.json')) {
+    try {
+      const pkg = JSON.parse(readFileSync(join(projectDir, 'package.json'), 'utf8'));
+      if (pkg.dependencies?.next || pkg.devDependencies?.next) return { type: 'nextjs', framework: 'Next.js', test: 'npm test', start: 'npm run dev' };
+      if (pkg.scripts?.dev) return { type: 'node-web', framework: 'Node.js web', test: 'npm test', start: 'npm run dev' };
+      return { type: 'node', framework: 'Node.js', test: pkg.scripts?.test ? 'npm test' : null, start: pkg.scripts?.start ? 'npm start' : null };
+    } catch { return { type: 'node', framework: 'Node.js', test: null, start: null }; }
+  }
+  if (files.includes('pyproject.toml') || files.includes('setup.py') || files.includes('requirements.txt')) {
+    return { type: 'python', framework: 'Python', test: 'pytest', start: null };
+  }
+  if (files.includes('Gemfile') || files.includes('Rakefile')) {
+    return { type: 'ruby', framework: 'Ruby', test: 'rspec', start: null };
+  }
+  if (files.includes('Cargo.toml')) {
+    return { type: 'rust', framework: 'Rust', test: 'cargo test', start: null };
+  }
+  return { type: 'generic', framework: 'Generic', test: null, start: null };
+}
+
+function installAgent(agent, scope, dir, copyMode) {
+  const agentDir = join(REPO_ROOT, 'platforms', agent);
+  if (!isDir(agentDir)) {
+    log(`Agent '${agent}' not found at platforms/${agent}/`, 'err');
+    return;
+  }
+
+  if (scope === 'global') {
+    const info = AGENT_PATHS[agent];
+    if (!info) { log(`Agent '${agent}' not supported`, 'err'); return; }
+
+    if (agent === 'opencode') {
+      installOpenCodeGlobal();
+    } else {
+      const target = info.global;
+      if (existsSync(target) && !statSync(target).isSymbolicLink()) {
+        log(`${target} already exists. Backing up...`, 'warn');
+        run(`mv "${target}" "${target}.bak"`);
+      }
+      symlinkTarget(agentDir, target);
+      log(`Symlinked platforms/${agent}/ → ${target}`, 'ok');
+    }
+  } else if (scope === 'project') {
+    const absDir = resolve(dir);
+    if (agent === 'opencode') {
+      installOpenCodeProject(absDir, copyMode);
+    } else {
+      const info = AGENT_PATHS[agent];
+      const targetDir = join(absDir, info.projectDir);
+      ensureDir(targetDir);
+      cpSync(agentDir, targetDir, { recursive: true });
+      log(`Copied platforms/${agent}/ → ${targetDir}`, 'ok');
+    }
+
+    // Auto-detect project type and suggest config
+    if (existsSync(absDir)) {
+      const projectInfo = detectProjectType(absDir);
+      if (projectInfo.type !== 'generic') {
+        log(`Detected ${projectInfo.framework} project`, 'info');
+      }
+    }
+  }
+}
+
 /* ─── CLI commands ─── */
 
 program
@@ -918,6 +1046,26 @@ program
         syncAgent(a);
       }
     }
+  });
+
+program
+  .command('skills')
+  .description('Sync shared/skills/ to opencode skill directories')
+  .command('sync')
+  .description('Sync skills to global ~/.config/opencode/skills/ or project .opencode/skills/')
+  .option('--project <dir>', 'Sync to project .opencode/skills/ instead of global')
+  .action((opts) => {
+    skillsSync(opts.project || null);
+  });
+
+program
+  .command('kb')
+  .description('Scaffold an Obsidian knowledge base vault')
+  .command('install [dir]')
+  .description('Create kb/ Obsidian vault in the specified directory (default: current dir)')
+  .option('--force', 'Overwrite existing kb/ directory')
+  .action((dir, opts) => {
+    kbInstall(dir || '.', opts.force);
   });
 
 program

@@ -68,6 +68,64 @@ arai template list
 Templates are JSON manifests in `shared/templates/<name>/template.json`.  
 Create custom templates in `~/.config/arai/templates/` with the same format.
 
+## Component generation
+
+```bash
+# Create a new skill
+arai generate skill api-client
+
+# Create a new agent (auto-registers in opencode.json)
+arai generate agent security-reviewer --description "Security code review specialist"
+
+# Create a reusable script
+arai generate script data-migration --description "Database migration utility"
+
+# Create an opencode command
+arai generate command lint --description "Run linter and fix issues"
+```
+
+## Skills sync
+
+```bash
+# Sync shared/skills/ to global opencode config
+arai skills sync
+
+# Sync to project-level .opencode/skills/
+arai skills sync --project .
+```
+
+## Knowledge base
+
+```bash
+# Create an Obsidian vault (kb/) in current directory
+arai kb install
+
+# Create in a specific location
+arai kb install ~/my-vault
+
+# Overwrite if exists
+arai kb install --force
+```
+
+## CI validation
+
+```bash
+# Validate project structure and check for TODOs
+node shared/scripts/ci-validate.js
+node shared/scripts/ci-validate.js --strict   # warnings fail too
+node shared/scripts/ci-validate.js --verbose  # show all checks
+```
+
+## Brand identity
+
+```bash
+# Configure brand colors and logo
+arai generate brand --name "Mi Empresa" --primary "#1a365d" --secondary "#2b6cb0"
+
+# Replace logo
+arai generate brand --logo path/to/logo.svg --logo-white path/to/logo-white.svg
+```
+
 ## When working
 
 - Follow the existing code style (see `shared/rules/code-style.md`)
