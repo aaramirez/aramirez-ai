@@ -10,6 +10,8 @@ import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
 const pkg = require('../package.json');
 const REPO_ROOT = resolve(dirname(import.meta.url.replace('file://', '')), '..');
+const TEMPLATES_DIR = join(REPO_ROOT, 'shared', 'templates');
+const USER_TEMPLATES_DIR = join(homedir(), '.config', 'arai', 'templates');
 
 const program = new Command();
 
@@ -446,6 +448,412 @@ function stripFrontmatter(content) {
   return content.replace(/^---\n[\s\S]*?\n---\n/, '');
 }
 
+/* ─── template system / scaffold ─── */
+
+function loadTemplates() {
+  const templates = [];
+
+  function loadFromDir(dir, builtin) {
+    if (!existsSync(dir)) return;
+    for (const entry of readdirSync(dir)) {
+      const tmplDir = join(dir, entry);
+      if (statSync(tmplDir).isDirectory()) {
+        const manifestPath = join(tmplDir, 'template.json');
+        if (existsSync(manifestPath)) {
+          try {
+            const tmpl = JSON.parse(readFileSync(manifestPath, 'utf8'));
+            tmpl.sourceDir = tmplDir;
+            tmpl.builtin = builtin;
+            templates.push(tmpl);
+          } catch { /* skip invalid */ }
+        }
+      }
+    }
+  }
+
+  loadFromDir(TEMPLATES_DIR, true);
+  loadFromDir(USER_TEMPLATES_DIR, false);
+  return templates;
+}
+
+const PARTIALS_DIR = join(TEMPLATES_DIR, 'partials');
+
+function resolvePartial(name) {
+  const path = join(PARTIALS_DIR, name);
+  return existsSync(path) ? readFileSync(path, 'utf8') : null;
+}
+
+function applyVars(content, vars) {
+  return content.replace(/\{\{(\w+)\}\}/g, (_, key) => vars[key] || `{{${key}}}`);
+}
+
+function resolveItems(category, items) {
+  if (items.length === 1 && items[0] === '*') {
+    const dir = join(REPO_ROOT, 'shared', category);
+    if (!existsSync(dir)) return [];
+    return readdirSync(dir).filter(f => statSync(join(dir, f)).isDirectory());
+  }
+  return items;
+}
+
+function resolveScripts(items) {
+  if (items.length === 1 && items[0] === '*') {
+    const dir = join(REPO_ROOT, 'shared', 'scripts');
+    if (!existsSync(dir)) return [];
+    return readdirSync(dir).filter(f => {
+      const p = join(dir, f);
+      return statSync(p).isFile() && f !== '.gitkeep';
+    });
+  }
+  return items;
+}
+
+function resolveFiles(category, items) {
+  if (items.length === 1 && items[0] === '*') {
+    const dir = join(REPO_ROOT, 'shared', category);
+    if (!existsSync(dir)) return [];
+    return readdirSync(dir).filter(f => {
+      const p = join(dir, f);
+      return statSync(p).isFile() && f !== '.gitkeep';
+    }).map(f => f.replace(/\.md$/, ''));
+  }
+  return items;
+}
+
+function scaffoldProject(targetDir, templateName, vars) {
+  const templates = loadTemplates();
+  const template = templates.find(t => t.name === templateName);
+  if (!template) {
+    log(`Template '${templateName}' not found. Run 'arai template list' to see available templates.`, 'err');
+    return false;
+  }
+
+  const { include } = template;
+  const absTarget = resolve(targetDir);
+  const projectName = basename(absTarget);
+  const allVars = { ...vars, project_name: projectName, project_description: vars.description || `${projectName} — AI-enhanced project` };
+
+  ensureDir(absTarget);
+  log(`Scaffolding '${templateName}' template in ${absTarget}...`, 'info');
+
+  // .gitignore
+  const gitignorePartial = resolvePartial('.gitignore');
+  if (gitignorePartial) {
+    writeFileSync(join(absTarget, '.gitignore'), gitignorePartial);
+  }
+
+  // AGENTS.md
+  const agentsPartial = resolvePartial('AGENTS.md');
+  if (agentsPartial) {
+    writeFileSync(join(absTarget, 'AGENTS.md'), applyVars(agentsPartial, allVars));
+  }
+
+  // Skills
+  const skillsToCopy = resolveItems('skills', include.skills || []);
+  for (const skill of skillsToCopy) {
+    const src = join(REPO_ROOT, 'shared', 'skills', skill, 'SKILL.md');
+    if (existsSync(src)) {
+      const dstDir = join(absTarget, 'shared', 'skills', skill);
+      ensureDir(dstDir);
+      writeFileSync(join(dstDir, 'SKILL.md'), readFileSync(src, 'utf8'));
+    } else {
+      log(`Skill '${skill}' not found in shared/skills/`, 'warn');
+    }
+  }
+
+  // Scripts
+  for (const script of resolveScripts(include.scripts || [])) {
+    const src = join(REPO_ROOT, 'shared', 'scripts', script);
+    if (existsSync(src)) {
+      const dstDir = join(absTarget, 'shared', 'scripts');
+      ensureDir(dstDir);
+      writeFileSync(join(dstDir, script), readFileSync(src, 'utf8'));
+    } else {
+      log(`Script '${script}' not found in shared/scripts/`, 'warn');
+    }
+  }
+
+  // Prompts
+  for (const prompt of resolveFiles('prompts', include.prompts || [])) {
+    const src = join(REPO_ROOT, 'shared', 'prompts', `${prompt}.md`);
+    if (existsSync(src)) {
+      const dstDir = join(absTarget, 'shared', 'prompts');
+      ensureDir(dstDir);
+      writeFileSync(join(dstDir, `${prompt}.md`), readFileSync(src, 'utf8'));
+    }
+  }
+
+  // Rules
+  for (const rule of resolveFiles('rules', include.rules || [])) {
+    const src = join(REPO_ROOT, 'shared', 'rules', `${rule}.md`);
+    if (existsSync(src)) {
+      const dstDir = join(absTarget, 'shared', 'rules');
+      ensureDir(dstDir);
+      writeFileSync(join(dstDir, `${rule}.md`), readFileSync(src, 'utf8'));
+    }
+  }
+
+  // Platforms
+  for (const platformName of include.platforms || []) {
+    const src = join(REPO_ROOT, 'platforms', platformName);
+    if (existsSync(src) && statSync(src).isDirectory()) {
+      const dst = join(absTarget, 'platforms', platformName);
+      ensureDir(dirname(dst));
+      cpSync(src, dst, { recursive: true });
+
+      // Apply opencode.json template vars (project_name)
+      if (platformName === 'opencode') {
+        const configPath = join(dst, 'opencode.json');
+        if (existsSync(configPath)) {
+          writeFileSync(configPath, applyVars(readFileSync(configPath, 'utf8'), allVars));
+        }
+      }
+    } else {
+      log(`Platform '${platformName}' not found in platforms/`, 'warn');
+    }
+  }
+
+  // package.json
+  if (include.package_json) {
+    const pkgPartial = resolvePartial('package.json');
+    if (pkgPartial) {
+      writeFileSync(join(absTarget, 'package.json'), applyVars(pkgPartial, allVars));
+    }
+  }
+
+  // repos.json
+  if (include.repos_json) {
+    const reposPartial = resolvePartial('repos.json');
+    if (reposPartial) {
+      writeFileSync(join(absTarget, 'repos.json'), reposPartial);
+    }
+  }
+
+  // transforms directory
+  if (include.transforms) {
+    ensureDir(join(absTarget, 'transforms'));
+    writeFileSync(join(absTarget, 'transforms', '.gitkeep'), '');
+  }
+
+  // branding
+  if (include.branding) {
+    const brandPartial = resolvePartial('brand.json');
+    if (brandPartial) {
+      writeFileSync(join(absTarget, 'shared', 'brand.json'), applyVars(brandPartial, allVars));
+    }
+  }
+
+  // assets
+  if (include.assets) {
+    const assetsDir = join(absTarget, 'assets');
+    ensureDir(join(assetsDir, 'images'));
+    ensureDir(join(assetsDir, 'templates'));
+
+    const logoPartial = resolvePartial('logo.svg');
+    if (logoPartial) {
+      writeFileSync(join(assetsDir, 'images', 'logo.svg'), applyVars(logoPartial, allVars));
+    }
+    const logoWhitePartial = resolvePartial('logo-white.svg');
+    if (logoWhitePartial) {
+      writeFileSync(join(assetsDir, 'images', 'logo-white.svg'), applyVars(logoWhitePartial, allVars));
+    }
+    writeFileSync(join(assetsDir, 'templates', '.gitkeep'), '');
+  }
+
+  log(`Done — ${absTarget} ready`, 'ok');
+  return true;
+}
+
+function listTemplates() {
+  const templates = loadTemplates();
+  if (templates.length === 0) {
+    log('No templates found', 'info');
+    return;
+  }
+
+  console.log(`\nAvailable templates:\n`);
+  for (const t of templates) {
+    const tag = t.builtin ? 'built-in' : 'user';
+    console.log(`  ${t.name.padEnd(16)} ${t.description || ''}`);
+    console.log(`  ${' '.repeat(16)} ${t.version || '1.0.0'} | ${tag}`);
+    console.log();
+  }
+}
+
+/* ─── generate helpers ─── */
+
+function findProjectRoot(start) {
+  let dir = resolve(start || '.');
+  while (true) {
+    if (existsSync(join(dir, 'AGENTS.md')) || existsSync(join(dir, 'shared', 'skills'))) return dir;
+    const parent = dirname(dir);
+    if (parent === dir) return null;
+    dir = parent;
+  }
+}
+
+function kebabToPascal(str) {
+  return str.split('-').map(s => s.charAt(0).toUpperCase() + s.slice(1)).join('');
+}
+
+function generateSkill(name, projectDir) {
+  const template = resolvePartial('skill.md');
+  if (!template) { log('skill.md partial not found', 'err'); return false; }
+
+  const dir = join(projectDir, 'shared', 'skills', name);
+  if (existsSync(dir)) { log(`Skill '${name}' already exists`, 'warn'); return false; }
+
+  ensureDir(dir);
+  writeFileSync(join(dir, 'SKILL.md'), applyVars(template, { name }));
+  log(`Created shared/skills/${name}/SKILL.md`, 'ok');
+  return true;
+}
+
+function generateAgent(name, projectDir, description) {
+  const template = resolvePartial('agent.md');
+  if (!template) { log('agent.md partial not found', 'err'); return false; }
+
+  const agentsDir = join(projectDir, 'shared', 'agents');
+  ensureDir(agentsDir);
+
+  const filePath = join(agentsDir, `${name}.md`);
+  if (existsSync(filePath)) { log(`Agent '${name}' already exists`, 'warn'); return false; }
+
+  const desc = description || `${name.replace(/-/g, ' ')} specialist`;
+
+  // Determine opencode platform dir
+  const opencodeDir = join(projectDir, 'platforms', 'opencode');
+  const hasOpenCode = existsSync(join(opencodeDir, 'opencode.json'));
+
+  writeFileSync(filePath, applyVars(template, { name, description: desc }));
+  log(`Created shared/agents/${name}.md`, 'ok');
+
+  // Register in opencode.json if it exists
+  if (hasOpenCode) {
+    const configPath = join(opencodeDir, 'opencode.json');
+    const config = JSON.parse(readFileSync(configPath, 'utf8'));
+    if (!config.agent) config.agent = {};
+
+    if (config.agent[name]) {
+      log(`Agent '${name}' already registered in opencode.json — skipping registration`, 'info');
+    } else {
+      config.agent[name] = {
+        mode: 'subagent',
+        description: desc,
+        model: 'anthropic/claude-sonnet-4-6',
+        permission: { edit: 'deny' },
+      };
+      writeFileSync(configPath, JSON.stringify(config, null, 2) + '\n');
+      log(`Registered '${name}' in platforms/opencode/opencode.json`, 'ok');
+    }
+  }
+
+  return true;
+}
+
+function generateScript(name, projectDir, description) {
+  const template = resolvePartial('script.js');
+  if (!template) { log('script.js partial not found', 'err'); return false; }
+
+  const dir = join(projectDir, 'shared', 'scripts');
+  ensureDir(dir);
+
+  const filePath = join(dir, `${name}.js`);
+  if (existsSync(filePath)) { log(`Script '${name}.js' already exists`, 'warn'); return false; }
+
+  const desc = description || `${name.replace(/-/g, ' ')} utility`;
+  writeFileSync(filePath, applyVars(template, { name, description: desc }));
+  // Make executable on Unix
+  try { execSync(`chmod +x "${filePath}"`); } catch { /* ok */ }
+  log(`Created shared/scripts/${name}.js`, 'ok');
+  return true;
+}
+
+function generateCommand(name, projectDir, description) {
+  const template = resolvePartial('command.md');
+  if (!template) { log('command.md partial not found', 'err'); return false; }
+
+  const opencodeDir = join(projectDir, 'platforms', 'opencode');
+  const commandsDir = join(opencodeDir, 'commands');
+  ensureDir(commandsDir);
+
+  const filePath = join(commandsDir, `${name}.md`);
+  if (existsSync(filePath)) { log(`Command '${name}' already exists`, 'warn'); return false; }
+
+  const desc = description || `${name.replace(/-/g, ' ')} command`;
+  writeFileSync(filePath, applyVars(template, { name, description: desc }));
+
+  // Register in opencode.json
+  const configPath = join(opencodeDir, 'opencode.json');
+  if (existsSync(configPath)) {
+    const config = JSON.parse(readFileSync(configPath, 'utf8'));
+    if (!config.command) config.command = {};
+    if (!config.command[name]) {
+      config.command[name] = { description: desc, template: `Execute the ${name} task.` };
+      writeFileSync(configPath, JSON.stringify(config, null, 2) + '\n');
+      log(`Registered '${name}' in platforms/opencode/opencode.json`, 'ok');
+    }
+  }
+
+  log(`Created platforms/opencode/commands/${name}.md`, 'ok');
+  return true;
+}
+
+function generateBrand(projectDir, opts) {
+  const brandPath = join(projectDir, 'shared', 'brand.json');
+
+  if (!existsSync(brandPath)) {
+    log('shared/brand.json not found. Run `arai init` first with the `full` template.', 'err');
+    return;
+  }
+
+  const brand = JSON.parse(readFileSync(brandPath, 'utf8'));
+
+  if (opts.name) brand.brand.name = opts.name;
+  if (opts.primary) brand.brand.colors.primary = opts.primary;
+  if (opts.secondary) brand.brand.colors.secondary = opts.secondary;
+  if (opts.accent) brand.brand.colors.accent = opts.accent;
+  if (opts.text) brand.brand.colors.text = opts.text;
+  if (opts.background) brand.brand.colors.background = opts.background;
+  if (opts.lightBg) brand.brand.colors['light-bg'] = opts.lightBg;
+
+  writeFileSync(brandPath, JSON.stringify(brand, null, 2) + '\n');
+  log(`Updated shared/brand.json`, 'ok');
+
+  // Copy logo if provided
+  if (opts.logo) {
+    const logoPath = resolve(opts.logo);
+    if (!existsSync(logoPath)) { log(`Logo not found: ${logoPath}`, 'err'); return; }
+
+    const logoExt = basename(logoPath);
+    const assetsImages = join(projectDir, 'assets', 'images');
+    ensureDir(assetsImages);
+    writeFileSync(join(assetsImages, logoExt), readFileSync(logoPath, 'utf8'));
+
+    // Auto-set brand.logo path
+    brand.brand.logo = `assets/images/${logoExt}`;
+    writeFileSync(brandPath, JSON.stringify(brand, null, 2) + '\n');
+    log(`Copied logo → assets/images/${logoExt}`, 'ok');
+  }
+
+  // Copy white logo variant if provided
+  if (opts.logoWhite) {
+    const logoPath = resolve(opts.logoWhite);
+    if (!existsSync(logoPath)) { log(`White logo not found: ${logoPath}`, 'err'); return; }
+
+    const logoExt = basename(logoPath);
+    const assetsImages = join(projectDir, 'assets', 'images');
+    ensureDir(assetsImages);
+    writeFileSync(join(assetsImages, logoExt), readFileSync(logoPath, 'utf8'));
+
+    brand.brand.logo_white = `assets/images/${logoExt}`;
+    writeFileSync(brandPath, JSON.stringify(brand, null, 2) + '\n');
+    log(`Copied white logo → assets/images/${logoExt}`, 'ok');
+  }
+
+  log(`Brand config updated. Edit shared/brand.json for advanced changes.`, 'info');
+}
+
 /* ─── CLI commands ─── */
 
 program
@@ -510,6 +918,88 @@ program
         syncAgent(a);
       }
     }
+  });
+
+program
+  .command('init <dir>')
+  .description('Scaffold a new project with AI agent configuration')
+  .option('--template <name>', 'Template to use (minimal, full)', 'minimal')
+  .option('--description <desc>', 'Project description')
+  .action((dir, opts) => {
+    scaffoldProject(dir, opts.template, { description: opts.description });
+  });
+
+program
+  .command('template')
+  .description('Manage project scaffolding templates')
+  .command('list')
+  .description('List available templates')
+  .action(listTemplates);
+
+const generateCmd = program
+  .command('generate')
+  .description('Generate AI agent components (skill, agent, script, command)');
+
+generateCmd
+  .command('skill <name>')
+  .description('Create a new skill in shared/skills/<name>/SKILL.md')
+  .option('--dir <path>', 'Project root directory', '.')
+  .action((name, opts) => {
+    const root = findProjectRoot(opts.dir);
+    if (!root) { log('Not inside an arai project (no AGENTS.md found)', 'err'); return; }
+    generateSkill(name, root);
+  });
+
+generateCmd
+  .command('agent <name>')
+  .description('Create a new agent in shared/agents/<name>.md and register in opencode.json')
+  .option('--dir <path>', 'Project root directory', '.')
+  .option('--description <desc>', 'Agent description')
+  .action((name, opts) => {
+    const root = findProjectRoot(opts.dir);
+    if (!root) { log('Not inside an arai project (no AGENTS.md found)', 'err'); return; }
+    generateAgent(name, root, opts.description);
+  });
+
+generateCmd
+  .command('script <name>')
+  .description('Create a new reusable script in shared/scripts/<name>.js')
+  .option('--dir <path>', 'Project root directory', '.')
+  .option('--description <desc>', 'Script description')
+  .action((name, opts) => {
+    const root = findProjectRoot(opts.dir);
+    if (!root) { log('Not inside an arai project (no AGENTS.md found)', 'err'); return; }
+    generateScript(name, root, opts.description);
+  });
+
+generateCmd
+  .command('command <name>')
+  .description('Create a new opencode command in platforms/opencode/commands/<name>.md')
+  .option('--dir <path>', 'Project root directory', '.')
+  .option('--description <desc>', 'Command description')
+  .action((name, opts) => {
+    const root = findProjectRoot(opts.dir);
+    if (!root) { log('Not inside an arai project (no AGENTS.md found)', 'err'); return; }
+    generateCommand(name, root, opts.description);
+  });
+
+generateCmd
+  .command('brand')
+  .description('Configure brand identity in shared/brand.json')
+  .option('--dir <path>', 'Project root directory', '.')
+  .option('--name <name>', 'Brand/company name')
+  .option('--primary <hex>', 'Primary brand color (e.g. #1a365d)')
+  .option('--secondary <hex>', 'Secondary brand color')
+  .option('--accent <hex>', 'Accent/highlight color')
+  .option('--text <hex>', 'Body text color')
+  .option('--background <hex>', 'Page background color')
+  .option('--light-bg <hex>', 'Subtle background color')
+  .option('--logo <path>', 'Path to brand logo SVG/PNG')
+  .option('--logo-white <path>', 'Path to white logo variant')
+  .action((opts) => {
+    const root = findProjectRoot(opts.dir);
+    if (!root) { log('Not inside an arai project (no AGENTS.md found)', 'err'); return; }
+    generateBrand(root, opts);
   });
 
 program

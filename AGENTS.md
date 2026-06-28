@@ -10,14 +10,15 @@ aramirez-ai/
 │   ├── skills/       SKILL.md format (compatible with opencode + claude)
 │   ├── prompts/      Reusable prompt fragments
 │   ├── scripts/      Executable scripts (bash/node/py)
-│   └── rules/        Coding standards, architecture, documentation rules
+│   ├── rules/        Coding standards, architecture, documentation rules
+│   └── templates/    Project scaffolding templates (init command)
 ├── platforms/        Per-agent configurations
 │   ├── opencode/     opencode.json, agents, commands, plugins, mcp, skills
 │   ├── claude/       CLAUDE.md
 │   ├── cursor/       .cursorrules + rules/
 │   └── codex/        Codex config
 ├── transforms/       Transformation scripts (SKILL.md → target format)
-└── bin/arai.js       CLI multi-agent installer
+└── bin/arai.js       CLI multi-agent installer + scaffolder
 ```
 
 ## Key principles
@@ -25,7 +26,10 @@ aramirez-ai/
 - **Write once, use everywhere**: Skills live in `shared/skills/` and are consumed natively or transformed.
 - **Agents are defined in `platforms/opencode/opencode.json`** and `platforms/opencode/agents/*.md`.
 - **Commands** are in `platforms/opencode/commands/*.md`.
-- **CLI tool** `arai` handles install, transform, and status.
+- **CLI tool** `arai` handles install, transform, status, and scaffolding.
+- **Scaffolding**: Use `arai init <dir>` to generate the full AI-agent structure in any new project.
+- **Templates** live in `shared/templates/<name>/template.json` and define what to include.
+- **Custom templates** go in `~/.config/arai/templates/` — same format as built-in.
 
 ## Skills
 
@@ -47,6 +51,22 @@ npm install && npm link
 arai install opencode --global
 arai status
 ```
+
+## Scaffolding new projects
+
+```bash
+# Create a new project with full AI-agent structure
+arai init my-new-project --template full
+
+# Minimal setup (core skills + opencode only, default)
+arai init my-new-project --template minimal
+
+# List available templates
+arai template list
+```
+
+Templates are JSON manifests in `shared/templates/<name>/template.json`.  
+Create custom templates in `~/.config/arai/templates/` with the same format.
 
 ## When working
 

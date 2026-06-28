@@ -12,7 +12,9 @@
     "install:cursor": "arai install cursor --global",
     "transform": "arai transform skills --all",
     "status": "arai status",
-    "update": "arai update"
+    "update": "arai update",
+    "init": "arai init",
+    "templates": "arai template list"
   },
   "dependencies": {
     "commander": "^12.0.0"

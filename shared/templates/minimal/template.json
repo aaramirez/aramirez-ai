@@ -1,0 +1,15 @@
+{
+  "name": "minimal",
+  "description": "Minimal AI agent structure: core skills + rules + opencode platform",
+  "version": "1.0.0",
+  "include": {
+    "skills": ["git", "code-review"],
+    "scripts": [],
+    "prompts": ["commit-message"],
+    "rules": ["code-style"],
+    "platforms": ["opencode"],
+    "package_json": false,
+    "repos_json": false,
+    "transforms": false
+  }
+}
