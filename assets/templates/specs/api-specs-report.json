@@ -1,0 +1,32 @@
+{
+  "output": "assets/docs/api-specs-report.pdf",
+  "meta": {
+    "title": "Especificación de API",
+    "subtitle": "Plataforma Unificada v2 — API REST",
+    "organization": "Gerencia de Desarrollos y Aplicaciones",
+    "prepared_by": "API Team",
+    "date": "28 Jun 2026",
+    "classification": "Público"
+  },
+  "slides": [
+    { "type": "doc-cover" },
+    { "type": "section", "titulo": "1. Información General" },
+    { "type": "text", "parrafos": [
+      "Esta API REST proporciona acceso a los recursos de la Plataforma Unificada v2.",
+      "Base URL: https://api.plataforma.io/api/v2. Autenticación mediante Bearer JWT."
+    ]},
+    { "type": "table", "headers": ["Método", "Ruta", "Descripción", "Autenticación"], "filas": [
+      ["GET", "/users", "Listar usuarios", "Bearer"],
+      ["POST", "/users", "Crear usuario", "Bearer + Admin"],
+      ["GET", "/users/:id", "Obtener usuario", "Bearer"],
+      ["PUT", "/users/:id", "Actualizar usuario", "Bearer + Admin"],
+      ["DELETE", "/users/:id", "Eliminar usuario", "Bearer + Admin"]
+    ]},
+    { "type": "bullets", "items": [
+      "Autenticación: OAuth 2.0 con flujo Authorization Code",
+      "Límite de peticiones: 1000 req/hora por token",
+      "Paginación: cursor-based con page[size] y page[cursor]"
+    ]},
+    { "type": "closing", "parrafos": ["Documentación generada automáticamente desde OpenAPI 3.0."] }
+  ]
+}
