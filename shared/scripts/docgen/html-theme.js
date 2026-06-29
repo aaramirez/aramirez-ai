@@ -21,7 +21,21 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = resolve(__dirname, '..', '..', '..');
 
 const CSS_PATH = join(REPO_ROOT, 'assets', 'templates', 'deck.css');
-const FOOTER_TEXT = 'Contenido confidencial de la Gerencia de Desarrollos y Aplicaciones';
+
+let _currentFooterText = null;
+
+function setFooterFromSlide(slide) {
+  if (slide && slide.footer) {
+    _currentFooterText = slide.footer;
+  } else {
+    const b = brand();
+    if (b.footer) {
+      _currentFooterText = b.footer.replace('{{organization}}', b.name);
+    } else {
+      _currentFooterText = 'Contenido confidencial';
+    }
+  }
+}
 
 /* ─── Helpers ─── */
 
@@ -88,7 +102,8 @@ function logo(pos = 'tr', variant = 'blue') {
 
 function footer(center = false, page = null) {
   const cls = center ? 'footer footer--center' : 'footer';
-  let parts = [`<div class="${cls}">${esc(FOOTER_TEXT)}</div>`];
+  const text = _currentFooterText || 'Contenido confidencial';
+  let parts = [`<div class="${cls}">${esc(text)}</div>`];
   if (page !== null && !center) parts.push(`<div class="pageno">${esc(page)}</div>`);
   return parts.join('');
 }
@@ -465,6 +480,7 @@ const _LAYOUTS = {
 /* ─── Public API ─── */
 
 export function slideToHtml(slide, page = null) {
+  setFooterFromSlide(slide);
   const kind = slide.type || 'bullets';
   const layout = _LAYOUTS[kind];
   if (!layout) throw new Error(`Unsupported slide type: ${kind}`);

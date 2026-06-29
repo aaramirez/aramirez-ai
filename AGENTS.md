@@ -186,11 +186,27 @@ When using code from a reference repo, always cite:
 ## Test suite
 
 ```bash
-npm test                              # full suite (277 tests, node:test)
+npm test                              # full suite (380 tests, node:test)
 node --test tests/consistency/        # consistency subset only
 ```
 
 Full outcome-validation plan in [`docs/outcome-validation-plan.md`](docs/outcome-validation-plan.md) (5 phases, phases 1–4 deterministic in CI, phase 5 gated by `TEST_AI=true`).
+
+## Document Templates
+
+28 plantillas de documentos en `assets/templates/specs/` para el pipeline docgen. Cada template es un JSON que puedes editar y construir con:
+
+```bash
+npm run docgen:<nombre>   # genera PDF/HTML/PNG
+```
+
+Comunicación periódica (deck+report): weekly-status, weekly-slides, sprint, sprint-report, planning, planning-report, status, status-report, release, release-report.
+Documentación técnica (deck+report): tech-design, tech-design-report, adr, adr-slides, api, api-report, architecture, architecture-report, runbook, runbook-report.
+Gestión: sow, charter, decision-log.
+Calidad: postmortem, test-report.
+Métricas/Equipo: dashboard, team, minutes.
+
+Ver `docs/templates-plan.md` para el detalle completo.
 
 ## CI validation
 

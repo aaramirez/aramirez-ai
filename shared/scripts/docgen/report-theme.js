@@ -18,7 +18,6 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = resolve(__dirname, '..', '..', '..');
 
 const CSS_PATH = join(REPO_ROOT, 'assets', 'templates', 'report.css');
-const FOOTER_TEXT = 'Contenido confidencial de la Gerencia de Desarrollos y Aplicaciones';
 
 /* ─── Helpers ─── */
 
@@ -62,9 +61,13 @@ function _pageHeader(page, meta) {
 }
 
 function _pageFooter(page, meta) {
+  const b = brand();
+  const template = b.footer || 'Contenido confidencial de {{organization}}';
+  const org = meta.organization || b.name;
+  const text = template.replace('{{organization}}', org);
   return (
     '<div class="page-footer">' +
-    `<span class="footer-org">${esc(FOOTER_TEXT)}</span>` +
+    `<span class="footer-org">${esc(text)}</span>` +
     `<span class="footer-page">P\u00e1gina ${page}</span>` +
     '</div>\n'
   );

@@ -1,7 +1,8 @@
 /*
-  Estilo de marca Fibex para documentos/reportes ejecutivos (motor build-report).
+  Estilo de marca para documentos/reportes ejecutivos (motor build-report).
   Formato Letter (8.5x11in). Cada slide se renderiza como una página individual
   (misma filosofía que deck.css pero para documentos).
+  Pie de página configurable desde brand.json y meta.organization.
   Este archivo se embebe automáticamente al generar el PDF.
 */
 :root {

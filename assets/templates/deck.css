@@ -1,7 +1,7 @@
 /*
-  Estilo de marca Fibex para presentaciones HTML (motor build-deck --engine html).
+  Estilo de marca para presentaciones HTML (motor build-deck --engine html).
   Lámina estándar 1280x720 (16:9). Fondo claro, sin líneas divisorias,
-  pie confidencial de la Gerencia de Desarrollos y Aplicaciones.
+  pie de página configurable desde brand.json.
   Editable: este archivo se embebe automáticamente al generar el PDF.
 */
 

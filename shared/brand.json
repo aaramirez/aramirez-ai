@@ -1,6 +1,7 @@
 {
   "brand": {
     "name": "aramirez-ai",
+    "footer": "Contenido confidencial de {{organization}}",
     "colors": {
       "primary": "#1a365d",
       "secondary": "#2b6cb0",

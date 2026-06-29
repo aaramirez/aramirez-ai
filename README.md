@@ -561,6 +561,58 @@ node shared/scripts/docgen/validate.js
 node shared/scripts/docgen/validate.js --quick
 ```
 
+## Document Templates
+
+28 plantillas listas para generar documentos profesionales. Cada template es un archivo JSON en `assets/templates/specs/` que puedes editar con tus datos y construir con un solo comando.
+
+Comunicación periódica y documentación técnica están disponibles en **dos formatos**: `deck` (presentación) y `report` (documento formal).
+
+| Template | Comando | Formato | Descripción |
+|----------|---------|---------|-------------|
+| weekly-status | `npm run docgen:weekly` | report | Reporte semanal de avance |
+| weekly-status-slides | `npm run docgen:weekly-slides` | deck | Weekly para all-hands |
+| sprint-review | `npm run docgen:sprint` | deck | Sprint review presentation |
+| sprint-review-report | `npm run docgen:sprint-report` | report | Sprint review documentado |
+| sprint-planning | `npm run docgen:planning` | deck | Planificación de sprint |
+| sprint-planning-report | `npm run docgen:planning-report` | report | Planificación documentada |
+| project-status | `npm run docgen:status` | deck | Status ejecutivo |
+| project-status-report | `npm run docgen:status-report` | report | Status documentado |
+| release-notes | `npm run docgen:release` | deck | Notas de versión |
+| release-notes-report | `npm run docgen:release-report` | report | Release notes documentadas |
+| tech-design | `npm run docgen:tech-design` | deck | Diseño técnico revisión |
+| tech-design-report | `npm run docgen:tech-design-report` | report | Diseño técnico documentado |
+| adr | `npm run docgen:adr` | report | Architecture Decision Record |
+| adr-slides | `npm run docgen:adr-slides` | deck | ADR para presentar |
+| api-specs | `npm run docgen:api` | deck | API specs review |
+| api-specs-report | `npm run docgen:api-report` | report | API specs documentadas |
+| system-architecture | `npm run docgen:architecture` | deck | Arquitectura revisión |
+| system-architecture-report | `npm run docgen:architecture-report` | report | Arquitectura documentada |
+| deployment-runbook | `npm run docgen:runbook` | deck | Runbook training |
+| deployment-runbook-report | `npm run docgen:runbook-report` | report | Runbook documentado |
+| sow | `npm run docgen:sow` | report | Statement of Work |
+| project-charter | `npm run docgen:charter` | report | Project charter |
+| decision-log | `npm run docgen:decision-log` | report | Registro de decisiones |
+| incident-postmortem | `npm run docgen:postmortem` | report | Análisis post-incidente |
+| test-report | `npm run docgen:test-report` | report | Reporte de pruebas |
+| exec-dashboard | `npm run docgen:dashboard` | image | Dashboard KPIs (PNG) |
+| team-overview | `npm run docgen:team` | deck | Overview del equipo |
+| meeting-minutes | `npm run docgen:minutes` | report | Minutas de reunión |
+
+### Cómo usar
+
+```bash
+# 1. Editar el spec con tus datos
+code assets/templates/specs/sprint-review.json
+
+# 2. Generar el documento
+npm run docgen:sprint
+
+# 3. El PDF se genera en assets/docs/
+open assets/docs/sprint-review.pdf
+```
+
+Ver `docs/templates-plan.md` para el detalle completo de cada template (campos, ejemplos y estructura).
+
 ### Requisitos
 
 - **Node.js 18+** (obligatorio)
@@ -617,7 +669,7 @@ El pipeline docgen consume `shared/brand.json` automáticamente.
 
 ## Test suite
 
-El proyecto incluye **277 tests** con `node:test` (Node.js 22+ built-in, sin dependencias extra).
+El proyecto incluye **380 tests** con `node:test` (Node.js 22+ built-in, sin dependencias extra).
 
 ```bash
 npm test              # ejecuta toda la suite
