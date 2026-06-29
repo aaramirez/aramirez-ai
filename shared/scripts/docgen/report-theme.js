@@ -1,18 +1,9 @@
-#!/usr/bin/env node
-/**
- * docgen/report-theme.js — HTML theme for executive report documents
- *
- * Ported from gda-ai report_theme.py.
- *
- * Generates self-contained HTML documents (Letter size) from a list of
- * report slides. Slide types: doc-cover, section, text, callout, table,
- * bullets, recommendation, roadmap, kpi-table, closing.
- */
-
 import { readFileSync, existsSync } from 'fs';
 import { join, resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
-import { brand } from './index.js';
+import { brand, esc } from './index.js';
+import { brandCss, logoHref } from './theme-utils.js';
+import { foot, sectionBlock, bullets, tableV, callout, recommendation, roadmap, kpiTable, closing } from './components.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = resolve(__dirname, '..', '..', '..');
@@ -21,37 +12,15 @@ const CSS_PATH = join(REPO_ROOT, 'assets', 'templates', 'report.css');
 
 /* ─── Helpers ─── */
 
-function esc(text) {
-  return String(text).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-}
-
 function _css() {
   let css = '';
   if (existsSync(CSS_PATH)) css = readFileSync(CSS_PATH, 'utf8');
-  const b = brand();
-  const root = `:root {
-  --ink: ${b.colors.primary};
-  --muted: ${b.colors.secondary};
-  --bg: ${b.colors.background};
-  --bg-soft: ${b.colors['light-bg']};
-  --accent: ${b.colors.secondary};
-  --accent-soft: ${b.colors['light-bg']};
-}\n`;
-  return root + css;
-}
-
-function _logoDataUri() {
-  const b = brand();
-  if (!b.logo) return '';
-  const logoPath = join(REPO_ROOT, b.logo);
-  if (!existsSync(logoPath)) return '';
-  const data = readFileSync(logoPath).toString('base64');
-  return `data:image/svg+xml;base64,${data}`;
+  return brandCss('report') + '\n' + css;
 }
 
 function _pageHeader(page, meta) {
   const classification = esc(meta.classification || '');
-  const logo = _logoDataUri();
+  const logo = logoHref('blue');
   return (
     '<div class="page-header">' +
     `<span class="header-classification">${classification}</span>` +
@@ -65,18 +34,13 @@ function _pageFooter(page, meta) {
   const template = b.footer || 'Contenido confidencial de {{organization}}';
   const org = meta.organization || b.name;
   const text = template.replace('{{organization}}', org);
-  return (
-    '<div class="page-footer">' +
-    `<span class="footer-org">${esc(text)}</span>` +
-    `<span class="footer-page">P\u00e1gina ${page}</span>` +
-    '</div>\n'
-  );
+  return foot(false, `P\u00e1gina ${page}`, text);
 }
 
 /* ─── Renderers ─── */
 
 function _renderCover(s, meta, page) {
-  const logo = _logoDataUri();
+  const logo = logoHref('blue');
   const title = esc(s.titulo || meta.title || '');
   const subtitle = esc(s.subtitulo || meta.subtitle || '');
   const org = esc(meta.organization || '');
@@ -102,14 +66,7 @@ function _renderCover(s, meta, page) {
 }
 
 function _renderSection(s) {
-  const title = esc(s.titulo || '');
-  const subtitle = esc(s.subtitulo || '');
-  let parts = ['<div class="section-block">'];
-  parts.push('<div class="section-bar"></div>');
-  parts.push(`<h2>${title}</h2>`);
-  if (subtitle) parts.push(`<div class="section-sub">${subtitle}</div>`);
-  parts.push('</div>');
-  return parts.join('');
+  return sectionBlock(s.titulo || '', s.subtitulo || '');
 }
 
 function _renderText(s) {
@@ -122,92 +79,36 @@ function _renderText(s) {
 }
 
 function _renderCallout(s) {
-  const headline = esc(s.headline || s.titulo || '');
-  let paras = s.parrafos || s.texto || [];
-  if (typeof paras === 'string') paras = [paras];
-  let parts = ['<div class="callout-box">'];
-  parts.push(`<div class="callout-headline">${headline}</div>`);
-  if (paras.length) {
-    parts.push('<div class="callout-body">');
-    for (const p of paras) parts.push(`<p>${esc(p)}</p>`);
-    parts.push('</div>');
-  }
-  parts.push('</div>');
-  return parts.join('');
+  return callout(s.headline || s.titulo || '', s.parrafos || s.texto || []);
 }
 
 function _renderTable(s) {
-  const headers = s.headers || [];
-  const rows = s.filas || [];
-  if (!headers.length) return '';
-  const th = headers.map(h => `<th>${esc(h)}</th>`).join('');
-  const trs = rows.map(row => '<tr>' + row.map(c => `<td>${esc(c)}</td>`).join('') + '</tr>').join('');
-  return `<table class="data-table"><thead><tr>${th}</tr></thead><tbody>${trs}</tbody></table>\n`;
+  return tableV(s.headers || [], s.filas || [], 'data-table');
 }
 
 function _renderBullets(s) {
-  const items = s.items || [];
-  const lis = items.map(i => `<li>${esc(i)}</li>`).join('');
-  return `<ul class="bullet-list">${lis}</ul>\n`;
+  return bullets(s.items || [], 'bullet-list');
 }
 
 function _renderRecommendation(s) {
-  const title = esc(s.titulo || '');
-  const problem = s.problema || s.problem || '';
-  const rec = s.recomendacion || s.recommendation || '';
-  const actions = s.acciones || s.actions || [];
-  let parts = ['<div class="recommendation">'];
-  parts.push(`<h3>${title}</h3>`);
-  if (problem) parts.push(`<div class="rec-field"><strong>Problema:</strong> ${esc(problem)}</div>`);
-  if (rec) parts.push(`<div class="rec-field"><strong>Recomendaci\u00f3n:</strong> ${esc(rec)}</div>`);
-  if (actions.length) {
-    parts.push('<div class="rec-field"><strong>Acciones sugeridas:</strong></div>');
-    parts.push('<ul class="rec-actions">');
-    for (const a of actions) parts.push(`<li>${esc(a)}</li>`);
-    parts.push('</ul>');
-  }
-  parts.push('</div>');
-  return parts.join('');
+  return recommendation({
+    titulo: s.titulo,
+    problema: s.problema || s.problem,
+    recomendacion: s.recomendacion || s.recommendation,
+    acciones: s.acciones || s.actions,
+  });
 }
 
 function _renderRoadmap(s) {
-  const headers = s.headers || ['Periodo', 'Foco', 'Entregables'];
-  const phases = s.fases || s.phases || [];
-  const th = headers.map(h => `<th>${esc(h)}</th>`).join('');
-  const trs = phases.map(phase => {
-    const deliverables = phase.entregables || phase.deliverables || [];
-    const delivHtml = deliverables.map(d => `\u2022 ${esc(d)}`).join('<br/>');
-    return '<tr>' +
-      `<td>${esc(phase.phase || phase.periodo || '')}</td>` +
-      `<td>${esc(phase.focus || phase.foco || '')}</td>` +
-      `<td>${delivHtml}</td>` +
-      '</tr>';
-  }).join('');
-  return `<table class="roadmap-table"><thead><tr>${th}</tr></thead><tbody>${trs}</tbody></table>\n`;
+  return roadmap(s.headers || ['Periodo', 'Foco', 'Entregables'], s.fases || s.phases || []);
 }
 
 function _renderKpiTable(s) {
-  const headers = s.headers || ['Dominio', 'Indicador', 'Meta'];
-  const kpis = s.kpis || s.items || [];
-  const th = headers.map(h => `<th>${esc(h)}</th>`).join('');
-  const trs = kpis.map(k =>
-    '<tr>' +
-    `<td>${esc(k.domain || k.dominio || '')}</td>` +
-    `<td>${esc(k.metric || k.metrica || '')}</td>` +
-    `<td>${esc(k.target || k.meta || '')}</td>` +
-    '</tr>'
-  ).join('');
-  return `<table class="kpi-table"><thead><tr>${th}</tr></thead><tbody>${trs}</tbody></table>\n`;
+  return kpiTable(s.headers || ['Dominio', 'Indicador', 'Meta'], s.kpis || s.items || []);
 }
 
 function _renderClosing(s) {
-  let paras = s.parrafos || s.items || [];
-  if (typeof paras === 'string') paras = [paras];
-  let parts = ['<div class="closing-block">'];
-  parts.push('<div class="closing-icon">\u201c</div>');
-  for (const p of paras) parts.push(`<p>${esc(p)}</p>`);
-  parts.push('</div>');
-  return parts.join('');
+  return closing(s.parrafos || s.items || []);
 }
 
 /* ─── Renderer registry ─── */

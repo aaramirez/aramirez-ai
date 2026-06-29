@@ -6,15 +6,6 @@
 */
 
 :root {
-  --ink: #23264f;          /* azul Fibex */
-  --ink-2: #2f3463;
-  --muted: #5b6080;
-  --body: #3a3f63;
-  --bg-1: #f6f8fc;
-  --bg-2: #eef1f8;
-  --card: #ffffff;
-  --accent: #3b5bdb;
-  --accent-soft: #e7ecff;
   --ok: #2f9e6f;
   --warn: #c98a16;
   --shadow: 0 10px 30px rgba(35, 38, 79, 0.12);
@@ -29,10 +20,14 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 html, body {
-  font-family: -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: var(--font-body, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif);
   color: var(--body);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4, h5, h6, .head h1, .section h1, .cover h1 {
+  font-family: var(--font-heading, inherit);
 }
 
 @page { size: 1280px 720px; margin: 0; }

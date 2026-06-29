@@ -1,20 +1,9 @@
-#!/usr/bin/env node
-/**
- * docgen/html-theme.js — HTML slide theme for presentations
- *
- * Ported from gda-ai html_theme.py.
- *
- * Generates self-contained HTML documents from a list of slides.
- * Supports 20+ slide types: portada, seccion, bullets, dos-columnas,
- * tarjetas, kpis, personas, cita, imagen, tabla, lamina-completa,
- * grafico, imagen-texto, destacado, comparativa, timeline,
- * n-columnas, proceso/workflow, masonry, faq.
- */
-
 import { readFileSync, existsSync } from 'fs';
 import { join, resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
-import { brand, loadBrand } from './index.js';
+import { brand, esc } from './index.js';
+import { brandCss, imageDataUri } from './theme-utils.js';
+import { logo, foot, head, bullets, tableV, card, panel, kpi, person, media } from './components.js';
 import { renderChart } from './charts.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -22,183 +11,29 @@ const REPO_ROOT = resolve(__dirname, '..', '..', '..');
 
 const CSS_PATH = join(REPO_ROOT, 'assets', 'templates', 'deck.css');
 
-let _currentFooterText = null;
-
-function setFooterFromSlide(slide) {
-  if (slide && slide.footer) {
-    _currentFooterText = slide.footer;
-  } else {
-    const b = brand();
-    if (b.footer) {
-      _currentFooterText = b.footer.replace('{{organization}}', b.name);
-    } else {
-      _currentFooterText = 'Contenido confidencial';
-    }
-  }
-}
-
 /* ─── Helpers ─── */
 
-function esc(text) {
-  return String(text).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+function resolveFooterText(s) {
+  if (s?.footer) return s.footer;
+  const b = brand();
+  if (b.footer) return b.footer.replace('{{organization}}', b.name);
+  return 'Contenido confidencial';
 }
 
 function _css() {
   let css = '';
   if (existsSync(CSS_PATH)) css = readFileSync(CSS_PATH, 'utf8');
-  const b = brand();
-  const root = `:root {
-  --ink: ${b.colors.primary};
-  --ink-2: ${b.colors.secondary};
-  --bg-1: ${b.colors['light-bg']};
-  --card: ${b.colors.background};
-  --accent: ${b.colors.secondary};
-  --accent-soft: ${b.colors['light-bg']};
-}\n`;
-  return root + css;
-}
-
-function _logoHref(variant = 'blue') {
-  const b = brand();
-  const rel = variant === 'white' ? b.logo_white : b.logo;
-  if (!rel) return '';
-  const logoPath = join(REPO_ROOT, rel);
-  if (!existsSync(logoPath)) return '';
-  const data = readFileSync(logoPath).toString('base64');
-  return `data:image/svg+xml;base64,${data}`;
-}
-
-function _resolvePath(path) {
-  const p = resolve(String(path));
-  if (!existsSync(p)) return resolve(join(REPO_ROOT, path));
-  return p;
-}
-
-function _imageDataUri(path) {
-  if (!path) return null;
-  const p = _resolvePath(path);
-  if (!existsSync(p)) return null;
-  const data = readFileSync(p);
-  const ext = p.split('.').pop().toLowerCase();
-  const mime = {
-    svg: 'image/svg+xml',
-    png: 'image/png',
-    jpg: 'image/jpeg',
-    jpeg: 'image/jpeg',
-    gif: 'image/gif',
-    webp: 'image/webp',
-  }[ext] || 'application/octet-stream';
-  const b64 = data.toString('base64');
-  return `data:${mime};base64,${b64}`;
-}
-
-/* ─── Reusable components ─── */
-
-function logo(pos = 'tr', variant = 'blue') {
-  const href = _logoHref(variant);
-  const cls = pos === 'tr' ? 'logo logo--tr' : 'logo logo--center';
-  return `<div class="${cls}"><img src="${href}" alt="Logo"/></div>`;
-}
-
-function footer(center = false, page = null) {
-  const cls = center ? 'footer footer--center' : 'footer';
-  const text = _currentFooterText || 'Contenido confidencial';
-  let parts = [`<div class="${cls}">${esc(text)}</div>`];
-  if (page !== null && !center) parts.push(`<div class="pageno">${esc(page)}</div>`);
-  return parts.join('');
-}
-
-function head(titulo, subtitulo = '', eyebrow = '') {
-  let parts = ['<div class="head">'];
-  if (eyebrow) parts.push(`<span class="eyebrow">${esc(eyebrow)}</span>`);
-  parts.push(`<h1>${esc(titulo)}</h1>`);
-  if (subtitulo) parts.push(`<div class="sub">${esc(subtitulo)}</div>`);
-  parts.push('</div>');
-  return parts.join('');
-}
-
-function bullets(items) {
-  const lis = items.map(i => `<li>${esc(i)}</li>`).join('');
-  return `<ul class="bullets">${lis}</ul>`;
-}
-
-function media(src, cls = 'media', fit = 'cover') {
-  if (!src) return '';
-  const uri = _imageDataUri(src);
-  if (!uri) return '';
-  const style = fit ? ` style="object-fit:${fit}"` : '';
-  return `<div class="${cls}"><img src="${uri}"${style} alt=""/></div>`;
-}
-
-function card(titulo, items = null, subtitulo = '', icon = '', image = null, iconImg = null, accentTop = true) {
-  let parts = ['<div class="card">'];
-  const banner = image ? media(image, 'card-banner') : '';
-  if (banner) parts.push(banner);
-  const iconMedia = iconImg ? media(iconImg, 'card-icon-img') : '';
-  if (iconMedia) parts.push(iconMedia);
-  else if (icon) parts.push(`<div class="card-icon">${esc(icon)}</div>`);
-  else if (accentTop && !banner) parts.push('<div class="accent-top"></div>');
-  parts.push('<div class="card-body">');
-  parts.push(`<h3>${esc(titulo)}</h3>`);
-  if (subtitulo) parts.push(`<div class="card-sub">${esc(subtitulo)}</div>`);
-  if (items) {
-    parts.push('<ul>' + items.map(i => `<li>${esc(i)}</li>`).join('') + '</ul>');
-  }
-  parts.push('</div></div>');
-  return parts.join('');
-}
-
-function panel(titulo, items = null, tag = '', image = null) {
-  let parts = ['<div class="panel">'];
-  const banner = image ? media(image, 'panel-banner') : '';
-  if (banner) parts.push(banner);
-  parts.push('<div class="panel-body">');
-  if (tag) parts.push(`<span class="panel-tag">${esc(tag)}</span>`);
-  parts.push(`<h3>${esc(titulo)}</h3>`);
-  if (items) {
-    parts.push('<ul>' + items.map(i => `<li>${esc(i)}</li>`).join('') + '</ul>');
-  }
-  parts.push('</div></div>');
-  return parts.join('');
-}
-
-function kpi(valor, etiqueta) {
-  return `<div class="kpi"><div class="kpi-value">${esc(valor)}</div><div class="kpi-label">${esc(etiqueta)}</div></div>`;
-}
-
-function _initials(nombre) {
-  const parts = String(nombre).split(/\s+/).filter(Boolean);
-  if (!parts.length) return '?';
-  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
-  return (parts[0][0] + parts[1][0]).toUpperCase();
-}
-
-function person(nombre, rol = '', avatar = null, avatarImg = null) {
-  const uri = avatarImg ? _imageDataUri(avatarImg) : null;
-  let av;
-  if (uri) {
-    av = `<div class="avatar avatar--img"><img src="${uri}" alt=""/></div>`;
-  } else {
-    const text = avatar ? esc(avatar) : esc(_initials(nombre));
-    av = `<div class="avatar">${text}</div>`;
-  }
-  return `<div class="person">${av}<div class="pname">${esc(nombre)}</div><div class="prole">${esc(rol)}</div></div>`;
-}
-
-function tableV(headers, rows) {
-  const th = headers.map(h => `<th>${esc(h)}</th>`).join('');
-  const trs = rows.map(row => '<tr>' + row.map(c => `<td>${esc(c)}</td>`).join('') + '</tr>').join('');
-  return `<table class="fibex"><thead><tr>${th}</tr></thead><tbody>${trs}</tbody></table>`;
+  return brandCss('deck') + '\n' + css;
 }
 
 /* ─── Slide wrapper ─── */
 
-function _slide(inner, extraCls = '', page = null, footerCenter = false, withLogo = 'tr', logoVariant = 'blue') {
+function _slide(inner, extraCls = '', page = null, footerCenter = false, withLogo = 'tr', logoVariant = 'blue', footerText = '') {
   const cls = 'slide' + (extraCls ? ` ${extraCls}` : '');
   let parts = [`<section class="${cls}">`];
   if (withLogo) parts.push(logo(withLogo, logoVariant));
   parts.push(inner);
-  parts.push(footer(footerCenter, page));
+  parts.push(foot(footerCenter, page, footerText));
   parts.push('</section>');
   return parts.join('');
 }
@@ -210,7 +45,7 @@ function _slide_portada(s, page) {
   let inner = `<div class="cover body-area"><h1>${esc(s.titulo || '')}</h1>`;
   if (s.subtitulo) inner += `<div class="sub">${esc(s.subtitulo)}</div>`;
   inner += '<div class="accent-bar"></div></div>';
-  return _slide(inner, 'cover', null, true, 'center', logoVariant);
+  return _slide(inner, 'cover', null, true, 'center', logoVariant, resolveFooterText(s));
 }
 
 function _slide_seccion(s, page) {
@@ -220,23 +55,23 @@ function _slide_seccion(s, page) {
   inner += `<h1>${esc(s.titulo || '')}</h1>`;
   if (s.subtitulo) inner += `<div class="sub">${esc(s.subtitulo)}</div>`;
   inner += '</div>';
-  return _slide(inner, 'section', page, false, 'tr', logoVariant);
+  return _slide(inner, 'section', page, false, 'tr', logoVariant, resolveFooterText(s));
 }
 
 function _slide_bullets(s, page) {
   const logoVariant = s.logo_variant || 'blue';
   let inner = head(s.titulo || '', s.subtitulo || '', s.eyebrow || '');
-  inner += `<div class="body-area">${bullets(s.items || [])}</div>`;
-  return _slide(inner, '', page, false, 'tr', logoVariant);
+  inner += `<div class="body-area">${bullets(s.items || [], 'bullets')}</div>`;
+  return _slide(inner, '', page, false, 'tr', logoVariant, resolveFooterText(s));
 }
 
 function _slide_dos_columnas(s, page) {
   const logoVariant = s.logo_variant || 'blue';
   const cols = s.columnas || [];
-  const panelsHtml = cols.map(c => panel(c.titulo || '', c.items || [], c.tag || '')).join('');
+  const panelsHtml = cols.map(c => panel({ titulo: c.titulo || '', items: c.items || [], tag: c.tag || '' })).join('');
   let inner = head(s.titulo || '', s.subtitulo || '', s.eyebrow || '');
   inner += `<div class="twocol">${panelsHtml}</div>`;
-  return _slide(inner, '', page, false, 'tr', logoVariant);
+  return _slide(inner, '', page, false, 'tr', logoVariant, resolveFooterText(s));
 }
 
 function _slide_tarjetas(s, page) {
@@ -244,11 +79,11 @@ function _slide_tarjetas(s, page) {
   const items = s.tarjetas || [];
   const cols = s.columnas_grid || Math.min(Math.max(items.length, 1), 4);
   const cardsHtml = items.map(c =>
-    card(c.titulo || '', c.items || [], c.subtitulo || '', c.icon || '', c.image || null, c.icon_img || null)
+    card({ titulo: c.titulo || '', items: c.items || [], subtitulo: c.subtitulo || '', icon: c.icon || '', image: c.image || null, iconImg: c.icon_img || null })
   ).join('');
   let inner = head(s.titulo || '', s.subtitulo || '', s.eyebrow || '');
   inner += `<div class="grid cols-${cols}">${cardsHtml}</div>`;
-  return _slide(inner, '', page, false, 'tr', logoVariant);
+  return _slide(inner, '', page, false, 'tr', logoVariant, resolveFooterText(s));
 }
 
 function _slide_kpis(s, page) {
@@ -258,17 +93,17 @@ function _slide_kpis(s, page) {
   const body = items.map(k => kpi(k.valor || '', k.etiqueta || '')).join('');
   let inner = head(s.titulo || '', s.subtitulo || '', s.eyebrow || '');
   inner += `<div class="kpis grid cols-${cols}">${body}</div>`;
-  return _slide(inner, '', page, false, 'tr', logoVariant);
+  return _slide(inner, '', page, false, 'tr', logoVariant, resolveFooterText(s));
 }
 
 function _slide_personas(s, page) {
   const logoVariant = s.logo_variant || 'blue';
   const items = s.personas || [];
   const cols = s.columnas_grid || Math.min(Math.max(items.length, 1), 4);
-  const body = items.map(p => person(p.nombre || '', p.rol || '', p.avatar || null, p.avatar_img || null)).join('');
+  const body = items.map(p => person({ nombre: p.nombre || '', rol: p.rol || '', avatar: p.avatar || null, avatarImg: p.avatar_img || null })).join('');
   let inner = head(s.titulo || '', s.subtitulo || '', s.eyebrow || '');
   inner += `<div class="people grid cols-${cols}">${body}</div>`;
-  return _slide(inner, '', page, false, 'tr', logoVariant);
+  return _slide(inner, '', page, false, 'tr', logoVariant, resolveFooterText(s));
 }
 
 function _slide_cita(s, page) {
@@ -276,35 +111,35 @@ function _slide_cita(s, page) {
   let inner = `<div class="quote body-area"><blockquote>${esc(s.texto || '')}</blockquote>`;
   if (s.autor) inner += `<div class="qby">${esc(s.autor)}</div>`;
   inner += '</div>';
-  return _slide(inner, 'quote', page, false, 'tr', logoVariant);
+  return _slide(inner, 'quote', page, false, 'tr', logoVariant, resolveFooterText(s));
 }
 
 function _slide_imagen(s, page) {
   const logoVariant = s.logo_variant || 'blue';
-  const src = s.src ? _imageDataUri(s.src) : '';
+  const src = s.src ? imageDataUri(s.src) : '';
   const bare = s.bare ? ' bare' : '';
   let inner = '';
   if (s.titulo) inner += head(s.titulo || '', s.subtitulo || '', s.eyebrow || '');
   inner += `<div class="figure${bare}"><img src="${src || ''}" alt=""/></div>`;
-  return _slide(inner, '', page, false, 'tr', logoVariant);
+  return _slide(inner, '', page, false, 'tr', logoVariant, resolveFooterText(s));
 }
 
 function _slide_tabla(s, page) {
   const logoVariant = s.logo_variant || 'blue';
   let inner = head(s.titulo || '', s.subtitulo || '', s.eyebrow || '');
   inner += `<div class="body-area">${tableV(s.headers || [], s.filas || [])}</div>`;
-  return _slide(inner, '', page, false, 'tr', logoVariant);
+  return _slide(inner, '', page, false, 'tr', logoVariant, resolveFooterText(s));
 }
 
 function _slide_lamina_completa(s, page) {
   const src = s.src;
   let innerImg;
   if (s.bleed && src && String(src).endsWith('.svg')) {
-    const svgPath = _resolvePath(src);
+    const svgPath = resolve(REPO_ROOT, src);
     innerImg = existsSync(svgPath) ? readFileSync(svgPath, 'utf8') : '';
     innerImg = `<div class="fullbleed-svg">${innerImg}</div>`;
   } else {
-    const uri = src ? _imageDataUri(src) : '';
+    const uri = src ? imageDataUri(src) : '';
     innerImg = `<img class="fullbleed-img" src="${uri || ''}" alt=""/>`;
   }
   let parts = [innerImg];
@@ -326,7 +161,7 @@ function _slide_lamina_completa(s, page) {
   let out = [`<section class="${cls}">`];
   out.push(parts.join(''));
   if (withLogo) out.push(logo(withLogo, logoVariant));
-  if (showFooter) out.push(footer(false, page));
+  if (showFooter) out.push(foot(false, page, resolveFooterText(s)));
   out.push('</section>');
   return out.join('');
 }
@@ -337,7 +172,7 @@ function _slide_grafico(s, page) {
   const svg = renderChart(chart.tipo || '', chart);
   let inner = head(s.titulo || '', s.subtitulo || '', s.eyebrow || '');
   inner += `<div class="body-area chart-area">${svg}</div>`;
-  return _slide(inner, '', page, false, 'tr', logoVariant);
+  return _slide(inner, '', page, false, 'tr', logoVariant, resolveFooterText(s));
 }
 
 function _slide_imagen_texto(s, page) {
@@ -348,7 +183,7 @@ function _slide_imagen_texto(s, page) {
   else if (s.texto) textParts.push(`<p class="it-text">${esc(s.texto)}</p>`);
   const order = s.imagen_derecha ? 'reverse' : '';
   const inner = `<div class="imgtext ${order}"><div class="it-text-col">${textParts.join('')}</div>${img}</div>`;
-  return _slide(inner, '', page, false, 'tr', logoVariant);
+  return _slide(inner, '', page, false, 'tr', logoVariant, resolveFooterText(s));
 }
 
 function _slide_destacado(s, page) {
@@ -359,7 +194,7 @@ function _slide_destacado(s, page) {
   if (s.titulo) inner += `<h1>${esc(s.titulo)}</h1>`;
   if (s.subtitulo) inner += `<div class="sub">${esc(s.subtitulo)}</div>`;
   inner += '</div>';
-  return _slide(inner, 'destacado-slide', page, false, 'tr', logoVariant);
+  return _slide(inner, 'destacado-slide', page, false, 'tr', logoVariant, resolveFooterText(s));
 }
 
 function _slide_comparativa(s, page) {
@@ -378,7 +213,7 @@ function _slide_comparativa(s, page) {
   }).join('');
   let inner = head(s.titulo || '', s.subtitulo || '', s.eyebrow || '');
   inner += `<div class="comparativa">${panelsHtml}</div>`;
-  return _slide(inner, '', page, false, 'tr', logoVariant);
+  return _slide(inner, '', page, false, 'tr', logoVariant, resolveFooterText(s));
 }
 
 function _slide_timeline(s, page) {
@@ -387,7 +222,7 @@ function _slide_timeline(s, page) {
   const svg = renderChart('timeline', { hitos });
   let inner = head(s.titulo || '', s.subtitulo || '', s.eyebrow || '');
   inner += `<div class="body-area chart-area">${svg}</div>`;
-  return _slide(inner, '', page, false, 'tr', logoVariant);
+  return _slide(inner, '', page, false, 'tr', logoVariant, resolveFooterText(s));
 }
 
 function _slide_n_columnas(s, page) {
@@ -395,10 +230,10 @@ function _slide_n_columnas(s, page) {
   const cols = s.columnas || [];
   let n = s.numero_columnas || 3;
   n = Math.max(2, Math.min(6, n));
-  const panelsHtml = cols.map(c => panel(c.titulo || '', c.items || [], c.tag || '')).join('');
+  const panelsHtml = cols.map(c => panel({ titulo: c.titulo || '', items: c.items || [], tag: c.tag || '' })).join('');
   let inner = head(s.titulo || '', s.subtitulo || '', s.eyebrow || '');
   inner += `<div class="ncol cols-${n}">${panelsHtml}</div>`;
-  return _slide(inner, '', page, false, 'tr', logoVariant);
+  return _slide(inner, '', page, false, 'tr', logoVariant, resolveFooterText(s));
 }
 
 function _slide_proceso(s, page) {
@@ -414,7 +249,7 @@ function _slide_proceso(s, page) {
   ).join('');
   let inner = head(s.titulo || '', s.subtitulo || '', s.eyebrow || '');
   inner += `<div class="proceso">${items}</div>`;
-  return _slide(inner, '', page, false, 'tr', logoVariant);
+  return _slide(inner, '', page, false, 'tr', logoVariant, resolveFooterText(s));
 }
 
 function _slide_masonry(s, page) {
@@ -425,7 +260,7 @@ function _slide_masonry(s, page) {
   const items = imagenes.filter(Boolean).map(img => {
     const caption = img.caption || '';
     const alt = esc(img.alt || '');
-    const src = img.src ? _imageDataUri(img.src) : '';
+    const src = img.src ? imageDataUri(img.src) : '';
     if (!src) return null;
     let item = '<div class="mas-item">';
     item += `<img src="${src}" alt="${alt}"/>`;
@@ -435,7 +270,7 @@ function _slide_masonry(s, page) {
   }).filter(Boolean).join('');
   let inner = head(s.titulo || '', s.subtitulo || '', s.eyebrow || '');
   inner += `<div class="masonry cols-${n}">${items}</div>`;
-  return _slide(inner, '', page, false, 'tr', logoVariant);
+  return _slide(inner, '', page, false, 'tr', logoVariant, resolveFooterText(s));
 }
 
 function _slide_faq(s, page) {
@@ -448,7 +283,7 @@ function _slide_faq(s, page) {
   }).join('');
   let inner = head(s.titulo || '', s.subtitulo || '', s.eyebrow || '');
   inner += `<div class="faq">${details}</div>`;
-  return _slide(inner, '', page, false, 'tr', logoVariant);
+  return _slide(inner, '', page, false, 'tr', logoVariant, resolveFooterText(s));
 }
 
 /* ─── Layout registry ─── */
@@ -480,7 +315,6 @@ const _LAYOUTS = {
 /* ─── Public API ─── */
 
 export function slideToHtml(slide, page = null) {
-  setFooterFromSlide(slide);
   const kind = slide.type || 'bullets';
   const layout = _LAYOUTS[kind];
   if (!layout) throw new Error(`Unsupported slide type: ${kind}`);
