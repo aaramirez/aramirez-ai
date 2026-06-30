@@ -29,7 +29,7 @@ function _pageHeader(meta) {
   );
 }
 
-function _pageFooter(meta, pageNum) {
+function _pageFooter(meta) {
   const b = brand();
   const template = b.footer || 'Contenido confidencial de {{organization}}';
   const org = esc(meta.organization || b.name);
@@ -37,7 +37,6 @@ function _pageFooter(meta, pageNum) {
   return (
     '<div class="page-footer">' +
     `<span class="footer-org">${text}</span>` +
-    `<span class="footer-page">P\u00e1gina ${pageNum}</span>` +
     '</div>\n'
   );
 }
@@ -307,13 +306,11 @@ const _NEW_PAGE = new Set(['section', 'doc-cover']);
 export function buildHtml(meta, slides) {
   const pageList = [];
   let pageBody = [];
-  let pageNum = 0;
 
   function flushPage() {
     if (pageBody.length) {
-      pageNum++;
       const h = _pageHeader(meta);
-      const f = _pageFooter(meta, pageNum);
+      const f = _pageFooter(meta);
       pageList.push(
         `<section class="page">\n${h}<div class="page-body">\n${pageBody.join('')}\n</div>\n${f}</section>\n`
       );

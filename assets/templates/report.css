@@ -80,12 +80,6 @@ h1, h2, h3, h4, h5, h6, .section-block h2, .cover-page h1 {
   font-size: 7.5pt;
   color: var(--muted);
 }
-.page-footer .footer-page {
-  font-size: 7.5pt;
-  color: var(--muted);
-  font-family: Helvetica, Arial, sans-serif;
-}
-
 /* ---- Área de contenido ---- */
 .page-body {
   position: relative;
