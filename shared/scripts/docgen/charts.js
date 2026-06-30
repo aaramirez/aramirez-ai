@@ -252,7 +252,7 @@ export function gaugeChart(value, { width = 300, height = 200, vmin = 0, vmax = 
 
 /* ─── Timeline ─── */
 
-export function timelineChart(milestones, { width = 700, height = 120 } = {}) {
+export function timelineChart(milestones, { width = 900, height = 140 } = {}) {
   const b = brand();
   let svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" width="${width}" height="${height}">`;
   const cy = height / 2;
@@ -262,8 +262,8 @@ export function timelineChart(milestones, { width = 700, height = 120 } = {}) {
     const [date, title] = milestones[i];
     const x = 60 + i * stepX;
     svg += `\n  <circle cx="${x}" cy="${cy}" r="8" fill="${b.colors.secondary}" stroke="#fff" stroke-width="2"/>`;
-    svg += `\n  <text x="${x}" y="${cy - 16}" text-anchor="middle" font-family="${b.fonts.body}" font-size="11" fill="${b.colors.primary}" font-weight="600">${esc(date)}</text>`;
-    svg += `\n  <text x="${x}" y="${cy + 24}" text-anchor="middle" font-family="${b.fonts.body}" font-size="10" fill="${b.colors.text}">${esc(title)}</text>`;
+    svg += `\n  <text x="${x}" y="${cy - 18}" text-anchor="middle" font-family="${b.fonts.body}" font-size="10" fill="${b.colors.primary}" font-weight="600">${esc(date)}</text>`;
+    svg += `\n  <text x="${x}" y="${cy + 28}" text-anchor="middle" font-family="${b.fonts.body}" font-size="9" fill="${b.colors.text}">${esc(title)}</text>`;
   }
   svg += '\n</svg>';
   return svg;

@@ -268,8 +268,8 @@ export function profileCard(slide) {
     ys += 17;
   }
 
-  // Logo (top-right)
-  const logoSrc = (b.logo_white || b.logo) ? resolve(join(REPO_ROOT, b.logo_white || b.logo)) : null;
+  // Logo (top-right on light panel → use dark logo)
+  const logoSrc = b.logo ? resolve(join(REPO_ROOT, b.logo)) : null;
   if (logoSrc && existsSync(logoSrc)) {
     const raw = readFileSync(logoSrc);
     s += `  <image x="1346" y="42" width="220" height="86" xlink:href="data:image/svg+xml;base64,${raw.toString('base64')}" preserveAspectRatio="xMidYMid meet"/>\n`;
@@ -393,6 +393,7 @@ export function htmlToPdf(html, pdfPath, browserPath) {
   try {
     const result = spawnSync(browser, [
       '--headless=new', '--disable-gpu', '--no-sandbox',
+      '--no-pdf-header-footer',
       `--print-to-pdf=${resolve(pdfPath)}`, `file://${resolve(htmlPath)}`,
     ], { timeout: 30000, stdio: 'pipe' });
     if (result.error) throw result.error;

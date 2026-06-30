@@ -21,7 +21,7 @@ const REPO_ROOT = resolve(__dirname, '..', '..');
 const SPECS_DIR = join(REPO_ROOT, 'assets', 'templates', 'specs');
 
 const DECK_TYPES = ['portada','seccion','bullets','dos-columnas','tarjetas','kpis','personas','cita','imagen','tabla','lamina-completa','grafico','imagen-texto','destacado','comparativa','timeline','n-columnas','proceso','workflow','masonry','faq'];
-const REPORT_TYPES = ['doc-cover','section','text','callout','table','bullets','recommendation','roadmap','kpi-table','closing'];
+const REPORT_TYPES = ['doc-cover','section','text','callout','table','bullets','recommendation','roadmap','kpi-table','closing','change-log','conventions-table','endpoint-summary','endpoint-detail','page-break','code-block','http-codes'];
 const CHART_TYPES = ['barras','bar','barras-agrupadas','grouped','barras-apiladas','stacked','donut','pastel','pie','lineas','line','progreso','progress','gauge','timeline','gantt','radar','waterfall','heatmap'];
 
 function readSpec(name) {

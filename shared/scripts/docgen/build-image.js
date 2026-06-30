@@ -33,6 +33,7 @@ async function main() {
 
   for (let i = 0; i < args.length; i++) {
     if (args[i] === '--output' && i + 1 < args.length) parsed.output = args[++i];
+    else if (args[i] === '--format' && i + 1 < args.length) i++; // accepted for compatibility, default is png
     else if (args[i] === '--scale' && i + 1 < args.length) parsed.scale = parseFloat(args[++i]);
     else if (args[i] === '--svg') parsed.svg = true;
     else if (!args[i].startsWith('--')) parsed.source = args[i];
@@ -62,7 +63,7 @@ async function main() {
     svg = slideToSvg(slides[0]);
   }
 
-  const output = resolveOutput(parsed.output, parsed.source);
+  const output = resolveOutput(parsed.output || spec.output, parsed.source);
   svgToPng(svg, output, parsed.scale);
   console.log(`Image generated: ${output}`);
 

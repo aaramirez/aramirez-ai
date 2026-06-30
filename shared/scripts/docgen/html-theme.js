@@ -58,6 +58,28 @@ function _slide_seccion(s, page) {
   return _slide(inner, 'section', page, false, 'tr', logoVariant, resolveFooterText(s));
 }
 
+function _slide_lamina(s, page) {
+  const logoVariant = s.logo_variant || 'blue';
+  let inner = head(s.titulo || '', s.subtitulo || '', s.eyebrow || '');
+  inner += '<div class="body-area">';
+  let inList = false;
+  for (const b of (s.bloques || [])) {
+    if (b.tipo === 'hdr') {
+      if (inList) { inner += '</ul>'; inList = false; }
+      inner += `<h3>${esc(b.texto)}</h3>`;
+    } else if (b.tipo === 'txt') {
+      if (inList) { inner += '</ul>'; inList = false; }
+      inner += `<p>${esc(b.texto)}</p>`;
+    } else if (b.tipo === 'li') {
+      if (!inList) { inner += '<ul class="bullet-list">'; inList = true; }
+      inner += `<li>${esc(b.texto)}</li>`;
+    }
+  }
+  if (inList) inner += '</ul>';
+  inner += '</div>';
+  return _slide(inner, '', page, false, 'tr', logoVariant, resolveFooterText(s));
+}
+
 function _slide_bullets(s, page) {
   const logoVariant = s.logo_variant || 'blue';
   let inner = head(s.titulo || '', s.subtitulo || '', s.eyebrow || '');
@@ -239,6 +261,7 @@ function _slide_n_columnas(s, page) {
 function _slide_proceso(s, page) {
   const logoVariant = s.logo_variant || 'blue';
   const pasos = s.pasos || [];
+  const many = pasos.length > 4 ? ' proceso--many' : '';
   let items = pasos.map((p, i) =>
     `<div class="paso">` +
     `<div class="paso-num">${i + 1}</div>` +
@@ -248,7 +271,7 @@ function _slide_proceso(s, page) {
     `</div></div>`
   ).join('');
   let inner = head(s.titulo || '', s.subtitulo || '', s.eyebrow || '');
-  inner += `<div class="proceso">${items}</div>`;
+  inner += `<div class="proceso${many}">${items}</div>`;
   return _slide(inner, '', page, false, 'tr', logoVariant, resolveFooterText(s));
 }
 
@@ -290,6 +313,7 @@ function _slide_faq(s, page) {
 
 const _LAYOUTS = {
   portada: _slide_portada,
+  lamina: _slide_lamina,
   seccion: _slide_seccion,
   bullets: _slide_bullets,
   'dos-columnas': _slide_dos_columnas,

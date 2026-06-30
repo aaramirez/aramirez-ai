@@ -50,8 +50,8 @@ h1, h2, h3, h4, h5, h6, .head h1, .section h1, .cover h1 {
 .logo { position: absolute; }
 .logo img { display: block; }
 .logo--tr { top: 48px; right: 64px; width: 190px; }
-.logo--center { top: 150px; left: 0; right: 0; text-align: center; }
-.logo--center img { width: 300px; display: inline-block; }
+.logo--center { top: 80px; left: 0; right: 0; text-align: center; }
+.logo--center img { width: 200px; display: inline-block; }
 
 .footer {
   position: absolute;
@@ -96,18 +96,18 @@ h1, h2, h3, h4, h5, h6, .head h1, .section h1, .cover h1 {
 .body-area { flex: 1; min-height: 0; display: flex; flex-direction: column; justify-content: center; }
 
 /* ---- Portada ---- */
-.cover { align-items: center; justify-content: flex-end; text-align: center; padding-bottom: 150px; }
+.cover { align-items: center; justify-content: flex-end; text-align: center; padding-bottom: 120px; }
 .cover .accent-bar {
   width: 88px; height: 6px; border-radius: 999px;
-  background: var(--accent); margin: 26px auto 0;
+  background: var(--accent); margin: 20px auto 0;
 }
-.cover h1 { font-size: 60px; font-weight: 800; color: var(--ink); letter-spacing: -0.02em; }
-.cover .sub { margin-top: 18px; font-size: 26px; color: var(--muted); }
+.cover h1 { font-size: 52px; font-weight: 800; color: var(--ink); letter-spacing: -0.02em; overflow-wrap: break-word; word-break: break-word; max-width: 1000px; }
+.cover .sub { margin-top: 14px; font-size: 24px; color: var(--muted); }
 
 /* ---- Sección divisoria ---- */
 .section { justify-content: center; }
 .section .idx { font-size: 22px; font-weight: 800; color: var(--accent); letter-spacing: 0.18em; }
-.section h1 { font-size: 64px; font-weight: 800; color: var(--ink); letter-spacing: -0.02em; margin-top: 10px; }
+.section h1 { font-size: 46px; font-weight: 800; color: var(--ink); letter-spacing: -0.02em; margin-top: 10px; }
 .section .sub { margin-top: 16px; font-size: 24px; color: var(--muted); max-width: 900px; }
 
 /* ---- Viñetas ---- */
@@ -271,9 +271,9 @@ table.fibex tbody tr:last-child td:last-child { border-bottom-right-radius: 12px
 
 /* ---- Destacado (hero stat) ---- */
 .destacado { align-items: flex-start; justify-content: center; }
-.destacado .hero-stat { font-size: 150px; font-weight: 800; color: var(--ink); line-height: 0.95; letter-spacing: -0.03em; }
-.destacado h1 { font-size: 40px; color: var(--ink); font-weight: 800; margin-top: 10px; }
-.destacado .sub { margin-top: 12px; font-size: 24px; color: var(--muted); max-width: 900px; }
+.destacado .hero-stat { font-size: 64px; font-weight: 800; color: var(--ink); line-height: 1; letter-spacing: -0.02em; overflow-wrap: break-word; word-break: break-word; }
+.destacado h1 { font-size: 44px; color: var(--ink); font-weight: 800; margin-top: 10px; }
+.destacado .sub { margin-top: 10px; font-size: 22px; color: var(--muted); max-width: 900px; }
 
 /* ---- Comparativa ---- */
 .comparativa { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gap); height: 100%; align-content: center; }
@@ -295,23 +295,28 @@ table.fibex tbody tr:last-child td:last-child { border-bottom-right-radius: 12px
 .ncol.cols-6 { grid-template-columns: repeat(6, 1fr); }
 
 /* ---- Proceso / Workflow ---- */
-.proceso { display: flex; gap: 24px; justify-content: center; align-items: stretch; flex: 1; padding: 20px 0; }
+.proceso {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+  justify-content: center; align-items: stretch; flex: 1; padding: 16px 0;
+  align-content: center;
+}
+.proceso.proceso--many { grid-template-columns: repeat(3, 1fr); }
 .paso {
-  flex: 1; background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow);
-  padding: 32px 24px 28px; position: relative; display: flex; flex-direction: column;
+  background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow);
+  padding: 24px 18px 22px; position: relative; display: flex; flex-direction: column;
 }
 .paso::after {
-  content: "\2192"; position: absolute; right: -22px; top: 50%; transform: translateY(-50%);
-  font-size: 28px; color: var(--accent); font-weight: 700;
+  content: "\2192"; position: absolute; right: -18px; top: 50%; transform: translateY(-50%);
+  font-size: 22px; color: var(--accent); font-weight: 700;
 }
 .paso:last-child::after { content: none; }
 .paso-num {
-  width: 48px; height: 48px; border-radius: 50%;
-  background: var(--accent); color: #fff; font-weight: 800; font-size: 22px;
-  display: flex; align-items: center; justify-content: center; margin-bottom: 18px; flex: none;
+  width: 40px; height: 40px; border-radius: 50%;
+  background: var(--accent); color: #fff; font-weight: 800; font-size: 18px;
+  display: flex; align-items: center; justify-content: center; margin-bottom: 14px; flex: none;
 }
-.paso h3 { font-size: 22px; color: var(--ink); font-weight: 800; margin-bottom: 8px; }
-.paso p { font-size: 16px; color: var(--body); line-height: 1.45; flex: 1; }
+.paso h3 { font-size: 18px; color: var(--ink); font-weight: 800; margin-bottom: 6px; overflow-wrap: break-word; }
+.paso p { font-size: 14px; color: var(--body); line-height: 1.4; flex: 1; overflow-wrap: break-word; }
 
 /* ---- Masonry ---- */
 .masonry { column-gap: var(--gap); height: 100%; }
