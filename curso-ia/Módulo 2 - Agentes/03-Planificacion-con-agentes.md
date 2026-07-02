@@ -8,14 +8,12 @@ Uno de los mayores errores al usar IA es lanzarse a escribir código sin plan. L
 
 ## Flujo de planificación
 
-```
 1. Describir el problema en lenguaje natural
 2. La IA ayuda a descomponerlo en tareas
 3. Definir arquitectura y tecnologías
 4. Estimar esfuerzo y dependencias
 5. Escribir specs para cada tarea
 6. Ejecutar con agentes
-```
 
 ## Rol del agente "plan"
 
@@ -62,13 +60,12 @@ Cada tarea tiene su propia especificación detallada (ver [[Módulo 1 — Fundam
 **Problema**: "App de gestión de tareas"
 
 **Plan generado con IA**:
-```
+
 Fase 1: Setup (Next.js, Prisma, Tailwind)
 Fase 2: Autenticación (next-auth, login/register)
 Fase 3: CRUD de tareas (crear, leer, actualizar, eliminar)
 Fase 4: Filtros y búsqueda
 Fase 5: Testing y deploy
-```
 
 Cada fase tiene su propia spec con criterios de aceptación.
 

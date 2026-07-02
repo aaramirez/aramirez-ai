@@ -77,6 +77,16 @@ license: MIT
 
 Available skills: **branding**, **code-review**, **content-ingestion**, **document-generation**, **git**, **kb-management**, **pdf-extraction**, **youtube**.
 
+### Skill de YouTube
+
+El skill `youtube` permite obtener transcripciones de cualquier video de YouTube y usarlas para generar notas de curso, resúmenes o análisis.
+
+```bash
+node shared/scripts/youtube-transcript.js <video-id-or-url> --lang es
+```
+
+**Importante**: Cada vez que uses este skill, guarda la transcripción como referencia en el vault de Obsidian en `curso-ia/Transcripciones/<id> - <titulo>.md`. Esto mantiene un registro permanente del material fuente.
+
 After creating or editing a skill, run `arai sync skill <name>` to sync it to the opencode skills directory.
 
 ## Agents (opencode.json)

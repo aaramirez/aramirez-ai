@@ -44,14 +44,12 @@ La IA puede escribir funciones, pero **tú** decides:
 
 ## Flujo de trabajo recomendado
 
-```
 1. Planificar (tú)
 2. Especificar (tú + IA)
 3. Generar (IA)
 4. Revisar (tú)
 5. Testear (tú + IA)
 6. Committear (tú)
-```
 
 ## Enlaces
 

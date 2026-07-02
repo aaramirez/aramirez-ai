@@ -9,7 +9,7 @@ La documentación es lo primero que se abandona cuando hay presión. Los agentes
 ## ¿Qué puede documentar la IA?
 
 | Tipo | Automatizable | Calidad |
-|------|:---:|:---:|
+|------|:----|:----|
 | README.md | ✅ Alto | Buena con buen contexto |
 | JSDoc / docstrings | ✅ Alto | Excelente |
 | API docs | ✅ Alto | Muy buena |
@@ -33,12 +33,10 @@ La documentación es lo primero que se abandona cuando hay presión. Los agentes
 
 ## Flujo de documentación
 
-```
 1. Implementar funcionalidad
 2. Ejecutar agente docs: "Documenta el módulo de autenticación"
 3. Revisar la documentación generada
 4. Ajustar y commitear
-```
 
 ## Documentación viva desde specs
 

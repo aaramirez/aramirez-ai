@@ -13,13 +13,11 @@ Los agentes de IA son excelentes para escribir tests. Pueden:
 
 ## Flujo de testing
 
-```
 1. Escribir/actualizar código
 2. Agente genera tests para el código nuevo
 3. Ejecutar tests
 4. Si fallan: depurar con la IA
 5. Repetir hasta que pasen
-```
 
 ## Agente tester
 
@@ -41,12 +39,10 @@ Puedes tener un agente especializado en testing:
 
 ### TDD con IA
 
-```
 1. Escribir test que falla (tú o la IA)
 2. IA genera código para que pase
 3. Verificar que el test pasa
 4. Refactorizar
-```
 
 ### Property-based testing
 

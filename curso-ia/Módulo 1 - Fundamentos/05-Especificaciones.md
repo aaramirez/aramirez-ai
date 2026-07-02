@@ -43,13 +43,11 @@ Permitir que usuarios registrados accedan a la aplicación.
 
 ## De la spec al código con IA
 
-```
 1. Escribir spec detallada → archivo .md
 2. Compartir spec con la IA como contexto
 3. IA genera código basado en la spec
 4. Revisar que el código cumple cada punto
 5. Marcar criterios como completados
-```
 
 ## Beneficios
 

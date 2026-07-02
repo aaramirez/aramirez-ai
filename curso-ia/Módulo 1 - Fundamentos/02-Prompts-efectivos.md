@@ -4,13 +4,11 @@
 
 Un prompt para generar código debe incluir:
 
-```
 1. **Rol** — "Eres un experto en React con TypeScript"
 2. **Contexto** — "Estoy construyendo un dashboard de analytics"
 3. **Tarea específica** — "Crea un componente de gráfico de líneas"
 4. **Restricciones** — "Usa Recharts, datos mock, responsive"
 5. **Formato de salida** — "Devuelve el código del componente + un ejemplo de uso"
-```
 
 ## Tipos de prompts
 

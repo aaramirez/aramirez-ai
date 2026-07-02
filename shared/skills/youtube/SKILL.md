@@ -38,7 +38,15 @@ console.log(transcript.title);  // Video title
 1. Get the YouTube video ID from the URL (`v=XXXXX` or the 11-char slug)
 2. Fetch the transcript using the script or module
 3. Process the text: summarize, extract key concepts, generate notes
-4. Save relevant information into your knowledge base
+4. **Save the raw transcript** as a reference file in the Obsidian vault: `Transcripciones/<video-id> - <title>.md`
+5. Create or update course notes linking to the transcript
+
+### Ejemplo de guardado
+
+```bash
+# Obtener transcripción
+node shared/scripts/youtube-transcript.js ZZq4TpNgnvg --lang es > "curso-ia/Transcripciones/ZZq4TpNgnvg - Curso de OpenCode desde cero.md"
+```
 
 ## Cross-platform
 
@@ -48,3 +56,4 @@ Works on macOS, Linux, and Windows — no external dependencies beyond Node.js b
 
 - Use with [git](git) skill for commit messages referencing video sources
 - Use with [code-review](code-review) skill when reviewing code from tutorials
+- Use with [kb-management](kb-management) skill to maintain the Obsidian vault structure

@@ -28,6 +28,8 @@
 - [Curso Día 1](https://www.youtube.com/watch?v=GarWqdHzwac) — De prompts sueltos a programar con criterio
 - [Curso Día 2](https://www.youtube.com/watch?v=irR8437xihg) — Programa con agentes sin perder el control
 - [Curso Día 3](https://www.youtube.com/watch?v=kcSKbwVYXCg) — Usa multiagentes para desarrollar mejor
+- [Curso de OpenCode desde cero](https://www.youtube.com/watch?v=ZZq4TpNgnvg) — OpenCode: instalación, comandos, agentes, skills, tokens, sesiones (1h 52min)
+- [Curso interactivo en midu.dev](https://midu.dev/curso/opencode-desde-cero) — Versión del curso con 6 capítulos y 36 clases
 
 ## Otras fuentes
 

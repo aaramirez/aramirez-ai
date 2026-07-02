@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Módulo 4 — AI-Native/01-Empresas-AI-Native.md",
+                "file": "Módulo 5 — OpenCode desde cero/01-Instalacion-y-primeros-pasos.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "01-Empresas-AI-Native"
+              "title": "01-Instalacion-y-primeros-pasos"
             }
           }
         ]
@@ -185,16 +185,6 @@
   },
   "active": "ba2a208c2bee9c43",
   "lastOpenFiles": [
-    "Módulo 1 - Fundamentos/04-Criterio-y-buenas-practicas.md",
-    "Módulo 1 - Fundamentos/05-Especificaciones.md",
-    "Módulo 1 - Fundamentos/01-De-prompt-a-programacion.md",
-    "Módulo 4 — AI-Native/01-Empresas-AI-Native.md",
-    "Módulo 4 — AI-Native",
-    "Index.md",
-    "Welcome.md",
-    "Recursos/Comandos-utiles.md",
-    "Recursos/Referencias.md",
-    "Recursos/Glosario.md",
     "Módulo 3 - Multiagentes/05-Produccion-y-mantenimiento.md",
     "Módulo 3 - Multiagentes/04-Caso-practico-completo.md",
     "Módulo 3 - Multiagentes/03-Orquestacion-y-flujos.md",
@@ -203,10 +193,27 @@
     "Módulo 2 - Agentes/05-Documentacion-automatica.md",
     "Módulo 2 - Agentes/04-Testing-y-calidad.md",
     "Módulo 2 - Agentes/03-Planificacion-con-agentes.md",
+    "Módulo 5 — OpenCode desde cero/11-Caso-practico-completo.md",
+    "Módulo 5 — OpenCode desde cero/10-Sesiones-y-automatizacion.md",
+    "Módulo 5 — OpenCode desde cero/09-Comandos-personalizados.md",
     "Módulo 2 - Agentes/02-Configuracion-de-agentes.md",
+    "Módulo 5 — OpenCode desde cero/08-Skills-personalizadas.md",
+    "Módulo 5 — OpenCode desde cero/07-Agents-y-agents-md.md",
+    "Módulo 5 — OpenCode desde cero/06-Modelos-y-suscripciones.md",
+    "Módulo 5 — OpenCode desde cero/05-Construyendo-proyectos.md",
+    "Módulo 5 — OpenCode desde cero/04-Ahorro-de-tokens-y-modo-shell.md",
+    "Módulo 5 — OpenCode desde cero/03-Modos-build-y-plan.md",
+    "Módulo 5 — OpenCode desde cero/02-Comandos-esenciales-y-TUI.md",
+    "Módulo 5 — OpenCode desde cero/01-Instalacion-y-primeros-pasos.md",
+    "Transcripciones/ZZq4TpNgnvg - Curso de OpenCode desde cero.md",
     "Módulo 2 - Agentes/01-Que-es-un-agente.md",
+    "Módulo 1 - Fundamentos/05-Especificaciones.md",
+    "Módulo 1 - Fundamentos/04-Criterio-y-buenas-practicas.md",
+    "Transcripciones",
+    "Módulo 5 — OpenCode desde cero",
     "Módulo 1 - Fundamentos/03-Herramientas-y-MCP.md",
     "Módulo 1 - Fundamentos/02-Prompts-efectivos.md",
+    "Módulo 4 — AI-Native",
     "Recursos",
     "Módulo 3 - Multiagentes",
     "Módulo 2 - Agentes",

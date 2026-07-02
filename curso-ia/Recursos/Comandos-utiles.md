@@ -46,15 +46,74 @@ node shared/scripts/youtube-transcript.js GarWqdHzwac > transcripcion.md
 
 ## opencode
 
-```
-# Comandos disponibles
-/test       → Ejecutar tests
-/deploy     → Desplegar proyecto
-/commit     → Crear commit convencional
+### Comandos slash (/)
 
-# Subagentes
-/review     → Revisar código
-/docs       → Generar documentación
+```
+# Navegación y control
+/help       → Mostrar todos los comandos disponibles
+/clear      → Limpiar contexto de la conversación
+/status     → Estado del agente y archivos
+/session    → Gestionar sesiones de trabajo
+
+# Desarrollo
+/plan       → Planificar sin modificar archivos
+/build      → Ejecutar el plan y construir
+/timeline   → Ver historial de cambios realizados
+/revert     → Revertir cambios
+
+# Utilidades
+/test       → Ejecutar tests
+/commit     → Crear commit convencional
+/deploy     → Desplegar proyecto
+/review     → Revisar código (subagente)
+/docs       → Generar documentación (subagente)
+/lint       → Ejecutar linter
+```
+
+### Modo shell
+
+```
+# Ejecutar comandos sin salir de OpenCode
+shell: npm test
+shell: git status
+shell: node --check src/index.js
+```
+
+### Lanzar OpenCode
+
+```bash
+# Iniciar en un proyecto
+opencode
+
+# Con un modelo específico
+opencode --model anthropic/claude-sonnet-4-6
+
+# Modo no interactivo (automatización)
+opencode "Refactoriza src/utils.ts" --non-interactive
+
+# Con archivo de especificación
+opencode "Implementa lo que hay en spec.md"
+```
+
+### Gestión de sesiones
+
+```bash
+# Dentro de OpenCode:
+/session list            → Ver sesiones
+/session switch <nombre> → Cambiar de sesión
+/session new             → Crear nueva sesión
+/session export <nombre> → Exportar sesión
+/session import <archivo>→ Importar sesión
+```
+
+### Atajos de teclado en TUI
+
+```
+Ctrl+C    → Cancelar / salir
+Ctrl+L    → Limpiar pantalla
+↑ / ↓     → Navegar historial de prompts
+Tab       → Autocompletar comandos
+Esc       → Cerrar panel / cancelar
 ```
 
 ## Git

@@ -36,6 +36,21 @@ El negocio del desarrollo con IA.
 
 1. [[Módulo 4 — AI-Native/01-Empresas-AI-Native|Empresas AI-Native]]
 
+### ⚡ [[Módulo 5 — OpenCode desde cero/01-Instalacion-y-primeros-pasos|Módulo 5 — OpenCode desde cero]]
+Domina OpenCode, el agente de código abierto.
+
+1. [[Módulo 5 — OpenCode desde cero/01-Instalacion-y-primeros-pasos|Instalación y primeros pasos]]
+2. [[Módulo 5 — OpenCode desde cero/02-Comandos-esenciales-y-TUI|Comandos esenciales y TUI]]
+3. [[Módulo 5 — OpenCode desde cero/03-Modos-build-y-plan|Modos build y plan]]
+4. [[Módulo 5 — OpenCode desde cero/04-Ahorro-de-tokens-y-modo-shell|Ahorro de tokens y modo shell]]
+5. [[Módulo 5 — OpenCode desde cero/05-Construyendo-proyectos|Construyendo proyectos]]
+6. [[Módulo 5 — OpenCode desde cero/06-Modelos-y-suscripciones|Modelos y suscripciones]]
+7. [[Módulo 5 — OpenCode desde cero/07-Agents-y-agents-md|Agents y agents.md]]
+8. [[Módulo 5 — OpenCode desde cero/08-Skills-personalizadas|Skills personalizadas]]
+9. [[Módulo 5 — OpenCode desde cero/09-Comandos-personalizados|Comandos personalizados]]
+10. [[Módulo 5 — OpenCode desde cero/10-Sesiones-y-automatizacion|Sesiones y automatización]]
+11. [[Módulo 5 — OpenCode desde cero/11-Caso-practico-completo|Caso práctico completo]]
+
 ### 📚 [[Recursos/Glosario|Recursos]]
 
 - [[Recursos/Glosario|Glosario]]

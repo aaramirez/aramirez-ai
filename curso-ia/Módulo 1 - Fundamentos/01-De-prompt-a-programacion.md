@@ -14,12 +14,10 @@ Pasar de **prompts sueltos** (pedir código sin contexto) a una **metodología e
 
 ## El enfoque correcto
 
-```
 1. Especificar qué quieres (tech stack, features, constraints)
 2. Revisar el código generado
 3. Iterar con la IA hasta que cumpla los requisitos
 4. Hacer commit del resultado
-```
 
 ## Analogía: la IA como junior developer
 
