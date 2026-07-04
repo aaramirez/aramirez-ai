@@ -390,6 +390,24 @@ Actualiza `shared/brand.json` y copia los logos a `assets/images/`.
 | **kb-management** | Mantenimiento de vault knowledge base — actualizar notas, wikilinks, reestructurar, mantener workspace y graph sincronizados |
 | **pdf-extraction** | Extrae texto literal de PDFs — maneja saltos de columna, reconstrucción de párrafos, detección de tablas y problemas de encoding |
 | **youtube** | Obtiene y procesa transcripciones de YouTube para alimentar modelos AI, generar resúmenes, crear notas de curso o analizar contenido de video |
+| **agent-creator** | Genera agentes primarios desde línea de comandos — nombre, modo, descripción, permisos |
+| **architecture-creator** | Genera documentos de arquitectura técnica (ADR, diagramas, runbooks) |
+| **command-creator** | Genera comandos personalizados de opencode con template y descripción |
+| **config-creator** | Genera archivos `opencode.json` con modelo, shell, agentes y skills |
+| **flow-creator** | Genera flujos multi-agente con orquestación y secuencia de pasos |
+| **harness-creator** | Coordina el uso de todos los creator scripts para generar harness completos |
+| **instructions-creator** | Genera archivos de instrucciones (instrucciones, referencias, prompts, reglas) |
+| **mcp-creator** | Genera servidores MCP (remotos, locales, con autenticación y herramientas) |
+| **permission-creator** | Genera modelos de permisos con roles, acciones y controles de acceso |
+| **plugin-creator** | Genera plugins de opencode con ciclo de vida, eventos y herramientas |
+| **prompt-creator** | Genera fragmentos de prompt reutilizables con frontmatter y variables |
+| **reference-creator** | Genera referencias a repositorios, APIs y documentos externos |
+| **rule-creator** | Genera reglas de codificación, arquitectura y documentación |
+| **script-creator** | Genera scripts Node.js reutilizables con CLI argumentos |
+| **skill-creator** | Genera skills con frontmatter YAML, descripción y contenido template |
+| **specialized-agent-creator** | Genera agentes especializados con herramientas y comportamientos específicos |
+| **subagent-creator** | Genera subagentes con permisos restringidos y modo subagent |
+| **tool-creator** | Genera herramientas de agente con validación de entrada y tipo
 
 Todas las skills están en `shared/skills/<nombre>/SKILL.md` con formato estándar (frontmatter YAML + markdown).
 
@@ -407,6 +425,24 @@ Todas las skills están en `shared/skills/<nombre>/SKILL.md` con formato estánd
 | `shared/scripts/repos-sync.js` | Gestor de repositorios de referencia desde `repos.json`. Opciones: `--list`, `<name>` (repo específico) |
 | `shared/scripts/youtube-transcript.js` | Obtenedor de transcripciones de YouTube (API youtube-transcript.ai). Opciones: `--lang <code>`. API programática: `fetchTranscript()`, `parseVideoId()` |
 | `shared/scripts/deploy.sh` | Script placeholder de deploy |
+| `shared/scripts/create-config.js` | Genera archivo `opencode.json` — modelo, shell, agentes, skills |
+| `shared/scripts/create-permission.js` | Genera modelo de permisos con roles y controles de acceso |
+| `shared/scripts/create-instructions.js` | Genera instrucciones, referencias, prompts y reglas |
+| `shared/scripts/create-agent.js` | Genera agente primario — nombre, modo, permisos |
+| `shared/scripts/create-subagent.js` | Genera subagente con permisos restringidos |
+| `shared/scripts/create-specialized-agent.js` | Genera agente especializado con herramientas específicas |
+| `shared/scripts/create-architecture.js` | Genera documento de arquitectura técnica |
+| `shared/scripts/create-flow.js` | Genera flujo multi-agente con orquestación |
+| `shared/scripts/create-skill.js` | Genera skill con frontmatter YAML |
+| `shared/scripts/create-mcp.js` | Genera servidor MCP (remoto/local) |
+| `shared/scripts/create-command.js` | Genera comando personalizado de opencode |
+| `shared/scripts/create-script.js` | Genera script Node.js reutilizable |
+| `shared/scripts/create-prompt.js` | Genera fragmento de prompt reutilizable |
+| `shared/scripts/create-rule.js` | Genera regla de codificación/documentación |
+| `shared/scripts/create-reference.js` | Genera referencia externa |
+| `shared/scripts/create-plugin.js` | Genera plugin de opencode |
+| `shared/scripts/create-tool.js` | Genera herramienta de agente |
+| `shared/scripts/harness-generator.js` | Genera harness completo desde spec JSON — orquesta todos los creator scripts |
 
 ### Docgen library (10 scripts)
 

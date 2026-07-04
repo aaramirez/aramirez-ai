@@ -75,7 +75,7 @@ license: MIT
 ---
 ```
 
-Available skills: **branding**, **code-review**, **content-ingestion**, **document-generation**, **git**, **kb-management**, **pdf-extraction**, **youtube**.
+Available skills: **branding**, **code-review**, **content-ingestion**, **document-generation**, **git**, **kb-management**, **pdf-extraction**, **youtube**, plus **18 creator skills** (`agent-creator`, `config-creator`, `skill-creator`, etc.) that generate harness components programmatically.
 
 ### Skill de YouTube
 
@@ -88,6 +88,19 @@ node shared/scripts/youtube-transcript.js <video-id-or-url> --lang es
 **Importante**: Cada vez que uses este skill, guarda la transcripción como referencia en el vault de Obsidian en `curso-ia/Transcripciones/<id> - <titulo>.md`. Esto mantiene un registro permanente del material fuente.
 
 After creating or editing a skill, run `arai sync skill <name>` to sync it to the opencode skills directory.
+
+### Harness Creator Scripts
+
+18 Node.js scripts in `shared/scripts/` that generate harness components (agents, configs, skills, MCP servers, etc.):
+
+```bash
+node shared/scripts/create-agent.js --name my-agent --mode primary
+node shared/scripts/create-config.js --model opencode/big-pickle
+node shared/scripts/create-mcp.js --name my-mcp --type remote --url https://...
+node shared/scripts/harness-generator.js --project spec.json
+```
+
+All creator scripts support `--dry-run` to preview output and `--help` for usage. See `docs/harness-course-plan.md` for the full reference.
 
 ## Agents (opencode.json)
 
@@ -196,7 +209,7 @@ When using code from a reference repo, always cite:
 ## Test suite
 
 ```bash
-npm test                              # full suite (380 tests, node:test)
+npm test                              # full suite (node:test)
 node --test tests/consistency/        # consistency subset only
 ```
 
