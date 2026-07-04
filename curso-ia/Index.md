@@ -51,6 +51,21 @@ Domina OpenCode, el agente de código abierto.
 10. [[Módulo 5 — OpenCode desde cero/10-Sesiones-y-automatizacion|Sesiones y automatización]]
 11. [[Módulo 5 — OpenCode desde cero/11-Caso-practico-completo|Caso práctico completo]]
 
+### 🔧 [[Módulo 6 — Harness en OpenCode/01-Que-es-un-Harness|Módulo 6 — Harness en OpenCode]]
+Configura harness completos en OpenCode siguiendo mejores prácticas.
+
+1. [[Módulo 6 — Harness en OpenCode/01-Que-es-un-Harness|¿Qué es un Harness?]]
+2. [[Módulo 6 — Harness en OpenCode/02-Configuracion-Base|Configuración Base — opencode.json]]
+3. [[Módulo 6 — Harness en OpenCode/03-Arquitectura-de-Agentes|Arquitectura de Agentes]]
+4. [[Módulo 6 — Harness en OpenCode/04-Modelo-de-Permisos|Modelo de Permisos]]
+5. [[Módulo 6 — Harness en OpenCode/05-Diseno-de-Superficie-de-Herramientas|Diseño de Superficie de Herramientas]]
+6. [[Módulo 6 — Harness en OpenCode/06-Gestion-de-Contexto|Gestión de Contexto]]
+7. [[Módulo 6 — Harness en OpenCode/07-Comandos-Personalizados-y-Scripts|Comandos Personalizados y Scripts]]
+8. [[Módulo 6 — Harness en OpenCode/08-Skills-y-Aprendizaje-Bajo-Demanda|Skills y Aprendizaje Bajo Demanda]]
+9. [[Módulo 6 — Harness en OpenCode/09-Instrucciones-Referencias-Prompts-Reglas|Instrucciones, Referencias, Prompts y Reglas]]
+10. [[Módulo 6 — Harness en OpenCode/10-Arquitecturas-Multi-Agente-y-Flujos|Arquitecturas Multi-Agente y Flujos]]
+11. [[Módulo 6 — Harness en OpenCode/11-Poniendolo-Todo-Junto|Poniéndolo Todo Junto]]
+
 ### 📚 [[Recursos/Glosario|Recursos]]
 
 - [[Recursos/Glosario|Glosario]]

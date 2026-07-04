@@ -111,15 +111,23 @@ describe('init output deep validation (Phase 3b + 3c)', () => {
     assert.deepEqual(config.agent.docs.permission, { edit: 'allow', bash: 'deny' });
   });
 
-  test('full template includes all 8 skills', () => {
+  test('full template includes all available skills', () => {
     runInit('full');
     const skillsDir = join(projectDir, 'shared', 'skills');
     const present = readdirSync(skillsDir).filter(f => statSync(join(skillsDir, f)).isDirectory());
-    const expected = ['branding', 'code-review', 'content-ingestion', 'document-generation', 'git', 'kb-management', 'pdf-extraction', 'youtube'];
+    const expected = [
+      'agent-creator', 'architecture-creator', 'branding', 'code-review',
+      'command-creator', 'config-creator', 'content-ingestion',
+      'document-generation', 'flow-creator', 'git', 'harness-creator',
+      'instructions-creator', 'kb-management', 'mcp-creator', 'pdf-extraction',
+      'permission-creator', 'plugin-creator', 'prompt-creator',
+      'reference-creator', 'rule-creator', 'script-creator', 'skill-creator',
+      'specialized-agent-creator', 'subagent-creator', 'tool-creator', 'youtube',
+    ];
+    assert.equal(present.length, expected.length, `Expected ${expected.length} skills, got ${present.length}`);
     for (const name of expected) {
       assert.ok(present.includes(name), `Should have skill: ${name}`);
     }
-    assert.equal(present.length, expected.length, `Expected ${expected.length} skills, got ${present.length}`);
   });
 
   test('full template opencode.json has all 3 commands', () => {

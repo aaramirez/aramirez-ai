@@ -1,12 +1,145 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "model": "opencode/big-pickle",
-  "small_model": "anthropic/claude-haiku-4-5",
+  "agent": {
+    "build": {
+      "description": "Default build agent for coding tasks",
+      "mode": "primary"
+    },
+    "docs": {
+      "description": "Documentation specialist. Use for README, docs, and changelogs.",
+      "mode": "subagent",
+      "permission": {
+        "bash": "deny",
+        "edit": "allow"
+      }
+    },
+    "plan": {
+      "description": "Planning agent for architecture and design",
+      "mode": "primary",
+      "permission": {
+        "edit": "deny"
+      }
+    },
+    "reviewer": {
+      "description": "Code review specialist. Use for PR reviews and quality checks.",
+      "mode": "subagent",
+      "permission": {
+        "edit": "deny"
+      }
+    },
+    "tester": {
+      "description": "Testing specialist. Use for writing and running tests.",
+      "mode": "subagent",
+      "permission": {
+        "bash": "allow"
+      }
+    }
+  },
+  "command": {
+    "commit": {
+      "description": "Create a conventional commit",
+      "template": "Stage all changes and create a conventional commit with an appropriate type and scope based on the changes."
+    },
+    "deploy": {
+      "description": "Deploy current project",
+      "template": "Deploy the current project. Check the project type and deployment config, then execute the appropriate deploy command."
+    },
+    "test": {
+      "description": "Run test suite for current project",
+      "template": "Run the test suite for this project. First detect the test framework, then run all tests and report results."
+    }
+  },
+  "compaction": {
+    "auto": true,
+    "tail_turns": 10
+  },
   "default_agent": "build",
+  "formatter": true,
+  "instructions": [
+    "AGENTS.md"
+  ],
+  "lsp": true,
+  "mcp": {
+    "context7": {
+      "enabled": true,
+      "type": "remote",
+      "url": "https://mcp.context7.com/mcp"
+    },
+    "engram": {
+      "command": [
+        "/usr/local/bin/engram",
+        "mcp",
+        "--tools=agent"
+      ],
+      "enabled": true,
+      "type": "local"
+    },
+    "github": {
+      "enabled": false,
+      "headers": {
+        "Authorization": "Bearer {env:GITHUB_TOKEN}"
+      },
+      "type": "remote",
+      "url": "https://api.github.com/mcp"
+    },
+    "playwright": {
+      "command": [
+        "npx",
+        "-y",
+        "@playwright/mcp"
+      ],
+      "enabled": false,
+      "env": {},
+      "type": "local"
+    }
+  },
+  "model": "opencode/big-pickle",
+  "permission": {
+    "bash": {
+      "*": "allow",
+      "git *": "allow",
+      "git commit *": "ask",
+      "git push": "ask",
+      "git push *": "ask",
+      "git push --force *": "ask",
+      "git rebase *": "ask",
+      "git reset --hard *": "ask",
+      "npm *": "allow",
+      "npx *": "ask"
+    },
+    "edit": "ask",
+    "read": {
+      "*": "allow",
+      "**/*.key": "deny",
+      "**/*.pem": "deny",
+      "**/.aws/credentials": "deny",
+      "**/.config/gh/hosts.yml": "deny",
+      "**/.credentials/**": "deny",
+      "**/.env": "deny",
+      "**/.env.*": "deny",
+      "**/.ssh/**": "deny",
+      "**/Library/Keychains/**": "deny",
+      "**/credentials.json": "deny",
+      "**/secrets/**": "deny",
+      "*.env": "deny",
+      "*.env.*": "deny"
+    }
+  },
+  "references": {
+    "shared-prompts": {
+      "description": "Reusable prompt fragments for common patterns",
+      "path": "../shared/prompts"
+    },
+    "shared-rules": {
+      "description": "Coding standards, architecture, and documentation rules",
+      "path": "../shared/rules"
+    },
+    "shared-scripts": {
+      "description": "Reusable automation scripts (deploy, test, etc.)",
+      "path": "../shared/scripts"
+    }
+  },
   "shell": "/bin/zsh",
-
-  "instructions": ["AGENTS.md"],
-
   "skills": {
     "paths": [
       ".opencode/skills",
@@ -14,102 +147,9 @@
       "../shared/skills"
     ]
   },
-
-  "references": {
-    "shared-scripts": {
-      "path": "../shared/scripts",
-      "description": "Reusable automation scripts (deploy, test, etc.)"
-    },
-    "shared-rules": {
-      "path": "../shared/rules",
-      "description": "Coding standards, architecture, and documentation rules"
-    },
-    "shared-prompts": {
-      "path": "../shared/prompts",
-      "description": "Reusable prompt fragments for common patterns"
-    }
-  },
-
-  "agent": {
-    "build": {
-      "mode": "primary",
-      "description": "Default build agent for coding tasks"
-    },
-    "plan": {
-      "mode": "primary",
-      "description": "Planning agent for architecture and design",
-      "permission": { "edit": "deny" }
-    },
-    "reviewer": {
-      "mode": "subagent",
-      "description": "Code review specialist. Use for PR reviews and quality checks.",
-      "permission": { "edit": "deny" }
-    },
-    "tester": {
-      "mode": "subagent",
-      "description": "Testing specialist. Use for writing and running tests.",
-      "permission": { "bash": "allow" }
-    },
-    "docs": {
-      "mode": "subagent",
-      "description": "Documentation specialist. Use for README, docs, and changelogs.",
-      "permission": { "edit": "allow", "bash": "deny" }
-    }
-  },
-
-  "command": {
-    "test": {
-      "description": "Run test suite for current project",
-      "template": "Run the test suite for this project. First detect the test framework, then run all tests and report results."
-    },
-    "deploy": {
-      "description": "Deploy current project",
-      "template": "Deploy the current project. Check the project type and deployment config, then execute the appropriate deploy command."
-    },
-    "commit": {
-      "description": "Create a conventional commit",
-      "template": "Stage all changes and create a conventional commit with an appropriate type and scope based on the changes."
-    }
-  },
-
-  "mcp": {
-    "playwright": {
-      "type": "local",
-      "command": ["npx", "-y", "@playwright/mcp"],
-      "enabled": false,
-      "env": {}
-    },
-    "github": {
-      "type": "remote",
-      "url": "https://api.github.com/mcp",
-      "enabled": false,
-      "headers": {
-        "Authorization": "Bearer {env:GITHUB_TOKEN}"
-      }
-    }
-  },
-
-  "permission": {
-    "bash": {
-      "git *": "allow",
-      "npm *": "allow",
-      "npx *": "ask",
-      "*": "ask"
-    },
-    "edit": "ask",
-    "read": "allow"
-  },
-
-  "formatter": true,
-  "lsp": true,
-
-  "compaction": {
-    "auto": true,
-    "tail_turns": 10
-  },
-
+  "small_model": "anthropic/claude-haiku-4-5",
   "tool_output": {
-    "max_lines": 1000,
-    "max_bytes": 40960
+    "max_bytes": 40960,
+    "max_lines": 1000
   }
 }
