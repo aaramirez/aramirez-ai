@@ -7,6 +7,16 @@ created: 2026-07-05
 
 # Agentes especializados
 
+> **Objetivo**: Conocer los agentes especializados preconfigurados (reviewer, tester, docs, security, devops) y cómo usarlos en tu flujo de trabajo.
+
+**⏱ Tiempo estimado**: 6 minutos
+**🎯 Nivel**: Intermedio
+**📋 Requisitos**: [[04-Agentes/02-subagentes.md|Subagentes]]
+
+## Resultado esperado
+
+Saber cuándo y cómo utilizar cada agente especializado, y qué permisos y capacidades tiene cada uno.
+
 ## ¿Qué son?
 
 Agentes pre-configurados para dominios específicos. Vienen con prompts, permisos y configuraciones optimizadas para su función.

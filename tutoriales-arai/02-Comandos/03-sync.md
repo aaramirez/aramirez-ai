@@ -7,6 +7,16 @@ created: 2026-07-05
 
 # arai sync — Sincronizar configuraciones
 
+> **Objetivo**: Sincronizar skills, agentes y configuraciones entre el repositorio central de arai y los proyectos destino.
+
+**⏱ Tiempo estimado**: 5 minutos
+**🎯 Nivel**: Intermedio
+**📋 Requisitos**: [[02-Comandos/02-install.md|arai install]] completado
+
+## Resultado esperado
+
+Saber usar `arai sync` para actualizar componentes específicos o toda la configuración del proyecto.
+
 ## Uso básico
 
 ```bash

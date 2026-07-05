@@ -7,6 +7,16 @@ created: 2026-07-05
 
 # Harness Generator
 
+> **Objetivo**: Usar `harness-generator.js` para generar un harness completo de opencode a partir de una especificación JSON.
+
+**⏱ Tiempo estimado**: 10 minutos
+**🎯 Nivel**: Avanzado
+**📋 Requisitos**: [[05-Harness/02-creator-scripts.md|Los 18 creator scripts]]
+
+## Resultado esperado
+
+Poder crear una especificación JSON de proyecto y generar todo el harness (agentes, skills, MCP, permisos) en un solo paso.
+
 ## Descripción
 
 `harness-generator.js` es el orquestador de todo el ecosistema de creación. Toma una descripción JSON del proyecto y genera un harness completo invocando a los creator scripts apropiados.

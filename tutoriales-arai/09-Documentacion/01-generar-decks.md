@@ -8,6 +8,16 @@ created: 2026-07-05
 
 # Generar decks
 
+> **Objetivo**: Crear presentaciones HTML y PDF desde especificaciones JSON usando el pipeline docgen y sus 20+ tipos de diapositiva.
+
+**⏱ Tiempo estimado**: 8 minutos
+**🎯 Nivel**: Intermedio
+**📋 Requisitos**: Node.js 18+, Chrome (para PDF)
+
+## Resultado esperado
+
+Pasar de una especificación JSON de deck a una presentación PDF o HTML completamente formateada con el branding del proyecto.
+
 ## Preparación
 
 Asegúrate de tener Chrome/Chromium instalado para la generación de PDF.

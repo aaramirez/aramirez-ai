@@ -7,6 +7,16 @@ created: 2026-07-05
 
 # Generar reportes
 
+> **Objetivo**: Crear documentos formales (reportes) con datos, tablas y secciones usando el pipeline docgen y sus 10 tipos de layout.
+
+**⏱ Tiempo estimado**: 8 minutos
+**🎯 Nivel**: Intermedio
+**📋 Requisitos**: Node.js 18+, Chrome (para PDF)
+
+## Resultado esperado
+
+Generar reportes profesionales como SOW, project charter, ADR, postmortems o status reports desde una especificación JSON.
+
 ## Diferencia entre deck y reporte
 
 - **Deck**: presentación visual, diapositivas.

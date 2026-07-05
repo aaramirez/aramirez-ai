@@ -7,6 +7,16 @@ created: 2026-07-05
 
 # Agentes primarios
 
+> **Objetivo**: Conocer los agentes primarios de opencode (build, plan) y cómo crear agentes personalizados con mode primary.
+
+**⏱ Tiempo estimado**: 8 minutos
+**🎯 Nivel**: Intermedio
+**📋 Requisitos**: [[03-Configuracion/01-opencode-json.md|opencode.json a fondo]]
+
+## Resultado esperado
+
+Entender la diferencia entre agentes primarios y subagentes, y saber cómo definir agentes primarios personalizados en `opencode.json`.
+
 ## ¿Qué es un agente primario?
 
 Un agente primario (`mode: primary`) es un agente que aparece en la interfaz de opencode y se selecciona con **Tab**. Cada proyecto puede tener múltiples agentes primarios.

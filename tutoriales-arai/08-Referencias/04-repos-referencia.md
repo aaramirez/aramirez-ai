@@ -7,6 +7,16 @@ created: 2026-07-05
 
 # Repositorios de referencia
 
+> **Objetivo**: Gestionar repositorios externos como fuente de patrones y buenas prácticas para los agentes de opencode.
+
+**⏱ Tiempo estimado**: 5 minutos
+**🎯 Nivel**: Intermedio
+**📋 Requisitos**: [[02-Comandos/03-sync.md|arai sync]] completado
+
+## Resultado esperado
+
+Configurar repositorios de referencia en `repos.json`, sincronizarlos con `repos-sync.js` y citar su código correctamente.
+
 ## ¿Qué son?
 
 Repositorios externos clonados bajo `repos/` que sirven como fuente de patrones y referencias para el desarrollo. **No se modifican directamente** — se consultan como inspiración.

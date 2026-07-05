@@ -9,6 +9,16 @@ created: 2026-07-05
 
 # Exportar vault a PDF
 
+> **Objetivo**: Convertir un vault de Obsidian en un PDF profesional usando el script `docgen-vault.js` con detección automática de estructura.
+
+**⏱ Tiempo estimado**: 10 minutos
+**🎯 Nivel**: Intermedio
+**📋 Requisitos**: Node.js 18+, Chrome, vault de Obsidian
+
+## Resultado esperado
+
+Un PDF con portada, contenido formateado y branding del proyecto, generado desde cualquier vault de Obsidian.
+
 La skill `vault-pdf-export` convierte un vault de Obsidian en un documento PDF profesional con portada, encabezados, tabla de contenido y formato consistente.
 
 ## Requisitos

@@ -66,4 +66,4 @@ Esto registra el comando en `opencode.json` para ejecutarlo desde la interfaz de
 
 ---
 
-**Volver**: [[11-Casos-de-uso/Index|Casos de uso]]
+**Siguiente**: [[11-Casos-de-uso/04-crear-harness-completo.md|Crear un harness completo]]

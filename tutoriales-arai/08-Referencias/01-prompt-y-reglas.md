@@ -8,6 +8,16 @@ created: 2026-07-05
 
 # Prompts y reglas
 
+> **Objetivo**: Crear fragmentos de prompt reutilizables y reglas de codificación para mantener consistencia entre proyectos.
+
+**⏱ Tiempo estimado**: 6 minutos
+**🎯 Nivel**: Intermedio
+**📋 Requisitos**: [[02-Comandos/05-generate.md|arai generate]] completado
+
+## Resultado esperado
+
+Poder definir prompts para tareas frecuentes (commits, reviews, planning) y reglas de estilo/arquitectura que los agentes sigan automáticamente.
+
 ## Prompts reutilizables
 
 Los prompts son fragmentos de instrucciones que los agentes pueden cargar en contexto. Útiles para patrones recurrentes como mensajes de commit o criterios de revisión.

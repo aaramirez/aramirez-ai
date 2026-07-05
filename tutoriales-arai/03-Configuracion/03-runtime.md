@@ -7,6 +7,16 @@ created: 2026-07-05
 
 # Configuración del runtime
 
+> **Objetivo**: Configurar el runtime de opencode: tool_output, snapshot, auto-commits, compaction y referencias a proyectos externos.
+
+**⏱ Tiempo estimado**: 8 minutos
+**🎯 Nivel**: Avanzado
+**📋 Requisitos**: [[03-Configuracion/01-opencode-json.md|opencode.json a fondo]]
+
+## Resultado esperado
+
+Ajustar el comportamiento del runtime de opencode para optimizar el rendimiento, la gestión de memoria y la integración con otros proyectos.
+
 ## Compaction
 
 La compactación reduce el contexto cuando se acerca al límite de tokens:

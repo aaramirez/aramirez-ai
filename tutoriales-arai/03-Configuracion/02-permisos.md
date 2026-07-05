@@ -7,6 +7,16 @@ created: 2026-07-05
 
 # Modelo de permisos
 
+> **Objetivo**: Entender el sistema de permisos de opencode: permisos globales vs por agente, patrones glob, bash gates y cómo restringir herramientas.
+
+**⏱ Tiempo estimado**: 8 minutos
+**🎯 Nivel**: Intermedio
+**📋 Requisitos**: [[03-Configuracion/01-opencode-json.md|opencode.json a fondo]]
+
+## Resultado esperado
+
+Poder configurar permisos granulares para cada agente, restringiendo herramientas específicas o directorios según las necesidades del proyecto.
+
 ## Permisos globales vs por agente
 
 Los permisos se definen a dos niveles:

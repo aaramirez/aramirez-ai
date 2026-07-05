@@ -7,6 +7,16 @@ created: 2026-07-05
 
 # Plugins
 
+> **Objetivo**: Extender opencode con plugins npm o locales que añaden herramientas, hooks y capacidades personalizadas.
+
+**⏱ Tiempo estimado**: 6 minutos
+**🎯 Nivel**: Avanzado
+**📋 Requisitos**: [[07-MCP/01-servidores-mcp.md|Servidores MCP]]
+
+## Resultado esperado
+
+Instalar y configurar plugins de opencode, tanto desde npm como desde directorios locales, y entender qué aporta cada uno.
+
 ## ¿Qué son los plugins?
 
 Los plugins extienden el runtime de opencode con herramientas y hooks personalizados. Pueden ser paquetes npm o directorios locales.

@@ -7,6 +7,16 @@ created: 2026-07-05
 
 # Servidores MCP
 
+> **Objetivo**: Configurar servidores MCP (Model Context Protocol) locales y remotos para que los agentes accedan a contexto y herramientas externas.
+
+**⏱ Tiempo estimado**: 8 minutos
+**🎯 Nivel**: Avanzado
+**📋 Requisitos**: [[03-Configuracion/01-opencode-json.md|opencode.json a fondo]]
+
+## Resultado esperado
+
+Poder conectar opencode a APIs externas, bases de datos o servicios mediante servidores MCP, configurando autenticación y variables de entorno.
+
 ## ¿Qué es MCP?
 
 Model Context Protocol (MCP) permite que opencode se conecte a fuentes externas de contexto y herramientas. Los servidores MCP pueden ser locales (procesos) o remotos (APIs).

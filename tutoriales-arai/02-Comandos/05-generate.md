@@ -7,6 +7,16 @@ created: 2026-07-05
 
 # arai generate — Crear componentes
 
+> **Objetivo**: Usar `arai generate` para crear skills, agentes scripts, commands, brand y vaults de Obsidian desde la línea de comandos.
+
+**⏱ Tiempo estimado**: 8 minutos
+**🎯 Nivel**: Intermedio
+**📋 Requisitos**: [[01-Instalacion/01-instalar-arai.md|Instalar arai]] completado
+
+## Resultado esperado
+
+Conocer todos los subcomandos de `arai generate` y poder crear cualquier tipo de componente sin escribir archivos manualmente.
+
 ## Uso básico
 
 ```bash

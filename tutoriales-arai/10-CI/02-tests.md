@@ -7,6 +7,16 @@ created: 2026-07-05
 
 # Tests
 
+> **Objetivo**: Ejecutar, escribir y depurar tests con node:test, incluyendo tests de consistencia, CLI e integración.
+
+**⏱ Tiempo estimado**: 8 minutos
+**🎯 Nivel**: Intermedio
+**📋 Requisitos**: Node.js 18+, `npm test`
+
+## Resultado esperado
+
+Saber ejecutar la suite completa o subconjuntos de tests, interpretar los resultados y escribir tests nuevos para nuevos componentes.
+
 ## Suite de tests
 
 arai usa `node:test` (sin dependencias externas). Todos los tests se ejecutan con:

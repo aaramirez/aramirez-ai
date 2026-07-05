@@ -7,6 +7,16 @@ created: 2026-07-05
 
 # Crear skills nuevas
 
+> **Objetivo**: Escribir skills reutilizables con frontmatter YAML válido, instrucciones claras y estructura SKILL.md compatible con opencode.
+
+**⏱ Tiempo estimado**: 10 minutos
+**🎯 Nivel**: Intermedio
+**📋 Requisitos**: [[06-Skills/01-usar-skills.md|Usar skills existentes]]
+
+## Resultado esperado
+
+Crear skills personalizadas para tu dominio, con frontmatter `name:`, `description:`, `license: MIT`, y contenido instruccional que los agentes puedan usar.
+
 ## Paso 1: Generar el esqueleto
 
 ```bash

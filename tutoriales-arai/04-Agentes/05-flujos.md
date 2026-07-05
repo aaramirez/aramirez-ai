@@ -7,6 +7,16 @@ created: 2026-07-05
 
 # Flujos de trabajo
 
+> **Objetivo**: Configurar flujos de trabajo (workflows) en opencode: plan-first, TDD, hotfix y flujos personalizados.
+
+**⏱ Tiempo estimado**: 8 minutos
+**🎯 Nivel**: Avanzado
+**📋 Requisitos**: [[04-Agentes/04-arquitecturas.md|Arquitecturas multi-agente]]
+
+## Resultado esperado
+
+Definir flujos de trabajo personalizados que orquesten la secuencia de agentes y herramientas para tareas específicas.
+
 ## ¿Qué es un flujo?
 
 Un flujo define la secuencia de pasos que siguen los agentes para completar una tarea. Incluye qué agente ejecuta cada paso, las transiciones entre pasos y las reglas de validación.

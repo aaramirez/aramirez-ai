@@ -6,6 +6,16 @@ created: 2026-07-05
 
 # ¿Qué es un harness?
 
+> **Objetivo**: Entender el concepto de harness en opencode, su anatomía y ejemplos de harness de la comunidad.
+
+**⏱ Tiempo estimado**: 5 minutos
+**🎯 Nivel**: Intermedio
+**📋 Requisitos**: [[03-Configuracion/01-opencode-json.md|opencode.json a fondo]]
+
+## Resultado esperado
+
+Saber qué componentes forman un harness y cómo se relacionan entre sí para definir el comportamiento completo de opencode en un proyecto.
+
 ## Definición
 
 Un **harness** en opencode es la configuración completa que un proyecto necesita para funcionar con agentes de IA. Incluye:

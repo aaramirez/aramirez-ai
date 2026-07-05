@@ -7,6 +7,16 @@ created: 2026-07-05
 
 # DocGen Validate
 
+> **Objetivo**: Validar el pipeline de documentación: sintaxis de especificaciones, templates, builders y consistencia de datos.
+
+**⏱ Tiempo estimado**: 4 minutos
+**🎯 Nivel**: Intermedio
+**📋 Requisitos**: [[10-CI/02-tests.md|Tests]]
+
+## Resultado esperado
+
+Ejecutar `docgen/validate.js` para detectar errores en especificaciones JSON, templates faltantes o inconsistencias en el pipeline.
+
 ## Descripción
 
 Valida el pipeline de documentación: verifica que los specs JSON/MD, templates y builders estén correctos.

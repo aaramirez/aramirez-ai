@@ -7,6 +7,16 @@ created: 2026-07-05
 
 # Los 18 creator scripts
 
+> **Objetivo**: Conocer los 18 scripts creator que generan componentes del harness de opencode y saber cuándo usar cada uno.
+
+**⏱ Tiempo estimado**: 8 minutos
+**🎯 Nivel**: Intermedio
+**📋 Requisitos**: [[05-Harness/01-que-es-un-harness.md|¿Qué es un harness?]]
+
+## Resultado esperado
+
+Tener una referencia completa de los 18 scripts, sus flags y qué genera cada uno.
+
 ## Visión general
 
 Los creator scripts son scripts Node.js ESM en `shared/scripts/` que generan componentes de harness de forma interactiva. Cada script produce uno o más archivos listos para usar.

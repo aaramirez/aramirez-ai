@@ -7,6 +7,16 @@ created: 2026-07-05
 
 # arai uninstall — Desinstalar componentes
 
+> **Objetivo**: Eliminar la plataforma opencode o componentes específicos de un proyecto de forma limpia.
+
+**⏱ Tiempo estimado**: 3 minutos
+**🎯 Nivel**: Básico
+**📋 Requisitos**: [[02-Comandos/02-install.md|arai install]] completado
+
+## Resultado esperado
+
+Poder desinstalar opencode por completo o remover skills, agentes o scripts individuales sin dejar rastro.
+
 ## Uso básico
 
 ```bash

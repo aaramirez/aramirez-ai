@@ -7,6 +7,16 @@ created: 2026-07-05
 
 # arai install — Instalar componentes
 
+> **Objetivo**: Aprender a instalar la plataforma opencode y componentes individuales (skills, agents, scripts) en cualquier proyecto.
+
+**⏱ Tiempo estimado**: 5 minutos
+**🎯 Nivel**: Básico
+**📋 Requisitos**: Node.js 18+, proyecto con `opencode.json`
+
+## Resultado esperado
+
+Poder ejecutar `arai install` para configurar opencode en un proyecto, e `arai install <type> <name>` para agregar componentes específicos.
+
 ## Uso básico
 
 ```bash

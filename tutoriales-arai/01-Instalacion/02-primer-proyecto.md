@@ -8,6 +8,18 @@ created: 2026-07-05
 
 # Crear tu primer proyecto
 
+> **Objetivo**: Usar `arai init` para escafoldar un proyecto nuevo con opencode y estructura de agente AI desde cero.
+
+**⏱ Tiempo estimado**: 10 minutos
+**🎯 Nivel**: Básico
+**📋 Requisitos**: [[01-Instalacion/01-instalar-arai.md|Instalar arai]] completado
+
+## Resultado esperado
+
+Un nuevo directorio con la estructura completa de arai: `shared/`, `platforms/`, `AGENTS.md` y `opencode.json` listos para usar.
+
+
+
 ## Paso 1: Escafoldar un proyecto nuevo
 
 ```bash

@@ -7,6 +7,16 @@ created: 2026-07-05
 
 # Skills creator
 
+> **Objetivo**: Conocer las 18 skills creator que guían a los agentes en la creación de componentes del harness de opencode.
+
+**⏱ Tiempo estimado**: 5 minutos
+**🎯 Nivel**: Intermedio
+**📋 Requisitos**: [[06-Skills/01-usar-skills.md|Usar skills existentes]]
+
+## Resultado esperado
+
+Saber qué skills creator están disponibles, qué componente genera cada una, y cómo invocarlas desde los agentes.
+
 ## ¿Qué son las skills creator?
 
 Son skills especiales en `shared/skills/` que describen cómo usar cada creator script desde un agente de opencode. Cada creator script tiene su skill correspondiente.

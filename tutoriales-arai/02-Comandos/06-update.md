@@ -7,6 +7,16 @@ created: 2026-07-05
 
 # arai update — Actualizar arai
 
+> **Objetivo**: Actualizar arai a la última versión mediante `git pull` y `npm install` en un solo comando.
+
+**⏱ Tiempo estimado**: 2 minutos
+**🎯 Nivel**: Básico
+**📋 Requisitos**: [[01-Instalacion/01-instalar-arai.md|Instalar arai]] completado
+
+## Resultado esperado
+
+Saber cómo mantener arai actualizado y verificar la versión instalada.
+
 ## Uso básico
 
 ```bash

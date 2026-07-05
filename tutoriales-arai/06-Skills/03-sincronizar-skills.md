@@ -46,4 +46,4 @@ Como las skills viven en `shared/skills/` del repositorio de arai, cualquier pro
 
 ---
 
-**Siguiente**: [[09-Documentacion/Index|Generación de documentos]]
+**Siguiente**: [[07-MCP/Index|MCP, Comandos y Extensiones]]

@@ -8,6 +8,16 @@ created: 2026-07-05
 
 # Usar config-creator
 
+> **Objetivo**: Generar `opencode.json` desde la línea de comandos usando el script `create-config.js`, con opciones para modelo, permisos y runtime.
+
+**⏱ Tiempo estimado**: 5 minutos
+**🎯 Nivel**: Intermedio
+**📋 Requisitos**: [[03-Configuracion/01-opencode-json.md|opencode.json a fondo]]
+
+## Resultado esperado
+
+Poder crear archivos `opencode.json` completos y válidos sin escribir JSON manualmente, usando solo flags de línea de comandos.
+
 ## Descripción
 
 `create-config.js` genera un archivo `opencode.json` completo con la configuración base del proyecto.

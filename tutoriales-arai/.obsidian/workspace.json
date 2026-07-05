@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "11-Casos-de-uso/01-curso-ia-vault.md",
+                "file": "00-Introduccion/02-como-extender.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "01-curso-ia-vault"
+              "title": "02-como-extender"
             }
           }
         ]
@@ -94,7 +94,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "11-Casos-de-uso/01-curso-ia-vault.md",
+                "file": "00-Introduccion/02-como-extender.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -104,7 +104,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for 01-curso-ia-vault"
+              "title": "Backlinks for 02-como-extender"
             }
           },
           {
@@ -113,12 +113,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "11-Casos-de-uso/01-curso-ia-vault.md",
+                "file": "00-Introduccion/02-como-extender.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links from 01-curso-ia-vault"
+              "title": "Outgoing links from 02-como-extender"
             }
           },
           {
@@ -156,13 +156,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "11-Casos-de-uso/01-curso-ia-vault.md",
+                "file": "00-Introduccion/02-como-extender.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of 01-curso-ia-vault"
+              "title": "Outline of 02-como-extender"
             }
           }
         ]
@@ -185,10 +185,17 @@
   },
   "active": "c837ca77f5cc6f90",
   "lastOpenFiles": [
+    "00-Introduccion/01-que-es-arai.md",
+    "11-Casos-de-uso/04-crear-harness-completo.md",
+    "00-Introduccion/03-arquitectura.md",
+    "00-Introduccion/02-como-extender.md",
+    "00-Introduccion/Index.md",
+    "00-Introduccion",
+    "11-Casos-de-uso/03-automatizar-reportes.md",
+    "11-Casos-de-uso/01-curso-ia-vault.md",
     "01-Instalacion/04-solucion-problemas.md",
     "01-Instalacion/03-instalar-en-existente.md",
     "11-Casos-de-uso/05-migrar-proyecto-existente.md",
-    "11-Casos-de-uso/04-crear-harness-completo.md",
     "09-Documentacion/05-todas-las-plantillas.md",
     "09-Documentacion/04-pipeline-docgen.md",
     "06-Skills/04-creator-skills.md",
@@ -207,19 +214,12 @@
     "08-Referencias/01-prompt-y-reglas.md",
     "08-Referencias/Index.md",
     "08-Referencias",
-    "07-MCP/05-uso-creators.md",
-    "02-Comandos/Index.md",
-    "07-MCP/04-herramientas-personalizadas.md",
-    "07-MCP/03-plugins.md",
-    "07-MCP/02-comandos-personalizados.md",
-    "07-MCP/01-servidores-mcp.md",
     "07-MCP",
     "11-Casos-de-uso",
     "09-Documentacion",
     "06-Skills",
     "08-CI",
     "07-Referencias",
-    "06-MCP",
-    "05-Harness"
+    "06-MCP"
   ]
 }

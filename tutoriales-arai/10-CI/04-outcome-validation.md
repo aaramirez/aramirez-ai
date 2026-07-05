@@ -7,6 +7,16 @@ created: 2026-07-05
 
 # Outcome Validation
 
+> **Objetivo**: Conocer el plan de validación de resultados en 5 fases que garantiza que los comandos de arai generan la salida correcta.
+
+**⏱ Tiempo estimado**: 5 minutos
+**🎯 Nivel**: Avanzado
+**📋 Requisitos**: [[10-CI/02-tests.md|Tests]]
+
+## Resultado esperado
+
+Entender cómo se valida cada comando de arai (init, generate, install) y cómo contribuir nuevos tests de validación.
+
 ## Plan de 5 fases
 
 El plan completo está en `docs/outcome-validation-plan.md`. Resume:

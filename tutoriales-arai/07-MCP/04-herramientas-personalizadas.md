@@ -7,6 +7,16 @@ created: 2026-07-05
 
 # Herramientas personalizadas
 
+> **Objetivo**: Definir herramientas personalizadas con schemas JSON y handlers para que los agentes ejecuten tareas específicas.
+
+**⏱ Tiempo estimado**: 8 minutos
+**🎯 Nivel**: Avanzado
+**📋 Requisitos**: [[07-MCP/01-servidores-mcp.md|Servidores MCP]]
+
+## Resultado esperado
+
+Crear herramientas con validación de entrada mediante JSON Schema, asignarlas a agentes específicos y controlar sus permisos.
+
 ## ¿Qué son?
 
 Las herramientas personalizadas (`custom_tools`) extienden las capacidades de los agentes con funciones específicas, definidas mediante JSON Schema.

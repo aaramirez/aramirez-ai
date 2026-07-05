@@ -8,6 +8,16 @@ created: 2026-07-05
 
 # Arquitectura del pipeline docgen
 
+> **Objetivo**: Entender la arquitectura completa del pipeline docgen: builders, charts, themes, formatos de salida y cómo se relacionan.
+
+**⏱ Tiempo estimado**: 6 minutos
+**🎯 Nivel**: Avanzado
+**📋 Requisitos**: [[09-Documentacion/01-generar-decks.md|Generar decks]]
+
+## Resultado esperado
+
+Tener una visión clara de todos los componentes del pipeline docgen y saber qué archivo modificar para personalizar cada aspecto.
+
 ## Visión general
 
 ```

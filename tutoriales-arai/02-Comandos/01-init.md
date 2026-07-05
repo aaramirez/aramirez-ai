@@ -7,6 +7,16 @@ created: 2026-07-05
 
 # arai init — Escafoldar proyectos
 
+> **Objetivo**: Conocer a fondo el comando `arai init`, sus opciones (template, description, project) y cómo escafoldar proyectos desde cero.
+
+**⏱ Tiempo estimado**: 8 minutos
+**🎯 Nivel**: Básico
+**📋 Requisitos**: [[01-Instalacion/01-instalar-arai.md|Instalar arai]] completado
+
+## Resultado esperado
+
+Saber usar `arai init` para crear proyectos con template minimal o full, y entender qué archivos genera cada uno.
+
 ## Uso básico
 
 ```bash

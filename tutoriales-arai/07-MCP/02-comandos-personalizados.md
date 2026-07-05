@@ -7,6 +7,16 @@ created: 2026-07-05
 
 # Comandos personalizados
 
+> **Objetivo**: Crear comandos reutilizables de opencode para tareas repetitivas, usando `$ARGUMENTS` y plantillas personalizadas.
+
+**⏱ Tiempo estimado**: 6 minutos
+**🎯 Nivel**: Intermedio
+**📋 Requisitos**: [[07-MCP/01-servidores-mcp.md|Servidores MCP]]
+
+## Resultado esperado
+
+Poder definir comandos opencode que ejecuten tareas frecuentes con un solo nombre, incluyendo argumentos dinámicos.
+
 ## ¿Qué son?
 
 Los comandos personalizados son atajos en `opencode.json` que ejecutan templates predefinidos. Aparecen en la interfaz de opencode y aceptan argumentos.

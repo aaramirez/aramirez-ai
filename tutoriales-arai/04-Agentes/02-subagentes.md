@@ -7,6 +7,16 @@ created: 2026-07-05
 
 # Subagentes
 
+> **Objetivo**: Aprender qué son los subagentes, cómo se invocan (auto-invocación vs @-mention) y cómo configurarlos en opencode.
+
+**⏱ Tiempo estimado**: 6 minutos
+**🎯 Nivel**: Intermedio
+**📋 Requisitos**: [[04-Agentes/01-agentes-principales.md|Agentes primarios]]
+
+## Resultado esperado
+
+Poder definir subagentes especializados que se activen automáticamente según el contexto o mediante mención explícita.
+
 ## ¿Qué es un subagente?
 
 Un subagente (`mode: subagent`) es un agente que **no** aparece en la interfaz principal. Se invoca mediante:

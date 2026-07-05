@@ -7,6 +7,16 @@ created: 2026-07-05
 
 # Usar los creators de agentes
 
+> **Objetivo**: Usar los scripts creator para generar agentes primarios, subagentes, agentes especializados, arquitecturas y flujos desde la línea de comandos.
+
+**⏱ Tiempo estimado**: 5 minutos
+**🎯 Nivel**: Intermedio
+**📋 Requisitos**: [[04-Agentes/01-agentes-principales.md|Agentes primarios]]
+
+## Resultado esperado
+
+Poder generar cualquier tipo de agente o arquitectura usando `node shared/scripts/create-*.js` con sus respectivas opciones.
+
 ## create-agent
 
 Crea un agente primario con prompt personalizado:

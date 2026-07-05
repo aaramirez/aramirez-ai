@@ -7,6 +7,16 @@ created: 2026-07-05
 
 # opencode.json a fondo
 
+> **Objetivo**: Comprender la estructura completa del archivo `opencode.json`, incluyendo modelo, shell, formateador, LSP, compaction y watcher.
+
+**⏱ Tiempo estimado**: 10 minutos
+**🎯 Nivel**: Intermedio
+**📋 Requisitos**: [[02-Comandos/01-init.md|arai init]] completado
+
+## Resultado esperado
+
+Poder leer y modificar cualquier campo de `opencode.json` con confianza, sabiendo qué hace cada sección.
+
 ## Estructura general
 
 ```json

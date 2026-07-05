@@ -7,6 +7,16 @@ created: 2026-07-05
 
 # arai list — Listar recursos
 
+> **Objetivo**: Explorar los recursos disponibles en arai: skills, agents, scripts, templates, commands y servidores MCP.
+
+**⏱ Tiempo estimado**: 3 minutos
+**🎯 Nivel**: Básico
+**📋 Requisitos**: [[01-Instalacion/01-instalar-arai.md|Instalar arai]] completado
+
+## Resultado esperado
+
+Saber cómo listar cualquier tipo de recurso en arai y entender la información que muestra cada comando.
+
 ## Uso básico
 
 ```bash
@@ -38,4 +48,4 @@ vault-pdf-export      - Exporta vaults de Obsidian a PDF
 
 ---
 
-**Volver**: [[02-Comandos/Index|Comandos esenciales]]
+**Siguiente**: [[03-Configuracion/Index|Configuración de opencode]]

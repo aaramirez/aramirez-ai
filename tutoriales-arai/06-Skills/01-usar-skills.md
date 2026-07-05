@@ -7,6 +7,16 @@ created: 2026-07-05
 
 # Usar skills existentes
 
+> **Objetivo**: Aprender a cargar y ejecutar skills de opencode en tu flujo de trabajo diario con los agentes.
+
+**⏱ Tiempo estimado**: 5 minutos
+**🎯 Nivel**: Básico
+**📋 Requisitos**: [[02-Comandos/02-install.md|arai install]] completado
+
+## Resultado esperado
+
+Saber cómo listar skills disponibles, cargarlas en el contexto de trabajo y usarlas con los agentes de opencode.
+
 ## ¿Qué es una skill?
 
 Una skill es un archivo `SKILL.md` con metadatos YAML que describe una capacidad específica. Los agentes de opencode pueden cargar estas skills para obtener instrucciones detalladas sobre cómo realizar una tarea.

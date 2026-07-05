@@ -7,6 +7,16 @@ created: 2026-07-05
 
 # Ciclo completo de creación de harness
 
+> **Objetivo**: Seguir el flujo completo desde la idea de un proyecto hasta tener un harness de opencode funcionando.
+
+**⏱ Tiempo estimado**: 15 minutos
+**🎯 Nivel**: Avanzado
+**📋 Requisitos**: [[05-Harness/03-harness-generator.md|Harness Generator]]
+
+## Resultado esperado
+
+Poder llevar un proyecto desde cero hasta tener un harness completo de opencode con agentes, skills, MCP y flujos de trabajo.
+
 ## Paso 1: Definir el proyecto
 
 Crea un `spec.json` con la descripción de tu proyecto (ver [[05-Harness/03-harness-generator.md|Harness Generator]]).

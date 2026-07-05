@@ -7,6 +7,16 @@ created: 2026-07-05
 
 # Arquitecturas multi-agente
 
+> **Objetivo**: Diseñar arquitecturas multi-agente: orquestador, tiered, peer y chain delegation, y elegir la adecuada para cada caso.
+
+**⏱ Tiempo estimado**: 10 minutos
+**🎯 Nivel**: Avanzado
+**📋 Requisitos**: [[04-Agentes/01-agentes-principales.md|Agentes primarios]], [[04-Agentes/02-subagentes.md|Subagentes]]
+
+## Resultado esperado
+
+Poder modelar flujos de trabajo multi-agente complejos seleccionando el patrón de delegación adecuado.
+
 ## Orchestrator
 
 Un agente orquestador delega tareas a agentes especializados y consolida resultados.

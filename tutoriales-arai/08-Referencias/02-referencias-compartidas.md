@@ -7,6 +7,16 @@ created: 2026-07-05
 
 # Referencias compartidas
 
+> **Objetivo**: Configurar rutas globales a scripts, reglas y prompts compartidos entre múltiples proyectos de opencode.
+
+**⏱ Tiempo estimado**: 4 minutos
+**🎯 Nivel**: Intermedio
+**📋 Requisitos**: [[08-Referencias/01-prompt-y-reglas.md|Prompts y reglas]]
+
+## Resultado esperado
+
+Poner referencias compartidas en `opencode.json` para que todos los proyectos de una organización usen las mismas reglas y scripts.
+
 ## ¿Qué son?
 
 Las referencias (`references` en `opencode.json`) definen rutas compartidas a scripts, reglas y prompts que los agentes pueden usar.

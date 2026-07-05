@@ -7,6 +7,16 @@ created: 2026-07-05
 
 # arai status — Diagnosticar el proyecto
 
+> **Objetivo**: Usar `arai status` para verificar el estado de opencode en el proyecto actual, incluyendo skills instaladas, agentes registrados y permisos.
+
+**⏱ Tiempo estimado**: 3 minutos
+**🎯 Nivel**: Básico
+**📋 Requisitos**: [[02-Comandos/02-install.md|arai install]] completado
+
+## Resultado esperado
+
+Poder diagnosticar rápidamente qué componentes de opencode están instalados y su estado en cualquier proyecto.
+
 ## Uso básico
 
 ```bash

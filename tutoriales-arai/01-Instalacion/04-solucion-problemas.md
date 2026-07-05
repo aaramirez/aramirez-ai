@@ -7,6 +7,16 @@ created: 2026-07-05
 
 # Solución de problemas comunes
 
+> **Objetivo**: Diagnosticar y resolver los errores más frecuentes al instalar y usar arai.
+
+**⏱ Tiempo estimado**: 5 minutos
+**🎯 Nivel**: Básico
+**📋 Requisitos**: [[01-Instalacion/01-instalar-arai.md|Instalar arai]] completado
+
+## Resultado esperado
+
+Conocer los errores típicos, sus causas y las soluciones para resolverlos rápidamente.
+
 ## Error: `SyntaxError: Unexpected reserved word`
 
 **Causa**: Ejecutando el script fuera del directorio raíz del proyecto. Node.js no encuentra `package.json` con `"type": "module"`.

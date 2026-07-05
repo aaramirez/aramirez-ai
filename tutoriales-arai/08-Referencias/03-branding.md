@@ -7,6 +7,16 @@ created: 2026-07-05
 
 # Branding
 
+> **Objetivo**: Configurar la identidad visual de los documentos generados por el pipeline docgen: colores, logos y tipografía institucional.
+
+**⏱ Tiempo estimado**: 5 minutos
+**🎯 Nivel**: Básico
+**📋 Requisitos**: [[02-Comandos/05-generate.md|arai generate]] completado
+
+## Resultado esperado
+
+Poder definir y aplicar una identidad visual completa (colores primarios/secundarios, logo, nombre) a todos los PDFs, HTML y presentaciones generados.
+
 ## ¿Qué es el branding en arai?
 
 El branding define la identidad visual de todos los documentos generados por el pipeline docgen. Incluye colores, logos y tipografía.

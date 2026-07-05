@@ -7,6 +7,16 @@ created: 2026-07-05
 
 # Usar prompt/rule/reference creators
 
+> **Objetivo**: Usar los scripts creator para generar prompts, reglas y referencias compartidas desde la línea de comandos.
+
+**⏱ Tiempo estimado**: 3 minutos
+**🎯 Nivel**: Intermedio
+**📋 Requisitos**: [[08-Referencias/01-prompt-y-reglas.md|Prompts y reglas]]
+
+## Resultado esperado
+
+Generar prompts, reglas y configuraciones de referencia usando `node shared/scripts/create-*.js`.
+
 ## create-prompt
 
 ```bash

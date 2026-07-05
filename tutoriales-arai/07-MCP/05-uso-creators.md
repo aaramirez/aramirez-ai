@@ -7,6 +7,16 @@ created: 2026-07-05
 
 # Usar MCP/command/plugin/tool creators
 
+> **Objetivo**: Usar los scripts creator para generar servidores MCP, comandos personalizados, plugins y herramientas desde la línea de comandos.
+
+**⏱ Tiempo estimado**: 5 minutos
+**🎯 Nivel**: Intermedio
+**📋 Requisitos**: [[07-MCP/01-servidores-mcp.md|Servidores MCP]]
+
+## Resultado esperado
+
+Poder generar cualquier extensión de opencode usando `node shared/scripts/create-*.js` con sus opciones correspondientes.
+
 ## create-mcp
 
 ```bash

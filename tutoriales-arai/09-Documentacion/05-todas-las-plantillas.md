@@ -7,6 +7,16 @@ created: 2026-07-05
 
 # Todas las plantillas
 
+> **Objetivo**: Conocer las 28 plantillas disponibles en el pipeline docgen, organizadas por categoría, y saber cómo generar cada una.
+
+**⏱ Tiempo estimado**: 5 minutos
+**🎯 Nivel**: Intermedio
+**📋 Requisitos**: [[09-Documentacion/01-generar-decks.md|Generar decks]]
+
+## Resultado esperado
+
+Tener una referencia completa de todas las plantillas, saber cuáles tienen versión deck y reporte, y cómo invocar cada una con npm run.
+
 ## Comunicación periódica
 
 | Plantilla | Deck | Reporte | Uso |
@@ -63,4 +73,4 @@ npm run docgen:sprint-report
 
 ---
 
-**Volver**: [[09-Documentacion/Index|Generación de documentos]]
+**Siguiente**: [[10-CI/Index|Validación y Calidad]]

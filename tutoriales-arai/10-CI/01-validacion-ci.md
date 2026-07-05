@@ -7,6 +7,16 @@ created: 2026-07-05
 
 # CI Validation
 
+> **Objetivo**: Verificar la estructura, consistencia y buenas prácticas del proyecto usando `ci-validate.js`.
+
+**⏱ Tiempo estimado**: 5 minutos
+**🎯 Nivel**: Intermedio
+**📋 Requisitos**: Node.js 18+, proyecto arai
+
+## Resultado esperado
+
+Poder ejecutar validaciones CI locales con diferentes niveles de estrictez y entender qué verifica cada chequeo.
+
 ## Descripción
 
 `ci-validate.js` verifica la estructura, consistencia y buenas prácticas del proyecto. Corre en CI y localmente.

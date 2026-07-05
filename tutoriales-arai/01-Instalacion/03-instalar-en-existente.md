@@ -7,6 +7,16 @@ created: 2026-07-05
 
 # Instalar en proyecto existente
 
+> **Objetivo**: Agregar opencode y la configuración de arai a un proyecto que ya tienes en desarrollo, sin perder la configuración existente.
+
+**⏱ Tiempo estimado**: 5 minutos
+**🎯 Nivel**: Básico
+**📋 Requisitos**: Node.js 18+, Git, proyecto existente
+
+## Resultado esperado
+
+Tu proyecto existente tendrá `opencode.json` y `.opencode/` configurados, con la misma estructura de agentes que un proyecto creado con `arai init`.
+
 ## Paso 1: Posicionarse en el proyecto
 
 ```bash

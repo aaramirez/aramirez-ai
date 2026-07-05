@@ -1,8 +1,23 @@
 # Tutoriales arai
 
-> Guías paso a paso para usar **arai** — el configurador multi-agente de opencode.
+> Guías paso a paso para usar y extender **arai** — el gestor centralizado de configuración multi-agente para opencode.
+
+## Cómo usar este vault
+
+| Si eres... | Empieza por... |
+|------------|----------------|
+| 🆕 **Nuevo en arai** | [[00-Introduccion/Index|Introducción]] → [[01-Instalacion/Index|Instalación]] → [[02-Comandos/Index|Comandos]] |
+| 🛠 **Quieres crear skills** | [[06-Skills/Index|Skills]] → [[04-Agentes/Index|Agentes]] → [[07-MCP/Index|MCP]] |
+| 📄 **Necesitas documentación** | [[09-Documentacion/Index|Documentación]] → [[10-CI/Index|Calidad]] |
+| 🏗 **Escenarios completos** | [[11-Casos-de-uso/Index|Casos de uso]] |
+| ⚙️ **Configurar opencode** | [[03-Configuracion/Index|Configuración]] → [[05-Harness/Index|Harness]] |
+
+> **Requisitos**: Node.js 18+ y Git instalados.
 
 ## Contenido
+
+### [[00-Introduccion/Index|Introducción]]
+Qué es arai, para qué sirve, cómo extenderlo y arquitectura del ecosistema.
 
 ### [[01-Instalacion/Index|Instalación]]
 Cómo instalar arai, preparar el entorno y crear tu primer proyecto con opencode.
@@ -36,7 +51,3 @@ CI validation, tests, docgen validate y outcome validation.
 
 ### [[11-Casos-de-uso/Index|Casos de uso]]
 Escenarios completos que integran múltiples capacidades de arai.
-
----
-
-> **Nota**: Todos los tutoriales asumen que tienes Node.js 18+ y Git instalados.

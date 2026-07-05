@@ -7,6 +7,16 @@ created: 2026-07-05
 
 # Instalar arai
 
+> **Objetivo**: Clonar el repositorio de arai, instalar sus dependencias y verificar que todo funciona correctamente.
+
+**⏱ Tiempo estimado**: 5 minutos
+**🎯 Nivel**: Básico
+**📋 Requisitos**: Node.js 18+, Git, npm
+
+## Resultado esperado
+
+Al completar este tutorial tendrás el repositorio de arai clonado, dependencias instaladas y `npm test` pasando en tu máquina local.
+
 ## Paso 1: Clonar el repositorio
 
 ```bash
