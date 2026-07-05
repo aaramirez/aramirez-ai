@@ -1,0 +1,225 @@
+{
+  "main": {
+    "id": "0f7822b838ec4e71",
+    "type": "split",
+    "children": [
+      {
+        "id": "16147f114294491d",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "c837ca77f5cc6f90",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "11-Casos-de-uso/01-curso-ia-vault.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "01-curso-ia-vault"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "7dbca4148612bf61",
+    "type": "split",
+    "children": [
+      {
+        "id": "aa7a88c41f358075",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "4be3b6febafc1db7",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "b5a91d93fc2d2ce7",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "135d6fc972e98a76",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "2a9e453a827f0875",
+    "type": "split",
+    "children": [
+      {
+        "id": "d4ab422a239ec477",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "3565652b4f38e8f7",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "11-Casos-de-uso/01-curso-ia-vault.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for 01-curso-ia-vault"
+            }
+          },
+          {
+            "id": "20342ea78eeae519",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "11-Casos-de-uso/01-curso-ia-vault.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from 01-curso-ia-vault"
+            }
+          },
+          {
+            "id": "354b29202c0d007d",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "c78777a79ba3c90e",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "1d4c7af22f8dfcd2",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "11-Casos-de-uso/01-curso-ia-vault.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline of 01-curso-ia-vault"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false
+    }
+  },
+  "active": "c837ca77f5cc6f90",
+  "lastOpenFiles": [
+    "01-Instalacion/04-solucion-problemas.md",
+    "01-Instalacion/03-instalar-en-existente.md",
+    "11-Casos-de-uso/05-migrar-proyecto-existente.md",
+    "11-Casos-de-uso/04-crear-harness-completo.md",
+    "09-Documentacion/05-todas-las-plantillas.md",
+    "09-Documentacion/04-pipeline-docgen.md",
+    "06-Skills/04-creator-skills.md",
+    "02-Comandos/08-list.md",
+    "02-Comandos/07-uninstall.md",
+    "10-CI/04-outcome-validation.md",
+    "10-CI/03-docgen-validate.md",
+    "10-CI/02-tests.md",
+    "10-CI/01-validacion-ci.md",
+    "10-CI/Index.md",
+    "10-CI",
+    "08-Referencias/05-uso-creators.md",
+    "08-Referencias/04-repos-referencia.md",
+    "08-Referencias/03-branding.md",
+    "08-Referencias/02-referencias-compartidas.md",
+    "08-Referencias/01-prompt-y-reglas.md",
+    "08-Referencias/Index.md",
+    "08-Referencias",
+    "07-MCP/05-uso-creators.md",
+    "02-Comandos/Index.md",
+    "07-MCP/04-herramientas-personalizadas.md",
+    "07-MCP/03-plugins.md",
+    "07-MCP/02-comandos-personalizados.md",
+    "07-MCP/01-servidores-mcp.md",
+    "07-MCP",
+    "11-Casos-de-uso",
+    "09-Documentacion",
+    "06-Skills",
+    "08-CI",
+    "07-Referencias",
+    "06-MCP",
+    "05-Harness"
+  ]
+}

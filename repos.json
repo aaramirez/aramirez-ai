@@ -13,5 +13,15 @@
     "name": "GrupoConex/gda-ai",
     "url": "https://github.com/GrupoConex/gda-ai.git",
     "description": "GDA AI — reference for AI development workflows and patterns"
+  },
+  {
+    "name": "betta-tech/byo-coding-agent",
+    "url": "https://github.com/betta-tech/byo-coding-agent.git",
+    "description": "BYO Coding Agent — reference for building custom coding agents and tooling"
+  },
+  {
+    "name": "anthropics/claude-quickstarts",
+    "url": "https://github.com/anthropics/claude-quickstarts.git",
+    "description": "Anthropic Claude quickstart templates — reference for MCP, agents, and API integration patterns"
   }
 ]
