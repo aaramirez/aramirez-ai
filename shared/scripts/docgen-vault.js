@@ -7,8 +7,12 @@ import { brandCss, logoHref } from './docgen/theme-utils.js';
 const REPO_ROOT = resolve(new URL('.', import.meta.url).pathname, '../..');
 const BRAND_PATH = join(REPO_ROOT, 'shared', 'brand.json');
 
-const EXCLUDE_DIRS = new Set(['Transcripciones', '.obsidian', 'Recursos']);
-const EXCLUDE_FILES = new Set(['Index.md']);
+const DEFAULT_EXCLUDES = {
+  curso:    { dirs: ['Transcripciones', '.obsidian', 'Recursos'], files: ['Index.md'] },
+  topics:   { dirs: ['.obsidian', 'assets'],                      files: ['Index.md'] },
+  flat:     { dirs: ['.obsidian', 'assets'],                      files: ['Index.md'] },
+  arbitrary:{ dirs: ['.obsidian', 'assets'],                      files: ['Index.md'] },
+};
 
 function parseArgs() {
   const args = process.argv.slice(2);
@@ -17,7 +21,11 @@ function parseArgs() {
     if (args[i].startsWith('--')) {
       const key = args[i].slice(2);
       const val = i + 1 < args.length && !args[i + 1].startsWith('--') ? args[i + 1] : true;
-      flags[key] = val;
+      if (flags[key] !== undefined) {
+        flags[key] = [].concat(flags[key], val);
+      } else {
+        flags[key] = val;
+      }
       if (val !== true) i++;
     }
   }
@@ -30,29 +38,116 @@ function timestamp() {
   return `${d.getFullYear()}${pad(d.getMonth()+1)}${pad(d.getDate())}-${pad(d.getHours())}${pad(d.getMinutes())}${pad(d.getSeconds())}`;
 }
 
-function vaultFiles(vaultPath) {
+function detectVaultType(vaultPath) {
+  const entries = readdirSync(vaultPath, { withFileTypes: true });
+  const dirs = entries.filter(e => e.isDirectory() && !e.name.startsWith('.'));
+  const files = entries.filter(e => e.isFile() && e.name.endsWith('.md'));
+  if (dirs.some(d => /Módulo/i.test(d.name))) return 'curso';
+  const topicDirs = dirs.filter(d => /^\d+-[a-zA-Z]/.test(d.name));
+  if (dirs.length > 0 && topicDirs.length / dirs.length >= 0.6) return 'topics';
+  const numberedDirs = dirs.filter(d => /^\d+\s*[—\-]/.test(d.name));
+  if (dirs.length > 0 && numberedDirs.length / dirs.length >= 0.5) return 'curso';
+  if (dirs.length === 0 && files.length > 0) return 'flat';
+  return 'arbitrary';
+}
+
+function makeExcludes(vaultType, extraDirs, extraFiles) {
+  const base = DEFAULT_EXCLUDES[vaultType] || DEFAULT_EXCLUDES.arbitrary;
+  const dirs = new Set(base.dirs);
+  const files = new Set(base.files);
+  if (extraDirs) {
+    for (const d of [].concat(extraDirs)) dirs.add(d);
+  }
+  if (extraFiles) {
+    for (const f of [].concat(extraFiles)) files.add(f);
+  }
+  return { dirs, files };
+}
+
+function vaultFiles(vaultPath, excludeDirs, excludeFiles) {
   const files = [];
   const entries = readdirSync(vaultPath, { withFileTypes: true });
   for (const e of entries) {
-    if (EXCLUDE_DIRS.has(e.name)) continue;
+    if (excludeDirs.has(e.name)) continue;
     if (e.isDirectory()) {
-      files.push(...vaultFiles(join(vaultPath, e.name)));
-    } else if (e.isFile() && extname(e.name) === '.md' && !EXCLUDE_FILES.has(e.name)) {
+      files.push(...vaultFiles(join(vaultPath, e.name), excludeDirs, excludeFiles));
+    } else if (e.isFile() && extname(e.name) === '.md' && !excludeFiles.has(e.name)) {
       files.push(join(vaultPath, e.name));
     }
   }
   return files;
 }
 
-function parseModuleLesson(filePath, vaultPath) {
-  const rel = dirname(filePath).slice(vaultPath.length + 1);
-  const name = basename(filePath, '.md');
+function slugify(s) {
+  return s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-zA-Z0-9]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '').toLowerCase();
+}
+
+function displayName(s) {
+  return s.replace(/^\d+[-]\s*/, '').replace(/[-_]/g, ' ').replace(/\b\w/g, c => c.toUpperCase()).trim();
+}
+
+/* ---------- parseadores por tipo de vault ---------- */
+
+function parseCurso(rel, name) {
   const modMatch = rel.match(/(\d+)|Módulo\s+(\d+)/);
   const modNum = modMatch ? parseInt(modMatch[1] || modMatch[2]) : 99;
   const lesMatch = name.match(/^(\d+)/);
   const lesNum = lesMatch ? parseInt(lesMatch[1]) : 99;
-  const modName = rel || 'General';
-  return { modNum, lesNum, modName, name };
+  const modDisplay = displayName(rel);
+  const lesDisplay = displayName(name);
+  return {
+    groupKey: modDisplay || rel || 'General',
+    sortKey: `${String(modNum).padStart(3,'0')}-${String(lesNum).padStart(3,'0')}`,
+    title: name,
+    subtitle: `Lección ${lesMatch?.[1] || ''}${lesDisplay ? ` — ${lesDisplay}` : ''}`,
+  };
+}
+
+function parseTopics(rel, name) {
+  const secMatch = rel.match(/^(\d+)/);
+  const pageMatch = name.match(/^(\d+)/);
+  const secNum = secMatch ? parseInt(secMatch[1]) : 99;
+  const pageNum = pageMatch ? parseInt(pageMatch[1]) : 99;
+  const secDisplay = displayName(rel);
+  const pageDisplay = displayName(name);
+  return {
+    groupKey: secDisplay || rel,
+    sortKey: `${String(secNum).padStart(3,'0')}-${String(pageNum).padStart(3,'0')}`,
+    title: pageDisplay || name,
+    subtitle: `${secDisplay} — ${pageDisplay}`,
+  };
+}
+
+function parseFlat(rel, name) {
+  const display = displayName(name);
+  return {
+    groupKey: '_flat',
+    sortKey: name,
+    title: display,
+    subtitle: display,
+  };
+}
+
+function parseArbitrary(rel, name) {
+  const parts = rel.split('/');
+  const groupName = parts[0] || 'General';
+  const display = displayName(name);
+  return {
+    groupKey: groupName,
+    sortKey: `${rel}/${name}`,
+    title: display,
+    subtitle: `${display}`,
+  };
+}
+
+function parseByType(filePath, vaultPath, vaultType) {
+  const rel = dirname(filePath).slice(vaultPath.length + 1);
+  const name = basename(filePath, '.md');
+  const parsed = (vaultType === 'curso') ? parseCurso(rel, name) :
+    (vaultType === 'topics') ? parseTopics(rel, name) :
+    (vaultType === 'flat') ? parseFlat(rel, name) :
+    parseArbitrary(rel, name);
+  return { path: filePath, rel, name, ...parsed };
 }
 
 function escHtml(s) {
@@ -61,11 +156,23 @@ function escHtml(s) {
 
 function readVaultTitle(vaultPath) {
   const indexPath = join(vaultPath, 'Index.md');
-  if (!existsSync(indexPath)) return 'Curso';
+  if (!existsSync(indexPath)) return basename(vaultPath);
   const md = readFileSync(indexPath, 'utf8');
   const match = md.match(/^#\s+(.+)/m);
-  return match ? match[1].trim() : 'Curso';
+  return match ? match[1].trim() : basename(vaultPath);
 }
+
+function buildMeta(title, subtitle, vaultName) {
+  return {
+    title,
+    subtitle,
+    classification: `Generado desde ${vaultName}`,
+    organization: brand()?.name || '',
+    version: '1.0',
+  };
+}
+
+/* ---------- mdToHtml / inlineMd ---------- */
 
 function mdToHtml(md) {
   const lines = md.split('\n');
@@ -269,6 +376,8 @@ function inlineMd(text) {
   return s;
 }
 
+/* ---------- HTML assembly ---------- */
+
 function pageHeader(meta) {
   const logo = logoHref('blue');
   const logoHtml = logo ? `<div class="header-logo"><img src="${logo}" alt="Logo" /></div>` : '';
@@ -282,7 +391,6 @@ function pageFooter(meta) {
 
 function buildCoverHtml(meta, brandData) {
   const logo = logoHref('blue');
-  const logoHtml = logo ? `<div class="cover-logo"><img src="${logo}" alt="Logo" /></div>` : '';
   const org = meta.organization || brandData?.name || '';
   const classification = meta.classification || '';
 
@@ -416,50 +524,42 @@ ${contentHtmls.join('\n')}
 </body></html>`;
 }
 
-function collectByScope(vaultPath, scope, moduleName, lessonNum) {
-  let files = vaultFiles(vaultPath);
-  let entries = files.map(f => ({ path: f, ...parseModuleLesson(f, vaultPath) }));
+/* ---------- colección y exportación ---------- */
 
-  entries.sort((a, b) => a.modNum - b.modNum || a.lesNum - b.lesNum);
+function collectByScope(vaultPath, vaultType, excludeOpts, scope, moduleName, lessonNum) {
+  let files = vaultFiles(vaultPath, excludeOpts.dirs, excludeOpts.files);
+  let entries = files.map(f => parseByType(f, vaultPath, vaultType));
 
+  entries.sort((a, b) => a.sortKey < b.sortKey ? -1 : a.sortKey > b.sortKey ? 1 : 0);
+
+  const modLower = moduleName.toLowerCase();
   if (scope === 'lesson') {
-    entries = entries.filter(e => e.modName.includes(moduleName) && e.name.startsWith(lessonNum));
+    entries = entries.filter(e =>
+      (e.groupKey.toLowerCase().includes(modLower) || e.rel.toLowerCase().includes(modLower)) &&
+      (lessonNum ? e.name.startsWith(lessonNum) : true)
+    );
+  } else if (scope === 'section') {
+    entries = entries.filter(e =>
+      slugify(e.groupKey) === slugify(moduleName) ||
+      e.groupKey.toLowerCase().includes(modLower) ||
+      e.rel.toLowerCase().includes(modLower)
+    );
   } else if (scope === 'module') {
-    entries = entries.filter(e => e.modName.includes(moduleName));
+    entries = entries.filter(e =>
+      e.groupKey.toLowerCase().includes(modLower) ||
+      e.rel.toLowerCase().includes(modLower)
+    );
   }
 
   const groups = {};
   for (const e of entries) {
-    if (!groups[e.modName]) groups[e.modName] = [];
-    groups[e.modName].push(e);
+    if (!groups[e.groupKey]) groups[e.groupKey] = [];
+    groups[e.groupKey].push(e);
   }
   return groups;
 }
 
-function renderLesson(md, filePath) {
-  return mdToHtml(md);
-}
-
-function extractTitle(name) {
-  const sep = name.search(/ [—\-] /);
-  return sep !== -1 ? name.slice(sep + 3).trim() : name;
-}
-
-function extractSubtitle(name) {
-  const sep = name.search(/ [—\-] /);
-  return sep !== -1 ? name.slice(0, sep).trim() : name;
-}
-
-function buildMeta(title, subtitle, vaultName) {
-  const brandData = brand();
-  return {
-    title,
-    subtitle,
-    organization: brandData?.name || '',
-    classification: vaultName ? `Generado desde ${vaultName}` : brandData?.classification || '',
-    version: '1.0',
-  };
-}
+/* ---------- main ---------- */
 
 async function main() {
   const flags = parseArgs();
@@ -468,32 +568,58 @@ async function main() {
     console.log(`
 Usage: node shared/scripts/docgen-vault.js [options]
 
+Export an Obsidian vault to a branded PDF.
+
 Options:
-  --scope <lesson|module|all>   Scope of export (default: module)
-  --module <name>                Module name (required for lesson/module scope)
-  --lesson <num>                 Lesson number (for scope=lesson)
-  --mode <merged|separate>       Output mode (default: merged)
-  --vault <path>                 Path to vault (default: curso-ia/)
-  --output <dir>                 Base output directory (default: generated)
-  --help                         Show this help
+  --vault <path>             Path to vault (default: curso-ia/)
+  --scope <all|module|section|lesson>
+                             Scope of export (default: auto)
+  --module <name>            Module/section name (for module/section/lesson scope)
+  --lesson <num>             Lesson/page number (for lesson scope)
+  --mode <merged|separate>   Output mode (default: merged)
+  --structure <auto|curso|topics|flat|arbitrary>
+                             Vault structure type (default: auto-detect)
+  --exclude-dir <name>       Extra directory to exclude (multi-value)
+  --exclude-file <name>      Extra file to exclude (multi-value)
+  --output <dir>             Base output directory (default: generated)
+  --help                     Show this help
+
+Structure types:
+  curso      Module/lesson format (e.g. "Módulo 1/01-Leccion.md")
+  topics     Numbered sections  (e.g. "01-Tema/01-Pagina.md")
+  flat       All .md files in root directory
+  arbitrary  Any other folder hierarchy
 `);
     process.exit(0);
   }
 
-  const scope = flags.scope || 'module';
-  const mode = flags.mode || 'merged';
   const vaultPath = resolve(flags.vault || 'curso-ia');
   const baseOutput = flags.output || 'generated';
+  const mode = flags.mode || 'merged';
   const moduleName = flags.module || '';
   const lessonNum = flags.lesson || '';
 
-  if ((scope === 'lesson' || scope === 'module') && !moduleName) {
-    console.error('Error: --module is required for lesson/module scope');
+  if (!existsSync(vaultPath)) {
+    console.error(`Error: Vault path not found: ${vaultPath}`);
     process.exit(1);
   }
 
-  if (!existsSync(vaultPath)) {
-    console.error(`Error: Vault path not found: ${vaultPath}`);
+  const vaultType = flags.structure === 'auto' || !flags.structure
+    ? detectVaultType(vaultPath)
+    : flags.structure;
+
+  if (!['curso', 'topics', 'flat', 'arbitrary'].includes(vaultType)) {
+    console.error(`Error: Unknown structure type "${vaultType}". Use: auto, curso, topics, flat, arbitrary`);
+    process.exit(1);
+  }
+
+  let scope = flags.scope;
+  if (!scope) {
+    scope = vaultType === 'flat' ? 'all' : (moduleName ? 'module' : 'module');
+  }
+
+  if ((scope === 'lesson' || scope === 'section' || scope === 'module') && !moduleName) {
+    console.error(`Error: --module is required for ${scope} scope`);
     process.exit(1);
   }
 
@@ -501,12 +627,16 @@ Options:
     loadBrand(BRAND_PATH);
   }
 
+  const extraDirs = flags['exclude-dir'];
+  const extraFiles = flags['exclude-file'];
+  const excludeOpts = makeExcludes(vaultType, extraDirs, extraFiles);
+
   const vaultName = basename(vaultPath);
   const ts = timestamp();
   const outDir = join(baseOutput, `${vaultName}-${ts}`);
   mkdirSync(outDir, { recursive: true });
 
-  const groups = collectByScope(vaultPath, scope, moduleName, lessonNum);
+  const groups = collectByScope(vaultPath, vaultType, excludeOpts, scope, moduleName, lessonNum);
 
   if (Object.keys(groups).length === 0) {
     console.error('Error: No markdown files found matching the criteria');
@@ -514,65 +644,71 @@ Options:
   }
 
   const brandData = brand();
-  const totalLessons = Object.values(groups).reduce((sum, arr) => sum + arr.length, 0);
-  console.log(`Found ${totalLessons} lesson(s) in ${Object.keys(groups).length} module(s)`);
+  const totalItems = Object.values(groups).reduce((sum, arr) => sum + arr.length, 0);
+  const typeLabel = vaultType === 'curso' ? 'lesson(s)' : 'page(s)';
+  const groupLabel = vaultType === 'curso' ? 'module(s)' : 'section(s)';
+  console.log(`[${vaultType}] Found ${totalItems} ${typeLabel} in ${Object.keys(groups).length} ${groupLabel}`);
   console.log(`Output: ${outDir}\n`);
 
-  if (mode === 'separate') {
-    for (const [modName, lessons] of Object.entries(groups)) {
-      for (const lesson of lessons) {
-        const md = readFileSync(lesson.path, 'utf8');
-        const htmlContent = renderLesson(md, lesson.path);
-        const vaultTitle = readVaultTitle(vaultPath);
-        const lesNum = lesson.name.match(/^(\d+)/)?.[1] || '';
-        const lessonDisplay = lesson.name.replace(/^\d+[-]/, '').replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
-        const lessonLabel = `Lección ${lesNum}${lessonDisplay ? ` — ${lessonDisplay}` : ''}`;
-        const meta = buildMeta(vaultTitle, lessonLabel, vaultName);
-        const coverHtml = buildCoverHtml(meta, brandData);
-        const contentHtml = buildContentHtml(lessonDisplay, htmlContent);
-        const fullHtml = assembleHtml(coverHtml, [contentHtml]);
+  /* ---------- build cover and content ---------- */
 
-        const filename = `${lesson.name}.pdf`;
+  const vaultTitle = readVaultTitle(vaultPath);
+
+  function buildCoverSubtitle() {
+    if (scope === 'all') return vaultName;
+    if (scope === 'module' || scope === 'section') {
+      const key = Object.keys(groups).length === 1 ? Object.keys(groups)[0] : moduleName;
+      return vaultType === 'curso' ? key : key;
+    }
+    const first = Object.values(groups)[0]?.[0];
+    if (!first) return moduleName;
+    return first.subtitle || moduleName;
+  }
+
+  const coverMeta = buildMeta(vaultTitle, buildCoverSubtitle(), vaultName);
+  const coverHtml = buildCoverHtml(coverMeta, brandData);
+
+  if (mode === 'separate') {
+    for (const [groupName, items] of Object.entries(groups)) {
+      for (const item of items) {
+        const md = readFileSync(item.path, 'utf8');
+        const htmlContent = mdToHtml(md);
+        const meta = buildMeta(vaultTitle, item.subtitle, vaultName);
+        const pageCoverHtml = buildCoverHtml(meta, brandData);
+        const contentHtml = buildContentHtml(item.title, htmlContent);
+        const fullHtml = assembleHtml(pageCoverHtml, [contentHtml]);
+
+        const filename = `${item.name}.pdf`;
         const pdfPath = join(outDir, filename);
         await htmlToPdf(fullHtml, pdfPath);
         console.log(`  ✔ ${filename}`);
       }
     }
   } else {
-    const groupKeys = Object.keys(groups);
-    const actualName = groupKeys.length === 1 ? groupKeys[0] : moduleName;
-    const vaultTitle = readVaultTitle(vaultPath);
-    let coverSubtitle;
-    if (scope === 'all') {
-      coverSubtitle = vaultName;
-    } else if (scope === 'module') {
-      coverSubtitle = actualName;
-    } else {
-      const firstLesson = Object.values(groups)[0]?.[0];
-      const lesNum = firstLesson?.name.match(/^(\d+)/)?.[1] || lessonNum;
-      const lesDisplay = firstLesson
-        ? firstLesson.name.replace(/^\d+[-]/, '').replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
-        : '';
-      coverSubtitle = `Lección ${lesNum}${lesDisplay ? ` — ${lesDisplay}` : ''}`;
-    }
-    const coverMeta = buildMeta(vaultTitle, coverSubtitle, vaultName);
-    const coverHtml = buildCoverHtml(coverMeta, brandData);
     const contentHtmls = [];
 
-    for (const [modName, lessons] of Object.entries(groups)) {
-      for (const lesson of lessons) {
-        const md = readFileSync(lesson.path, 'utf8');
-        const htmlContent = renderLesson(md, lesson.path);
-        const title = lesson.name.replace(/^\d+[-]/, '').replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
-        contentHtmls.push(buildContentHtml(title, htmlContent));
+    for (const [groupName, items] of Object.entries(groups)) {
+      for (const item of items) {
+        const md = readFileSync(item.path, 'utf8');
+        const htmlContent = mdToHtml(md);
+        contentHtmls.push(buildContentHtml(item.title, htmlContent));
       }
     }
 
     const fullHtml = assembleHtml(coverHtml, contentHtmls);
-    const slug = moduleName.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-zA-Z0-9]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '').toLowerCase();
-    const filename = scope === 'all' ? 'curso-completo.pdf' :
-      scope === 'module' ? `${slug}.pdf` :
-        `leccion-${lessonNum}.pdf`;
+
+    let filename;
+    if (scope === 'all') {
+      filename = `${slugify(vaultName)}.pdf`;
+    } else if (scope === 'module' || scope === 'section') {
+      const nameForSlug = Object.keys(groups).length === 1 ? Object.keys(groups)[0] : moduleName;
+      filename = `${slugify(nameForSlug)}.pdf`;
+    } else {
+      const first = Object.values(groups)[0]?.[0];
+      const prefix = vaultType === 'curso' ? 'leccion' : 'pagina';
+      filename = `${prefix}-${slugify(moduleName || first?.name || lessonNum)}.pdf`;
+    }
+
     const pdfPath = join(outDir, filename);
     await htmlToPdf(fullHtml, pdfPath);
     console.log(`  ✔ ${filename}`);
