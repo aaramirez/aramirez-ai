@@ -2,14 +2,14 @@
 
 ## Definición
 
-Un **harness** es la configuración que ejecuta el ciclo completo del agente. Es el "motor" que:
+Un **harness** es el contexto/contenido que se le pasa a un modelo IA generativa para lograr un objetivo, es decir, para que se comporte como un agente. Usualmente la configuración especifica una especie de ciclo y por ello hoy en día se puede considerar como ingeniería de ciclos o ingeniería de arneses. Es el "motor" que:
 
 1. Recibe las **tool calls** que emite el modelo de IA
 2. Las **ejecuta** contra el sistema (bash, edición de archivos, web, etc.)
 3. **Gestiona permisos** para cada operación
 4. **Orquesta el flujo de trabajo** entre agentes, skills y herramientas
 
-Sin un harness, el modelo solo es un cerebro sin cuerpo. El harness es su sistema nervioso.
+Sin un harness, el modelo solo es un cerebro sin guión. El harness son las especificaciones que sigue el agente, recordemos que los modelos generan de acuerdo al contexto y hoy en día estás más entrenados para seguir instrucciones.
 
 ## Analogía
 
@@ -77,16 +77,6 @@ license: MIT
 
 Instrucciones globales en Markdown que se inyectan al sistema de todos los agentes. Útil para políticas del proyecto.
 
-## Ejemplos de la Comunidad
-
-| Harness | Componentes | Destacado |
-|---------|-------------|-----------|
-| **opencode-workspace** | 16 componentes | Referencia canónica de Anthropic |
-| **iceglober/harness-opencode** | 19 skills | Enfoque en skills reutilizables |
-| **aramirez-ai** (este repo) | 12+ skills, 5 agentes | Harness completo con pipeline docgen |
-
-Cada uno organiza los mismos bloques (opencode.json, agentes, skills) de forma distinta. No hay un harness "correcto" — hay el que funciona para tu flujo.
-
 ## Harness vs Configuración Simple vs Agente Individual
 
 | Concepto | Qué incluye | Uso típico |
@@ -96,6 +86,16 @@ Cada uno organiza los mismos bloques (opencode.json, agentes, skills) de forma d
 | **Harness completo** | `opencode.json` + múltiples agentes + skills + referencias + MCP | Equipo, múltiples dominios, CI/CD |
 
 Un harness es una **configuración orquestada**: varios agentes colaboran, skills especializados se activan según el contexto, y los permisos están ajustados por rol.
+
+## Ejemplos de la Comunidad
+
+| Harness | Componentes | Destacado |
+|---------|-------------|-----------|
+| **opencode-workspace** | 16 componentes | Referencia canónica de Anthropic |
+| **iceglober/harness-opencode** | 19 skills | Enfoque en skills reutilizables |
+| **aramirez-ai** (este repo) | 12+ skills, 5 agentes | Harness completo con pipeline docgen |
+
+Cada uno organiza los mismos bloques (opencode.json, agentes, skills) de forma distinta. No hay un harness "correcto" — hay el que funciona para tu flujo.
 
 ## El Ecosistema de 18 Skills Creadores
 
