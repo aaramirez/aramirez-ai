@@ -65,6 +65,7 @@ Configura harness completos en OpenCode siguiendo mejores prácticas.
 9. [[Módulo 6 — Harness en OpenCode/09-Instrucciones-Referencias-Prompts-Reglas|Instrucciones, Referencias, Prompts y Reglas]]
 10. [[Módulo 6 — Harness en OpenCode/10-Arquitecturas-Multi-Agente-y-Flujos|Arquitecturas Multi-Agente y Flujos]]
 11. [[Módulo 6 — Harness en OpenCode/11-Poniendolo-Todo-Junto|Poniéndolo Todo Junto]]
+12. [[Módulo 6 — Harness en OpenCode/12-Modelos-y-Harness-Engineering|Modelos y Harness Engineering]]
 
 ### 📚 [[Recursos/Glosario|Recursos]]
 
