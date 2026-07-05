@@ -1,4 +1,4 @@
-# Módulo 7: Comandos Personalizados y Scripts
+# Módulo 8: Comandos Personalizados y Scripts
 
 ## El Key `command` en opencode.json
 

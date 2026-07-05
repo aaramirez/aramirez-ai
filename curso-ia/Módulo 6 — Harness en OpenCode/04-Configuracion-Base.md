@@ -1,4 +1,4 @@
-# Módulo 2: Configuración Base — opencode.json
+# Módulo 4: Configuración Base — opencode.json
 
 ## El Archivo Central
 

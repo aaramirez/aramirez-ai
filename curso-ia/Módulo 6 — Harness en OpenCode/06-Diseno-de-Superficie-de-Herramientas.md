@@ -1,4 +1,4 @@
-# Módulo 5: Diseño de Superficie de Herramientas
+# Módulo 6: Diseño de Superficie de Herramientas
 
 ## Principio Anthropic
 

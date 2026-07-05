@@ -1,4 +1,4 @@
-# Módulo 6: Gestión de Contexto
+# Módulo 7: Gestión de Contexto
 
 ## Compaction
 

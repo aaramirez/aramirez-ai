@@ -1,4 +1,4 @@
-# Módulo 10: Arquitecturas Multi-Agente y Flujos de Trabajo
+# Módulo 11: Arquitecturas Multi-Agente y Flujos de Trabajo
 
 ## Patrones de Arquitectura
 

@@ -1,4 +1,4 @@
-# Módulo 8: Skills y Carga Bajo Demanda
+# Módulo 10: Skills y Aprendizaje Bajo Demanda
 
 ## Anatomía de SKILL.md
 

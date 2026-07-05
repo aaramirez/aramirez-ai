@@ -55,17 +55,17 @@ Domina OpenCode, el agente de código abierto.
 Configura harness completos en OpenCode siguiendo mejores prácticas.
 
 1. [[Módulo 6 — Harness en OpenCode/01-Que-es-un-Harness|¿Qué es un Harness?]]
-2. [[Módulo 6 — Harness en OpenCode/02-Configuracion-Base|Configuración Base — opencode.json]]
+2. [[Módulo 6 — Harness en OpenCode/02-Modelos-y-Harness-Engineering|Modelos y Harness Engineering]]
 3. [[Módulo 6 — Harness en OpenCode/03-Arquitectura-de-Agentes|Arquitectura de Agentes]]
-4. [[Módulo 6 — Harness en OpenCode/04-Modelo-de-Permisos|Modelo de Permisos]]
-5. [[Módulo 6 — Harness en OpenCode/05-Diseno-de-Superficie-de-Herramientas|Diseño de Superficie de Herramientas]]
-6. [[Módulo 6 — Harness en OpenCode/06-Gestion-de-Contexto|Gestión de Contexto]]
-7. [[Módulo 6 — Harness en OpenCode/07-Comandos-Personalizados-y-Scripts|Comandos Personalizados y Scripts]]
-8. [[Módulo 6 — Harness en OpenCode/08-Skills-y-Aprendizaje-Bajo-Demanda|Skills y Aprendizaje Bajo Demanda]]
+4. [[Módulo 6 — Harness en OpenCode/04-Configuracion-Base|Configuración Base — opencode.json]]
+5. [[Módulo 6 — Harness en OpenCode/05-Modelo-de-Permisos|Modelo de Permisos]]
+6. [[Módulo 6 — Harness en OpenCode/06-Diseno-de-Superficie-de-Herramientas|Diseño de Superficie de Herramientas]]
+7. [[Módulo 6 — Harness en OpenCode/07-Gestion-de-Contexto|Gestión de Contexto]]
+8. [[Módulo 6 — Harness en OpenCode/08-Comandos-Personalizados-y-Scripts|Comandos Personalizados y Scripts]]
 9. [[Módulo 6 — Harness en OpenCode/09-Instrucciones-Referencias-Prompts-Reglas|Instrucciones, Referencias, Prompts y Reglas]]
-10. [[Módulo 6 — Harness en OpenCode/10-Arquitecturas-Multi-Agente-y-Flujos|Arquitecturas Multi-Agente y Flujos]]
-11. [[Módulo 6 — Harness en OpenCode/11-Poniendolo-Todo-Junto|Poniéndolo Todo Junto]]
-12. [[Módulo 6 — Harness en OpenCode/12-Modelos-y-Harness-Engineering|Modelos y Harness Engineering]]
+10. [[Módulo 6 — Harness en OpenCode/10-Skills-y-Aprendizaje-Bajo-Demanda|Skills y Aprendizaje Bajo Demanda]]
+11. [[Módulo 6 — Harness en OpenCode/11-Arquitecturas-Multi-Agente-y-Flujos|Arquitecturas Multi-Agente y Flujos]]
+12. [[Módulo 6 — Harness en OpenCode/12-Poniendolo-Todo-Junto|Poniéndolo Todo Junto]]
 
 ### 📚 [[Recursos/Glosario|Recursos]]
 

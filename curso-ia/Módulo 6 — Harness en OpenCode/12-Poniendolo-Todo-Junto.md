@@ -1,4 +1,4 @@
-# Módulo 11: Poniéndolo Todo Junto
+# Módulo 12: Poniéndolo Todo Junto
 
 ## Caso Práctico: Harness "full-dev"
 

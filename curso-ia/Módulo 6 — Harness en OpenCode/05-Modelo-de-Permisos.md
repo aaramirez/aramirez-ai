@@ -1,4 +1,4 @@
-# Módulo 4: Modelo de Permisos
+# Módulo 5: Modelo de Permisos
 
 ## Principio Fundamental
 
