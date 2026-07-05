@@ -33,6 +33,7 @@ This repository is configured with **aramirez-ai** — an opencode AI configurat
 |-------|------|-------------|
 | **build** (default) | primary | Default build agent for coding tasks |
 | **plan** | primary | Planning agent for architecture and design (edit: deny) |
+| **plan-arai** | primary | Plan mode que documenta planes en docs/ |
 | **reviewer** | subagent | Code review specialist |
 | **tester** | subagent | Testing specialist (bash: allow) |
 | **docs** | subagent | Documentation specialist (edit: allow, bash: deny) |
@@ -48,6 +49,7 @@ This repository is configured with **aramirez-ai** — an opencode AI configurat
 | git | Git operations |
 | kb-management | Knowledge base management |
 | pdf-extraction | PDF extraction |
+| vault-pdf-export | Export Obsidian vault content to professional PDF |
 | youtube | YouTube transcript extraction |
 
 ## CLI quick reference

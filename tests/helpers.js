@@ -82,30 +82,39 @@ export function assertOk(condition, message) {
 
 /**
  * Parse YAML frontmatter from a markdown file (between --- delimiters).
- * Handles flat keys and one level of indented objects (e.g., permission:).
+ * Handles flat keys and arbitrary nested objects.
  */
 export function parseFrontmatter(filePath) {
   const content = readFileSync(filePath, 'utf8');
   const match = content.match(/^---\n([\s\S]+?)\n---/);
   if (!match) return {};
+
   const body = match[1];
-  const result = {};
   const lines = body.split('\n');
-  let currentKey = null;
+  const root = {};
+  const stack = [{ obj: root, indent: -1 }];
+
   for (const line of lines) {
-    if (/^\s/.test(line) && currentKey) {
-      const indentedMatch = line.match(/^\s{2,}(\S+?):\s*(.*)/);
-      if (indentedMatch) {
-        if (!result[currentKey]) result[currentKey] = {};
-        result[currentKey][indentedMatch[1]] = indentedMatch[2] || '';
-      }
+    if (!line.trim() || line.trim().startsWith('#')) continue;
+    const indent = line.search(/\S/);
+    const m = line.match(/^(\s*)(\S+?):\s*(.*)/);
+    if (!m) continue;
+
+    const key = m[2];
+    const val = m[3];
+
+    while (stack.length > 1 && stack[stack.length - 1].indent >= indent) {
+      stack.pop();
+    }
+
+    if (val) {
+      stack[stack.length - 1].obj[key] = val;
     } else {
-      const topMatch = line.match(/^(\S+?):\s*(.*)/);
-      if (topMatch) {
-        currentKey = topMatch[1];
-        result[currentKey] = topMatch[2] || '';
-      }
+      const newObj = {};
+      stack[stack.length - 1].obj[key] = newObj;
+      stack.push({ obj: newObj, indent });
     }
   }
-  return result;
+
+  return root;
 }

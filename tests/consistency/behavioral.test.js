@@ -53,8 +53,14 @@ describe('agent .md frontmatter structural validation (Phase 1e)', () => {
       assert.ok(perm, `Missing "permission" in ${file}`);
       const validValues = ['allow', 'deny'];
       if ('edit' in perm) {
-        assert.ok(validValues.includes(perm.edit),
-          `permission.edit must be "allow" or "deny", got "${perm.edit}"`);
+        if (typeof perm.edit === 'string') {
+          assert.ok(validValues.includes(perm.edit),
+            `permission.edit must be "allow" or "deny", got "${perm.edit}"`);
+        } else if (typeof perm.edit === 'object' && perm.edit !== null) {
+          const values = Object.values(perm.edit);
+          assert.ok(values.every(v => validValues.includes(v)),
+            `permission.edit object values must all be "allow" or "deny", got ${JSON.stringify(perm.edit)}`);
+        }
       }
       if ('bash' in perm) {
         assert.ok(validValues.includes(perm.bash),

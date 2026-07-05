@@ -20,6 +20,11 @@
         "edit": "deny"
       }
     },
+    "plan-arai": {
+      "description": "Clona Plan, edita solo docs/",
+      "mode": "primary",
+      "path": ".opencode/agents/plan-arai.md"
+    },
     "reviewer": {
       "description": "Code review specialist. Use for PR reviews and quality checks.",
       "mode": "subagent",

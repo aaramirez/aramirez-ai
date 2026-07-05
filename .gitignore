@@ -6,3 +6,4 @@ dist/
 repos/
 .opencode/
 opencode.json
+generated/

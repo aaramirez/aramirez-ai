@@ -395,7 +395,7 @@ export function htmlToPdf(html, pdfPath, browserPath) {
       '--headless=new', '--disable-gpu', '--no-sandbox',
       '--no-pdf-header-footer',
       `--print-to-pdf=${resolve(pdfPath)}`, `file://${resolve(htmlPath)}`,
-    ], { timeout: 30000, stdio: 'pipe' });
+    ], { timeout: 120000, stdio: 'pipe' });
     if (result.error) throw result.error;
     if (result.status !== 0) throw new Error(`Browser exited with code ${result.status}: ${result.stderr?.toString().slice(0, 200)}`);
   } finally {

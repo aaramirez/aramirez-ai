@@ -75,7 +75,7 @@ license: MIT
 ---
 ```
 
-Available skills: **branding**, **code-review**, **content-ingestion**, **document-generation**, **git**, **kb-management**, **pdf-extraction**, **youtube**, plus **18 creator skills** (`agent-creator`, `config-creator`, `skill-creator`, etc.) that generate harness components programmatically.
+Available skills: **branding**, **code-review**, **content-ingestion**, **document-generation**, **git**, **kb-management**, **pdf-extraction**, **vault-pdf-export**, **youtube**, plus **18 creator skills** (`agent-creator`, `config-creator`, `skill-creator`, etc.) that generate harness components programmatically.
 
 ### Skill de YouTube
 
@@ -108,6 +108,7 @@ All creator scripts support `--dry-run` to preview output and `--help` for usage
 |-------|------|-------------|
 | **build** (default) | primary | — |
 | **plan** | primary | `edit: deny` |
+| **plan-arai** | primary | Plan mode que documenta en `docs/` |
 | **reviewer** | subagent | `edit: deny` |
 | **tester** | subagent | `bash: allow` |
 | **docs** | subagent | `edit: allow`, `bash: deny` |
