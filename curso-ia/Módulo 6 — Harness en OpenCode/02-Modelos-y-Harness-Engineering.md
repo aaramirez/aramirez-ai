@@ -22,6 +22,66 @@ Repetir hasta completar el objetivo
 
 Este ciclo es la base de cualquier harness. Sin él, los agentes no podrían interactuar con el sistema, editar archivos, ejecutar comandos ni usar MCPs.
 
+## Evolución de los modelos hacia el comportamiento agéntico
+
+Los modelos de lenguaje no siempre pudieron comportarse como agentes. Hasta 2022 eran generadores de texto sin control — recibían un prompt y completaban, sin distinguir instrucciones de contenido. Cuatro saltos evolutivos lo hicieron posible:
+
+### 1. Instruction Tuning (2022) — el modelo aprende a seguir instrucciones
+
+Con RLHF y fine-tuning instructivo (InstructGPT, GPT-3.5), el modelo aprendió a **distinguir una instrucción de una mera completion**. Por primera vez se podía decir "traduce esto" o "resume este texto" y el modelo lo entendía como orden, no como continuación.
+
+Esto habilitó el **system prompt**: un bloque separado que define el rol y las reglas del agente, que el modelo prioriza sobre el resto del contexto.
+
+```
+System: Eres un agente especializado en revisión de código...
+User: Revisa este archivo
+→ El modelo entiende que el system prompt es autoridad.
+```
+
+**Impacto en harness**: sin esto no podríamos definir roles de agente (líder, implementer, reviewer) con instrucciones consistentes.
+
+### 2. Function Calling (2023) — el modelo declara intenciones
+
+OpenAI lanzó function calling en GPT-4 (junio 2023). El modelo ya no solo generaba texto — podía generar objetos JSON estructurados declarando qué herramienta quería llamar y con qué parámetros. Ese mismo año Anthropic replicó con tool use nativo en Claude 3.
+
+```
+Modelo → genera texto + {"name": "edit", "arguments": {...}} → Harness ejecuta → Resultado → Modelo decide siguiente paso
+```
+
+**Impacto en harness**: nace el ciclo agente moderno. El modelo declara intenciones, el harness las ejecuta con control de permisos. Por primera vez un modelo puede *actuar* sobre el mundo real de forma estructurada y segura.
+
+### 3. Entrenamiento en trayectorias agente (2024-2025) — el modelo entiende el ciclo completo
+
+Los modelos empezaron a entrenarse con datos sintéticos de **ciclos completos de agente**: recibir una tarea, planificar, usar herramientas, observar resultados, iterar. Ya no aprenden pasos aislados — aprenden el flujo entero.
+
+Hitos:
+- **Claude 3.5 Sonnet + Computer Use**: entrenado para moverse en entornos gráficos (píxeles → clics)
+- **Extended Thinking**: Claude genera tokens de razonamiento *internos* antes de decidir la respuesta final
+- **o1/o3 (OpenAI)**: razonamiento encadenado antes de actuar
+- **Modelos agente-nativos**: algunos modelos (Claude 4, Gemini 2.5) ya se pre-entrenan con datasets de tool use
+
+**Impacto en harness**: los modelos entienden el ciclo agente de forma natural. Ya no necesitas prompts complejos para que usen herramientas — lo hacen por defecto, con mayor precisión y menos errores.
+
+### 4. Contexto masivo + MCP (2024-2025) — espacio para proyectos enteros
+
+El contexto pasó de **2K tokens (GPT-3, 2020)** a **200K (Claude 3), 1M (Gemini 2.5) y 2M (Claude 4)**. Esto permite pasar archivos completos como contexto sin perder el hilo. Paralelamente, **MCP** estandarizó cómo los modelos descubren y usan herramientas externas — cualquier servidor MCP expone tools que el modelo consume sin configuración especial.
+
+**Impacto en harness**: puedes pasar el proyecto entero como contexto y conectar herramientas externas (APIs, bases de datos, ticketing) sin modificar el harness.
+
+### Resumen evolutivo
+
+| Hito | Año | Modelo clave | Qué habilitó |
+|------|-----|-------------|--------------|
+| GPT-3 | 2020 | GPT-3 | Generación de texto pura |
+| Instruction Tuning | 2022 | InstructGPT | Seguir instrucciones → **system prompts** |
+| Function Calling | 2023 | GPT-4, Claude 3 | Tool calls estructuradas → **ciclo agente** |
+| Tool Use nativo | 2024 | Claude 3.5 | Tools como parte del flujo natural |
+| Computer Use | 2024 | Claude 3.5 | Interacción con GUI |
+| Extended Thinking | 2024 | Claude 3.5 Sonnet | Razonamiento interno antes de actuar |
+| MCP v1 | 2024 | — | Estandarización de herramientas |
+| Contexto masivo | 2025 | Claude 4, Gemini 2.5 | 1M-2M tokens, proyectos enteros en contexto |
+| Modelos agente-nativos | 2025 | Claude 4, o-series | Entrenados desde cero para el ciclo agente |
+
 ### Tool calls: el puente entre el modelo y el mundo real
 
 Los modelos de lenguaje modernos pueden **declarar intenciones de ejecución** mediante tool calls (también llamadas function calls). El modelo no ejecuta nada directamente — en su lugar, genera un objeto estructurado tipo:
@@ -43,6 +103,8 @@ El harness recibe esto, lo ejecuta y devuelve el resultado al modelo. Esto es lo
 - **Ejecutar bash** con permisos controlados
 - **Consultar APIs** a través de MCP
 - **Navegar por el web** mediante tools como fetch
+
+> **Razonamiento y comportamiento agéntico son el mismo patrón en dos planos.** El modelo genera un paso, evalúa su progreso hacia un objetivo y decide el siguiente paso. Eso ocurre tanto en el plano interno (tokens de razonamiento, thinking mode) como en el plano externo (tool calls ejecutadas por el harness). El harness no es más que el **reasoning loop proyectado hacia afuera** — la misma mecánica de generar→evaluar→iterar, pero operando sobre el sistema real en vez de sobre el espacio de tokens.
 
 **Diferencias entre modelos:**
 
@@ -191,6 +253,7 @@ El harness es totalmente personalizable. Cambiando las instrucciones de los agen
 | **MCP** | Protocolo estándar para conectar modelos a herramientas externas |
 | **Human in the loop** | Puntos de aprobación humana que mantienen el control de calidad |
 | **Context filtering** | Cada subagente recibe solo la información necesaria para su tarea |
+| **Reasoning = Agente interno** | El ciclo de pensar y el ciclo de actuar son idénticos — misma mecánica generación→evaluación→iteración |
 
 Los modelos son el motor, pero el harness es el vehículo. Entender cómo funcionan ambos y cómo se complementan es la clave para construir sistemas multi-agente efectivos.
 
