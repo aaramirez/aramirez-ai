@@ -84,12 +84,12 @@ describe('init output deep validation (Phase 3b + 3c)', () => {
   test('full template opencode.json has all 5 source agents', () => {
     runInit('full');
     const config = JSON.parse(readFileSync(join(projectDir, 'platforms', 'opencode', 'opencode.json'), 'utf8'));
-    const expectedAgents = ['build', 'plan', 'reviewer', 'tester', 'docs'];
+    const expectedAgents = ['build', 'plan', 'plan-arai', 'reviewer', 'tester', 'docs'];
     for (const name of expectedAgents) {
       assert.ok(config.agent?.[name], `Should have agent: ${name}`);
     }
     const agentCount = Object.keys(config.agent || {}).length;
-    assert.equal(agentCount, 5, 'Should have exactly 5 agents');
+    assert.equal(agentCount, 6, 'Should have exactly 6 agents');
   });
 
   test('full template opencode.json agent modes are correct', () => {
@@ -122,7 +122,8 @@ describe('init output deep validation (Phase 3b + 3c)', () => {
       'instructions-creator', 'kb-management', 'mcp-creator', 'pdf-extraction',
       'permission-creator', 'plugin-creator', 'prompt-creator',
       'reference-creator', 'rule-creator', 'script-creator', 'skill-creator',
-      'specialized-agent-creator', 'subagent-creator', 'tool-creator', 'youtube',
+      'specialized-agent-creator', 'subagent-creator', 'tool-creator',
+      'vault-pdf-export', 'youtube',
     ];
     assert.equal(present.length, expected.length, `Expected ${expected.length} skills, got ${present.length}`);
     for (const name of expected) {

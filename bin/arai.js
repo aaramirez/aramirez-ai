@@ -149,6 +149,7 @@ function installPlatform(projectRoot) {
   }
 
   log(`Installed opencode config in ${projectRoot}/`, 'ok');
+  updateAgentsMd(projectRoot);
   return true;
 }
 
@@ -175,6 +176,7 @@ function installSkill(name, projectRoot) {
   ensureDir(dirname(dest));
   cpSync(srcDir, dest, { recursive: true });
   log(`Installed skill '${name}' → .opencode/skills/${name}/`, 'ok');
+  updateAgentsMd(projectRoot);
   return true;
 }
 
@@ -223,6 +225,7 @@ function installAgent(name, projectRoot) {
   }
 
   log(`Installed agent '${name}' → .opencode/agents/${name}.md`, 'ok');
+  updateAgentsMd(projectRoot);
   return true;
 }
 
@@ -245,6 +248,7 @@ function installScript(name, projectRoot) {
   ensureDir(destDir);
   writeFileSync(destFile, readFileSync(srcFile, 'utf8'));
   log(`Installed script '${name}' → shared/scripts/${name}.js`, 'ok');
+  updateAgentsMd(projectRoot);
   return true;
 }
 
@@ -267,6 +271,7 @@ function installPrompt(name, projectRoot) {
   ensureDir(destDir);
   writeFileSync(destFile, readFileSync(srcFile, 'utf8'));
   log(`Installed prompt '${name}' → shared/prompts/${name}.md`, 'ok');
+  updateAgentsMd(projectRoot);
   return true;
 }
 
@@ -289,6 +294,7 @@ function installRule(name, projectRoot) {
   ensureDir(destDir);
   writeFileSync(destFile, readFileSync(srcFile, 'utf8'));
   log(`Installed rule '${name}' → shared/rules/${name}.md`, 'ok');
+  updateAgentsMd(projectRoot);
   return true;
 }
 
@@ -311,6 +317,7 @@ function uninstallPlatform(projectRoot) {
   }
 
   log(`Uninstalled opencode from ${projectRoot}/`, 'ok');
+  updateAgentsMd(projectRoot);
   return true;
 }
 
@@ -323,6 +330,7 @@ function uninstallSkill(name, projectRoot) {
 
   rmSync(dest, { recursive: true, force: true });
   log(`Uninstalled skill '${name}' from .opencode/skills/`, 'ok');
+  updateAgentsMd(projectRoot);
   return true;
 }
 
@@ -348,6 +356,7 @@ function uninstallAgent(name, projectRoot) {
   }
 
   log(`Uninstalled agent '${name}' from .opencode/agents/`, 'ok');
+  updateAgentsMd(projectRoot);
   return true;
 }
 
@@ -360,6 +369,7 @@ function uninstallScript(name, projectRoot) {
 
   rmSync(destFile, { force: true });
   log(`Uninstalled script '${name}' from shared/scripts/`, 'ok');
+  updateAgentsMd(projectRoot);
   return true;
 }
 
@@ -372,6 +382,7 @@ function uninstallPrompt(name, projectRoot) {
 
   rmSync(destFile, { force: true });
   log(`Uninstalled prompt '${name}' from shared/prompts/`, 'ok');
+  updateAgentsMd(projectRoot);
   return true;
 }
 
@@ -384,6 +395,7 @@ function uninstallRule(name, projectRoot) {
 
   rmSync(destFile, { force: true });
   log(`Uninstalled rule '${name}' from shared/rules/`, 'ok');
+  updateAgentsMd(projectRoot);
   return true;
 }
 
@@ -490,6 +502,139 @@ function syncProject(projectRoot) {
   log(`Re-synced opencode config in ${projectRoot}`, 'ok');
 }
 
+/* ─── dynamic AGENTS.md helpers ─── */
+
+function buildDirectoryTree(projectDir) {
+  const indent = '  ';
+  const lines = [];
+  const topDirs = [];
+
+  // Collect top-level directory branches
+  const sharedDirs = ['agents', 'skills', 'prompts', 'scripts', 'rules']
+    .filter(d => isDir(join(projectDir, 'shared', d)));
+  if (sharedDirs.length > 0) topDirs.push({ name: 'shared', children: sharedDirs, label: 'Centralized reusable assets' });
+
+  const platformDirs = existsSync(join(projectDir, 'platforms'))
+    ? readdirSync(join(projectDir, 'platforms')).filter(d => isDir(join(projectDir, 'platforms', d)))
+    : [];
+  if (platformDirs.length > 0) topDirs.push({ name: 'platforms', children: platformDirs, label: 'Agent configurations' });
+
+  const assetDirs = existsSync(join(projectDir, 'assets'))
+    ? readdirSync(join(projectDir, 'assets')).filter(d => isDir(join(projectDir, 'assets', d)))
+    : [];
+  if (assetDirs.length > 0) topDirs.push({ name: 'assets', children: assetDirs, label: 'Brand logos, CSS templates, decks, images' });
+
+  if (isDir(join(projectDir, 'repos'))) topDirs.push({ name: 'repos', children: [], label: 'Cloned reference repos (gitignored)' });
+
+  const rootFiles = ['AGENTS.md', 'README.md', 'opencode.json', 'package.json', 'repos.json']
+    .filter(f => existsSync(join(projectDir, f)));
+
+  // Render tree
+  for (let i = 0; i < topDirs.length; i++) {
+    const dir = topDirs[i];
+    const isLastTop = i === topDirs.length - 1 && rootFiles.length === 0;
+    const prefix = isLastTop ? '└── ' : '├── ';
+    lines.push(`${indent}${prefix}${dir.name}/${dir.label ? `  ${dir.label}` : ''}`);
+
+    // Children of this dir
+    for (let j = 0; j < dir.children.length; j++) {
+      const child = dir.children[j];
+      const isLastChild = j === dir.children.length - 1;
+      const childPrefix = isLastTop ? `${indent}    ` : `${indent}│   `;
+      lines.push(`${childPrefix}${isLastChild ? '└── ' : '├── '}${child}/`);
+    }
+  }
+
+  // Root-level files (same prefix as directories since all under project_name/)
+  for (let i = 0; i < rootFiles.length; i++) {
+    const f = rootFiles[i];
+    const isLast = i === rootFiles.length - 1;
+    lines.push(`${indent}${isLast ? '└── ' : '├── '}${f}`);
+  }
+
+  return lines.join('\n');
+}
+
+function buildAgentsTable(agents) {
+  const names = Object.keys(agents);
+  if (names.length === 0) return '  (none configured)';
+  return names.map(name => {
+    const a = agents[name];
+    const mode = a.mode || 'subagent';
+    const perms = a.permission ? Object.entries(a.permission).map(([k, v]) => `${k}: ${v}`).join(', ') : '—';
+    const defaultMark = name === 'build' ? ' (default)' : '';
+    return `| **${name}**${defaultMark} | ${mode} | ${perms} |`;
+  }).join('\n');
+}
+
+function buildSkillsTable(projectDir) {
+  const skillsDir = join(projectDir, 'shared', 'skills');
+  if (!isDir(skillsDir)) return '  (none installed)';
+  const skills = readdirSync(skillsDir).filter(f => isDir(join(skillsDir, f)));
+  if (skills.length === 0) return '  (none installed)';
+  return skills.map(name => {
+    const skPath = join(skillsDir, name, 'SKILL.md');
+    const desc = existsSync(skPath)
+      ? (readFileSync(skPath, 'utf8').match(/^description:\s*(.+)/m)?.[1] || '')
+      : '';
+    return `| ${name} | ${desc} |`;
+  }).join('\n');
+}
+
+function buildCliTable() {
+  // CLI appropriate for init projects (no update/sync — those reference aramirez-ai)
+  return [
+    '| `arai init <dir>` | Scaffold new project (`--template minimal\\|full`, `--description`) |',
+    '| `arai install` | Install opencode platform in project |',
+    '| `arai install <type> <name>` | Install component: skill, agent, script, prompt, rule |',
+    '| `arai uninstall` | Uninstall opencode platform from project |',
+    '| `arai uninstall <type> <name>` | Uninstall a specific component |',
+    '| `arai status` | Show installation status in current directory |',
+    '| `arai list skills\\|agents\\|scripts\\|templates\\|commands\\|mcp` | List resources |',
+    '| `arai generate skill <name>` | Create skill in shared/skills/ |',
+    '| `arai generate agent <name>` | Create agent + register in opencode.json |',
+    '| `arai generate script <name>` | Create reusable script |',
+    '| `arai generate command <name>` | Create opencode command |',
+    '| `arai generate brand` | Set brand identity (colors, logos) |',
+    '| `arai generate kb [dir]` | Create Obsidian vault (`--force` to overwrite) |',
+  ].join('\n');
+}
+
+function buildVarsFromProjectState(projectDir) {
+  const agentsTable = '';
+  const configPath = join(projectDir, 'platforms', 'opencode', 'opencode.json');
+  if (existsSync(configPath)) {
+    try {
+      const config = JSON.parse(readFileSync(configPath, 'utf8'));
+      return {
+        directory_tree: buildDirectoryTree(projectDir),
+        agents_table: buildAgentsTable(config.agent || {}),
+        skills_table: buildSkillsTable(projectDir),
+        cli_table: buildCliTable(),
+      };
+    } catch { /* fall through to defaults */ }
+  }
+  return {
+    directory_tree: buildDirectoryTree(projectDir),
+    agents_table: buildAgentsTable({}),
+    skills_table: buildSkillsTable(projectDir),
+    cli_table: buildCliTable(),
+  };
+}
+
+function updateAgentsMd(projectDir) {
+  const agentsPartial = resolvePartial('AGENTS.md');
+  if (!agentsPartial) return;
+  const destPath = join(projectDir, 'AGENTS.md');
+  if (!existsSync(destPath)) return;
+  const vars = {
+    ...buildVarsFromProjectState(projectDir),
+    project_name: basename(projectDir),
+    project_description: '',
+  };
+  writeFileSync(destPath, applyVars(agentsPartial, vars));
+}
+
 /* ─── template system / scaffold ─── */
 
 function loadTemplates() {
@@ -585,12 +730,6 @@ function scaffoldProject(targetDir, templateName, vars) {
   const gitignorePartial = resolvePartial('.gitignore');
   if (gitignorePartial) {
     writeFileSync(join(absTarget, '.gitignore'), gitignorePartial);
-  }
-
-  // AGENTS.md
-  const agentsPartial = resolvePartial('AGENTS.md');
-  if (agentsPartial) {
-    writeFileSync(join(absTarget, 'AGENTS.md'), applyVars(agentsPartial, allVars));
   }
 
   // Skills
@@ -705,6 +844,13 @@ function scaffoldProject(targetDir, templateName, vars) {
     writeFileSync(join(assetsDir, 'templates', '.gitkeep'), '');
   }
 
+  // AGENTS.md (generated at end with full project state)
+  const agentsPartial = resolvePartial('AGENTS.md');
+  if (agentsPartial) {
+    const dynamicVars = buildVarsFromProjectState(absTarget);
+    writeFileSync(join(absTarget, 'AGENTS.md'), applyVars(agentsPartial, { ...allVars, ...dynamicVars }));
+  }
+
   log(`Done — ${absTarget} ready`, 'ok');
   return true;
 }
@@ -751,6 +897,7 @@ function generateSkill(name, projectDir) {
   ensureDir(dir);
   writeFileSync(join(dir, 'SKILL.md'), applyVars(template, { name }));
   log(`Created shared/skills/${name}/SKILL.md`, 'ok');
+  updateAgentsMd(projectDir);
   return true;
 }
 
@@ -791,6 +938,7 @@ function generateAgent(name, projectDir, description) {
     }
   }
 
+  updateAgentsMd(projectDir);
   return true;
 }
 
@@ -808,6 +956,7 @@ function generateScript(name, projectDir, description) {
   writeFileSync(filePath, applyVars(template, { name, description: desc }));
   try { execSync(`chmod +x "${filePath}"`); } catch { /* ok */ }
   log(`Created shared/scripts/${name}.js`, 'ok');
+  updateAgentsMd(projectDir);
   return true;
 }
 
@@ -838,6 +987,7 @@ function generateCommand(name, projectDir, description) {
   }
 
   log(`Created platforms/opencode/commands/${name}.md`, 'ok');
+  updateAgentsMd(projectDir);
   return true;
 }
 

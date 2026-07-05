@@ -424,7 +424,6 @@ Todas las skills están en `shared/skills/<nombre>/SKILL.md` con formato estánd
 | `shared/scripts/ci-validate.js` | Validación CI/CD portable — estructura del proyecto, frontmatter de skills, placeholders, .gitignore, brand.json. Opciones: `--strict`, `--verbose`, `--dir <path>` |
 | `shared/scripts/repos-sync.js` | Gestor de repositorios de referencia desde `repos.json`. Opciones: `--list`, `<name>` (repo específico) |
 | `shared/scripts/youtube-transcript.js` | Obtenedor de transcripciones de YouTube (API youtube-transcript.ai). Opciones: `--lang <code>`. API programática: `fetchTranscript()`, `parseVideoId()` |
-| `shared/scripts/deploy.sh` | Script placeholder de deploy |
 | `shared/scripts/create-config.js` | Genera archivo `opencode.json` — modelo, shell, agentes, skills |
 | `shared/scripts/create-permission.js` | Genera modelo de permisos con roles y controles de acceso |
 | `shared/scripts/create-instructions.js` | Genera instrucciones, referencias, prompts y reglas |
@@ -599,7 +598,7 @@ node shared/scripts/docgen/validate.js --quick
 
 ## Document Templates
 
-28 plantillas listas para generar documentos profesionales. Cada template es un archivo JSON en `assets/templates/specs/` que puedes editar con tus datos y construir con un solo comando.
+29 plantillas listas para generar documentos profesionales. Cada template es un archivo JSON en `assets/templates/specs/` que puedes editar con tus datos y construir con un solo comando.
 
 Comunicación periódica y documentación técnica están disponibles en **dos formatos**: `deck` (presentación) y `report` (documento formal).
 
@@ -633,6 +632,7 @@ Comunicación periódica y documentación técnica están disponibles en **dos f
 | exec-dashboard | `npm run docgen:dashboard` | image | Dashboard KPIs (PNG) |
 | team-overview | `npm run docgen:team` | deck | Overview del equipo |
 | meeting-minutes | `npm run docgen:minutes` | report | Minutas de reunión |
+| team-member-profile | `npm run docgen:team-profile` | image | Perfil de miembro del equipo |
 
 ### Cómo usar
 
@@ -786,6 +786,8 @@ node shared/scripts/repos-sync.js --list
 | `anthropics/skills` | Skills de Anthropic |
 | `Gentleman-Programming/gentle-ai` | Configuración AI alternativa |
 | `GrupoConex/gda-ai` | Fuente original del docgen pipeline (Python) |
+| `betta-tech/byo-coding-agent` | Construcción de agentes personalizados |
+| `anthropics/claude-quickstarts` | Quickstarts de Claude (MCP, agentes, API) |
 
 ### Cómo referenciar
 
@@ -802,7 +804,6 @@ Todo el código, scripts, configuraciones y herramientas en este repositorio **d
 - Scripts Node.js usan `path` nativo, `fileURLToPath` y `execSync` cross-platform
 - Shell commands se evitan a menos que estén envueltos en scripts cross-platform
 - `repos-sync.js` usa `fs` y `child_process` nativo, sin dependencias de shell Unix
-- `deploy.sh` es placeholder — reemplazar con Node.js para Windows compat
 
 ---
 

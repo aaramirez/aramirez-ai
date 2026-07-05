@@ -2,22 +2,14 @@
 
 {{project_description}}
 
-This repository is configured with **aramirez-ai** — an opencode AI configuration manager.
+This repository uses **arai** (open-code AI configuration manager) for multi-agent configuration.
+Skills, scripts, and prompts are installed from the [aramirez-ai](https://github.com/aaramirez/aramirez-ai) repository.
 
 ## Repository structure
 
 ```
 {{project_name}}/
-├── shared/              Centralized reusable assets
-│   ├── skills/          SKILL.md format skill definitions
-│   ├── prompts/         Reusable prompt fragments
-│   ├── scripts/         Reusable automation scripts
-│   └── rules/           Coding standards, architecture, documentation rules
-├── platforms/           Agent configurations
-│   └── opencode/        opencode.json, agents, commands
-└── assets/              Brand logos, CSS templates, decks, images
-    ├── images/          Brand logo files
-    └── templates/       CSS templates for deck/report generation
+{{directory_tree}}
 ```
 
 ## Key principles
@@ -29,45 +21,21 @@ This repository is configured with **aramirez-ai** — an opencode AI configurat
 
 ## Available agents
 
-| Agent | Mode | Description |
+| Agent | Mode | Permissions |
 |-------|------|-------------|
-| **build** (default) | primary | Default build agent for coding tasks |
-| **plan** | primary | Planning agent for architecture and design (edit: deny) |
-| **plan-arai** | primary | Plan mode que documenta planes en docs/ |
-| **reviewer** | subagent | Code review specialist |
-| **tester** | subagent | Testing specialist (bash: allow) |
-| **docs** | subagent | Documentation specialist (edit: allow, bash: deny) |
+{{agents_table}}
 
 ## Available skills
 
 | Skill | Description |
 |-------|-------------|
-| branding | Brand identity management |
-| code-review | Code review workflows |
-| content-ingestion | Content ingestion pipeline |
-| document-generation | Document generation pipeline |
-| git | Git operations |
-| kb-management | Knowledge base management |
-| pdf-extraction | PDF extraction |
-| vault-pdf-export | Export Obsidian vault content to professional PDF |
-| youtube | YouTube transcript extraction |
+{{skills_table}}
 
 ## CLI quick reference
 
 | Command | Description |
 |---------|-------------|
-| `arai init <dir>` | Scaffold a new project (`--template minimal\|full`, `--description`) |
-| `arai install` | Install opencode platform in current project |
-| `arai install <type> <name>` | Install a component: skill, agent, script, prompt, rule |
-| `arai uninstall` | Uninstall opencode platform |
-| `arai uninstall <type> <name>` | Uninstall a specific component |
-| `arai status` | Show installation status |
-| `arai update` | Pull latest changes and install dependencies |
-| `arai sync [type] [name]` | Sync project or component (`skill <name>` to sync single skill) |
-| `arai list skills\|agents\|scripts\|templates\|commands\|mcp` | List available resources |
-| `arai generate skill\|agent\|script\|command <name>` | Generate new components |
-| `arai generate brand` | Configure brand identity |
-| `arai generate kb [dir]` | Create Obsidian vault (`--force` to overwrite) |
+{{cli_table}}
 
 ## When working
 

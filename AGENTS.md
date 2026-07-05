@@ -7,6 +7,7 @@ This repository is a **centralized multi-agent AI configuration manager** for op
 ```
 aramirez-ai/
 ├── shared/              Centralized reusable assets
+│   ├── agents/          Agent definition files (.md)
 │   ├── skills/          SKILL.md format skill definitions
 │   ├── prompts/         Reusable prompt fragments
 │   ├── scripts/         Executable scripts (Node.js)
@@ -115,6 +116,22 @@ All creator scripts support `--dry-run` to preview output and `--help` for usage
 
 All agents use model `opencode/big-pickle` by default. Agents are defined in `platforms/opencode/opencode.json` and configured with `.md` files in `platforms/opencode/agents/`.
 
+## OpenCode commands
+
+3 commands defined in `platforms/opencode/commands/`:
+
+| Command | Description |
+|---------|-------------|
+| `commit` | Generate a conventional commit message from staged changes |
+| `deploy` | Deploy the project (run deployment scripts) |
+| `test` | Run the test suite |
+
+Agents can invoke these via `/command` in conversation.
+
+## TUI configuration
+
+`platforms/opencode/tui.json` and `platforms/opencode/tui-plugins/` configure the opencode terminal UI, including theme, keybindings, and plugin toolbars.
+
 ## Install behavior by type
 
 | Type | Source | Destination | Auto-installs opencode? |
@@ -154,6 +171,8 @@ arai install                              # add opencode to existing project
 spec.json/md → index.js (core) → charts.js (13 SVG chart types)
                                → html-theme.js (20+ slide layouts)
                                → report-theme.js (10 report layouts)
+                               → components.js (reusable slide components)
+                               → theme-utils.js (theme helpers)
                                → SVG rendering (rsvg-convert / browser)
 Builders: build-deck.js, build-report.js, build-image.js, build-web.js, build-pptx.js
 ```
@@ -166,6 +185,7 @@ node shared/scripts/docgen/build-report.js assets/decks/report.json
 node shared/scripts/docgen/build-image.js assets/decks/slide.json --format png
 node shared/scripts/docgen/build-web.js assets/decks/deck.json
 node shared/scripts/docgen/build-pptx.js assets/decks/deck.json
+node shared/scripts/docgen-vault.js <vault-dir>  # Export Obsidian vault to PDF
 node shared/scripts/docgen/validate.js
 ```
 
@@ -178,6 +198,14 @@ npm run docgen:image  assets/decks/slide.json -- --format png
 npm run docgen:web    assets/decks/deck.json
 npm run docgen:pptx   assets/decks/deck.json
 npm run docgen:validate
+```
+
+### Vault export
+
+`shared/scripts/docgen-vault.js` exports an Obsidian vault to a professional PDF via the docgen pipeline:
+
+```bash
+node shared/scripts/docgen-vault.js <vault-dir>
 ```
 
 ### Outputs
@@ -218,7 +246,7 @@ Full outcome-validation plan in [`docs/outcome-validation-plan.md`](docs/outcome
 
 ## Document Templates
 
-28 plantillas de documentos en `assets/templates/specs/` para el pipeline docgen. Cada template es un JSON que puedes editar y construir con:
+29 plantillas de documentos en `assets/templates/specs/` para el pipeline docgen. Cada template es un JSON que puedes editar y construir con:
 
 ```bash
 npm run docgen:<nombre>   # genera PDF/HTML/PNG
@@ -228,7 +256,7 @@ Comunicación periódica (deck+report): weekly-status, weekly-slides, sprint, sp
 Documentación técnica (deck+report): tech-design, tech-design-report, adr, adr-slides, api, api-report, architecture, architecture-report, runbook, runbook-report.
 Gestión: sow, charter, decision-log.
 Calidad: postmortem, test-report.
-Métricas/Equipo: dashboard, team, minutes.
+Métricas/Equipo: dashboard, team, minutes, team-member-profile.
 
 Ver `docs/templates-plan.md` para el detalle completo.
 
