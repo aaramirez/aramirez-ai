@@ -52,6 +52,10 @@
     "test": {
       "description": "Run test suite for current project",
       "template": "Run the test suite for this project. First detect the test framework, then run all tests and report results."
+    },
+    "email": {
+      "description": "Send an email using project SMTP configuration.",
+      "template": "Understand the email requirements from the user. Build a JSON payload with 'to', 'subject', 'body', and optionally 'cc', 'bcc', 'html', 'attachments'. Write it to .opencode/email-payload.json. Then run: node shared/scripts/send-email.js --payload .opencode/email-payload.json. Report success or error."
     }
   },
   "compaction": {
@@ -95,6 +99,14 @@
       ],
       "enabled": false,
       "env": {},
+      "type": "local"
+    },
+    "email": {
+      "command": [
+        "node",
+        "shared/scripts/mcp-email.js"
+      ],
+      "enabled": false,
       "type": "local"
     }
   },

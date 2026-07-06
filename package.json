@@ -12,6 +12,7 @@
     "update": "arai update",
     "init": "arai init",
     "templates": "arai template list",
+    "email": "node shared/scripts/send-email.js",
     "docgen:deck": "node shared/scripts/docgen/build-deck.js",
     "docgen:report": "node shared/scripts/docgen/build-report.js",
     "docgen:image": "node shared/scripts/docgen/build-image.js",
@@ -50,7 +51,8 @@
     "docgen:templates": "echo 'Templates: weekly, weekly-slides, sprint, sprint-report, planning, planning-report, status, status-report, release, release-report, tech-design, tech-design-report, adr, adr-slides, api, api-report, architecture, architecture-report, runbook, runbook-report, sow, charter, decision-log, postmortem, test-report, dashboard, team, minutes'"
   },
   "dependencies": {
-    "commander": "^12.0.0"
+    "commander": "^12.0.0",
+    "nodemailer": "^6.9.16"
   },
   "engines": {
     "node": ">=18"
