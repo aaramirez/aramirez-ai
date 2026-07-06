@@ -118,8 +118,9 @@ describe('init output deep validation (Phase 3b + 3c)', () => {
     const expected = [
       'agent-creator', 'architecture-creator', 'branding', 'code-review',
       'command-creator', 'config-creator', 'content-ingestion',
-      'document-generation', 'flow-creator', 'git', 'harness-creator',
-      'instructions-creator', 'kb-management', 'mcp-creator', 'pdf-extraction',
+      'document-generation', 'email', 'flow-creator', 'git',
+      'google-workspace', 'harness-creator', 'instructions-creator',
+      'kb-management', 'm365', 'mcp-creator', 'pdf-extraction',
       'permission-creator', 'plugin-creator', 'prompt-creator',
       'reference-creator', 'rule-creator', 'script-creator', 'skill-creator',
       'specialized-agent-creator', 'subagent-creator', 'tool-creator',

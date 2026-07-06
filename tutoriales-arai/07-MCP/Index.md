@@ -9,3 +9,6 @@ Servidores MCP, comandos personalizados, plugins y herramientas personalizadas e
 3. [[07-MCP/03-plugins.md|Plugins]] — extiende opencode con paquetes npm o plugins locales.
 4. [[07-MCP/04-herramientas-personalizadas.md|Herramientas personalizadas]] — define schemas y handlers para herramientas específicas.
 5. [[07-MCP/05-uso-creators.md|Usar MCP/command/plugin/tool creators]] — generar desde CLI.
+6. [[07-MCP/06-email.md|Email]] — envía emails con 3 interfaces: MCP server, `/email` command, CLI.
+7. [[07-MCP/07-google-workspace.md|Google Workspace]] — Google Drive, Docs y Sheets.
+8. [[07-MCP/08-microsoft-365.md|Microsoft 365]] — OneDrive y SharePoint.

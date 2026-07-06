@@ -108,6 +108,30 @@
       ],
       "enabled": false,
       "type": "local"
+    },
+    "google-workspace": {
+      "command": [
+        "npx",
+        "-y",
+        "@google/mcp-workspace"
+      ],
+      "enabled": false,
+      "type": "local"
+    },
+    "m365": {
+      "command": [
+        "npx",
+        "-y",
+        "@softeria/ms-365-mcp-server"
+      ],
+      "enabled": false,
+      "env": {
+        "AZURE_CLIENT_ID": "{env:AZURE_CLIENT_ID}",
+        "AZURE_TENANT_ID": "{env:AZURE_TENANT_ID}",
+        "AZURE_CLIENT_SECRET": "{env:AZURE_CLIENT_SECRET}",
+        "M365_READ_ONLY_MODE": "true"
+      },
+      "type": "local"
     }
   },
   "model": "opencode/big-pickle",

@@ -386,8 +386,11 @@ Actualiza `shared/brand.json` y copia los logos a `assets/images/`.
 | **code-review** | Revisión de PRs, auditorías de código y estándares de calidad |
 | **content-ingestion** | Toma contenido de cualquier fuente (PDF, DOCX, web, texto, markdown) y lo estructura en una knowledge base con frontmatter, wikilinks y formato |
 | **document-generation** | Genera presentaciones PDF, HTML decks, reportes e imágenes usando los builders Node.js |
+| **email** | Envío de emails vía SMTP — 3 interfaces: MCP server, comando `/email` y CLI `send-email.js` |
 | **git** | Operaciones git, estrategias de branching, convenciones de commit, gestión de repos |
+| **google-workspace** | Acceso a Google Drive, Docs y Sheets vía MCP server oficial de Google |
 | **kb-management** | Mantenimiento de vault knowledge base — actualizar notas, wikilinks, reestructurar, mantener workspace y graph sincronizados |
+| **m365** | Acceso a OneDrive y SharePoint vía Microsoft Graph API |
 | **pdf-extraction** | Extrae texto literal de PDFs — maneja saltos de columna, reconstrucción de párrafos, detección de tablas y problemas de encoding |
 | **youtube** | Obtiene y procesa transcripciones de YouTube para alimentar modelos AI, generar resúmenes, crear notas de curso o analizar contenido de video |
 | **agent-creator** | Genera agentes primarios desde línea de comandos — nombre, modo, descripción, permisos |

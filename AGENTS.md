@@ -76,7 +76,7 @@ license: MIT
 ---
 ```
 
-Available skills: **branding**, **code-review**, **content-ingestion**, **document-generation**, **git**, **kb-management**, **pdf-extraction**, **vault-pdf-export**, **youtube**, plus **18 creator skills** (`agent-creator`, `config-creator`, `skill-creator`, etc.) that generate harness components programmatically.
+Available skills: **branding**, **code-review**, **content-ingestion**, **document-generation**, **email**, **git**, **google-workspace**, **kb-management**, **m365**, **pdf-extraction**, **vault-pdf-export**, **youtube**, plus **18 creator skills** (`agent-creator`, `config-creator`, `skill-creator`, etc.) that generate harness components programmatically.
 
 ### Skill de YouTube
 
@@ -103,6 +103,18 @@ node shared/scripts/harness-generator.js --project spec.json
 
 All creator scripts support `--dry-run` to preview output and `--help` for usage. See `docs/harness-course-plan.md` for the full reference.
 
+## MCP Servers
+
+Additional MCP servers configured in `platforms/opencode/opencode.json` (all disabled by default):
+
+| Server | Type | Description |
+|--------|------|-------------|
+| **google-workspace** | local (`npx -y @google/mcp-workspace`) | Official Google MCP — Drive, Docs, Sheets, Slides, Calendar, Gmail |
+| **m365** | local (`npx -y @softeria/ms-365-mcp-server`) | Microsoft 365 Graph API — OneDrive, SharePoint, Outlook, Teams, Calendar |
+| **email** | local (`node shared/scripts/mcp-email.js`) | SMTP email — 3 interfaces: MCP server, `/email` command, `send-email.js` CLI |
+
+Enable by setting `"enabled": true` in the server entry. Both google-workspace and m365 require one-time OAuth setup (documented in their respective skills).
+
 ## Agents (opencode.json)
 
 | Agent | Mode | Permissions |
@@ -118,12 +130,13 @@ All agents use model `opencode/big-pickle` by default. Agents are defined in `pl
 
 ## OpenCode commands
 
-3 commands defined in `platforms/opencode/commands/`:
+4 commands defined in `platforms/opencode/commands/`:
 
 | Command | Description |
 |---------|-------------|
 | `commit` | Generate a conventional commit message from staged changes |
 | `deploy` | Deploy the project (run deployment scripts) |
+| `email` | Send an email via SMTP (requires `.env` SMTP config) |
 | `test` | Run the test suite |
 
 Agents can invoke these via `/command` in conversation.
