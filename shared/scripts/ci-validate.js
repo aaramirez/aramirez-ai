@@ -19,7 +19,7 @@
  */
 
 import { readFileSync, existsSync, statSync, readdirSync } from 'fs';
-import { join, resolve } from 'path';
+import { join, resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = resolve(fileURLToPath(import.meta.url), '..');
@@ -82,8 +82,8 @@ if (isDir(join(ROOT, 'shared', 'skills'))) {
       check(hasName, `Skill "${skill}" has name in frontmatter`);
       check(hasDesc, `Skill "${skill}" has description in frontmatter`);
 
-      // Check for TODO placeholders
-      const hasTodo = /TODO/i.test(content);
+      // Check for TODO placeholders (code comments or task markers only)
+      const hasTodo = /\/\/\s*TODO\b|TODO:|\[[ x]\]\s*TODO/i.test(content);
       check(!hasTodo, `Skill "${skill}" has no TODO placeholders`, '', 'warn');
     }
   }
@@ -98,7 +98,7 @@ if (isDir(join(ROOT, 'shared', 'scripts'))) {
 
   for (const script of scripts) {
     const content = readFileSync(join(ROOT, 'shared', 'scripts', script), 'utf8');
-    const hasTodo = /TODO/i.test(content);
+    const hasTodo = /\/\/\s*TODO\b|TODO:|\[[ x]\]\s*TODO/i.test(content);
     check(!hasTodo, `Script "${script}" has no TODO placeholders`, '', 'warn');
   }
 }
@@ -115,6 +115,88 @@ if (isFile(join(ROOT, 'shared', 'brand.json'))) {
   } catch {
     check(false, 'brand.json is valid JSON');
   }
+}
+
+// ── Wikilinks in tutorials ──
+const tutorialsDir = join(ROOT, 'tutoriales-arai');
+if (isDir(tutorialsDir)) {
+  const mdFiles = [];
+  function collectMd(dir) {
+    for (const entry of readdirSync(dir, { withFileTypes: true })) {
+      const full = join(dir, entry.name);
+      if (entry.isDirectory() && !entry.name.startsWith('.')) collectMd(full);
+      else if (entry.isFile() && entry.name.endsWith('.md')) mdFiles.push(full);
+    }
+  }
+  collectMd(tutorialsDir);
+
+  const wikilinkRe = /\[\[([^\]|]+)(?:\|[^\]]+)?\]\]/g;
+  const backtickRe = /`[^`]*`/g;
+  let brokenLinks = 0;
+  for (const file of mdFiles) {
+    const content = readFileSync(file, 'utf8');
+    const codeSpans = new Set();
+    let cm;
+    while ((cm = backtickRe.exec(content)) !== null) {
+      for (let i = cm.index; i < cm.index + cm[0].length; i++) codeSpans.add(i);
+    }
+    let match;
+    while ((match = wikilinkRe.exec(content)) !== null) {
+      if (codeSpans.has(match.index)) continue;
+      const target = match[1].trim();
+      let resolved;
+      if (target.startsWith('../')) {
+        resolved = resolve(join(dirname(file), target + (target.endsWith('.md') ? '' : '.md')));
+      } else {
+        resolved = join(tutorialsDir, target + (target.endsWith('.md') ? '' : '.md'));
+      }
+      if (!existsSync(resolved)) {
+        let altResolved;
+        if (target.startsWith('../')) {
+          altResolved = resolve(join(dirname(file), target + '/Index.md'));
+        } else {
+          altResolved = join(tutorialsDir, target + '/Index.md');
+        }
+        if (!existsSync(altResolved)) {
+          const rel = file.replace(ROOT + '/', '');
+          check(false, `Broken wikilink in ${rel}`, `[[${target}]] → not found`, 'warn');
+          brokenLinks++;
+        }
+      }
+    }
+  }
+  if (VERBOSE && brokenLinks === 0) console.log(`  Wikilinks: all valid across ${mdFiles.length} files`);
+}
+
+// ── Template specs: English keyword detection ──
+const specsDir = join(ROOT, 'assets', 'templates', 'specs');
+if (isDir(specsDir)) {
+  const specFiles = readdirSync(specsDir).filter(f => f.endsWith('.json'));
+  const englishKeywords = /\b(OK|Created|Bad Request|Not Found|Forbidden|Unauthorized|Internal Server Error|Too Many Requests|Unprocessable Entity|Conflict)\b/g;
+  for (const spec of specFiles) {
+    const content = readFileSync(join(specsDir, spec), 'utf8');
+    let parsed;
+    try { parsed = JSON.parse(content); } catch { check(false, `Spec "${spec}" is valid JSON`, '', 'warn'); continue; }
+    const titles = [parsed.meta?.title, parsed.meta?.subtitle].filter(Boolean).join(' ');
+    const matches = titles.match(englishKeywords);
+    if (matches) {
+      check(false, `Spec "${spec}" has English in titles`, `Found: ${matches.join(', ')}`, 'warn');
+    }
+  }
+  if (VERBOSE) console.log(`  Specs: ${specFiles.length} checked for English keywords`);
+}
+
+// ── Creator scripts: TODO guard ──
+if (isDir(join(ROOT, 'shared', 'scripts'))) {
+  const creatorScripts = readdirSync(join(ROOT, 'shared', 'scripts')).filter(f =>
+    f.startsWith('create-') && f.endsWith('.js')
+  );
+  for (const script of creatorScripts) {
+    const content = readFileSync(join(ROOT, 'shared', 'scripts', script), 'utf8');
+    const hasTodo = /\/\/\s*TODO\b|TODO:|\[[ x]\]\s*TODO|\bFIXME\b|\bHACK\b|\bXXX\b/i.test(content);
+    check(!hasTodo, `Creator "${script}" has no TODO/FIXME/HACK/XXX`, '', 'warn');
+  }
+  if (VERBOSE) console.log(`  Creator scripts: ${creatorScripts.length} checked for TODOs`);
 }
 
 // ── .gitignore ──
