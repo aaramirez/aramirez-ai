@@ -76,7 +76,7 @@ async function main() {
 
   try {
     if (engine === 'html') {
-      const html = buildHtml(slides, spec.mostrar_paginas || false);
+      const html = buildHtml(slides, spec.mostrar_paginas || false, spec.meta || null);
       htmlToPdf(html, output);
     } else {
       const svgs = slides.map(s => slideToSvg(s));

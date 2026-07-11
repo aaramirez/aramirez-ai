@@ -3,7 +3,7 @@
   "meta": {
     "title": "ADR-001: Sistema de Notificaciones",
     "subtitle": "Arquitectura basada en colas",
-    "organization": "Gerencia de Desarrollos y Aplicaciones",
+    "organization": "Nombre de la Organización",
     "prepared_by": "Arquitecto de Software",
     "date": "28 Jun 2026",
     "classification": "Interno"

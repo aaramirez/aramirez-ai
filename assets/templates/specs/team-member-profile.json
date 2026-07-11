@@ -1,4 +1,9 @@
 {
+  "meta": {
+    "title": "Perfil del Miembro del Equipo",
+    "organization": "Nombre de la Organización",
+    "classification": "Interno"
+  },
   "output": "assets/images/profiles/team-member-profile.png",
   "slides": [
     {
@@ -8,7 +13,7 @@
       "cargo_linea1": "Tech Lead",
       "cargo_linea2": "Arquitecto de Software",
       "cargo_completo": "Tech Lead · Arquitecto de Software Senior",
-      "organizacion": "Gerencia de Desarrollos y Aplicaciones",
+      "organizacion": "Nombre de la Organización",
       "telefono": "+52 55 1234 5678",
       "email": "alexander.ramirez@fibex.com",
       "ubicacion": "Ciudad de México",

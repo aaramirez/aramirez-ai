@@ -3,10 +3,10 @@
   "meta": {
     "title": "Reporte de Planificación de Sprint",
     "subtitle": "Sprint 8 — Equipo Plataforma",
-    "organization": "Gerencia de Desarrollo y Aplicaciones",
+    "organization": "Nombre de la Organización",
     "prepared_by": "Scrum Master",
     "date": "28 Jun 2026",
-    "classification": "Uso interno"
+    "classification": "Interno"
   },
   "slides": [
     { "type": "doc-cover" },

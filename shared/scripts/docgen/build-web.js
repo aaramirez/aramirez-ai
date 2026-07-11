@@ -119,8 +119,8 @@ const NAV_CSS = `
 }
 `;
 
-function buildWeb(slides, mostrarPaginas = false) {
-  let html = buildHtml(slides, mostrarPaginas);
+function buildWeb(slides, mostrarPaginas = false, meta = null) {
+  let html = buildHtml(slides, mostrarPaginas, meta);
   html = html.replace('</style>', NAV_CSS + '\n</style>');
   html = html.replace('</body>', NAV_BAR + '\n</body>');
   html = html.replace('</body>', NAV_JS + '\n</body>');
@@ -164,7 +164,7 @@ async function main() {
   }
 
   const output = resolveOutput(parsed.output || spec.output, parsed.source);
-  const html = buildWeb(slides, spec.mostrarPaginas || false);
+  const html = buildWeb(slides, spec.mostrarPaginas || false, spec.meta || null);
 
   const outDir = dirname(output);
   if (!existsSync(outDir)) mkdirSync(outDir, { recursive: true });

@@ -50,7 +50,7 @@ node shared/scripts/create-config.js \
 
 ## Skill asociada
 
-La skill [[../../06-Skills/04-creator-skills.md|config-creator]] describe el uso desde un agente de opencode.
+La skill [[../06-Skills/04-creator-skills.md|config-creator]] describe el uso desde un agente de opencode.
 
 ---
 

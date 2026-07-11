@@ -3,10 +3,10 @@
   "meta": {
     "title": "Reporte de Estatus del Proyecto",
     "subtitle": "Plataforma Unificada — Junio 2026",
-    "organization": "Gerencia de Desarrollos y Aplicaciones",
+    "organization": "Nombre de la Organización",
     "prepared_by": "Gerente de Proyecto",
     "date": "28 Jun 2026",
-    "classification": "Ejecutivo"
+    "classification": "Confidencial"
   },
   "slides": [
     { "type": "doc-cover" },

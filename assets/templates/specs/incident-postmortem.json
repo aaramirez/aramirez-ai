@@ -3,7 +3,7 @@
   "meta": {
     "title": "Postmortem de Incidente: INC-2026-042",
     "subtitle": "Interrupción del servicio de autenticación",
-    "organization": "Gerencia de Desarrollos y Aplicaciones",
+    "organization": "Nombre de la Organización",
     "prepared_by": "Equipo SRE",
     "date": "28 Jun 2026",
     "classification": "Interno"

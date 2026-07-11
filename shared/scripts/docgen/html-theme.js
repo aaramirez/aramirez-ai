@@ -13,10 +13,13 @@ const CSS_PATH = join(REPO_ROOT, 'assets', 'templates', 'deck.css');
 
 /* ─── Helpers ─── */
 
+let _currentMeta = null;
+
 function resolveFooterText(s) {
   if (s?.footer) return s.footer;
   const b = brand();
-  if (b.footer) return b.footer.replace('{{organization}}', b.name);
+  const org = (_currentMeta && _currentMeta.organization) || b.name;
+  if (b.footer) return b.footer.replace(/\{\{organization\}\}/g, org);
   return 'Contenido confidencial';
 }
 
@@ -345,7 +348,8 @@ export function slideToHtml(slide, page = null) {
   return layout(slide, page);
 }
 
-export function buildHtml(slides, mostrarPaginas = false) {
+export function buildHtml(slides, mostrarPaginas = false, meta = null) {
+  _currentMeta = meta;
   const sections = [];
   const total = slides.length;
   for (let i = 0; i < total; i++) {

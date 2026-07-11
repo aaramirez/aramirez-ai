@@ -4,10 +4,10 @@
     "title": "ApiConex V2",
     "subtitle": "Referencia de endpoints de API — Middleware orquestador central para Fibex Telecom",
     "description": "Definir una API REST consistente, evolutiva y verificable, en la que las rutas representen entidades e identificadores, los atributos estén en query parameters o cuerpos y los contratos de datos sean uniformes.",
-    "organization": "Gerencia de Desarrollos y Aplicaciones",
-    "prepared_by": "API Team",
+    "organization": "Nombre de la Organización",
+    "prepared_by": "Equipo API",
     "date": "18 de junio de 2026",
-    "classification": "CONFIDENCIAL",
+    "classification": "Confidencial",
     "custom_fields": [
       {
         "label": "Versión del documento",

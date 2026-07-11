@@ -19,7 +19,7 @@ function _css() {
 }
 
 function _pageHeader(meta) {
-  const classification = esc(meta.classification || '');
+  const classification = esc(meta.classification || brand().classification || '');
   const logo = logoHref('blue');
   return (
     '<div class="page-header">' +
@@ -44,14 +44,15 @@ function _pageFooter(meta) {
 /* ─── Renderers ─── */
 
 function _renderCover(s, meta) {
+  const b = brand();
   const logo = logoHref('blue');
   const title = esc(s.titulo || meta.title || '');
   const subtitle = esc(s.subtitulo || meta.subtitle || '');
   const desc = meta.description ? `<div class="cover-description">${esc(meta.description)}</div>\n` : '';
-  const org = esc(meta.organization || '');
+  const org = esc(meta.organization || b.name);
   const prepared = esc(meta.prepared_by || '');
   const date = esc(meta.date || '');
-  const classification = esc(meta.classification || '');
+  const classification = esc(meta.classification || b.classification || 'Interno');
   const rows = [
     ['Organizaci\u00f3n', org],
     ['Preparado por', prepared],
