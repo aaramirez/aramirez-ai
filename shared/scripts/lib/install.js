@@ -1,0 +1,300 @@
+/**
+ * Install and uninstall functions for arai components.
+ */
+
+import { readFileSync, writeFileSync, existsSync, readdirSync, cpSync, rmSync } from 'fs';
+import { join, dirname } from 'path';
+import { REPO_ROOT, log, ensureDir, isDir, listNames, opencodeInstalled } from './helpers.js';
+import { updateAgentsMd } from './agents-md.js';
+
+/* ─── install ─── */
+
+function installPlatform(projectRoot) {
+  if (opencodeInstalled(projectRoot)) {
+    log('opencode already installed in this project', 'warn');
+    return false;
+  }
+
+  const source = join(REPO_ROOT, 'platforms', 'opencode');
+  if (!isDir(source)) {
+    log('platforms/opencode/ not found in repo', 'err');
+    return false;
+  }
+
+  ensureDir(projectRoot);
+
+  const dotOpenCode = join(projectRoot, '.opencode');
+  ensureDir(dotOpenCode);
+
+  for (const sub of ['agents', 'commands']) {
+    const src = join(source, sub);
+    const dst = join(dotOpenCode, sub);
+    if (isDir(src)) {
+      cpSync(src, dst, { recursive: true });
+    } else {
+      ensureDir(dst);
+    }
+  }
+
+  const skillsSrc = join(REPO_ROOT, 'shared', 'skills');
+  const skillsDst = join(dotOpenCode, 'skills');
+  ensureDir(skillsDst);
+
+  const configSrc = join(source, 'opencode.json');
+  const configDst = join(projectRoot, 'opencode.json');
+  if (existsSync(configSrc)) {
+    writeFileSync(configDst, readFileSync(configSrc, 'utf8'));
+  }
+
+  log(`Installed opencode config in ${projectRoot}/`, 'ok');
+  updateAgentsMd(projectRoot);
+  return true;
+}
+
+function installSkill(name, projectRoot) {
+  const srcDir = join(REPO_ROOT, 'shared', 'skills', name);
+  if (!isDir(srcDir)) {
+    log(`Skill '${name}' not found`, 'err');
+    const available = listNames('skill');
+    if (available.length) log(`Available: ${available.join(', ')}`, 'info');
+    return false;
+  }
+
+  if (!opencodeInstalled(projectRoot)) {
+    log('Installing opencode platform first...', 'info');
+    installPlatform(projectRoot);
+  }
+
+  const dest = join(projectRoot, '.opencode', 'skills', name);
+  if (existsSync(dest)) {
+    log(`Skill '${name}' already installed`, 'warn');
+    return false;
+  }
+
+  ensureDir(dirname(dest));
+  cpSync(srcDir, dest, { recursive: true });
+  log(`Installed skill '${name}' → .opencode/skills/${name}/`, 'ok');
+  updateAgentsMd(projectRoot);
+  return true;
+}
+
+function installAgent(name, projectRoot) {
+  let srcFile = join(REPO_ROOT, 'shared', 'agents', `${name}.md`);
+  if (!existsSync(srcFile)) {
+    srcFile = join(REPO_ROOT, 'platforms', 'opencode', 'agents', `${name}.md`);
+  }
+  if (!existsSync(srcFile)) {
+    log(`Agent '${name}' not found`, 'err');
+    const shared = listNames('agent');
+    if (shared.length) log(`Available agents: ${shared.join(', ')}`, 'info');
+    return false;
+  }
+
+  if (!opencodeInstalled(projectRoot)) {
+    log('Installing opencode platform first...', 'info');
+    installPlatform(projectRoot);
+  }
+
+  const destDir = join(projectRoot, '.opencode', 'agents');
+  const destFile = join(destDir, `${name}.md`);
+  if (existsSync(destFile)) {
+    log(`Agent '${name}' already installed`, 'warn');
+    return false;
+  }
+
+  ensureDir(destDir);
+  writeFileSync(destFile, readFileSync(srcFile, 'utf8'));
+
+  const configPath = join(projectRoot, 'opencode.json');
+  if (existsSync(configPath)) {
+    const config = JSON.parse(readFileSync(configPath, 'utf8'));
+    if (!config.agent) config.agent = {};
+    if (!config.agent[name]) {
+      config.agent[name] = {
+        mode: 'subagent',
+        description: `${name.replace(/-/g, ' ')} specialist`,
+        permission: { edit: 'deny' },
+      };
+      writeFileSync(configPath, JSON.stringify(config, null, 2) + '\n');
+      log(`Registered '${name}' in opencode.json`, 'ok');
+    }
+  }
+
+  log(`Installed agent '${name}' → .opencode/agents/${name}.md`, 'ok');
+  updateAgentsMd(projectRoot);
+  return true;
+}
+
+function installScript(name, projectRoot) {
+  const srcFile = join(REPO_ROOT, 'shared', 'scripts', `${name}.js`);
+  if (!existsSync(srcFile)) {
+    log(`Script '${name}.js' not found`, 'err');
+    const available = listNames('script');
+    if (available.length) log(`Available: ${available.join(', ')}`, 'info');
+    return false;
+  }
+
+  const destDir = join(projectRoot, 'shared', 'scripts');
+  const destFile = join(destDir, `${name}.js`);
+  if (existsSync(destFile)) {
+    log(`Script '${name}' already installed`, 'warn');
+    return false;
+  }
+
+  ensureDir(destDir);
+  writeFileSync(destFile, readFileSync(srcFile, 'utf8'));
+  log(`Installed script '${name}' → shared/scripts/${name}.js`, 'ok');
+  updateAgentsMd(projectRoot);
+  return true;
+}
+
+function installPrompt(name, projectRoot) {
+  const srcFile = join(REPO_ROOT, 'shared', 'prompts', `${name}.md`);
+  if (!existsSync(srcFile)) {
+    log(`Prompt '${name}.md' not found`, 'err');
+    const available = listNames('prompt');
+    if (available.length) log(`Available: ${available.join(', ')}`, 'info');
+    return false;
+  }
+
+  const destDir = join(projectRoot, 'shared', 'prompts');
+  const destFile = join(destDir, `${name}.md`);
+  if (existsSync(destFile)) {
+    log(`Prompt '${name}' already installed`, 'warn');
+    return false;
+  }
+
+  ensureDir(destDir);
+  writeFileSync(destFile, readFileSync(srcFile, 'utf8'));
+  log(`Installed prompt '${name}' → shared/prompts/${name}.md`, 'ok');
+  updateAgentsMd(projectRoot);
+  return true;
+}
+
+function installRule(name, projectRoot) {
+  const srcFile = join(REPO_ROOT, 'shared', 'rules', `${name}.md`);
+  if (!existsSync(srcFile)) {
+    log(`Rule '${name}.md' not found`, 'err');
+    const available = listNames('rule');
+    if (available.length) log(`Available: ${available.join(', ')}`, 'info');
+    return false;
+  }
+
+  const destDir = join(projectRoot, 'shared', 'rules');
+  const destFile = join(destDir, `${name}.md`);
+  if (existsSync(destFile)) {
+    log(`Rule '${name}' already installed`, 'warn');
+    return false;
+  }
+
+  ensureDir(destDir);
+  writeFileSync(destFile, readFileSync(srcFile, 'utf8'));
+  log(`Installed rule '${name}' → shared/rules/${name}.md`, 'ok');
+  updateAgentsMd(projectRoot);
+  return true;
+}
+
+/* ─── uninstall ─── */
+
+function uninstallPlatform(projectRoot) {
+  if (!opencodeInstalled(projectRoot)) {
+    log('No opencode installation found in this project', 'info');
+    return false;
+  }
+
+  const dotOpenCode = join(projectRoot, '.opencode');
+  const configFile = join(projectRoot, 'opencode.json');
+
+  if (isDir(dotOpenCode)) {
+    rmSync(dotOpenCode, { recursive: true, force: true });
+  }
+  if (existsSync(configFile)) {
+    rmSync(configFile, { force: true });
+  }
+
+  log(`Uninstalled opencode from ${projectRoot}/`, 'ok');
+  updateAgentsMd(projectRoot);
+  return true;
+}
+
+function uninstallSkill(name, projectRoot) {
+  const dest = join(projectRoot, '.opencode', 'skills', name);
+  if (!isDir(dest)) {
+    log(`Skill '${name}' not installed`, 'info');
+    return false;
+  }
+
+  rmSync(dest, { recursive: true, force: true });
+  log(`Uninstalled skill '${name}' from .opencode/skills/`, 'ok');
+  updateAgentsMd(projectRoot);
+  return true;
+}
+
+function uninstallAgent(name, projectRoot) {
+  const destDir = join(projectRoot, '.opencode', 'agents');
+  const destFile = join(destDir, `${name}.md`);
+  if (!existsSync(destFile)) {
+    log(`Agent '${name}' not installed`, 'info');
+    return false;
+  }
+
+  rmSync(destFile, { force: true });
+
+  const configPath = join(projectRoot, 'opencode.json');
+  if (existsSync(configPath)) {
+    const config = JSON.parse(readFileSync(configPath, 'utf8'));
+    if (config.agent?.[name]) {
+      delete config.agent[name];
+      writeFileSync(configPath, JSON.stringify(config, null, 2) + '\n');
+      log(`Removed '${name}' from opencode.json`, 'ok');
+    }
+  }
+
+  log(`Uninstalled agent '${name}' from .opencode/agents/`, 'ok');
+  updateAgentsMd(projectRoot);
+  return true;
+}
+
+function uninstallScript(name, projectRoot) {
+  const destFile = join(projectRoot, 'shared', 'scripts', `${name}.js`);
+  if (!existsSync(destFile)) {
+    log(`Script '${name}' not installed`, 'info');
+    return false;
+  }
+
+  rmSync(destFile, { force: true });
+  log(`Uninstalled script '${name}' from shared/scripts/`, 'ok');
+  updateAgentsMd(projectRoot);
+  return true;
+}
+
+function uninstallPrompt(name, projectRoot) {
+  const destFile = join(projectRoot, 'shared', 'prompts', `${name}.md`);
+  if (!existsSync(destFile)) {
+    log(`Prompt '${name}' not installed`, 'info');
+    return false;
+  }
+
+  rmSync(destFile, { force: true });
+  log(`Uninstalled prompt '${name}' from shared/prompts/`, 'ok');
+  updateAgentsMd(projectRoot);
+  return true;
+}
+
+function uninstallRule(name, projectRoot) {
+  const destFile = join(projectRoot, 'shared', 'rules', `${name}.md`);
+  if (!existsSync(destFile)) {
+    log(`Rule '${name}' not installed`, 'info');
+    return false;
+  }
+
+  rmSync(destFile, { force: true });
+  log(`Uninstalled rule '${name}' from shared/rules/`, 'ok');
+  updateAgentsMd(projectRoot);
+  return true;
+}
+
+export {
+  installPlatform, installSkill, installAgent, installScript, installPrompt, installRule,
+  uninstallPlatform, uninstallSkill, uninstallAgent, uninstallScript, uninstallPrompt, uninstallRule,
+};
