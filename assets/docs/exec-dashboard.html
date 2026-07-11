@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8">
+<style>
+:root {
+  --ink: #1a365d;
+  --accent: #2b6cb0;
+  --accent-soft: #f7fafc;
+  --ink-2: #2b6cb0;
+  --muted: #2b6cb0;
+  --body: #1a202c;
+  --bg-1: #f7fafc;
+  --bg-2: #f7fafc;
+  --card: #ffffff;
+  --font-heading: Inter, sans-serif;
+  --font-body: Inter, sans-serif;
+}
+
+/*
+  Estilo de marca para presentaciones HTML (motor build-deck --engine html).
+  Lámina estándar 1280x720 (16:9). Fondo claro, sin líneas divisorias,
+  pie de página configurable desde brand.json.
+  Editable: este archivo se embebe automáticamente al generar el PDF.
+*/
+
+:root {
+  --ok: #2f9e6f;
+  --warn: #c98a16;
+  --shadow: 0 10px 30px rgba(35, 38, 79, 0.12);
+  --shadow-sm: 0 4px 14px rgba(35, 38, 79, 0.10);
+  --radius: 18px;
+  --gap: 28px;
+  --pad: 64px;
+  --slide-w: 1280px;
+  --slide-h: 720px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  font-family: var(--font-body, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif);
+  color: var(--body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4, h5, h6, .head h1, .section h1, .cover h1 {
+  font-family: var(--font-heading, inherit);
+}
+
+@page { size: 1280px 720px; margin: 0; }
+
+.slide {
+  position: relative;
+  width: var(--slide-w);
+  height: var(--slide-h);
+  padding: var(--pad);
+  background: linear-gradient(180deg, var(--bg-1), var(--bg-2));
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  page-break-after: always;
+  break-after: page;
+}
+.slide:last-child { page-break-after: auto; break-after: auto; }
+
+/* ---- Marca: logo y pie ---- */
+.logo { position: absolute; }
+.logo img { display: block; }
+.logo--tr { top: 48px; right: 64px; width: 190px; }
+.logo--center { top: 80px; left: 0; right: 0; text-align: center; }
+.logo--center img { width: 200px; display: inline-block; }
+
+.footer {
+  position: absolute;
+  left: 64px;
+  bottom: 34px;
+  font-size: 14px;
+  color: var(--muted);
+}
+.footer--center { left: 0; right: 0; text-align: center; }
+
+.pageno {
+  position: absolute;
+  right: 64px;
+  bottom: 34px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* ---- Cabecera de lámina ---- */
+.head { margin-bottom: 36px; }
+.head .eyebrow {
+  display: inline-block;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: var(--accent-soft);
+  padding: 6px 14px;
+  border-radius: 999px;
+  margin-bottom: 14px;
+}
+.head h1 {
+  font-size: 42px;
+  line-height: 1.08;
+  font-weight: 800;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+.head .sub { margin-top: 10px; font-size: 20px; color: var(--muted); }
+
+.body-area { flex: 1; min-height: 0; display: flex; flex-direction: column; justify-content: center; }
+
+/* ---- Portada ---- */
+.cover { align-items: center; justify-content: flex-end; text-align: center; padding-bottom: 120px; }
+.cover .accent-bar {
+  width: 88px; height: 6px; border-radius: 999px;
+  background: var(--accent); margin: 20px auto 0;
+}
+.cover h1 { font-size: 52px; font-weight: 800; color: var(--ink); letter-spacing: -0.02em; overflow-wrap: break-word; word-break: break-word; max-width: 1000px; }
+.cover .sub { margin-top: 14px; font-size: 24px; color: var(--muted); }
+
+/* ---- Sección divisoria ---- */
+.section { justify-content: center; }
+.section .idx { font-size: 22px; font-weight: 800; color: var(--accent); letter-spacing: 0.18em; }
+.section h1 { font-size: 46px; font-weight: 800; color: var(--ink); letter-spacing: -0.02em; margin-top: 10px; }
+.section .sub { margin-top: 16px; font-size: 24px; color: var(--muted); max-width: 900px; }
+
+/* ---- Viñetas ---- */
+ul.bullets { list-style: none; display: flex; flex-direction: column; gap: 18px; }
+ul.bullets li {
+  position: relative; padding-left: 44px;
+  font-size: 24px; line-height: 1.35; color: var(--body);
+}
+ul.bullets li::before {
+  content: ""; position: absolute; left: 8px; top: 9px;
+  width: 16px; height: 16px; border-radius: 50%;
+  background: var(--accent); box-shadow: 0 0 0 5px var(--accent-soft);
+}
+
+/* ---- Grid genérico ---- */
+.grid { display: grid; gap: var(--gap); height: 100%; align-content: center; }
+.grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+.grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+.grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+
+/* ---- Tarjeta ---- */
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  display: flex; flex-direction: column;
+  overflow: hidden;
+}
+.card .card-body { padding: 30px 30px 28px; display: flex; flex-direction: column; flex: 1; }
+.card .card-banner { height: 140px; }
+.card .card-banner img { width: 100%; height: 100%; }
+.card .card-icon {
+  width: 52px; height: 52px; border-radius: 14px;
+  background: var(--accent-soft); color: var(--accent);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26px; margin: 30px 0 0 30px;
+}
+.card .card-icon-img { width: 56px; height: 56px; border-radius: 14px; overflow: hidden; margin: 30px 0 0 30px; }
+.card .card-icon-img img { width: 100%; height: 100%; }
+.card h3 { font-size: 24px; color: var(--ink); font-weight: 800; }
+.card .card-sub { margin-top: 4px; font-size: 16px; color: var(--muted); }
+.card ul { list-style: none; margin-top: 16px; display: flex; flex-direction: column; gap: 9px; }
+.card ul li {
+  position: relative; padding-left: 22px; font-size: 17px; color: var(--body); line-height: 1.3;
+}
+.card ul li::before {
+  content: ""; position: absolute; left: 0; top: 9px;
+  width: 8px; height: 8px; border-radius: 50%; background: var(--accent);
+}
+.card .accent-top { height: 5px; border-radius: 999px; background: var(--accent); margin-bottom: 18px; width: 56px; }
+
+/* ---- Dos columnas ---- */
+.twocol { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gap); height: 100%; align-content: center; }
+.panel {
+  background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.panel .panel-body { padding: 34px 34px 30px; }
+.panel .panel-banner { height: 150px; }
+.panel .panel-banner img { width: 100%; height: 100%; }
+.panel h3 { font-size: 28px; color: var(--ink); font-weight: 800; margin-bottom: 8px; }
+.panel .panel-tag {
+  display: inline-block; font-size: 13px; font-weight: 700; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--accent); margin-bottom: 16px;
+}
+.panel ul { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+.panel ul li { position: relative; padding-left: 26px; font-size: 19px; color: var(--body); line-height: 1.32; }
+.panel ul li::before {
+  content: ""; position: absolute; left: 0; top: 8px; width: 12px; height: 12px;
+  border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 4px var(--accent-soft);
+}
+
+/* ---- KPIs ---- */
+.kpis { display: grid; gap: var(--gap); height: 100%; align-content: center; }
+.kpi {
+  background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow);
+  padding: 34px 28px; text-align: center;
+}
+.kpi .kpi-value { font-size: 64px; font-weight: 800; color: var(--ink); letter-spacing: -0.02em; line-height: 1; }
+.kpi .kpi-label { margin-top: 14px; font-size: 19px; color: var(--muted); }
+
+/* ---- Personas ---- */
+.people { display: grid; gap: var(--gap); height: 100%; align-content: center; }
+.person {
+  background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow-sm);
+  padding: 28px 26px; display: flex; flex-direction: column; align-items: flex-start;
+}
+.person .avatar {
+  width: 72px; height: 72px; border-radius: 50%;
+  background: var(--ink); color: #fff; font-weight: 800; font-size: 26px;
+  display: flex; align-items: center; justify-content: center; margin-bottom: 16px;
+  overflow: hidden; flex: none;
+}
+.person .avatar--img { background: var(--accent-soft); }
+.person .avatar--img img { width: 100%; height: 100%; object-fit: cover; }
+.person .pname { font-size: 22px; font-weight: 800; color: var(--ink); }
+.person .prole { margin-top: 4px; font-size: 17px; color: var(--muted); }
+
+/* ---- Cita / destacado ---- */
+.quote { align-items: center; justify-content: center; text-align: center; }
+.quote blockquote { max-width: 980px; font-size: 38px; line-height: 1.3; font-weight: 700; color: var(--ink); }
+.quote blockquote::before { content: "\201C"; color: var(--accent); font-size: 64px; line-height: 0; vertical-align: -0.3em; margin-right: 6px; }
+.quote .qby { margin-top: 28px; font-size: 20px; color: var(--muted); }
+
+/* ---- Imagen / figura ---- */
+.figure { flex: 1; display: flex; align-items: center; justify-content: center; min-height: 0; }
+.figure img { max-width: 100%; max-height: 100%; border-radius: 14px; box-shadow: var(--shadow); }
+.figure.bare img { box-shadow: none; border-radius: 0; }
+
+/* ---- Tabla ---- */
+table.fibex { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 19px; }
+table.fibex thead th {
+  text-align: left; background: var(--ink); color: #fff; font-weight: 700;
+  padding: 16px 20px; font-size: 17px;
+}
+table.fibex thead th:first-child { border-top-left-radius: 12px; }
+table.fibex thead th:last-child { border-top-right-radius: 12px; }
+table.fibex tbody td { padding: 15px 20px; color: var(--body); background: var(--card); }
+table.fibex tbody tr:nth-child(even) td { background: #f4f6fc; }
+table.fibex tbody tr:last-child td:first-child { border-bottom-left-radius: 12px; }
+table.fibex tbody tr:last-child td:last-child { border-bottom-right-radius: 12px; }
+
+/* ---- Badges ---- */
+.badge {
+  display: inline-block; font-size: 14px; font-weight: 700;
+  padding: 5px 12px; border-radius: 999px; background: var(--accent-soft); color: var(--accent);
+}
+.badge.warn { background: #fbf0d8; color: var(--warn); }
+.badge.ok { background: #def0e6; color: var(--ok); }
+
+/* ---- Gráficos (SVG inline) ---- */
+.chart-area { align-items: center; justify-content: center; }
+.chart-area .chart { max-height: 480px; width: 100%; }
+
+/* ---- Lámina completa (full-bleed) ---- */
+.slide.fullbleed { padding: 0; }
+.fullbleed-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.fullbleed-svg { position: absolute; inset: 0; }
+.fullbleed-svg svg { width: 100%; height: 100%; }
+.fullbleed-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(35,38,79,0.05), rgba(35,38,79,0.55));
+}
+.fullbleed .footer, .fullbleed .pageno { color: rgba(255,255,255,0.85); z-index: 2; }
+.fullbleed-caption { position: absolute; z-index: 2; max-width: 70%; color: #fff; }
+.fullbleed-caption h1 { font-size: 52px; font-weight: 800; line-height: 1.08; text-shadow: 0 2px 12px rgba(0,0,0,0.35); }
+.fullbleed-caption .sub { margin-top: 12px; font-size: 24px; color: rgba(255,255,255,0.92); }
+.fullbleed-caption .eyebrow { background: rgba(255,255,255,0.18); color: #fff; }
+.pos-bottom-left { left: 64px; bottom: 90px; }
+.pos-bottom-right { right: 64px; bottom: 90px; text-align: right; }
+.pos-top-left { left: 64px; top: 90px; }
+.pos-center { left: 0; right: 0; top: 42%; text-align: center; max-width: 100%; padding: 0 120px; }
+
+/* ---- Imagen + texto ---- */
+.imgtext { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; height: 100%; align-items: center; }
+.imgtext.reverse .it-text-col { order: 2; }
+.imgtext .it-media { height: 100%; max-height: 540px; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
+.imgtext .it-media img { width: 100%; height: 100%; }
+.imgtext .it-text { font-size: 22px; line-height: 1.45; color: var(--body); }
+.imgtext .head { margin-bottom: 20px; }
+
+/* ---- Destacado (hero stat) ---- */
+.destacado { align-items: flex-start; justify-content: center; }
+.destacado .hero-stat { font-size: 64px; font-weight: 800; color: var(--ink); line-height: 1; letter-spacing: -0.02em; overflow-wrap: break-word; word-break: break-word; }
+.destacado h1 { font-size: 44px; color: var(--ink); font-weight: 800; margin-top: 10px; }
+.destacado .sub { margin-top: 10px; font-size: 22px; color: var(--muted); max-width: 900px; }
+
+/* ---- Comparativa ---- */
+.comparativa { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gap); height: 100%; align-content: center; }
+.cmp-panel { background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; display: flex; flex-direction: column; }
+.cmp-media { height: 240px; }
+.cmp-media img { width: 100%; height: 100%; }
+.cmp-body { padding: 26px 30px 28px; }
+.cmp-body h3 { font-size: 26px; color: var(--ink); font-weight: 800; margin-bottom: 6px; }
+.cmp-body ul { list-style: none; margin-top: 12px; display: flex; flex-direction: column; gap: 10px; }
+.cmp-body ul li { position: relative; padding-left: 24px; font-size: 18px; color: var(--body); line-height: 1.3; }
+.cmp-body ul li::before { content: ""; position: absolute; left: 0; top: 8px; width: 10px; height: 10px; border-radius: 50%; background: var(--accent); }
+
+/* ---- N-columnas (multi-columna flexible) ---- */
+.ncol { display: grid; gap: var(--gap); height: 100%; align-content: center; }
+.ncol.cols-2 { grid-template-columns: repeat(2, 1fr); }
+.ncol.cols-3 { grid-template-columns: repeat(3, 1fr); }
+.ncol.cols-4 { grid-template-columns: repeat(4, 1fr); }
+.ncol.cols-5 { grid-template-columns: repeat(5, 1fr); }
+.ncol.cols-6 { grid-template-columns: repeat(6, 1fr); }
+
+/* ---- Proceso / Workflow ---- */
+.proceso {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+  justify-content: center; align-items: stretch; flex: 1; padding: 16px 0;
+  align-content: center;
+}
+.proceso.proceso--many { grid-template-columns: repeat(3, 1fr); }
+.paso {
+  background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow);
+  padding: 24px 18px 22px; position: relative; display: flex; flex-direction: column;
+}
+.paso::after {
+  content: "\2192"; position: absolute; right: -18px; top: 50%; transform: translateY(-50%);
+  font-size: 22px; color: var(--accent); font-weight: 700;
+}
+.paso:last-child::after { content: none; }
+.paso-num {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: var(--accent); color: #fff; font-weight: 800; font-size: 18px;
+  display: flex; align-items: center; justify-content: center; margin-bottom: 14px; flex: none;
+}
+.paso h3 { font-size: 18px; color: var(--ink); font-weight: 800; margin-bottom: 6px; overflow-wrap: break-word; }
+.paso p { font-size: 14px; color: var(--body); line-height: 1.4; flex: 1; overflow-wrap: break-word; }
+
+/* ---- Masonry ---- */
+.masonry { column-gap: var(--gap); height: 100%; }
+.masonry.cols-2 { column-count: 2; }
+.masonry.cols-3 { column-count: 3; }
+.masonry.cols-4 { column-count: 4; }
+.masonry.cols-5 { column-count: 5; }
+.masonry.cols-6 { column-count: 6; }
+.mas-item {
+  break-inside: avoid; margin-bottom: var(--gap);
+  border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-sm);
+  background: var(--card); position: relative;
+}
+.mas-item img { display: block; width: 100%; height: auto; }
+.mas-caption {
+  padding: 14px 18px; font-size: 15px; color: var(--body); font-weight: 500;
+  background: var(--card);
+}
+
+/* ---- FAQ / Acordeón ---- */
+.faq { display: flex; flex-direction: column; gap: 12px; flex: 1; justify-content: center; max-width: 1100px; margin: 0 auto; width: 100%; }
+.faq details {
+  background: var(--card); border-radius: 14px; box-shadow: var(--shadow-sm);
+  overflow: hidden; border: 1px solid var(--accent-soft);
+}
+.faq details summary {
+  padding: 20px 28px; font-size: 20px; font-weight: 700; color: var(--ink);
+  cursor: pointer; list-style: none; display: flex; align-items: center;
+  position: relative; transition: color 0.15s;
+}
+.faq details summary::-webkit-details-marker { display: none; }
+.faq details summary::after {
+  content: "+"; position: absolute; right: 28px; font-size: 28px;
+  font-weight: 400; color: var(--accent); transition: transform 0.2s;
+}
+.faq details[open] summary { color: var(--accent); }
+.faq details[open] summary::after { transform: rotate(45deg); }
+.faq .faq-r { padding: 0 28px 22px; font-size: 18px; color: var(--body); line-height: 1.5; }
+
+
+#nav-bar {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 24px; background: rgba(35,38,79,0.92); color: #fff;
+  font-family: -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 14px; z-index: 999; user-select: none;
+  -webkit-user-select: none;
+}
+#slide-counter { font-weight: 600; letter-spacing: 0.05em; }
+#nav-controls { display: flex; gap: 6px; }
+#nav-controls button {
+  background: rgba(255,255,255,0.12); color: #fff; border: none;
+  border-radius: 6px; padding: 4px 12px; font-size: 16px; cursor: pointer;
+  line-height: 1.4; transition: background 0.15s;
+}
+#nav-controls button:hover { background: rgba(255,255,255,0.25); }
+.slide { display: none !important; }
+.slide:first-child { display: flex !important; }
+@media print {
+  #nav-bar { display: none; }
+  .slide { display: flex !important; page-break-after: always; }
+}
+
+</style>
+</head><body>
+<section class="slide cover"><div class="logo logo--center"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNjAiIHdpZHRoPSIyMDAiIGhlaWdodD0iNjAiPgogIDxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iNjAiIGZpbGw9Im5vbmUiLz4KICA8dGV4dCB4PSIxMDAiIHk9IjM4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjQiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiMxYTM2NWQiPkFSQU1JUkVaLUFJPC90ZXh0PgogIDxyZWN0IHg9IjYwIiB5PSI0OCIgd2lkdGg9IjgwIiBoZWlnaHQ9IjMiIHJ4PSIxLjUiIGZpbGw9IiMyYjZjYjAiLz4KPC9zdmc+Cg==" alt="Logo"/></div><div class="cover body-area"><h1>Dashboard Ejecutivo — Junio 2026</h1><div class="sub">Plataforma Unificada · Indicadores Clave de Desempeño</div><div class="accent-bar"></div></div><div class="footer footer--center">Contenido confidencial de Nombre de la Organización</div></section>
+<section class="slide section"><div class="logo logo--tr"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNjAiIHdpZHRoPSIyMDAiIGhlaWdodD0iNjAiPgogIDxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iNjAiIGZpbGw9Im5vbmUiLz4KICA8dGV4dCB4PSIxMDAiIHk9IjM4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjQiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiMxYTM2NWQiPkFSQU1JUkVaLUFJPC90ZXh0PgogIDxyZWN0IHg9IjYwIiB5PSI0OCIgd2lkdGg9IjgwIiBoZWlnaHQ9IjMiIHJ4PSIxLjUiIGZpbGw9IiMyYjZjYjAiLz4KPC9zdmc+Cg==" alt="Logo"/></div><div class="section body-area"><div class="idx">KPI</div><h1>Resumen Ejecutivo</h1></div><div class="footer">Contenido confidencial de Nombre de la Organización</div></section>
+<section class="slide"><div class="logo logo--tr"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNjAiIHdpZHRoPSIyMDAiIGhlaWdodD0iNjAiPgogIDxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iNjAiIGZpbGw9Im5vbmUiLz4KICA8dGV4dCB4PSIxMDAiIHk9IjM4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjQiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiMxYTM2NWQiPkFSQU1JUkVaLUFJPC90ZXh0PgogIDxyZWN0IHg9IjYwIiB5PSI0OCIgd2lkdGg9IjgwIiBoZWlnaHQ9IjMiIHJ4PSIxLjUiIGZpbGw9IiMyYjZjYjAiLz4KPC9zdmc+Cg==" alt="Logo"/></div><div class="head"><h1>KPIs del Proyecto</h1></div><div class="kpis grid cols-4"><div class="kpi"><div class="kpi-value">68%</div><div class="kpi-label">Presupuesto Ejecutado</div></div><div class="kpi"><div class="kpi-value">+2 sem</div><div class="kpi-label">Variación de Cronograma</div></div><div class="kpi"><div class="kpi-value">A</div><div class="kpi-label">Calidad (SonarQube)</div></div><div class="kpi"><div class="kpi-value">3</div><div class="kpi-label">Riesgos Activos</div></div></div><div class="footer">Contenido confidencial de Nombre de la Organización</div></section>
+<section class="slide"><div class="logo logo--tr"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNjAiIHdpZHRoPSIyMDAiIGhlaWdodD0iNjAiPgogIDxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iNjAiIGZpbGw9Im5vbmUiLz4KICA8dGV4dCB4PSIxMDAiIHk9IjM4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjQiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiMxYTM2NWQiPkFSQU1JUkVaLUFJPC90ZXh0PgogIDxyZWN0IHg9IjYwIiB5PSI0OCIgd2lkdGg9IjgwIiBoZWlnaHQ9IjMiIHJ4PSIxLjUiIGZpbGw9IiMyYjZjYjAiLz4KPC9zdmc+Cg==" alt="Logo"/></div><div class="head"><h1>Velocidad del Equipo por Sprint</h1></div><div class="body-area chart-area"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 300" width="600" height="300">
+  <rect x="73" y="68" width="60.666666666666664" height="192" rx="3" fill="#2b6cb0" opacity="1"/>
+  <text x="103.33333333333333" y="60" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#1a202c">28</text>
+  <text x="103.33333333333333" y="276" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#1a202c">Sprint 1</text>
+  <rect x="159.66666666666666" y="40.571428571428584" width="60.666666666666664" height="219.42857142857142" rx="3" fill="#2b6cb0" opacity="0.9333333333333333"/>
+  <text x="190" y="32.571428571428584" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#1a202c">32</text>
+  <text x="190" y="276" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#1a202c">Sprint 2</text>
+  <rect x="246.33333333333331" y="88.57142857142856" width="60.666666666666664" height="171.42857142857144" rx="3" fill="#2b6cb0" opacity="0.8666666666666667"/>
+  <text x="276.66666666666663" y="80.57142857142856" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#1a202c">25</text>
+  <text x="276.66666666666663" y="276" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#1a202c">Sprint 3</text>
+  <rect x="333" y="20" width="60.666666666666664" height="240" rx="3" fill="#2b6cb0" opacity="0.8"/>
+  <text x="363.3333333333333" y="12" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#1a202c">35</text>
+  <text x="363.3333333333333" y="276" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#1a202c">Sprint 4</text>
+  <rect x="419.66666666666663" y="54.285714285714306" width="60.666666666666664" height="205.7142857142857" rx="3" fill="#2b6cb0" opacity="0.7333333333333334"/>
+  <text x="449.99999999999994" y="46.285714285714306" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#1a202c">30</text>
+  <text x="449.99999999999994" y="276" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#1a202c">Sprint 5</text>
+  <rect x="506.33333333333326" y="40.571428571428584" width="60.666666666666664" height="219.42857142857142" rx="3" fill="#2b6cb0" opacity="0.6666666666666666"/>
+  <text x="536.6666666666666" y="32.571428571428584" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#1a202c">32</text>
+  <text x="536.6666666666666" y="276" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#1a202c">Sprint 6</text>
+  <line x1="60" y1="260" x2="580" y2="260" stroke="#1a202c" stroke-width="1" opacity="0.3"/>
+</svg></div><div class="footer">Contenido confidencial de Nombre de la Organización</div></section>
+<section class="slide"><div class="logo logo--tr"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNjAiIHdpZHRoPSIyMDAiIGhlaWdodD0iNjAiPgogIDxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iNjAiIGZpbGw9Im5vbmUiLz4KICA8dGV4dCB4PSIxMDAiIHk9IjM4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjQiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiMxYTM2NWQiPkFSQU1JUkVaLUFJPC90ZXh0PgogIDxyZWN0IHg9IjYwIiB5PSI0OCIgd2lkdGg9IjgwIiBoZWlnaHQ9IjMiIHJ4PSIxLjUiIGZpbGw9IiMyYjZjYjAiLz4KPC9zdmc+Cg==" alt="Logo"/></div><div class="head"><h1>Distribución de Horas por Área</h1></div><div class="body-area chart-area"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" width="300" height="300">
+  <path d="M 150 20 A 130 130 0 0 1 206.40488608528256 267.1259528273145 L 182.71483392946388 217.9330526398424 A 75.39999999999999 75.39999999999999 0 0 0 150 74.60000000000001 Z" fill="#3b5bdb" stroke="#fff" stroke-width="1"/>
+  <text x="296.23918682727356" y="116.62185990655284" text-anchor="middle" dominant-baseline="middle" font-family="Inter, sans-serif" font-size="10" fill="#1a202c">Backend</text>
+  <path d="M 206.40488608528256 267.1259528273145 A 130 130 0 0 1 20 150.00000000000003 L 74.60000000000001 150 A 75.39999999999999 75.39999999999999 0 0 0 182.71483392946388 217.9330526398424 Z" fill="#2f9e6f" stroke="#fff" stroke-width="1"/>
+  <text x="70.19518852269952" y="277.0086298842426" text-anchor="middle" dominant-baseline="middle" font-family="Inter, sans-serif" font-size="10" fill="#1a202c">Frontend</text>
+  <path d="M 20 150.00000000000003 A 130 130 0 0 1 80.83583005300623 39.925854100323065 L 109.88478143074362 86.15699537818739 A 75.39999999999999 75.39999999999999 0 0 0 74.60000000000001 150 Z" fill="#e67700" stroke="#fff" stroke-width="1"/>
+  <text x="18.71648671368692" y="77.44216693421404" text-anchor="middle" dominant-baseline="middle" font-family="Inter, sans-serif" font-size="10" fill="#1a202c">QA</text>
+  <path d="M 80.83583005300623 39.925854100323065 A 130 130 0 0 1 149.99999999999997 20 L 150 74.60000000000001 A 75.39999999999999 75.39999999999999 0 0 0 109.88478143074362 86.15699537818739 Z" fill="#cc3333" stroke="#fff" stroke-width="1"/>
+  <text x="108.47467328627263" y="5.862401708235069" text-anchor="middle" dominant-baseline="middle" font-family="Inter, sans-serif" font-size="10" fill="#1a202c">DevOps</text>
+</svg></div><div class="footer">Contenido confidencial de Nombre de la Organización</div></section>
+<section class="slide"><div class="logo logo--tr"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNjAiIHdpZHRoPSIyMDAiIGhlaWdodD0iNjAiPgogIDxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iNjAiIGZpbGw9Im5vbmUiLz4KICA8dGV4dCB4PSIxMDAiIHk9IjM4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjQiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiMxYTM2NWQiPkFSQU1JUkVaLUFJPC90ZXh0PgogIDxyZWN0IHg9IjYwIiB5PSI0OCIgd2lkdGg9IjgwIiBoZWlnaHQ9IjMiIHJ4PSIxLjUiIGZpbGw9IiMyYjZjYjAiLz4KPC9zdmc+Cg==" alt="Logo"/></div><div class="head"><h1>Métricas de Calidad</h1></div><div class="grid cols-4"><div class="card"><div class="accent-top"></div><div class="card-body"><h3>Cobertura de Tests</h3></div></div><div class="card"><div class="accent-top"></div><div class="card-body"><h3>Deuda Técnica</h3></div></div><div class="card"><div class="accent-top"></div><div class="card-body"><h3>Bugs Abiertos</h3></div></div><div class="card"><div class="accent-top"></div><div class="card-body"><h3>Tiempo de Respuesta API</h3></div></div></div><div class="footer">Contenido confidencial de Nombre de la Organización</div></section>
+<section class="slide"><div class="logo logo--tr"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNjAiIHdpZHRoPSIyMDAiIGhlaWdodD0iNjAiPgogIDxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iNjAiIGZpbGw9Im5vbmUiLz4KICA8dGV4dCB4PSIxMDAiIHk9IjM4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjQiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiMxYTM2NWQiPkFSQU1JUkVaLUFJPC90ZXh0PgogIDxyZWN0IHg9IjYwIiB5PSI0OCIgd2lkdGg9IjgwIiBoZWlnaHQ9IjMiIHJ4PSIxLjUiIGZpbGw9IiMyYjZjYjAiLz4KPC9zdmc+Cg==" alt="Logo"/></div><div class="head"><h1>Avance por Fase</h1></div><div class="body-area"><table class="data-table"><thead><tr><th>Fase</th><th>Avance</th><th>Estado</th><th>Responsable</th></tr></thead><tbody><tr><td>Fase 1: Base</td><td>100%</td><td>Completado</td><td>Backend</td></tr><tr><td>Fase 2: API</td><td>70%</td><td>En Progreso</td><td>Backend</td></tr><tr><td>Fase 3: Frontend</td><td>50%</td><td>En Progreso</td><td>Frontend</td></tr><tr><td>Fase 4: QA</td><td>30%</td><td>En Progreso</td><td>QA</td></tr><tr><td>Fase 5: Despliegue</td><td>0%</td><td>No Iniciado</td><td>DevOps</td></tr></tbody></table></div><div class="footer">Contenido confidencial de Nombre de la Organización</div></section>
+<section class="slide"><div class="logo logo--tr"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNjAiIHdpZHRoPSIyMDAiIGhlaWdodD0iNjAiPgogIDxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iNjAiIGZpbGw9Im5vbmUiLz4KICA8dGV4dCB4PSIxMDAiIHk9IjM4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjQiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiMxYTM2NWQiPkFSQU1JUkVaLUFJPC90ZXh0PgogIDxyZWN0IHg9IjYwIiB5PSI0OCIgd2lkdGg9IjgwIiBoZWlnaHQ9IjMiIHJ4PSIxLjUiIGZpbGw9IiMyYjZjYjAiLz4KPC9zdmc+Cg==" alt="Logo"/></div><div class="head"><h1>Tendencia de Cobertura de Pruebas</h1></div><div class="body-area chart-area"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 300" width="600" height="300">
+  <path d="M 60 99.02439024390242 L 164 78.53658536585365 L 268 60.97560975609758 L 372 43.414634146341456 L 476 31.707317073170742 L 580 20" fill="none" stroke="#2b6cb0" stroke-width="2.5" stroke-linejoin="round"/>
+  <circle cx="60" cy="99.02439024390242" r="4" fill="#fff" stroke="#2b6cb0" stroke-width="2"/>
+  <text x="60" y="276" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#1a202c">Sprint 1</text>
+  <text x="60" y="89.02439024390242" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#1a202c">55</text>
+  <circle cx="164" cy="78.53658536585365" r="4" fill="#fff" stroke="#2b6cb0" stroke-width="2"/>
+  <text x="164" y="276" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#1a202c">Sprint 2</text>
+  <text x="164" y="68.53658536585365" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#1a202c">62</text>
+  <circle cx="268" cy="60.97560975609758" r="4" fill="#fff" stroke="#2b6cb0" stroke-width="2"/>
+  <text x="268" y="276" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#1a202c">Sprint 3</text>
+  <text x="268" y="50.97560975609758" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#1a202c">68</text>
+  <circle cx="372" cy="43.414634146341456" r="4" fill="#fff" stroke="#2b6cb0" stroke-width="2"/>
+  <text x="372" y="276" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#1a202c">Sprint 4</text>
+  <text x="372" y="33.414634146341456" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#1a202c">74</text>
+  <circle cx="476" cy="31.707317073170742" r="4" fill="#fff" stroke="#2b6cb0" stroke-width="2"/>
+  <text x="476" y="276" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#1a202c">Sprint 5</text>
+  <text x="476" y="21.707317073170742" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#1a202c">78</text>
+  <circle cx="580" cy="20" r="4" fill="#fff" stroke="#2b6cb0" stroke-width="2"/>
+  <text x="580" y="276" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#1a202c">Sprint 6</text>
+  <text x="580" y="10" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#1a202c">82</text>
+  <line x1="60" y1="260" x2="580" y2="260" stroke="#1a202c" stroke-width="1" opacity="0.2"/>
+</svg></div><div class="footer">Contenido confidencial de Nombre de la Organización</div></section>
+<section class="slide destacado-slide"><div class="logo logo--tr"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNjAiIHdpZHRoPSIyMDAiIGhlaWdodD0iNjAiPgogIDxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iNjAiIGZpbGw9Im5vbmUiLz4KICA8dGV4dCB4PSIxMDAiIHk9IjM4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjQiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiMxYTM2NWQiPkFSQU1JUkVaLUFJPC90ZXh0PgogIDxyZWN0IHg9IjYwIiB5PSI0OCIgd2lkdGg9IjgwIiBoZWlnaHQ9IjMiIHJ4PSIxLjUiIGZpbGw9IiMyYjZjYjAiLz4KPC9zdmc+Cg==" alt="Logo"/></div><div class="destacado body-area"><div class="hero-stat">Q3 2026</div><h1>Próximo Hito: Go-Live</h1><div class="sub">Fase de estabilización inicia en Agosto</div></div><div class="footer">Contenido confidencial de Nombre de la Organización</div></section>
+
+<div id="nav-bar">
+  <div id="slide-counter">1 / 1</div>
+  <div id="nav-controls">
+    <button onclick="var e=new Event('keydown');e.key='ArrowLeft';document.dispatchEvent(e)">◀</button>
+    <button onclick="var e=new Event('keydown');e.key='Home';document.dispatchEvent(e)">▲</button>
+    <button onclick="var e=new Event('keydown');e.key='End';document.dispatchEvent(e)">▼</button>
+    <button onclick="var e=new Event('keydown');e.key='ArrowRight';document.dispatchEvent(e)">▶</button>
+  </div>
+</div>
+
+
+<script>
+(function() {
+  var slides = document.querySelectorAll('.slide');
+  var current = 0;
+  var total = slides.length;
+
+  function show(n) {
+    slides.forEach(function(s, i) {
+      s.style.display = i === n ? 'flex' : 'none';
+    });
+    updateCounter();
+  }
+
+  function updateCounter() {
+    var el = document.getElementById('slide-counter');
+    if (el) el.textContent = (current + 1) + ' / ' + total;
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
+      e.preventDefault();
+      if (current < total - 1) { current++; show(current); }
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (current > 0) { current--; show(current); }
+    } else if (e.key === 'Home') {
+      e.preventDefault(); current = 0; show(current);
+    } else if (e.key === 'End') {
+      e.preventDefault(); current = total - 1; show(current);
+    } else if (e.key === 'f' || e.key === 'F') {
+      if (document.fullscreenElement) document.exitFullscreen();
+      else document.documentElement.requestFullscreen();
+    }
+  });
+
+  document.addEventListener('click', function(e) {
+    var x = e.clientX / window.innerWidth;
+    if (x < 0.3 && current > 0) { current--; show(current); }
+    else if (x > 0.7 && current < total - 1) { current++; show(current); }
+  });
+
+  var touchStartX = 0;
+  document.addEventListener('touchstart', function(e) {
+    touchStartX = e.changedTouches[0].screenX;
+  });
+  document.addEventListener('touchend', function(e) {
+    var dx = e.changedTouches[0].screenX - touchStartX;
+    if (Math.abs(dx) > 50) {
+      if (dx < 0 && current < total - 1) { current++; show(current); }
+      else if (dx > 0 && current > 0) { current--; show(current); }
+    }
+  });
+
+  show(0);
+})();
+</script>
+
+</body></html>
