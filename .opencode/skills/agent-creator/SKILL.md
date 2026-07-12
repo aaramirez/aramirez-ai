@@ -123,3 +123,57 @@ Después de crear el archivo .md, registrar el agente:
   }
 }
 ```
+
+## Mandatory TDD Workflow
+
+Every new agent MUST follow this flow. No steps can be skipped:
+
+```
+1. Write tests    → 2. Create .md  → 3. Register  → 4. Verify  → 5. Done
+   (FAIL first)      (file)           (opencode.json)  (npm test)
+```
+
+### Step 1: Write failing tests FIRST
+
+Before creating the agent, write tests that assert it exists. These must FAIL before implementation.
+
+**Consistency test** — add to `tests/consistency/subagents.test.js`:
+```js
+// Add to REQUIRED_SUBAGENTS array:
+'new-agent.md',
+```
+
+**Registration test** — add to `tests/consistency/opencode-agents.test.js`:
+```js
+// Add to REQUIRED_AGENTS object:
+'new-agent': { mode: 'subagent', path: '.opencode/agents/new-agent.md' },
+```
+Update total count assertion.
+
+**opencode debug test** — add to `tests/integration/opencode-debug-agents.test.js`:
+```js
+// Add 'new-agent' to the agents array tested with opencode debug agent
+```
+
+### Step 2: Create the agent .md file
+
+Use `create-agent.js` or write manually following the template (frontmatter + Inicio/Ejecución/Reglas).
+
+### Step 3: Register in opencode.json
+
+Add the agent entry under `"agent"` with `description`, `mode`, and `path`.
+
+### Step 4: Verify
+
+```bash
+node --test tests/consistency/subagents.test.js
+node --test tests/consistency/opencode-agents.test.js
+node --test tests/integration/opencode-debug-agents.test.js
+npm test  # full suite
+```
+
+ALL tests must pass before the agent is considered complete.
+
+### Step 5: Done
+
+Update `AGENTS.md` with the new agent row. Commit.

@@ -142,6 +142,9 @@ Enable by setting `"enabled": true` in the server entry. Both google-workspace a
 | **rule-creator** | subagent | Genera reglas de código |
 | **reference-creator** | subagent | Genera referencias a repos |
 | **command-creator** | subagent | Genera comandos personalizados |
+| **agent-creator** | subagent | Genera definiciones de agentes opencode |
+| **skill-creator** | subagent | Crea skills SKILL.md reutilizables |
+| **script-creator** | subagent | Crea scripts reutilizables en JS/Python/Bash |
 
 All agents use model `opencode/big-pickle` by default. Agents are defined in `opencode.json` and configured with `.md` files in `.opencode/agents/`.
 
@@ -180,6 +183,23 @@ Agents can invoke these via `/command` in conversation.
 - Keep skills in SKILL.md format with YAML frontmatter (`name:`, `description:`, `license: MIT`)
 - After editing skills, sync with `arai sync skill`
 - **Proactive Skills**: When a new problem or workflow is resolved, consider creating a new **skill** so the solution becomes reusable across all agents.
+
+### Mandatory Agent Creation Flow (TDD)
+
+Every new agent MUST follow this exact flow — all steps are mandatory:
+
+```
+1. Write tests    → 2. Create .md  → 3. Register  → 4. Verify  → 5. Done
+   (FAIL first)      (file)           (opencode.json)  (npm test)
+```
+
+1. **Write tests first** — add to `subagents.test.js`, `opencode-agents.test.js`, and `opencode-debug-agents.test.js`. Tests MUST fail before implementation.
+2. **Create agent .md** — use `create-agent.js` or write manually. Frontmatter must have `description`, `mode`, `model`, `permission`.
+3. **Register in opencode.json** — add entry under `"agent"` with `description`, `mode`, `path`.
+4. **Verify** — run `npm test`. ALL tests must pass.
+5. **Done** — update `AGENTS.md` table. Commit.
+
+See `agent-creator` skill for the full specification.
 
 ## aramirez-ai as base template for new projects
 

@@ -27,6 +27,9 @@ describe('opencode.json agent registrations', () => {
     'rule-creator':            { mode: 'subagent', path: '.opencode/agents/rule-creator.md' },
     'reference-creator':       { mode: 'subagent', path: '.opencode/agents/reference-creator.md' },
     'command-creator':         { mode: 'subagent', path: '.opencode/agents/command-creator.md' },
+    'agent-creator':           { mode: 'subagent', path: '.opencode/agents/agent-creator.md' },
+    'skill-creator':           { mode: 'subagent', path: '.opencode/agents/skill-creator.md' },
+    'script-creator':          { mode: 'subagent', path: '.opencode/agents/script-creator.md' },
     'new-harness':             { mode: 'primary',   path: '.opencode/agents/new-harness.md' },
   };
 
@@ -39,7 +42,7 @@ describe('opencode.json agent registrations', () => {
     });
   }
 
-  test('total agent count is at least 19', () => {
-    assert.ok(Object.keys(config.agent).length >= 19, 'should have at least 19 agents');
+  test('total agent count is at least 22', () => {
+    assert.ok(Object.keys(config.agent).length >= 22, 'should have at least 22 agents');
   });
 });

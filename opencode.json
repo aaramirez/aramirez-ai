@@ -103,6 +103,21 @@
       "description": "Genera comandos personalizados de opencode",
       "mode": "subagent",
       "path": ".opencode/agents/command-creator.md"
+    },
+    "agent-creator": {
+      "description": "Genera definiciones de agentes opencode (primarios y subagentes)",
+      "mode": "subagent",
+      "path": ".opencode/agents/agent-creator.md"
+    },
+    "skill-creator": {
+      "description": "Crea skills SKILL.md reutilizables con frontmatter YAML válido",
+      "mode": "subagent",
+      "path": ".opencode/agents/skill-creator.md"
+    },
+    "script-creator": {
+      "description": "Crea scripts reutilizables en JavaScript, Python o Bash",
+      "mode": "subagent",
+      "path": ".opencode/agents/script-creator.md"
     }
   },
   "command": {

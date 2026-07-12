@@ -19,10 +19,13 @@ const REQUIRED_SUBAGENTS = [
   'rule-creator.md',
   'reference-creator.md',
   'command-creator.md',
+  'agent-creator.md',
+  'skill-creator.md',
+  'script-creator.md',
 ];
 
 describe('subagent definitions', () => {
-  test('all 12 subagent .md files exist', () => {
+  test('all 15 subagent .md files exist', () => {
     const files = readdirSync(AGENTS_DIR);
     for (const name of REQUIRED_SUBAGENTS) {
       assert.ok(files.includes(name), `Missing subagent: ${name}`);
