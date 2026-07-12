@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "00-Introduccion/02-como-extender.md",
+                "file": "01-Instalacion/02-primer-proyecto.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "02-como-extender"
+              "title": "02-primer-proyecto"
             }
           }
         ]
@@ -94,7 +94,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "00-Introduccion/02-como-extender.md",
+                "file": "01-Instalacion/02-primer-proyecto.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -104,7 +104,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for 02-como-extender"
+              "title": "Backlinks for 02-primer-proyecto"
             }
           },
           {
@@ -113,12 +113,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "00-Introduccion/02-como-extender.md",
+                "file": "01-Instalacion/02-primer-proyecto.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links from 02-como-extender"
+              "title": "Outgoing links from 02-primer-proyecto"
             }
           },
           {
@@ -156,13 +156,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "00-Introduccion/02-como-extender.md",
+                "file": "01-Instalacion/02-primer-proyecto.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of 02-como-extender"
+              "title": "Outline of 02-primer-proyecto"
             }
           }
         ]
@@ -185,10 +185,22 @@
   },
   "active": "c837ca77f5cc6f90",
   "lastOpenFiles": [
+    "01-Instalacion/01-instalar-arai.md",
+    "00-Introduccion/02-como-extender.md",
     "00-Introduccion/01-que-es-arai.md",
+    "07-MCP/08-microsoft-365.md",
+    "07-MCP/07-google-workspace.md",
+    "07-MCP/06-email.md",
+    "13-Microsoft-365/02-uso-basico.md",
+    "13-Microsoft-365/01-setup.md",
+    "13-Microsoft-365/Index.md",
+    "12-Google-Workspace/02-uso-basico.md",
+    "12-Google-Workspace/01-setup.md",
+    "12-Google-Workspace/Index.md",
+    "13-Microsoft-365",
+    "12-Google-Workspace",
     "11-Casos-de-uso/04-crear-harness-completo.md",
     "00-Introduccion/03-arquitectura.md",
-    "00-Introduccion/02-como-extender.md",
     "00-Introduccion/Index.md",
     "00-Introduccion",
     "11-Casos-de-uso/03-automatizar-reportes.md",
@@ -202,24 +214,12 @@
     "02-Comandos/08-list.md",
     "02-Comandos/07-uninstall.md",
     "10-CI/04-outcome-validation.md",
-    "10-CI/03-docgen-validate.md",
-    "10-CI/02-tests.md",
-    "10-CI/01-validacion-ci.md",
-    "10-CI/Index.md",
     "10-CI",
-    "08-Referencias/05-uso-creators.md",
-    "08-Referencias/04-repos-referencia.md",
-    "08-Referencias/03-branding.md",
-    "08-Referencias/02-referencias-compartidas.md",
-    "08-Referencias/01-prompt-y-reglas.md",
-    "08-Referencias/Index.md",
     "08-Referencias",
     "07-MCP",
     "11-Casos-de-uso",
     "09-Documentacion",
     "06-Skills",
-    "08-CI",
-    "07-Referencias",
-    "06-MCP"
+    "08-CI"
   ]
 }

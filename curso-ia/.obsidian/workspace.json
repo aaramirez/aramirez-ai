@@ -183,8 +183,44 @@
       "bases:Create new base": false
     }
   },
-  "active": "613ee77011b2c015",
+  "floating": {
+    "id": "b9f2cf9c70801829",
+    "type": "floating",
+    "children": [
+      {
+        "id": "4cfda9e347a5eafc",
+        "type": "window",
+        "children": [
+          {
+            "id": "2f0c039bddda3f8d",
+            "type": "tabs",
+            "children": [
+              {
+                "id": "f08a48593591967b",
+                "type": "leaf",
+                "state": {
+                  "type": "empty",
+                  "state": {},
+                  "icon": "lucide-file",
+                  "title": "New tab"
+                }
+              }
+            ]
+          }
+        ],
+        "direction": "vertical",
+        "x": 328,
+        "y": 69,
+        "width": 1024,
+        "height": 800,
+        "maximize": false,
+        "zoom": 0
+      }
+    ]
+  },
+  "active": "ba2a208c2bee9c43",
   "lastOpenFiles": [
+    "Módulo 6 — Harness en OpenCode/01-Que-es-un-Harness.md",
     "Módulo 6 — Harness en OpenCode/02-Modelos-y-Harness-Engineering.md",
     "Módulo 6 — Harness en OpenCode/04-Configuracion-Base.md",
     "Módulo 6 — Harness en OpenCode/05-Modelo-de-Permisos.md",
@@ -207,7 +243,6 @@
     "Módulo 6 — Harness en OpenCode/04-Modelo-de-Permisos.md",
     "Módulo 6 — Harness en OpenCode/03-Arquitectura-de-Agentes.md",
     "Módulo 6 — Harness en OpenCode/02-Configuracion-Base.md",
-    "Módulo 6 — Harness en OpenCode/01-Que-es-un-Harness.md",
     "Módulo 6 — Harness en OpenCode/11-poniendolo-todo-junto.md",
     "Módulo 6 — Harness en OpenCode/10-arquitecturas-multi-agente-y-flujos.md",
     "Módulo 6 — Harness en OpenCode/09-instrucciones-referencias-prompts-reglas.md",
