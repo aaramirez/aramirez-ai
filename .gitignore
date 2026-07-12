@@ -5,6 +5,8 @@ dist/
 .DS_Store
 repos/
 .opencode/node_modules/
+.opencode/package-lock.json
+.opencode/bun.lock
 generated/
 .obsidian/workspace.json
 assets/docs/_temp_*.html
