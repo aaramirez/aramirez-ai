@@ -67,8 +67,10 @@ describe('arai init', () => {
     projectDir = join(dir, 'minimal-test5');
     runArai(['init', projectDir, '--template', 'minimal']);
     assertFile(join(projectDir, 'opencode.json'));
-    assertDir(join(projectDir, '.opencode', 'agents'));
-    assertDir(join(projectDir, '.opencode', 'commands'));
+    assert.ok(!existsSync(join(projectDir, '.opencode', 'agents')),
+      'Minimal template should not have agents (agents: [])');
+    assert.ok(!existsSync(join(projectDir, '.opencode', 'commands')),
+      'Minimal template should not have commands (commands: [])');
   });
 
   test('minimal template does NOT include full skills (e.g. branding)', () => {

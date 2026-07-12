@@ -75,4 +75,16 @@ function resolveFiles(category, items) {
   return items;
 }
 
-export { loadTemplates, resolvePartial, applyVars, resolveItems, resolveScripts, resolveFiles };
+function resolvePlugins(items) {
+  if (items.length === 1 && items[0] === '*') {
+    const dir = join(REPO_ROOT, 'shared', 'plugins');
+    if (!existsSync(dir)) return [];
+    return readdirSync(dir).filter(f => {
+      const p = join(dir, f);
+      return statSync(p).isFile() && f !== '.gitkeep';
+    });
+  }
+  return items;
+}
+
+export { loadTemplates, resolvePartial, applyVars, resolveItems, resolveScripts, resolveFiles, resolvePlugins };

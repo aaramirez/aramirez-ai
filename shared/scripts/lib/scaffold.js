@@ -5,7 +5,7 @@
 import { readFileSync, writeFileSync, existsSync, readdirSync, statSync, cpSync } from 'fs';
 import { join, resolve, dirname, basename } from 'path';
 import { REPO_ROOT, log, ensureDir } from './helpers.js';
-import { loadTemplates, resolvePartial, applyVars, resolveItems, resolveScripts, resolveFiles } from './template-utils.js';
+import { loadTemplates, resolvePartial, applyVars, resolveItems, resolveScripts, resolveFiles, resolvePlugins } from './template-utils.js';
 import { buildVarsFromProjectState } from './agents-md.js';
 
 function scaffoldProject(targetDir, templateName, vars) {
@@ -75,6 +75,48 @@ function scaffoldProject(targetDir, templateName, vars) {
     }
   }
 
+  for (const agent of resolveFiles('agents', include.agents || [])) {
+    const src = join(REPO_ROOT, 'shared', 'agents', `${agent}.md`);
+    if (existsSync(src)) {
+      const dstDir = join(absTarget, '.opencode', 'agents');
+      ensureDir(dstDir);
+      writeFileSync(join(dstDir, `${agent}.md`), readFileSync(src, 'utf8'));
+    } else {
+      log(`Agent '${agent}' not found in shared/agents/`, 'warn');
+    }
+  }
+
+  for (const cmd of resolveFiles('commands', include.commands || [])) {
+    const src = join(REPO_ROOT, 'shared', 'commands', `${cmd}.md`);
+    if (existsSync(src)) {
+      const dstDir = join(absTarget, '.opencode', 'commands');
+      ensureDir(dstDir);
+      writeFileSync(join(dstDir, `${cmd}.md`), readFileSync(src, 'utf8'));
+    } else {
+      log(`Command '${cmd}' not found in shared/commands/`, 'warn');
+    }
+  }
+
+  for (const plugin of resolvePlugins(include.plugins || [])) {
+    const src = join(REPO_ROOT, 'shared', 'plugins', plugin);
+    if (existsSync(src)) {
+      const dstDir = join(absTarget, '.opencode', 'plugins');
+      ensureDir(dstDir);
+      writeFileSync(join(dstDir, plugin), readFileSync(src, 'utf8'));
+    } else {
+      log(`Plugin '${plugin}' not found in shared/plugins/`, 'warn');
+    }
+  }
+
+  if (include.tui) {
+    const tuiSrc = join(REPO_ROOT, 'shared', 'tui.json');
+    if (existsSync(tuiSrc)) {
+      const dstDir = join(absTarget, '.opencode');
+      ensureDir(dstDir);
+      writeFileSync(join(dstDir, 'tui.json'), readFileSync(tuiSrc, 'utf8'));
+    }
+  }
+
   if (include.platforms?.includes('opencode')) {
     scaffoldOpencode(absTarget, allVars);
   }
@@ -132,8 +174,6 @@ function scaffoldProject(targetDir, templateName, vars) {
 }
 
 function scaffoldOpencode(absTarget, allVars) {
-  const dotOpenCodeSrc = join(REPO_ROOT, '.opencode');
-
   const srcConfig = join(REPO_ROOT, 'opencode.json');
   if (existsSync(srcConfig)) {
     let config = readFileSync(srcConfig, 'utf8');
@@ -163,28 +203,6 @@ function scaffoldOpencode(absTarget, allVars) {
 
     ensureDir(absTarget);
     writeFileSync(join(absTarget, 'opencode.json'), JSON.stringify(parsed, null, 2) + '\n');
-  }
-
-  const srcAgents = join(dotOpenCodeSrc, 'agents');
-  if (existsSync(srcAgents)) {
-    const dstAgents = join(absTarget, '.opencode', 'agents');
-    ensureDir(dstAgents);
-    for (const f of readdirSync(srcAgents)) {
-      if (f.endsWith('.md')) {
-        writeFileSync(join(dstAgents, f), readFileSync(join(srcAgents, f), 'utf8'));
-      }
-    }
-  }
-
-  const srcCommands = join(dotOpenCodeSrc, 'commands');
-  if (existsSync(srcCommands)) {
-    const dstCommands = join(absTarget, '.opencode', 'commands');
-    ensureDir(dstCommands);
-    for (const f of readdirSync(srcCommands)) {
-      if (f.endsWith('.md')) {
-        writeFileSync(join(dstCommands, f), readFileSync(join(srcCommands, f), 'utf8'));
-      }
-    }
   }
 }
 

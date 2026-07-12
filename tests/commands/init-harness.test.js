@@ -81,20 +81,17 @@ describe('arai init — generación de harness funcional (TDD)', () => {
       'No debe haber package-lock.json');
   });
 
-  test('NO hay plugins específicos de aramirez-ai', () => {
+  test('.opencode/plugins/ tiene custom-logo.tsx', () => {
     const p = initFull();
-    assert.ok(!existsSync(join(p, '.opencode', 'plugins', 'engram.ts')),
-      'No debe tener engram.ts');
-    assert.ok(!existsSync(join(p, '.opencode', 'plugins', 'example.ts')),
-      'No debe tener example.ts');
+    assert.ok(existsSync(join(p, '.opencode', 'plugins', 'custom-logo.tsx')),
+      'Debe tener custom-logo.tsx');
   });
 
-  test('NO hay tui.json ni tui-plugins/', () => {
+  test('.opencode/tui.json existe', () => {
     const p = initFull();
-    assert.ok(!existsSync(join(p, '.opencode', 'tui.json')),
-      'No debe tener tui.json');
-    assert.ok(!existsSync(join(p, '.opencode', 'tui-plugins')),
-      'No debe tener tui-plugins/');
+    assertFile(join(p, '.opencode', 'tui.json'));
+    const tui = JSON.parse(readFileSync(join(p, '.opencode', 'tui.json'), 'utf8'));
+    assert.ok(tui.plugin, 'tui.json debe tener plugin array');
   });
 
   /* ─── package.json en raíz ─── */
@@ -213,5 +210,29 @@ describe('arai init — generación de harness funcional (TDD)', () => {
     const p = initMinimal();
     assert.ok(!existsSync(join(p, 'platforms')),
       'Minimal no debe tener platforms/');
+  });
+
+  test('minimal: NO tiene .opencode/plugins/', () => {
+    const p = initMinimal();
+    assert.ok(!existsSync(join(p, '.opencode', 'plugins')),
+      'Minimal no debe tener plugins');
+  });
+
+  test('minimal: NO tiene .opencode/tui.json', () => {
+    const p = initMinimal();
+    assert.ok(!existsSync(join(p, '.opencode', 'tui.json')),
+      'Minimal no debe tener tui.json');
+  });
+
+  test('minimal: NO tiene .opencode/agents/', () => {
+    const p = initMinimal();
+    assert.ok(!existsSync(join(p, '.opencode', 'agents')),
+      'Minimal no debe tener agents');
+  });
+
+  test('minimal: NO tiene .opencode/commands/', () => {
+    const p = initMinimal();
+    assert.ok(!existsSync(join(p, '.opencode', 'commands')),
+      'Minimal no debe tener commands');
   });
 });

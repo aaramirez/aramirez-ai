@@ -22,22 +22,26 @@ describe('full lifecycle', () => {
     assertFile(join(dir, 'shared', 'prompts', 'commit-message.md'));
     assertFile(join(dir, 'shared', 'rules', 'code-style.md'));
     assertFile(join(dir, 'opencode.json'));
-    assertDir(join(dir, '.opencode', 'agents'));
+    assert.ok(!existsSync(join(dir, '.opencode', 'agents')),
+      'Minimal template should not have agents (agents: [])');
     assertFile(join(dir, 'AGENTS.md'));
 
     // 2. Verify AGENTS.md describes the project
     const agentsContent = readFileSync(join(dir, 'AGENTS.md'), 'utf8');
     assert.ok(agentsContent.includes('Lifecycle test'), 'Description should be in AGENTS.md');
 
-    // 3. arai install (add opencode platform to the project)
+    // 3. arai install (no-op since opencode already installed from init)
     const installResult = runArai(['install', '--project', dir]);
     assertExitCode(installResult, 0);
+
+    // 4. arai install agent docs (add individual agent)
+    const agentResult = runArai(['install', 'agent', 'docs', '--project', dir]);
+    assertExitCode(agentResult, 0);
     assertDir(join(dir, '.opencode', 'agents'));
-    assertDir(join(dir, '.opencode', 'skills'));
-    assertDir(join(dir, '.opencode', 'commands'));
+    assertFile(join(dir, '.opencode', 'agents', 'docs.md'));
     assertFile(join(dir, 'opencode.json'));
 
-    // 4. Verify opencode.json has agents (build, plan, etc.)
+    // 5. Verify opencode.json has agents (build, plan, etc.)
     const config = JSON.parse(readFileSync(join(dir, 'opencode.json'), 'utf8'));
     assert.ok(config.agent?.build, 'Should have build agent');
     assert.ok(config.agent?.plan, 'Should have plan agent');
@@ -53,8 +57,8 @@ describe('full lifecycle', () => {
     assertFile(join(dir, '.opencode', 'skills', 'git', 'SKILL.md'));
 
     // 7. arai install agent reviewer
-    const agentResult = runArai(['install', 'agent', 'reviewer', '--project', dir]);
-    assertExitCode(agentResult, 0);
+    const reviewerResult = runArai(['install', 'agent', 'reviewer', '--project', dir]);
+    assertExitCode(reviewerResult, 0);
     assertFile(join(dir, '.opencode', 'agents', 'reviewer.md'));
 
     // 8. Verify reviewer in opencode.json
