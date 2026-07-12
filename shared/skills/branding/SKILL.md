@@ -2,6 +2,8 @@
 name: branding
 description: Define and apply brand identity — colors, logos, and typography for all generated documents. Use when creating or customizing visual assets.
 license: MIT
+scripts:
+  - create-brand.js
 ---
 
 # Branding

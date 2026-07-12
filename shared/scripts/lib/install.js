@@ -120,6 +120,41 @@ function installSkill(name, projectRoot) {
 
   installSkillScripts(name, projectRoot);
 
+  const agentSrc = join(REPO_ROOT, 'shared', 'agents', `${name}.md`);
+  if (existsSync(agentSrc)) {
+    const agentDst = join(projectRoot, '.opencode', 'agents', `${name}.md`);
+    if (!existsSync(agentDst)) {
+      ensureDir(join(projectRoot, '.opencode', 'agents'));
+      cpSync(agentSrc, agentDst);
+      log(`Installed agent '${name}' → .opencode/agents/${name}.md`, 'ok');
+
+      const configPath = join(projectRoot, 'opencode.json');
+      if (existsSync(configPath)) {
+        const config = JSON.parse(readFileSync(configPath, 'utf8'));
+        if (!config.agent) config.agent = {};
+        if (!config.agent[name]) {
+          config.agent[name] = {
+            mode: 'subagent',
+            description: `${name.replace(/-/g, ' ')} specialist`,
+            permission: { edit: 'deny' },
+          };
+          writeFileSync(configPath, JSON.stringify(config, null, 2) + '\n');
+          log(`Registered '${name}' in opencode.json`, 'ok');
+        }
+      }
+    }
+  }
+
+  const commandSrc = join(REPO_ROOT, 'shared', 'commands', `${name}.md`);
+  if (existsSync(commandSrc)) {
+    const commandDst = join(projectRoot, '.opencode', 'commands', `${name}.md`);
+    if (!existsSync(commandDst)) {
+      ensureDir(join(projectRoot, '.opencode', 'commands'));
+      cpSync(commandSrc, commandDst);
+      log(`Installed command '${name}' → .opencode/commands/${name}.md`, 'ok');
+    }
+  }
+
   if (name === 'document-generation') {
     installDocgenTemplates(projectRoot);
   }

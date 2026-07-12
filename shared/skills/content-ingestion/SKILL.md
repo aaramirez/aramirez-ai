@@ -2,6 +2,8 @@
 name: content-ingestion
 description: Take content from any source (PDF, DOCX, web, text, markdown) and structure it into a knowledge base with proper frontmatter, wikilinks, and formatting.
 license: MIT
+scripts:
+  - ingest-content.js
 ---
 
 # Content ingestion

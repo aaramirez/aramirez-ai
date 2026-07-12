@@ -2,6 +2,8 @@
 name: pdf-extraction
 description: Extract literal text from PDF files — handle column breaks, paragraph reconstruction, table detection, and encoding issues.
 license: MIT
+scripts:
+  - extract-pdf.js
 ---
 
 # PDF extraction

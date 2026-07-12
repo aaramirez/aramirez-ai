@@ -59,7 +59,7 @@ Dos directorios, dos propósitos:
 | Directorio | Propósito | Contenido |
 |------------|-----------|-----------|
 | `.opencode/` | **La máquina** — harness que produce arquitecturas de agentes | 16 triplets creadores (skill + script + agent), config runtime, commands, plugins |
-| `shared/` | **Los artefactos** — componentes distribuibles para nuevos proyectos | 12 skills distribuibles, templates, prompts, rules, pipeline docgen |
+| `shared/` | **Los artefactos** — componentes distribuibles para nuevos proyectos | 14 skills distribuibles, 9 scripts, 10 agents, 9 commands, templates, prompts, rules, pipeline docgen |
 
 ### Patrón Triplet Creador
 
@@ -82,6 +82,29 @@ SKILL.md (instrucciones)  →  create-*.js (implementación)  →  agent .md (wr
 3. **Agente** ejecuta el script (`node .opencode/scripts/create-*.js`)
 4. **Script** produce el artefacto (archivo Markdown, JSON, o JS)
 5. **Agente** valida la salida según reglas del skill, reporta al usuario
+
+### Patrón Paquete Distribuible
+
+Cada skill distribuible en `shared/` sigue un paquete de cuatro capas:
+
+```
+shared/
+├── skills/<name>/SKILL.md     ← instrucciones + frontmatter
+├── scripts/<name>.js          ← implementación CLI
+├── agents/<name>.md           ← agente que carga el skill
+└── commands/<name>.md         ← comando de atajo
+```
+
+Cuando el usuario ejecuta `arai install skill <name>`, las cuatro capas se instalan:
+- Skill → `.opencode/skills/<name>/`
+- Scripts → `shared/scripts/`
+- Agent → `shared/agents/<name>/` + registrado en `opencode.json`
+- Command → `shared/commands/<name>/`
+
+**Tres tipos de paquete:**
+- **Full** (6): content-ingestion, document-generation, email, kb-management, youtube, vault-pdf-export
+- **Utility** (2): branding, pdf-extraction
+- **Instructive** (4): code-review, git, google-workspace, m365
 
 ---
 
@@ -412,6 +435,12 @@ Actualiza `shared/brand.json` y copia los logos a `assets/images/`.
 | **agent-creator** | `subagent` | Genera definiciones de agentes | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
 | **skill-creator** | `subagent` | Crea skills SKILL.md reutilizables | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
 | **script-creator** | `subagent` | Crea scripts reutilizables en JS/Python/Bash | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
+| **content-ingestion** | `subagent` | Content ingestion from any source | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
+| **document-generation** | `subagent` | Generate documents from templates | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
+| **email** | `subagent` | Send email via MCP | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
+| **kb-management** | `subagent` | Knowledge base maintenance | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
+| **youtube** | `subagent` | YouTube transcript extraction | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
+| **vault-pdf-export** | `subagent` | Export vault notes to PDF | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
 
 **Default agent**: `build`
 
@@ -430,6 +459,12 @@ Actualiza `shared/brand.json` y copia los logos a `assets/images/`.
 | `/test` | Ejecuta tests |
 | `/deploy` | Despliega la aplicación |
 | `/commit` | Crea commit convencional |
+| `/ingest` | Ingesta contenido desde cualquier fuente a la knowledge base |
+| `/generate` | Genera documentos (PDF, HTML, PNG) desde templates |
+| `/send-email` | Envía emails vía SMTP |
+| `/kb` | Gestiona la knowledge base — validar wikilinks, arreglar rotos |
+| `/youtube-cmd` | Obtiene transcripciones de YouTube |
+| `/export-pdf` | Exporta notas del vault Obsidian a PDF |
 
 ### Plugins y MCP
 
@@ -461,6 +496,9 @@ Actualiza `shared/brand.json` y copia los logos a `assets/images/`.
 | **m365** | Acceso a OneDrive y SharePoint vía Microsoft Graph API |
 | **pdf-extraction** | Extrae texto literal de PDFs — maneja saltos de columna, reconstrucción de párrafos, detección de tablas y problemas de encoding |
 | **youtube** | Obtiene y procesa transcripciones de YouTube para alimentar modelos AI, generar resúmenes, crear notas de curso o analizar contenido de video |
+| **vault-pdf-export** | Exporta notas del vault Obsidian a PDF formateado |
+| **ci-validate** | Validación CI/CD portable — estructura del proyecto, frontmatter de skills, placeholders |
+| **repos-sync** | Sincroniza repositorios de referencia desde repos.json |
 | **agent-creator** | Genera agentes primarios desde línea de comandos — nombre, modo, descripción, permisos |
 | **architecture-creator** | Genera documentos de arquitectura técnica (ADR, diagramas, runbooks) |
 | **command-creator** | Genera comandos personalizados de opencode con template y descripción |
@@ -491,6 +529,11 @@ Las skills de distribución están en `shared/skills/<nombre>/SKILL.md`. Las cre
 |--------|-------------|
 | `shared/scripts/ci-validate.js` | Validación CI/CD portable — estructura del proyecto, frontmatter de skills, placeholders, .gitignore, brand.json. Opciones: `--strict`, `--verbose`, `--dir <path>` |
 | `shared/scripts/repos-sync.js` | Gestor de repositorios de referencia desde `repos.json`. Opciones: `--list`, `<name>` (repo específico) |
+| `shared/scripts/create-brand.js` | Generador/validador de brand.json — crea identidad visual con colores y logos |
+| `shared/scripts/ingest-content.js` | Pipeline de ingesta de contenido — convierte cualquier fuente a notas de knowledge base |
+| `shared/scripts/kb-sync.js` | Sincronización de knowledge base — valida wikilinks, arregla rotos, reporta huérfanos |
+| `shared/scripts/extract-pdf.js` | Extracción de texto de PDFs — maneja columnas, párrafos y tablas |
+| `shared/scripts/mcp-email.js` | Servidor MCP para envío de emails vía SMTP — stdio JSON-RPC |
 | `shared/scripts/youtube-transcript.js` | Obtenedor de transcripciones de YouTube (API youtube-transcript.ai). Opciones: `--lang <code>`. API programática: `fetchTranscript()`, `parseVideoId()` |
 
 ### Creator scripts (`.opencode/scripts/`)

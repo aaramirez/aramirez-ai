@@ -2,6 +2,8 @@
 name: kb-management
 description: Maintain a knowledge base vault — update existing notes, fix wikilinks, reorganize structure, keep workspace and graph in sync.
 license: MIT
+scripts:
+  - kb-sync.js
 ---
 
 # KB management

@@ -33,6 +33,29 @@ SKILL.md (instructions)  →  create-*.js (implementation)  →  agent .md (invo
 4. **Script** produces the artifact (Markdown, JSON, or JS file)
 5. **Agent** validates output per skill rules, reports to user
 
+### Distributable Package Pattern
+
+Each distributable artifact in `shared/` follows a four-layer package:
+
+```
+shared/
+├── skills/<name>/SKILL.md     ← instructions + frontmatter
+├── scripts/<name>.js          ← CLI implementation
+├── agents/<name>.md           ← agent that loads the skill
+└── commands/<name>.md         ← shortcut command
+```
+
+When a user runs `arai install skill <name>`, all four layers are installed:
+- Skill → `.opencode/skills/<name>/`
+- Scripts → `shared/scripts/`
+- Agent → `.opencode/agents/<name>/` + registered in `opencode.json`
+- Command → `.opencode/commands/<name>/`
+
+**Three package types:**
+- **Full** (6): content-ingestion, document-generation, email, kb-management, youtube, vault-pdf-export
+- **Utility** (2): branding, pdf-extraction
+- **Instructive** (4): code-review, git, google-workspace, m365
+
 ## Quick Start
 
 ```bash
@@ -93,6 +116,12 @@ All scripts support `--dry-run` (preview) and `--help` (usage).
 | **agent-creator** | subagent | Generates agent definitions |
 | **skill-creator** | subagent | Creates SKILL.md files |
 | **script-creator** | subagent | Creates reusable scripts |
+| **content-ingestion** | subagent | Content ingestion from any source |
+| **document-generation** | subagent | Generate documents from templates |
+| **email** | subagent | Send email via MCP |
+| **kb-management** | subagent | Knowledge base maintenance |
+| **youtube** | subagent | YouTube transcript extraction |
+| **vault-pdf-export** | subagent | Export vault notes to PDF |
 
 All agents use model `opencode/big-pickle`. Defined in `opencode.json`, configured with `.md` files in `.opencode/agents/`.
 
