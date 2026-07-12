@@ -7,77 +7,33 @@ created: 2026-07-05
 
 # Harness Generator
 
-> **Objetivo**: Usar `harness-generator.js` para generar un harness completo de opencode a partir de una especificación JSON.
+> **Objetivo**: Usar el agente `new-harness` para generar un harness completo de opencode de forma interactiva.
 
 **⏱ Tiempo estimado**: 10 minutos
 **🎯 Nivel**: Avanzado
-**📋 Requisitos**: [[05-Harness/02-creator-scripts.md|Los 18 creator scripts]]
+**📋 Requisitos**: [[05-Harness/02-creator-scripts.md|Los 16 creator scripts]]
 
 ## Resultado esperado
 
-Poder crear una especificación JSON de proyecto y generar todo el harness (agentes, skills, MCP, permisos) en un solo paso.
+Poder crear un proyecto completo con agentes, skills, MCP, permisos usando el flujo interactivo de 7 pasos.
 
 ## Descripción
 
-`harness-generator.js` es el orquestador de todo el ecosistema de creación. Toma una descripción JSON del proyecto y genera un harness completo invocando a los creator scripts apropiados.
+El agente `new-harness` (modo primary) carga el skill `harness-generator` y guía al usuario a través de un workflow interactivo de 7 pasos para generar un harness completo de opencode. No es un script standalone — es un orquestador que coordina los 15 creator scripts.
+
+## Flujo de 7 pasos
+
+1. **Nombre del proyecto** — Verifica formato kebab-case
+2. **Tipo de proyecto** — web, api, cli, library, mobile, desktop, data, ai/ml, fullstack
+3. **Lenguaje/Stack** — Sugiere opciones según el tipo
+4. **Descripción** — Pide descripción breve
+5. **Agentes** — Perfiles predefinidos (minimal/standard/full) o selección manual
+6. **Skills** — Ejecuta `arai list skills` y recomienda
+7. **Configuración avanzada** — Estrictitud, workflow, template, MCP servers
 
 ## Uso
 
-```bash
-node .opencode/scripts/create-config.js (individual scripts) --project spec.json
-```
-
-## El archivo de especificación
-
-`spec.json` describe tu proyecto:
-
-```json
-{
-  "project": {
-    "name": "mi-proyecto",
-    "description": "API REST con autenticación JWT",
-    "language": "typescript",
-    "framework": "express"
-  },
-  "agents": {
-    "primary": [
-      { "name": "build", "description": "Agente de desarrollo" },
-      { "name": "plan", "description": "Agente de planificación" }
-    ],
-    "subagents": [
-      { "name": "reviewer", "domain": "reviewer" },
-      { "name": "tester", "domain": "tester" }
-    ]
-  },
-  "architecture": {
-    "pattern": "tiered",
-    "agents": ["plan", "build", "reviewer"]
-  },
-  "commands": [
-    { "name": "test", "template": "npm test" },
-    { "name": "deploy", "template": "npm run deploy" }
-  ],
-  "skills": [
-    { "name": "code-review" },
-    { "name": "git" }
-  ],
-  "mcp_servers": [
-    {
-      "name": "context7",
-      "type": "remote",
-      "url": "https://context7.com/mcp"
-    }
-  ]
-}
-```
-
-## Proceso
-
-1. `harness-generator.js` lee `spec.json`
-2. Propone una configuración concreta (patrón "propose, don't interrogate")
-3. Carga las skills creator relevantes
-4. Cada skill delega a su companion script
-5. Valida y compone todas las salidas
+Desde opencode, selecciona el agente `new-harness` (tab-cycling) y responde las preguntas interactivas. El agente mostrará un resumen antes de ejecutar cualquier comando.
 6. Escribe los archivos finales
 
 ## Vista previa

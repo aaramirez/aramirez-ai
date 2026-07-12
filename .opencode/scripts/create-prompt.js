@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { parseArgs, writeFileNow, showHelp, println } from './create-base.js';
 
-const USAGE = `node shared/scripts/create-prompt.js --name <name> --content "<text>" --output <path> [options]`;
+const USAGE = `node .opencode/scripts/create-prompt.js --name <name> --content "<text>" --output <path> [options]`;
 const DESC = 'Creates a reusable prompt fragment markdown file.';
 
 const OPTIONS = {

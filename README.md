@@ -46,10 +46,42 @@ La estructura de aramirez-ai (`shared/skills/`, `.opencode/`) es interna al gene
 
 **Principios clave:**
 
-- **Descubrimiento nativo**: opencode descubre skills en `.opencode/skills/` — no necesita `skills.paths`
 - **Self-contained**: cada harness es independiente — `arai install` copia archivos, no crea dependencias
 - **Sin internals**: los harnesses no incluyen plugins, tui, MCP engram/context7 ni node_modules de aramirez-ai
 - **Siempre copia**: los archivos se copian, no se linkean ni se referencian por env vars
+
+---
+
+## Arquitectura: `.opencode/` vs `shared/`
+
+Dos directorios, dos propósitos:
+
+| Directorio | Propósito | Contenido |
+|------------|-----------|-----------|
+| `.opencode/` | **La máquina** — harness que produce arquitecturas de agentes | 16 triplets creadores (skill + script + agent), config runtime, commands, plugins |
+| `shared/` | **Los artefactos** — componentes distribuibles para nuevos proyectos | 12 skills distribuibles, templates, prompts, rules, pipeline docgen |
+
+### Patrón Triplet Creador
+
+Cada creador sigue una arquitectura de tres capas:
+
+```
+SKILL.md (instrucciones)  →  create-*.js (implementación)  →  agent .md (wrapper de invocación)
+```
+
+- **SKILL.md** en `.opencode/skills/<name>/SKILL.md` — qué hacer, reglas, validación
+- **Script** en `.opencode/scripts/create-*.js` — generador Node.js ESM
+- **Agent** en `.opencode/agents/<name>.md` — carga skill, ejecuta script, aplica reglas
+
+16 creadores: agent, architecture, command, config, flow, harness-generator, instructions, mcp, permission, plugin, prompt, reference, rule, script, skill, tool.
+
+### Cómo funciona
+
+1. **Usuario** invoca un agente (ej: `@agent-creator`)
+2. **Agente** carga su skill (instrucciones + reglas)
+3. **Agente** ejecuta el script (`node .opencode/scripts/create-*.js`)
+4. **Script** produce el artefacto (archivo Markdown, JSON, o JS)
+5. **Agente** valida la salida según reglas del skill, reporta al usuario
 
 ---
 
@@ -173,16 +205,6 @@ Ejecuta `git pull` + `npm install` en el repositorio y re-aplica configuraciones
 arai update
 ```
 
-#### `arai sync [type] [name]`
-
-Re-aplica la configuración de opencode en el proyecto actual. Útil después de `arai update`. Si se especifica un tipo y nombre, sincroniza solo ese componente.
-
-```bash
-arai sync                    # re-aplica plataforma
-arai sync skill              # sincroniza todas las skills
-arai sync skill pdf-extraction  # sincroniza una skill específica
-```
-
 #### `arai init <dir>`
 
 Scaffolding: genera un nuevo proyecto con estructura de agente AI.
@@ -286,7 +308,7 @@ arai generate kb --force         # sobrescribe si existe
 
 #### `arai generate skill <name>`
 
-Crea una nueva skill en `.opencode/skills/<name>/SKILL.md`.
+Crea una nueva skill en `shared/skills/<name>/SKILL.md`.
 
 | Opción | Descripción |
 |--------|-------------|
@@ -370,9 +392,26 @@ Actualiza `shared/brand.json` y copia los logos a `assets/images/`.
 |--------|------|-------------|--------|----------|
 | **build** | `primary` | Default build agent for coding tasks | `big-pickle` | — |
 | **plan** | `primary` | Planning agent for architecture and design | `big-pickle` | `edit: deny` |
-| **reviewer** | `subagent` | Code review specialist. Use for PR reviews and quality checks. | `big-pickle` | `edit: deny` |
-| **tester** | `subagent` | Testing specialist. Use for writing and running tests. | `big-pickle` | `bash: allow` |
-| **docs** | `subagent` | Documentation specialist. Use for README, docs, and changelogs. | `big-pickle` | `edit: allow`, `bash: deny` |
+| **plan-arai** | `primary` | Plan mode, documents in `plans/` | `big-pickle` | — |
+| **new-harness** | `primary` | Interactive harness generator (7-step workflow) | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
+| **reviewer** | `subagent` | Code review specialist | `big-pickle` | `edit: deny` |
+| **tester** | `subagent` | Testing specialist | `big-pickle` | `bash: allow` |
+| **docs** | `subagent` | Documentation specialist | `big-pickle` | `edit: allow`, `bash: deny` |
+| **config-creator** | `subagent` | Genera `opencode.json` personalizado | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
+| **permission-creator** | `subagent` | Genera configuración de permisos | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
+| **instructions-creator** | `subagent` | Genera `AGENTS.md` personalizado | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
+| **mcp-creator** | `subagent` | Genera configuraciones MCP | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
+| **architecture-creator** | `subagent` | Genera documentación de arquitectura | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
+| **flow-creator** | `subagent` | Genera flujos de trabajo | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
+| **plugin-creator** | `subagent` | Genera plugins de TUI | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
+| **tool-creator** | `subagent` | Genera herramientas personalizadas | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
+| **prompt-creator** | `subagent` | Genera prompts reutilizables | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
+| **rule-creator** | `subagent` | Genera reglas de código | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
+| **reference-creator** | `subagent` | Genera referencias a repos | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
+| **command-creator** | `subagent` | Genera comandos personalizados | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
+| **agent-creator** | `subagent` | Genera definiciones de agentes | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
+| **skill-creator** | `subagent` | Crea skills SKILL.md reutilizables | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
+| **script-creator** | `subagent` | Crea scripts reutilizables en JS/Python/Bash | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
 
 **Default agent**: `build`
 
@@ -396,9 +435,14 @@ Actualiza `shared/brand.json` y copia los logos a `assets/images/`.
 
 | Recurso | Estado | Descripción |
 |---------|--------|-------------|
-| `plugins/example.ts` | Template | Plugin de ejemplo |
-| MCP: playwright | Deshabilitado por defecto | Navegador headless |
-| MCP: github | Deshabilitado por defecto | API de GitHub |
+| `plugins/custom-logo.tsx` | Activo | Plugin de logo personalizado en TUI |
+| MCP: context7 | Habilitado | Documentación de librerías en tiempo real |
+| MCP: engram | Habilitado | Memoria persistente entre sesiones |
+| MCP: playwright | Deshabilitado | Navegador headless |
+| MCP: github | Deshabilitado | API de GitHub |
+| MCP: email | Deshabilitado | Envío de emails vía SMTP |
+| MCP: google-workspace | Deshabilitado | Google Drive, Docs, Sheets |
+| MCP: m365 | Deshabilitado | Microsoft 365 Graph API |
 
 ---
 

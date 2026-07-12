@@ -67,27 +67,27 @@ Cada archivo contiene el template y frontmatter con metadata.
 
 ## Scripts Reutilizables
 
-Los scripts se almacenan en `shared/scripts/` y pueden ser invocados por comandos o directamente:
+Los scripts se almacenan en `.opencode/scripts/` y pueden ser invocados por comandos o directamente:
 
 ```bash
-node shared/scripts/mi-script.js --arg valor
+node .opencode/scripts/mi-script.js --arg valor
 ```
 
 ## Scripts de Creación
 
 ```bash
 # Crear comando
-node shared/scripts/create-command.js \
+node .opencode/scripts/create-command.js \
   --name test \
   --description "Ejecuta tests" \
   --template "Run the test suite and report results"
 
 # Crear script
-node shared/scripts/create-script.js \
+node .opencode/scripts/create-script.js \
   --name mi-script \
   --lang js \
   --description "Utilidad" \
-  --output ./shared/scripts/mi-script.js
+  --output ./.opencode/scripts/mi-script.js
 ```
 
 ## Práctica

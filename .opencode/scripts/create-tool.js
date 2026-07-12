@@ -2,7 +2,7 @@
 import { parseArgs, writeFileNow, showHelp, println } from './create-base.js';
 import { resolve } from 'path';
 
-const USAGE = `node shared/scripts/create-tool.js --name <name> --description <desc> --schema <json> --output <path> [options]`;
+const USAGE = `node .opencode/scripts/create-tool.js --name <name> --description <desc> --schema <json> --output <path> [options]`;
 const DESC = 'Creates a custom tool definition for opencode.';
 
 const OPTIONS = {

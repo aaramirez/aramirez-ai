@@ -25,13 +25,16 @@ describe('updated creator skills', () => {
     assert.ok(!content.includes('create-specialized-agent.js'), 'should not reference create-specialized-agent.js');
   });
 
-  test('AGENTS.md lists all 19 agents', () => {
+  test('AGENTS.md lists all 22 agents', () => {
     const content = readFileSync(join(REPO_ROOT, 'AGENTS.md'), 'utf8');
     assert.ok(content.includes('config-creator'), 'AGENTS.md mentions config-creator');
     assert.ok(content.includes('permission-creator'), 'AGENTS.md mentions permission-creator');
     assert.ok(content.includes('instructions-creator'), 'AGENTS.md mentions instructions-creator');
     assert.ok(content.includes('mcp-creator'), 'AGENTS.md mentions mcp-creator');
     assert.ok(content.includes('new-harness'), 'AGENTS.md mentions new-harness');
+    assert.ok(content.includes('agent-creator'), 'AGENTS.md mentions agent-creator');
+    assert.ok(content.includes('skill-creator'), 'AGENTS.md mentions skill-creator');
+    assert.ok(content.includes('script-creator'), 'AGENTS.md mentions script-creator');
   });
 
   test('AGENTS.md no longer references harness-generator.js', () => {

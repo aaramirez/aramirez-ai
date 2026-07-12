@@ -169,7 +169,7 @@ Define colores para identificar agentes visualmente en la interfaz de OpenCode:
 ### architecture-creator
 
 ```bash
-node shared/scripts/create-architecture.js \
+node .opencode/scripts/create-architecture.js \
   --pattern orchestrator \
   --description "Full dev team" \
   --subagents planner,developer,reviewer,tester \
@@ -181,7 +181,7 @@ Genera la estructura de directorios y archivos de configuración para el patrón
 ### flow-creator
 
 ```bash
-node shared/scripts/create-flow.js \
+node .opencode/scripts/create-flow.js \
   --name dev-flow \
   --stages "plan,build,review,deploy" \
   --output ./flow.json

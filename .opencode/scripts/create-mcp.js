@@ -7,7 +7,7 @@ const opts = parseArgs(raw);
 if (opts.help) {
   showHelp(
     'create-mcp',
-    'node shared/scripts/create-mcp.js --name <name> --type <local|remote> [--command <cmd>|--url <url>] --output <path>',
+    'node .opencode/scripts/create-mcp.js --name <name> --type <local|remote> [--command <cmd>|--url <url>] --output <path>',
     'Generate an MCP server configuration JSON entry.',
     {
       '--name':      'Server name (required)',

@@ -6,7 +6,7 @@ const opts = parseArgs(process.argv.slice(2));
 if (opts.help) {
   showHelp(
     'create-command',
-    'node shared/scripts/create-command.js --name <name> --description <desc> --template <tmpl> --output <path>',
+    'node .opencode/scripts/create-command.js --name <name> --description <desc> --template <tmpl> --output <path>',
     'Generate a custom command entry for opencode.json.',
     {
       '--name':        'Command name (required)',

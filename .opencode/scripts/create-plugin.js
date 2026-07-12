@@ -2,7 +2,7 @@
 import { parseArgs, writeFileNow, showHelp, println } from './create-base.js';
 import { resolve } from 'path';
 
-const USAGE = `node shared/scripts/create-plugin.js --name <name> --type <npm|local> --output <path> [options]`;
+const USAGE = `node .opencode/scripts/create-plugin.js --name <name> --type <npm|local> --output <path> [options]`;
 const DESC = 'Creates a plugin configuration for opencode custom tools and hooks.';
 
 const OPTIONS = {

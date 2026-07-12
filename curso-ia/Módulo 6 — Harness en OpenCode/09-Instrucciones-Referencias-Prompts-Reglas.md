@@ -95,7 +95,7 @@ Las reglas se incluyen vía `instructions` en `opencode.json` y aplican globalme
 ### instructions-creator
 
 ```bash
-node shared/scripts/create-instructions.js \
+node .opencode/scripts/create-instructions.js \
   --type api \
   --language typescript \
   --description "API REST con Express" \
@@ -107,7 +107,7 @@ Genera un `AGENTS.md` con instrucciones adaptadas al tipo de proyecto.
 ### reference-creator
 
 ```bash
-node shared/scripts/create-reference.js \
+node .opencode/scripts/create-reference.js \
   --name shared-rules \
   --path ../shared/rules \
   --description "Estándares de código del equipo"
@@ -118,7 +118,7 @@ Registra una referencia en `opencode.json`.
 ### prompt-creator
 
 ```bash
-node shared/scripts/create-prompt.js \
+node .opencode/scripts/create-prompt.js \
   --name commit-msg \
   --content "Escribe un mensaje conventional commit"
 ```
@@ -128,7 +128,7 @@ Crea un archivo en `shared/prompts/` con el contenido especificado.
 ### rule-creator
 
 ```bash
-node shared/scripts/create-rule.js \
+node .opencode/scripts/create-rule.js \
   --name code-style \
   --content "# Code style\n\n## General\n- Sigue patrones existentes\n- Usa TypeScript estricto"
 ```

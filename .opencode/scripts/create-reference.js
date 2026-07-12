@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { parseArgs, writeFileNow, showHelp, println } from './create-base.js';
 
-const USAGE = `node shared/scripts/create-reference.js --name <name> --path <path> --description <desc> --output <path> [options]`;
+const USAGE = `node .opencode/scripts/create-reference.js --name <name> --path <path> --description <desc> --output <path> [options]`;
 const DESC = 'Creates a reference configuration entry for opencode.json.';
 
 const OPTIONS = {

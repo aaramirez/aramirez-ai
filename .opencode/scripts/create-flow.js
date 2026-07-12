@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { parseArgs, writeFileNow, showHelp, println } from './create-base.js';
 
-const USAGE = `node shared/scripts/create-flow.js --name <name> --stages <stages> --description <desc> --output <path>`;
+const USAGE = `node .opencode/scripts/create-flow.js --name <name> --stages <stages> --description <desc> --output <path>`;
 const DESC = 'Creates workflow sequence descriptions for agent collaboration.';
 
 const AGENT_MAP = {

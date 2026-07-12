@@ -3,15 +3,15 @@
  * create-config.js — Generate opencode.json base configuration
  *
  * Usage:
- *   node shared/scripts/create-config.js --model anthropic/claude-sonnet-4-6 --shell /bin/zsh --output ./opencode.json
- *   node shared/scripts/create-config.js --dry-run
- *   node shared/scripts/create-config.js --help
+ *   node .opencode/scripts/create-config.js --model anthropic/claude-sonnet-4-6 --shell /bin/zsh --output ./opencode.json
+ *   node .opencode/scripts/create-config.js --dry-run
+ *   node .opencode/scripts/create-config.js --help
  */
 
 import { resolve } from 'path';
 import { parseArgs, writeFileNow, showHelp, println } from './create-base.js';
 
-const USAGE = 'node shared/scripts/create-config.js [options]';
+const USAGE = 'node .opencode/scripts/create-config.js [options]';
 const DESC = 'Generate an opencode.json base configuration file.';
 
 function main() {

@@ -97,7 +97,7 @@ Puedes navegar entre sesiones padre e hijo en la UI de opencode. Cada una mantie
 Genera un agente primario con frontmatter YAML:
 
 ```bash
-node shared/scripts/create-agent.js \
+node .opencode/scripts/create-agent.js \
   --name mi-agente \
   --description "Agente para automatizar despliegues" \
   --mode primary \
@@ -132,14 +132,15 @@ Operate according to the following guidelines:
 - Follow the user's instructions precisely.
 ```
 
-## Usando create-subagent.js
+## Usando create-agent.js con --mode subagent
 
 Genera un subagente con modo `subagent` automáticamente:
 
 ```bash
-node shared/scripts/create-subagent.js \
+node .opencode/scripts/create-agent.js \
   --name helper \
   --description "Asistente de análisis de logs" \
+  --mode subagent \
   --read-only \
   --output ./.opencode/agents/helper.md
 ```
@@ -149,19 +150,22 @@ La flag `--read-only` configura `edit: deny` y `bash: ask`. Sin ella, los permis
 Para un subagente oculto (no aparece en la lista):
 
 ```bash
-node shared/scripts/create-subagent.js \
+node .opencode/scripts/create-agent.js \
   --name interno \
   --description "Agente interno para tareas de mantenimiento" \
+  --mode subagent \
   --hidden \
   --output ./.opencode/agents/interno.md
 ```
 
-## Usando create-specialized-agent.js
+## Usando create-agent.js con --domain
 
 Genera agentes con prompts preconstruidos por dominio:
 
 ```bash
-node shared/scripts/create-specialized-agent.js \
+node .opencode/scripts/create-agent.js \
+  --mode subagent \
+  --name reviewer \
   --domain reviewer \
   --output ./.opencode/agents/reviewer.md
 ```
@@ -208,7 +212,7 @@ Si el agente ya tiene permisos en su frontmatter, no es necesario repetirlos aqu
 ### Ejercicio 1: Crea un agente primario
 
 ```bash
-node shared/scripts/create-agent.js \
+node .opencode/scripts/create-agent.js \
   --name arquitecto \
   --description "Diseña la arquitectura del sistema y documenta decisiones técnicas" \
   --mode primary \
@@ -223,19 +227,21 @@ node shared/scripts/create-agent.js \
 ### Ejercicio 2: Crea un subagente
 
 ```bash
-node shared/scripts/create-subagent.js \
+node .opencode/scripts/create-agent.js \
   --name lint-helper \
   --description "Ejecuta linting y reporta errores" \
+  --mode subagent \
   --read-only \
   --output ./.opencode/agents/lint-helper.md
 ```
 
-### Ejercicio 3: Usa el specialized-agent
+### Ejercicio 3: Usa el agente por dominio
 
 ```bash
-node shared/scripts/create-specialized-agent.js \
-  --domain tester \
+node .opencode/scripts/create-agent.js \
   --name qa-engineer \
+  --domain tester \
+  --mode subagent \
   --output ./.opencode/agents/qa-engineer.md
 ```
 

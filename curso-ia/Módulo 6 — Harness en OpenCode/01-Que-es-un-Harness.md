@@ -97,16 +97,14 @@ Un harness es una **configuración orquestada**: varios agentes colaboran, skill
 
 Cada uno organiza los mismos bloques (opencode.json, agentes, skills) de forma distinta. No hay un harness "correcto" — hay el que funciona para tu flujo.
 
-## El Ecosistema de 18 Skills Creadores
+## El Ecosistema de 16 Creator Scripts
 
-En este curso vamos a explorar **18 scripts creadores** que automatizan la generación de componentes de harness:
+En este curso vamos a explorar **16 scripts creadores** que automatizan la generación de componentes de harness:
 
 | Script | Genera |
 |--------|--------|
 | `create-config.js` | `opencode.json` base |
-| `create-agent.js` | Agente primario |
-| `create-subagent.js` | Subagente |
-| `create-specialized-agent.js` | Agente por dominio (reviewer, tester, docs...) |
+| `create-agent.js` | Agente primario o subagente (`--mode subagent`) |
 | `create-skill.js` | Skill con SKILL.md |
 | `create-command.js` | Comando opencode |
 | `create-prompt.js` | Fragmento de prompt |
@@ -122,7 +120,7 @@ En este curso vamos a explorar **18 scripts creadores** que automatizan la gener
 | `create-script.js` | Script reutilizable |
 | `create-architecture.js` | Documento de arquitectura |
 
-Todos viven en `shared/scripts/` y usan `create-base.js` como interfaz común con `--help`, `--dry-run`, y parseo de argumentos unificado.
+Todos viven en `.opencode/scripts/` y usan `create-base.js` como interfaz común con `--help`, `--dry-run`, y parseo de argumentos unificado.
 
 ## Pruébalo tú mismo
 

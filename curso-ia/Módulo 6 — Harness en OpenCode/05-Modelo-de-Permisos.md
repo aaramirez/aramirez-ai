@@ -203,7 +203,7 @@ Ideal para: producción, equipos grandes, agentes con acceso a datos sensibles.
 El script `create-permission.js` genera configuraciones de permisos según el nivel de strictness:
 
 ```bash
-node shared/scripts/create-permission.js \
+node .opencode/scripts/create-permission.js \
   --strictness balanced \
   --output ./permission.json
 ```
@@ -213,7 +213,7 @@ Niveles disponibles: `relaxed`, `balanced`, `strict`.
 Usa `--dry-run` para previsualizar:
 
 ```bash
-node shared/scripts/create-permission.js --strictness strict --dry-run
+node .opencode/scripts/create-permission.js --strictness strict --dry-run
 ```
 
 Salida para `strict`:
@@ -299,9 +299,9 @@ Configuración para un equipo con `build` (desarrollador), `reviewer` (revisor),
 
 ```bash
 # Compara los 3 niveles
-node shared/scripts/create-permission.js --strictness relaxed --dry-run
-node shared/scripts/create-permission.js --strictness balanced --dry-run
-node shared/scripts/create-permission.js --strictness strict --dry-run
+node .opencode/scripts/create-permission.js --strictness relaxed --dry-run
+node .opencode/scripts/create-permission.js --strictness balanced --dry-run
+node .opencode/scripts/create-permission.js --strictness strict --dry-run
 ```
 
 ### Ejercicio 2: Configura un equipo de 3 agentes
@@ -309,17 +309,17 @@ node shared/scripts/create-permission.js --strictness strict --dry-run
 1. Genera los agentes:
 
 ```bash
-node shared/scripts/create-agent.js --name build --description "Desarrollador principal" --output ./.opencode/agents/build.md
+node .opencode/scripts/create-agent.js --name build --description "Desarrollador principal" --output ./.opencode/agents/build.md
 
-node shared/scripts/create-specialized-agent.js --domain reviewer --output ./.opencode/agents/reviewer.md
+node .opencode/scripts/create-agent.js --mode subagent --name reviewer --description "Code review specialist" --output ./.opencode/agents/reviewer.md
 
-node shared/scripts/create-specialized-agent.js --domain docs --output ./.opencode/agents/docs.md
+node .opencode/scripts/create-agent.js --mode subagent --name docs --description "Documentation specialist" --output ./.opencode/agents/docs.md
 ```
 
 2. Genera permisos balanceados:
 
 ```bash
-node shared/scripts/create-permission.js --strictness balanced --output ./permisos-base.json
+node .opencode/scripts/create-permission.js --strictness balanced --output ./permisos-base.json
 ```
 
 3. Integra en tu `opencode.json` siguiendo el ejemplo completo de arriba.

@@ -60,13 +60,13 @@ Las herramientas personalizadas se definen con JSON Schema en `opencode.json`:
 
 ```bash
 # MCP server remoto
-node shared/scripts/create-mcp.js --name github --type remote --url https://api.github.com/mcp
+node .opencode/scripts/create-mcp.js --name github --type remote --url https://api.github.com/mcp
 
 # Plugin local
-node shared/scripts/create-plugin.js --name local-plugin --type local --path ./.opencode/plugins/mi-plugin
+node .opencode/scripts/create-plugin.js --name local-plugin --type local --path ./.opencode/plugins/mi-plugin
 
 # Custom tool
-node shared/scripts/create-tool.js --name buscador --description "Busca en la base de datos" --schema '{"type":"object"}'
+node .opencode/scripts/create-tool.js --name buscador --description "Busca en la base de datos" --schema '{"type":"object"}'
 ```
 
 ## Práctica

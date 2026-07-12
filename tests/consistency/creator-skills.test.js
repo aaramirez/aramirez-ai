@@ -22,10 +22,11 @@ const CREATOR_SKILLS = [
   'reference-creator',
   'plugin-creator',
   'tool-creator',
+  'harness-generator',
 ];
 
 describe('creator skills consistency', () => {
-  test('all 15 creator skills are present', () => {
+  test('all 16 creator skills are present', () => {
     const skills = readdirSync(SKILLS_DIR).filter(f =>
       statSync(join(SKILLS_DIR, f)).isDirectory()
     );

@@ -3,15 +3,15 @@
  * create-permission.js — Generate permission configuration for opencode.json
  *
  * Usage:
- *   node shared/scripts/create-permission.js --strictness balanced --output ./permission.json
- *   node shared/scripts/create-permission.js --dry-run
- *   node shared/scripts/create-permission.js --help
+ *   node .opencode/scripts/create-permission.js --strictness balanced --output ./permission.json
+ *   node .opencode/scripts/create-permission.js --dry-run
+ *   node .opencode/scripts/create-permission.js --help
  */
 
 import { resolve } from 'path';
 import { parseArgs, writeFileNow, showHelp, println } from './create-base.js';
 
-const USAGE = 'node shared/scripts/create-permission.js [options]';
+const USAGE = 'node .opencode/scripts/create-permission.js [options]';
 const DESC = 'Generate permission configuration for opencode.json.';
 
 const PROFILES = {

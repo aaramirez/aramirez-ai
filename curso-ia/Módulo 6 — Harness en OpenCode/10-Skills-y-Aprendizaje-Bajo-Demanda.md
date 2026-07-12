@@ -77,11 +77,11 @@ Para deshabilitar completamente la skill tool (y evitar que se cargue cualquier 
 ## Script de Creación
 
 ```bash
-node shared/scripts/create-skill.js \
+node .opencode/scripts/create-skill.js \
   --name mi-skill \
   --description "Hace algo útil" \
   --content "# Mi skill\n\nInstrucciones..." \
-  --output ./shared/skills/mi-skill/SKILL.md
+  --output ./.opencode/skills/mi-skill/SKILL.md
 ```
 
 ## Sincronización

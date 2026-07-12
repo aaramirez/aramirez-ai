@@ -3,14 +3,14 @@
  * create-instructions.js — Generate AGENTS.md for opencode agents
  *
  * Usage:
- *   node shared/scripts/create-instructions.js --type web --language typescript --description "E-commerce platform" --output ./AGENTS.md
- *   node shared/scripts/create-instructions.js --type api --help
+ *   node .opencode/scripts/create-instructions.js --type web --language typescript --description "E-commerce platform" --output ./AGENTS.md
+ *   node .opencode/scripts/create-instructions.js --type api --help
  */
 
 import { resolve } from 'path';
 import { parseArgs, writeFileNow, showHelp, println } from './create-base.js';
 
-const USAGE = 'node shared/scripts/create-instructions.js [options]';
+const USAGE = 'node .opencode/scripts/create-instructions.js [options]';
 const DESC = 'Generate an AGENTS.md file with project instructions for opencode agents.';
 
 const PROJECT_TYPES = ['web', 'api', 'cli', 'library', 'mobile', 'data', 'infra'];

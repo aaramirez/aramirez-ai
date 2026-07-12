@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { parseArgs, writeFileNow, showHelp, println } from './create-base.js';
 
-const USAGE = `node shared/scripts/create-architecture.js --pattern <type> --description <desc> --output <dir>`;
+const USAGE = `node .opencode/scripts/create-architecture.js --pattern <type> --description <desc> --output <dir>`;
 const DESC = 'Generates multi-agent architecture patterns.';
 
 const PATTERNS = {

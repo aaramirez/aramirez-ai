@@ -187,7 +187,7 @@ Mantén las instrucciones globales separadas del JSON. Es más legible y permite
 El script `create-config.js` genera un `opencode.json` listo para usar:
 
 ```bash
-node shared/scripts/create-config.js \
+node .opencode/scripts/create-config.js \
   --model opencode/big-pickle \
   --small-model anthropic/claude-haiku-4-5 \
   --shell /bin/zsh \
@@ -201,13 +201,13 @@ node shared/scripts/create-config.js \
 Usa `--dry-run` para ver el resultado sin escribirlo:
 
 ```bash
-node shared/scripts/create-config.js --dry-run
+node .opencode/scripts/create-config.js --dry-run
 ```
 
 Usa `--help` para ver todas las opciones:
 
 ```bash
-node shared/scripts/create-config.js --help
+node .opencode/scripts/create-config.js --help
 ```
 
 ## Pruébalo tú mismo
@@ -219,7 +219,7 @@ node shared/scripts/create-config.js --help
 opencode debug config
 
 # Genera una configuración por defecto en dry-run
-node shared/scripts/create-config.js --dry-run
+node .opencode/scripts/create-config.js --dry-run
 ```
 
 Compara ambas. ¿Qué diferencias encuentras?
@@ -227,7 +227,7 @@ Compara ambas. ¿Qué diferencias encuentras?
 ### Ejercicio 2: Generar tu propio opencode.json
 
 ```bash
-node shared/scripts/create-config.js \
+node .opencode/scripts/create-config.js \
   --model opencode/big-pickle \
   --formatter true \
   --lsp true \

@@ -6,7 +6,7 @@ const opts = parseArgs(process.argv.slice(2));
 if (opts.help) {
   showHelp(
     'create-skill',
-    'node shared/scripts/create-skill.js --name <name> --description <desc> --content <body> --output <path>',
+    'node .opencode/scripts/create-skill.js --name <name> --description <desc> --content <body> --output <path>',
     'Generate a SKILL.md file with YAML frontmatter.',
     {
       '--name':       'Skill name (must match ^[a-z0-9]+(-[a-z0-9]+)*$) (required)',

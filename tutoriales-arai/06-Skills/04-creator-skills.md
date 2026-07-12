@@ -7,7 +7,7 @@ created: 2026-07-05
 
 # Skills creator
 
-> **Objetivo**: Conocer las 18 skills creator que guían a los agentes en la creación de componentes del harness de opencode.
+> **Objetivo**: Conocer las 16 skills creator que guían a los agentes en la creación de componentes del harness de opencode.
 
 **⏱ Tiempo estimado**: 5 minutos
 **🎯 Nivel**: Intermedio
@@ -19,7 +19,7 @@ Saber qué skills creator están disponibles, qué componente genera cada una, y
 
 ## ¿Qué son las skills creator?
 
-Son skills especiales en `shared/skills/` que describen cómo usar cada creator script desde un agente de opencode. Cada creator script tiene su skill correspondiente.
+Son skills especiales en `.opencode/skills/` que describen cómo usar cada creator script desde un agente de opencode. Cada creator script tiene su skill correspondiente.
 
 ## Lista completa
 
@@ -28,9 +28,7 @@ Son skills especiales en `shared/skills/` que describen cómo usar cada creator 
 | `config-creator` | `create-config.js` | Configuración base opencode.json |
 | `permission-creator` | `create-permission.js` | Reglas de permisos |
 | `instructions-creator` | `create-instructions.js` | AGENTS.md |
-| `agent-creator` | `create-agent.js` | Agentes primarios |
-| `subagent-creator` | `create-agent.js --mode subagent` | Subagentes |
-| `specialized-agent-creator` | `create-agent.js --mode subagent` | Agentes de dominio |
+| `agent-creator` | `create-agent.js` | Agentes primarios y subagentes |
 | `architecture-creator` | `create-architecture.js` | Arquitecturas multi-agente |
 | `flow-creator` | `create-flow.js` | Flujos de trabajo |
 | `skill-creator` | `create-skill.js` | Skills reutilizables |
@@ -42,7 +40,7 @@ Son skills especiales en `shared/skills/` que describen cómo usar cada creator 
 | `reference-creator` | `create-reference.js` | Referencias compartidas |
 | `plugin-creator` | `create-plugin.js` | Plugins |
 | `tool-creator` | `create-tool.js` | Herramientas personalizadas |
-| `harness-creator` | `harness-generator.js` | Orquestador de todo lo anterior |
+| `harness-generator` | *(orchestrates others)* | Orquestador interactivo (agente `new-harness`) |
 
 ## Cargar una skill creator
 

@@ -25,13 +25,9 @@ Creamos `project.json` con la configuración inicial:
 
 ### Paso 2: Generar Configuración Base
 
-Usamos `harness-generator` para crear el harness:
+Usamos el agente `new-harness` para crear el harness de forma interactiva (workflow de 7 pasos):
 
-```bash
-node shared/scripts/harness-generator.js \
-  --project ./project.json \
-  --output ./mi-harness/
-```
+> En opencode, selecciona el agente `new-harness` (tab-cycling) y responde las preguntas interactivas. El agente genera todo el harness: opencode.json, agentes, skills, permisos y comandos.
 
 Esto genera:
 
@@ -93,15 +89,15 @@ Conectamos herramientas externas vía MCP (Model Context Protocol):
 {
   "mcpServers": {
     "github": {
-      "command": "node",
-      "args": ["shared/scripts/mcp/github.js"],
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
       "env": {
         "GITHUB_TOKEN": "${GITHUB_TOKEN}"
       }
     },
     "playwright": {
-      "command": "node",
-      "args": ["shared/scripts/mcp/playwright.js"]
+      "command": "npx",
+      "args": ["-y", "@anthropic-ai/mcp-playwright"]
     }
   }
 }
