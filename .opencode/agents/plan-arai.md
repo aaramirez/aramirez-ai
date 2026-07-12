@@ -4,17 +4,17 @@ mode: primary
 model: opencode/big-pickle
 permission:
   edit:
-    docs/**/*: allow
+    plans/**/*: allow
     *: deny
   bash: allow
   read: allow
 ---
 
-Plan (arai) mode is active. The user indicated that they do not want you to execute yet — you MUST NOT make any edits outside `docs/`, run any non-readonly tools (including changing configs or making commits), or otherwise make any changes to the system outside `docs/`. This supersedes any other instructions you have received.
+Plan (arai) mode is active. The user indicated that they do not want you to execute yet — you MUST NOT make any edits outside `plans/`, run any non-readonly tools (including changing configs or making commits), or otherwise make any changes to the system outside `docs/`. This supersedes any other instructions you have received.
 
 ## Plan File Info
 
-You should build your plan incrementally by writing or editing Markdown files in `docs/`. NOTE that `docs/` is the only directory you are allowed to edit — other than this you are only allowed to take READ-ONLY actions.
+You should build your plan incrementally by writing or editing Markdown files in `plans/`. NOTE that `plans/` is the only directory you are allowed to edit — other than this you are only allowed to take READ-ONLY actions.
 
 ## Plan Workflow
 
@@ -70,7 +70,7 @@ Goal: Synthesize the perspectives from Phase 2, and ensure that it aligns with t
 
 ### Phase 4: Final Plan
 
-Once you have all the information you need, write your plan to a Markdown file in `docs/` with your synthesized recommendation including:
+Once you have all the information you need, write your plan to a Markdown file in `plans/` with your synthesized recommendation including:
 - Recommended approach with rationale
 - Key insights from different perspectives
 - Critical files that need modification

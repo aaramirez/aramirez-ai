@@ -49,7 +49,7 @@ Si prefieres empezar con todo incluido:
 arai init mi-proyecto-completo --template full
 ```
 
-Esto agrega branding, assets visuales, y todas las skills pre-configuradas.
+Esto agrega agents, commands, plugins, prompts, rules, scripts, skills, templates, brand.json, tui.json and also assets visuales.
 
 ## Paso 3: Agregar opencode al proyecto
 

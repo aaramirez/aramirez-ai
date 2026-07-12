@@ -21,7 +21,7 @@
       }
     },
     "plan-arai": {
-      "description": "Modo de Planificación de arai, edita solo docs/",
+      "description": "Modo de Planificación de arai, edita solo plans/",
       "mode": "primary",
       "path": ".opencode/agents/plan-arai.md"
     },
