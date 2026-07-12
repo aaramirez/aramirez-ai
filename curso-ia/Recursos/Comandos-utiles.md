@@ -6,23 +6,20 @@
 # Estado de todos los agentes
 arai status
 
-# Instalar agentes
-arai install opencode --global
-arai install claude --global
+# Instalar opencode en el proyecto actual
+arai install
 
-# Instalar en proyecto (modo env-var)
-arai install opencode --project .
-
-# Instalar en proyecto (modo copia)
-arai install opencode --project . --copy
+# Instalar un componente específico
+arai install skill git
+arai install agent build
 
 # Actualizar configuración
 arai update
-arai sync           # Re-aplicar en proyectos con --copy
+arai sync           # Re-aplicar configuración en proyectos
 
 # Desinstalar
-arai uninstall opencode
-arai uninstall opencode --project . --copy
+arai uninstall
+arai uninstall skill git
 
 # Transformar skills a otros formatos
 arai transform skills --all

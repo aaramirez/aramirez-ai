@@ -50,15 +50,16 @@ export DOCGEN_BROWSER=/ruta/al/chrome
 
 ## Error: `command not found: arai`
 
-**Causa**: No estás en el directorio del proyecto o no instalaste dependencias.
+**Causa**: No se ejecutó `npm link` durante la instalación, o el symlink se rompió.
 
 **Solución**:
 
 ```bash
-cd aramirez-ai
-npm install
-node bin/arai.js --help
+cd ~/.config/aramirez
+npm link
 ```
+
+Esto recrea el symlink global. Después, `arai` estará disponible desde cualquier directorio.
 
 ## Los PDFs se ven mal (sin formato, texto plano)
 
