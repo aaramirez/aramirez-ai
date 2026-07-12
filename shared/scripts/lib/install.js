@@ -69,24 +69,35 @@ function installPlatform(projectRoot) {
   const dotOpenCode = join(projectRoot, '.opencode');
   ensureDir(dotOpenCode);
 
-  const dotOpenCodeSrc = join(REPO_ROOT, '.opencode');
-  for (const sub of ['agents', 'commands']) {
-    const src = join(dotOpenCodeSrc, sub);
-    const dst = join(dotOpenCode, sub);
-    if (isDir(src)) {
-      cpSync(src, dst, { recursive: true });
-    } else {
-      ensureDir(dst);
+  const agentsSrc = join(REPO_ROOT, 'shared', 'agents');
+  const agentsDst = join(dotOpenCode, 'agents');
+  ensureDir(agentsDst);
+  if (isDir(agentsSrc)) {
+    for (const f of readdirSync(agentsSrc)) {
+      if (f.endsWith('.md')) {
+        cpSync(join(agentsSrc, f), join(agentsDst, f));
+      }
+    }
+  }
+
+  const commandsSrc = join(REPO_ROOT, 'shared', 'commands');
+  const commandsDst = join(dotOpenCode, 'commands');
+  ensureDir(commandsDst);
+  if (isDir(commandsSrc)) {
+    for (const f of readdirSync(commandsSrc)) {
+      if (f.endsWith('.md')) {
+        cpSync(join(commandsSrc, f), join(commandsDst, f));
+      }
     }
   }
 
   const skillsDst = join(dotOpenCode, 'skills');
   ensureDir(skillsDst);
 
-  const configSrc = join(REPO_ROOT, 'opencode.json');
+  const partialSrc = join(REPO_ROOT, 'shared', 'templates', 'partials', 'opencode.json');
   const configDst = join(projectRoot, 'opencode.json');
-  if (existsSync(configSrc)) {
-    writeFileSync(configDst, readFileSync(configSrc, 'utf8'));
+  if (existsSync(partialSrc)) {
+    writeFileSync(configDst, readFileSync(partialSrc, 'utf8'));
   }
 
   log(`Installed opencode config in ${projectRoot}/`, 'ok');
@@ -164,10 +175,7 @@ function installSkill(name, projectRoot) {
 }
 
 function installAgent(name, projectRoot) {
-  let srcFile = join(REPO_ROOT, 'shared', 'agents', `${name}.md`);
-  if (!existsSync(srcFile)) {
-    srcFile = join(REPO_ROOT, '.opencode', 'agents', `${name}.md`);
-  }
+  const srcFile = join(REPO_ROOT, 'shared', 'agents', `${name}.md`);
   if (!existsSync(srcFile)) {
     log(`Agent '${name}' not found`, 'err');
     const shared = listNames('agent');

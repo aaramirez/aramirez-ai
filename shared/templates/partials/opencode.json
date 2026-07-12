@@ -7,14 +7,6 @@
 
   "instructions": ["AGENTS.md"],
 
-  "skills": {
-    "paths": [
-      ".opencode/skills",
-      "~/.config/opencode/skills",
-      "../shared/skills"
-    ]
-  },
-
   "references": {
     "shared-scripts": {
       "path": "../shared/scripts",
@@ -42,7 +34,7 @@
     },
     "plan-arai": {
       "mode": "primary",
-      "description": "Plan mode que documenta en docs/",
+      "description": "Plan mode que documenta en plans/",
       "path": ".opencode/agents/plan-arai.md"
     },
     "reviewer": {
@@ -74,6 +66,10 @@
     "commit": {
       "description": "Create a conventional commit",
       "template": "Stage all changes and create a conventional commit with an appropriate type and scope based on the changes."
+    },
+    "plan": {
+      "description": "Generate a detailed requirements plan in plans/ with TDD philosophy",
+      "template": "Create a detailed implementation plan for: $ARGUMENTS. Follow the TDD process: understand the request, research the codebase, create a plan document in plans/<feature-slug>.md with objective, requirements, architecture decisions, file changes, TDD flow, and verification steps. Write failing tests first, then implement, then verify."
     }
   },
 

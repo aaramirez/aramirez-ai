@@ -186,35 +186,12 @@ function scaffoldProject(targetDir, templateName, vars) {
 }
 
 function scaffoldOpencode(absTarget, allVars) {
-  const srcConfig = join(REPO_ROOT, 'opencode.json');
-  if (existsSync(srcConfig)) {
-    let config = readFileSync(srcConfig, 'utf8');
+  const partialSrc = join(REPO_ROOT, 'shared', 'templates', 'partials', 'opencode.json');
+  if (existsSync(partialSrc)) {
+    let config = readFileSync(partialSrc, 'utf8');
     config = applyVars(config, allVars);
-
-    let parsed = JSON.parse(config);
-
-    if (parsed.skills?.paths) {
-      delete parsed.skills.paths;
-      if (Object.keys(parsed.skills).length === 0) {
-        delete parsed.skills;
-      }
-    }
-
-    if (parsed.mcp) {
-      delete parsed.mcp.engram;
-      delete parsed.mcp.context7;
-    }
-
-    if (parsed.references) {
-      for (const [, ref] of Object.entries(parsed.references)) {
-        if (ref.path?.startsWith('../')) {
-          ref.path = './' + ref.path.slice(3);
-        }
-      }
-    }
-
     ensureDir(absTarget);
-    writeFileSync(join(absTarget, 'opencode.json'), JSON.stringify(parsed, null, 2) + '\n');
+    writeFileSync(join(absTarget, 'opencode.json'), config);
   }
 }
 

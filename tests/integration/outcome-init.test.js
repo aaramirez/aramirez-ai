@@ -116,10 +116,10 @@ describe('init output deep validation (Phase 3b + 3c)', () => {
     const skillsDir = join(projectDir, '.opencode', 'skills');
     const present = readdirSync(skillsDir).filter(f => statSync(join(skillsDir, f)).isDirectory());
     const expected = [
-      'branding', 'code-review', 'content-ingestion',
+      'branding', 'ci-validate', 'code-review', 'content-ingestion',
       'document-generation', 'email', 'git',
       'google-workspace', 'kb-management', 'm365', 'pdf-extraction',
-      'vault-pdf-export', 'youtube',
+      'repos-sync', 'vault-pdf-export', 'youtube',
     ];
     assert.equal(present.length, expected.length, `Expected ${expected.length} skills, got ${present.length}`);
     for (const name of expected) {
