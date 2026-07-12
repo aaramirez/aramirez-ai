@@ -34,14 +34,14 @@ Tres sistemas en un solo repositorio:
 
 **aramirez-ai es un generador de harnesses, no un proyecto para copiar.**
 
-La estructura de aramirez-ai (`shared/skills/`, `platforms/opencode/`) es interna al generador. Los harnesses que genera `arai init` usan la estructura nativa de opencode:
+La estructura de aramirez-ai (`shared/skills/`, `.opencode/`) es interna al generador. Los harnesses que genera `arai init` usan la estructura nativa de opencode:
 
 | Componente | aramirez-ai (fuente) | Harness generado (salida) |
 |------------|---------------------|--------------------------|
 | Skills | `shared/skills/<name>/SKILL.md` | `.opencode/skills/<name>/SKILL.md` |
-| Agents | `platforms/opencode/agents/<name>.md` | `.opencode/agents/<name>.md` |
-| Commands | `platforms/opencode/commands/<name>.md` | `.opencode/commands/<name>.md` |
-| Config | `platforms/opencode/opencode.json` | `opencode.json` (raíz) |
+| Agents | `.opencode/agents/<name>.md` | `.opencode/agents/<name>.md` |
+| Commands | `.opencode/commands/<name>.md` | `.opencode/commands/<name>.md` |
+| Config | `opencode.json` (raíz) | `opencode.json` (raíz) |
 | Scripts | `shared/scripts/` | `shared/scripts/` |
 
 **Principios clave:**

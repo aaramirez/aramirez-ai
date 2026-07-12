@@ -33,7 +33,7 @@ describe('arai init — generación de harness funcional (TDD)', () => {
     assertFile(join(p, 'opencode.json'));
   });
 
-  test('NO existe platforms/opencode/', () => {
+  test('NO existe platforms/ en el harness generado', () => {
     const p = initFull();
     assert.ok(!existsSync(join(p, 'platforms')),
       'No debe existir directorio platforms/');

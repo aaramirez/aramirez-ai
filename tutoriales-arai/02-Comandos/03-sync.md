@@ -27,10 +27,10 @@ arai sync agent build            # Sincroniza un agente específico
 
 ## ¿Qué hace sync?
 
-Lee los archivos fuente del repositorio arai (`shared/`, `platforms/`) y los copia a `.opencode/` en tu proyecto. Es útil después de:
+Lee los archivos fuente del repositorio arai (`shared/`, `.opencode/`) y los copia a `.opencode/` en tu proyecto. Es útil después de:
 
 1. Editar una skill en el repositorio fuente (`shared/skills/<nombre>/SKILL.md`)
-2. Modificar un agente en el repositorio fuente (`platforms/opencode/agents/<nombre>.md`)
+2. Modificar un agente en el repositorio fuente (`.opencode/agents/<nombre>.md`)
 3. Actualizar la configuración de opencode (`opencode.json` en la raíz del proyecto)
 
 ## Flujo de trabajo típico
