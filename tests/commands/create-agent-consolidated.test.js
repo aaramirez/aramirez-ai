@@ -6,7 +6,7 @@ import { mkdtempSync, rmSync, existsSync } from 'fs';
 import { tmpdir } from 'os';
 import { REPO_ROOT } from '../helpers.js';
 
-const SCRIPT = join(REPO_ROOT, 'shared', 'scripts', 'create-agent.js');
+const SCRIPT = join(REPO_ROOT, '.opencode', 'scripts', 'create-agent.js');
 
 function run(args = []) {
   const result = spawnSync('node', [SCRIPT, ...args], {

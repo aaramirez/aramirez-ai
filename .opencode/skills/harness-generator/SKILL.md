@@ -144,10 +144,12 @@ arai init <nombre-proyecto> --template <minimal|full> --description "<descripcio
 
 ### Generación solo de configuración (sin scaffold)
 
-Crear archivo temporal `project.json` y ejecutar:
+Usar los scripts individuales para generar componentes específicos:
 
 ```bash
-node shared/scripts/harness-generator.js --project project.json --output <nombre-proyecto>
+node .opencode/scripts/create-config.js --model opencode/big-pickle --output <dir>/opencode.json
+node .opencode/scripts/create-agent.js --name build --mode primary --output <dir>/.opencode/agents/build.md
+node .opencode/scripts/create-permission.js --strictness balanced --output <dir>/permission.json
 ```
 
 ### Componentes individuales
@@ -209,10 +211,10 @@ Muestra:
    - Abrir en opencode
    - Personalizar AGENTS.md si es necesario
 
-## Skills relacionados (en shared)
+## Skills relacionados
 
-- [harness-creator](../../../shared/skills/harness-creator/SKILL.md) — Orquestador de generación con sub-skills
-- [config-creator](../../../shared/skills/config-creator/SKILL.md) — Configuración base de opencode.json
-- [agent-creator](../../../shared/skills/agent-creator/SKILL.md) — Agentes primarios
-- [subagent-creator](../../../shared/skills/subagent-creator/SKILL.md) — Subagentes especializados
-- [skill-creator](../../../shared/skills/skill-creator/SKILL.md) — Creación de skills
+- [config-creator](../config-creator/SKILL.md) — Configuración base de opencode.json
+- [agent-creator](../agent-creator/SKILL.md) — Agentes primarios
+- [skill-creator](../skill-creator/SKILL.md) — Creación de skills
+- [permission-creator](../permission-creator/SKILL.md) — Configuración de permisos
+- [instructions-creator](../instructions-creator/SKILL.md) — Instrucciones del proyecto

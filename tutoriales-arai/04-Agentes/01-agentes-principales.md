@@ -73,7 +73,7 @@ Sin más configuración, usa el modelo global y tiene acceso completo.
 ## Crear un agente primario
 
 ```bash
-node shared/scripts/create-agent.js --name mi-agent --mode primary --description "Hace X cosa"
+node .opencode/scripts/create-agent.js --name mi-agent --mode primary --description "Hace X cosa"
 ```
 
 Esto genera:

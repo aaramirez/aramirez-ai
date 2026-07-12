@@ -41,12 +41,12 @@ describe('arai init — generación de harness funcional (TDD)', () => {
 
   /* ─── .opencode/ estructura nativa ─── */
 
-  test('.opencode/skills/ contiene todas las 30 skills', () => {
+  test('.opencode/skills/ contiene las 12 skills distribuibles', () => {
     const p = initFull();
     assertDir(join(p, '.opencode', 'skills'));
     const skills = readdirSync(join(p, '.opencode', 'skills'))
       .filter(f => statSync(join(p, '.opencode', 'skills', f)).isDirectory());
-    assert.equal(skills.length, 30, `Esperaba 30 skills, obtuve ${skills.length}`);
+    assert.equal(skills.length, 12, `Esperaba 12 skills distribuibles, obtuve ${skills.length}`);
   });
 
   test('.opencode/agents/ contiene archivos .md de agentes', () => {
@@ -136,16 +136,16 @@ describe('arai init — generación de harness funcional (TDD)', () => {
 
   /* ─── scripts en shared/scripts/ ─── */
 
-  test('shared/scripts/ tiene create-base.js (utilidad compartida)', () => {
+  test('shared/scripts/ NO tiene create-base.js (creator scripts son internos)', () => {
     const p = initFull();
-    assert.ok(existsSync(join(p, 'shared', 'scripts', 'create-base.js')),
-      'Debe tener create-base.js');
+    assert.ok(!existsSync(join(p, 'shared', 'scripts', 'create-base.js')),
+      'No debe copiar create-base.js (es interno de aramirez-ai)');
   });
 
-  test('shared/scripts/ tiene create-agent.js', () => {
+  test('shared/scripts/ NO tiene create-agent.js (creator scripts son internos)', () => {
     const p = initFull();
-    assert.ok(existsSync(join(p, 'shared', 'scripts', 'create-agent.js')),
-      'Debe tener create-agent.js');
+    assert.ok(!existsSync(join(p, 'shared', 'scripts', 'create-agent.js')),
+      'No debe copiar create-agent.js (es interno de aramirez-ai)');
   });
 
   test('shared/scripts/docgen/ existe con archivos .js', () => {

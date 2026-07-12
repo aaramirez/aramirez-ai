@@ -40,7 +40,7 @@ Las herramientas se registran en `opencode.json` y opencode las descubre automá
 ## Referencia
 
 ```bash
-node shared/scripts/create-tool.js \
+node .opencode/scripts/create-tool.js \
   --name my-tool \
   --description "Does X" \
   --schema '{"type":"object","properties":{"input":{"type":"string"}}}' \

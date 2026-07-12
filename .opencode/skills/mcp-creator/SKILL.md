@@ -47,5 +47,5 @@ Cada servidor MCP puede habilitarse o deshabilitarse según el workflow activo, 
 ## Uso
 
 ```bash
-node shared/scripts/create-mcp.js --name github --type remote --url https://api.github.com/mcp --header "Authorization=Bearer {env:GITHUB_TOKEN}" --output ./mcp.json
+node .opencode/scripts/create-mcp.js --name github --type remote --url https://api.github.com/mcp --header "Authorization=Bearer {env:GITHUB_TOKEN}" --output ./mcp.json
 ```

@@ -61,7 +61,7 @@ Cada herramienta necesita un handler que implemente la lógica. El handler puede
 ## Crear una herramienta
 
 ```bash
-node shared/scripts/create-tool.js \
+node .opencode/scripts/create-tool.js \
   --name analyze-deps \
   --description "Analiza dependencias" \
   --schema '{"type":"object","properties":{"path":{"type":"string"}},"required":["path"]}'

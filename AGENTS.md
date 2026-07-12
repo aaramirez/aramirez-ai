@@ -80,7 +80,7 @@ license: MIT
 ---
 ```
 
-Available skills: **branding**, **code-review**, **content-ingestion**, **document-generation**, **email**, **git**, **google-workspace**, **kb-management**, **m365**, **pdf-extraction**, **vault-pdf-export**, **youtube**, plus **18 creator skills** (`agent-creator`, `config-creator`, `skill-creator`, etc.) that generate harness components programmatically.
+Available skills: **branding**, **code-review**, **content-ingestion**, **document-generation**, **email**, **git**, **google-workspace**, **kb-management**, **m365**, **pdf-extraction**, **vault-pdf-export**, **youtube** (in `shared/skills/`), plus **15 creator skills** (`agent-creator`, `config-creator`, `skill-creator`, etc.) in `.opencode/skills/` that generate harness components programmatically.
 
 ### Skill de YouTube
 
@@ -96,13 +96,13 @@ After creating or editing a skill, run `arai sync skill <name>` to sync it to th
 
 ### Harness Creator Scripts
 
-18 Node.js scripts in `shared/scripts/` that generate harness components (agents, configs, skills, MCP servers, etc.):
+16 Node.js scripts in `.opencode/scripts/` that generate harness components (agents, configs, skills, MCP servers, etc.):
 
 ```bash
-node shared/scripts/create-agent.js --name my-agent --mode primary
-node shared/scripts/create-agent.js --name reviewer --preset reviewer
-node shared/scripts/create-config.js --model opencode/big-pickle
-node shared/scripts/create-mcp.js --name my-mcp --type remote --url https://...
+node .opencode/scripts/create-agent.js --name my-agent --mode primary
+node .opencode/scripts/create-agent.js --name reviewer --preset reviewer
+node .opencode/scripts/create-config.js --model opencode/big-pickle
+node .opencode/scripts/create-mcp.js --name my-mcp --type remote --url https://...
 ```
 
 All creator scripts support `--dry-run` to preview output and `--help` for usage. See `docs/harness-course-plan.md` for the full reference.

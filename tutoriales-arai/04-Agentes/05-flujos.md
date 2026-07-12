@@ -29,7 +29,7 @@ Un flujo define la secuencia de pasos que siguen los agentes para completar una 
 4. **Tester** ejecuta tests
 
 ```bash
-node shared/scripts/create-flow.js --name plan-first --stages "plan,build,review,test"
+node .opencode/scripts/create-flow.js --name plan-first --stages "plan,build,review,test"
 ```
 
 ## Flujo TDD
@@ -39,7 +39,7 @@ node shared/scripts/create-flow.js --name plan-first --stages "plan,build,review
 3. **Reviewer** verifica cobertura y calidad
 
 ```bash
-node shared/scripts/create-flow.js --name tdd --stages "test,build,review"
+node .opencode/scripts/create-flow.js --name tdd --stages "test,build,review"
 ```
 
 ## Flujo Hotfix
@@ -50,13 +50,13 @@ node shared/scripts/create-flow.js --name tdd --stages "test,build,review"
 4. **Deploy** (comando manual)
 
 ```bash
-node shared/scripts/create-flow.js --name hotfix --stages "fix,review,test"
+node .opencode/scripts/create-flow.js --name hotfix --stages "fix,review,test"
 ```
 
 ## Personalizado
 
 ```bash
-node shared/scripts/create-flow.js \
+node .opencode/scripts/create-flow.js \
   --name audit \
   --stages "security,build,document"
 ```

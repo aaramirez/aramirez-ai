@@ -91,7 +91,7 @@ arai install plugin mi-plugin
 Para proyectos grandes, el **harness generator** crea una configuración completa de agentes, skills, MCP y flujos a partir de una especificación JSON:
 
 ```bash
-node shared/scripts/harness-generator.js --project spec.json
+node .opencode/scripts/create-config.js (individual scripts) --project spec.json
 ```
 
 Esto genera 18 tipos de componentes en un solo paso.

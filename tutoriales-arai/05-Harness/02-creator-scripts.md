@@ -29,8 +29,8 @@ Los creator scripts son scripts Node.js ESM en `shared/scripts/` que generan com
 | 2 | `create-permission.js` | Bloque de permisos | Reglas globales y por agente |
 | 3 | `create-instructions.js` | `AGENTS.md` | Instrucciones del proyecto |
 | 4 | `create-agent.js` | Agent `.md` + registro | Agentes primarios personalizados |
-| 5 | `create-subagent.js` | Subagent `.md` | Agentes especializados invocados |
-| 6 | `create-specialized-agent.js` | Agent `.md` con prompt de dominio | Reviewer, tester, docs, security, devops |
+| 5 | `create-agent.js --mode subagent` | Subagent `.md` | Agentes especializados invocados |
+| 6 | `create-agent.js --mode subagent` | Agent `.md` con prompt de dominio | Reviewer, tester, docs, security, devops |
 | 7 | `create-architecture.js` | Múltiples agents + registro | Arquitecturas multi-agente |
 | 8 | `create-flow.js` | Instrucciones de workflow | Flujos de trabajo (plan-first, TDD, etc.) |
 | 9 | `create-skill.js` | `SKILL.md` | Skills reutilizables con frontmatter |

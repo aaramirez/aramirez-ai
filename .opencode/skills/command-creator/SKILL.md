@@ -30,5 +30,5 @@ Los comandos también pueden definirse como archivos `.md` independientes, útil
 ## Uso
 
 ```bash
-node shared/scripts/create-command.js --name test --description "Run tests" --template "Run test suite with coverage" --output ./command.json
+node .opencode/scripts/create-command.js --name test --description "Run tests" --template "Run test suite with coverage" --output ./command.json
 ```

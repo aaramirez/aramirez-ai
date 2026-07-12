@@ -15,24 +15,24 @@ created: 2026-07-05
 
 ## Resultado esperado
 
-Generar prompts, reglas y configuraciones de referencia usando `node shared/scripts/create-*.js`.
+Generar prompts, reglas y configuraciones de referencia usando `node .opencode/scripts/create-*.js`.
 
 ## create-prompt
 
 ```bash
-node shared/scripts/create-prompt.js --name commit-msg --content "Escribe commits convencionales..."
+node .opencode/scripts/create-prompt.js --name commit-msg --content "Escribe commits convencionales..."
 ```
 
 ## create-rule
 
 ```bash
-node shared/scripts/create-rule.js --name code-style --content "Usar TypeScript estricto..."
+node .opencode/scripts/create-rule.js --name code-style --content "Usar TypeScript estricto..."
 ```
 
 ## create-reference
 
 ```bash
-node shared/scripts/create-reference.js --name scripts --path shared/scripts --description "Scripts reutilizables"
+node .opencode/scripts/create-reference.js --name scripts --path shared/scripts --description "Scripts reutilizables"
 ```
 
 ## Instalación en proyectos

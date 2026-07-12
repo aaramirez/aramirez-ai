@@ -34,5 +34,5 @@ Los skills se cargan solo cuando el agente los invoca explícitamente mediante l
 ## Uso
 
 ```bash
-node shared/scripts/create-skill.js --name my-skill --description "Does X" --content "# My skill\n\nInstructions..." --output ./shared/skills/my-skill/SKILL.md
+node .opencode/scripts/create-skill.js --name my-skill --description "Does X" --content "# My skill\n\nInstructions..." --output ./shared/skills/my-skill/SKILL.md
 ```

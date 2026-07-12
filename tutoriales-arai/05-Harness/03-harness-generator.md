@@ -24,7 +24,7 @@ Poder crear una especificación JSON de proyecto y generar todo el harness (agen
 ## Uso
 
 ```bash
-node shared/scripts/harness-generator.js --project spec.json
+node .opencode/scripts/create-config.js (individual scripts) --project spec.json
 ```
 
 ## El archivo de especificación
@@ -83,7 +83,7 @@ node shared/scripts/harness-generator.js --project spec.json
 ## Vista previa
 
 ```bash
-node shared/scripts/harness-generator.js --project spec.json --dry-run
+node .opencode/scripts/create-config.js (individual scripts) --project spec.json --dry-run
 ```
 
 ---

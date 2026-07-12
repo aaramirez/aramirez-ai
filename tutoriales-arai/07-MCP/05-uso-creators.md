@@ -15,39 +15,39 @@ created: 2026-07-05
 
 ## Resultado esperado
 
-Poder generar cualquier extensión de opencode usando `node shared/scripts/create-*.js` con sus opciones correspondientes.
+Poder generar cualquier extensión de opencode usando `node .opencode/scripts/create-*.js` con sus opciones correspondientes.
 
 ## create-mcp
 
 ```bash
 # Servidor local
-node shared/scripts/create-mcp.js --name mi-servidor --type local --command node --args "server.js"
+node .opencode/scripts/create-mcp.js --name mi-servidor --type local --command node --args "server.js"
 
 # Servidor remoto
-node shared/scripts/create-mcp.js --name context7 --type remote --url https://context7.com/mcp
+node .opencode/scripts/create-mcp.js --name context7 --type remote --url https://context7.com/mcp
 ```
 
 ## create-command
 
 ```bash
-node shared/scripts/create-command.js --name test --template "npm test"
-node shared/scripts/create-command.js --name deploy --template "npm run deploy -- $ARGUMENTS"
+node .opencode/scripts/create-command.js --name test --template "npm test"
+node .opencode/scripts/create-command.js --name deploy --template "npm run deploy -- $ARGUMENTS"
 ```
 
 ## create-plugin
 
 ```bash
 # Plugin npm
-node shared/scripts/create-plugin.js --name mi-plugin --type npm
+node .opencode/scripts/create-plugin.js --name mi-plugin --type npm
 
 # Plugin local
-node shared/scripts/create-plugin.js --name mi-plugin --type local
+node .opencode/scripts/create-plugin.js --name mi-plugin --type local
 ```
 
 ## create-tool
 
 ```bash
-node shared/scripts/create-tool.js \
+node .opencode/scripts/create-tool.js \
   --name mi-herramienta \
   --description "Descripción" \
   --schema '{"type":"object","properties":{"input":{"type":"string"}}}'

@@ -4,7 +4,7 @@ import { readFileSync, readdirSync, statSync } from 'fs';
 import { join } from 'path';
 import { REPO_ROOT } from '../helpers.js';
 
-const SKILLS_DIR = join(REPO_ROOT, 'shared', 'skills');
+const SKILLS_DIR = join(REPO_ROOT, '.opencode', 'skills');
 
 const CREATOR_SKILLS = [
   'config-creator',
@@ -51,10 +51,10 @@ describe('creator skills consistency', () => {
       assert.equal(license?.trim(), 'MIT', `License must be MIT for ${name}`);
     });
 
-    test(`${name}: references companion script in shared/scripts/`, () => {
+    test(`${name}: references companion script in .opencode/scripts/`, () => {
       const content = readFileSync(join(SKILLS_DIR, name, 'SKILL.md'), 'utf8');
-      assert.ok(content.includes('shared/scripts/'),
-        `SKILL.md should reference a script in shared/scripts/`);
+      assert.ok(content.includes('.opencode/scripts/'),
+        `SKILL.md should reference a script in .opencode/scripts/`);
     });
   }
 });

@@ -38,7 +38,7 @@ El archivo `opencode.json` soporta múltiples capas de configuración que se fus
 ## Script de referencia
 
 ```bash
-node shared/scripts/create-config.js --model opencode/big-pickle --output ./opencode.json
+node .opencode/scripts/create-config.js --model opencode/big-pickle --output ./opencode.json
 ```
 
 ### Opciones
@@ -60,7 +60,7 @@ node shared/scripts/create-config.js --model opencode/big-pickle --output ./open
 
 ```bash
 # Generar configuración básica
-node shared/scripts/create-config.js \
+node .opencode/scripts/create-config.js \
   --model opencode/big-pickle \
   --small-model anthropic/claude-haiku-4-5 \
   --shell /bin/zsh \
@@ -72,5 +72,5 @@ node shared/scripts/create-config.js \
   --output ./opencode.json
 
 # Vista previa
-node shared/scripts/create-config.js --dry-run
+node .opencode/scripts/create-config.js --dry-run
 ```

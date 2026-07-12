@@ -29,8 +29,8 @@ Son skills especiales en `shared/skills/` que describen cómo usar cada creator 
 | `permission-creator` | `create-permission.js` | Reglas de permisos |
 | `instructions-creator` | `create-instructions.js` | AGENTS.md |
 | `agent-creator` | `create-agent.js` | Agentes primarios |
-| `subagent-creator` | `create-subagent.js` | Subagentes |
-| `specialized-agent-creator` | `create-specialized-agent.js` | Agentes de dominio |
+| `subagent-creator` | `create-agent.js --mode subagent` | Subagentes |
+| `specialized-agent-creator` | `create-agent.js --mode subagent` | Agentes de dominio |
 | `architecture-creator` | `create-architecture.js` | Arquitecturas multi-agente |
 | `flow-creator` | `create-flow.js` | Flujos de trabajo |
 | `skill-creator` | `create-skill.js` | Skills reutilizables |

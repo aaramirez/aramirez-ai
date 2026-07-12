@@ -15,14 +15,14 @@ created: 2026-07-05
 
 ## Resultado esperado
 
-Poder generar cualquier tipo de agente o arquitectura usando `node shared/scripts/create-*.js` con sus respectivas opciones.
+Poder generar cualquier tipo de agente o arquitectura usando `node .opencode/scripts/create-*.js` con sus respectivas opciones.
 
 ## create-agent
 
 Crea un agente primario con prompt personalizado:
 
 ```bash
-node shared/scripts/create-agent.js --name mi-agent --mode primary --description "Experto en X"
+node .opencode/scripts/create-agent.js --name mi-agent --mode primary --description "Experto en X"
 ```
 
 ## create-subagent
@@ -30,7 +30,7 @@ node shared/scripts/create-agent.js --name mi-agent --mode primary --description
 Crea un subagente para tareas específicas:
 
 ```bash
-node shared/scripts/create-subagent.js --name auditor --description "Audita logs"
+node .opencode/scripts/create-agent.js --mode subagent --name auditor --description "Audita logs"
 ```
 
 ## create-specialized-agent
@@ -38,7 +38,7 @@ node shared/scripts/create-subagent.js --name auditor --description "Audita logs
 Crea agentes pre-configurados por dominio:
 
 ```bash
-node shared/scripts/create-specialized-agent.js --name code-reviewer --domain reviewer
+node .opencode/scripts/create-agent.js --mode subagent --name code-reviewer --domain reviewer
 ```
 
 ## create-architecture
@@ -46,7 +46,7 @@ node shared/scripts/create-specialized-agent.js --name code-reviewer --domain re
 Crea una arquitectura multi-agente completa:
 
 ```bash
-node shared/scripts/create-architecture.js --name full-dev --pattern tiered
+node .opencode/scripts/create-architecture.js --name full-dev --pattern tiered
 ```
 
 ## create-flow
@@ -54,7 +54,7 @@ node shared/scripts/create-architecture.js --name full-dev --pattern tiered
 Crea un flujo de trabajo con etapas definidas:
 
 ```bash
-node shared/scripts/create-flow.js --name plan-first --stages "plan,build,review,test"
+node .opencode/scripts/create-flow.js --name plan-first --stages "plan,build,review,test"
 ```
 
 ## Flags comunes

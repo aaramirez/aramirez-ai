@@ -45,7 +45,7 @@ Los plugins pueden suscribirse a eventos del ciclo de vida de opencode:
 ## Referencia
 
 ```bash
-node shared/scripts/create-plugin.js \
+node .opencode/scripts/create-plugin.js \
   --name my-plugin \
   --type local \
   --path ./.opencode/plugins/my-plugin \

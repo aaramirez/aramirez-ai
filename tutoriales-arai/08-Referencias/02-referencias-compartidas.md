@@ -49,7 +49,7 @@ Las referencias (`references` en `opencode.json`) definen rutas compartidas a sc
 ## Crear una referencia
 
 ```bash
-node shared/scripts/create-reference.js --name scripts --path shared/scripts --description "Scripts reutilizables"
+node .opencode/scripts/create-reference.js --name scripts --path shared/scripts --description "Scripts reutilizables"
 ```
 
 ## Skill asociada

@@ -19,7 +19,7 @@ Al iniciar, carga el skill `command-creator` que contiene las instrucciones deta
 Cuando te invoquen, ejecuta:
 
 ```bash
-node shared/scripts/create-command.js [flags según el skill]
+node .opencode/scripts/create-command.js [flags según el skill]
 ```
 
 ## Reglas

@@ -19,7 +19,7 @@ Al iniciar, carga el skill `mcp-creator` que contiene las instrucciones detallad
 Cuando te invoquen, ejecuta:
 
 ```bash
-node shared/scripts/create-mcp.js [flags según el skill]
+node .opencode/scripts/create-mcp.js [flags según el skill]
 ```
 
 ## Reglas

@@ -20,7 +20,7 @@ mkdir api-project && cd api-project
 ## Paso 2: Generar configuración base
 
 ```bash
-node /path/to/arai/shared/scripts/create-config.js \
+node /path/to/arai/.opencode/scripts/create-config.js \
   --model opencode/big-pickle \
   --shell zsh
 ```
@@ -29,35 +29,35 @@ node /path/to/arai/shared/scripts/create-config.js \
 
 ```bash
 # Agente build (default)
-node /path/to/arai/shared/scripts/create-agent.js \
+node /path/to/arai/.opencode/scripts/create-agent.js \
   --name build --mode primary --description "Agente de desarrollo"
 
 # Agente plan (solo lectura)
-node /path/to/arai/shared/scripts/create-agent.js \
+node /path/to/arai/.opencode/scripts/create-agent.js \
   --name plan --mode primary --description "Agente de planificación"
 
 # Agente reviewer
-node /path/to/arai/shared/scripts/create-specialized-agent.js \
+node /path/to/arai/.opencode/scripts/create-agent.js --mode subagent \
   --name reviewer --domain reviewer
 ```
 
 ## Paso 4: Configurar arquitectura
 
 ```bash
-node /path/to/arai/shared/scripts/create-architecture.js \
+node /path/to/arai/.opencode/scripts/create-architecture.js \
   --name full-dev --pattern tiered --agents "plan,build,reviewer"
 ```
 
 ## Paso 5: Agregar comandos
 
 ```bash
-node /path/to/arai/shared/scripts/create-command.js \
+node /path/to/arai/.opencode/scripts/create-command.js \
   --name test --template "npm test"
 
-node /path/to/arai/shared/scripts/create-command.js \
+node /path/to/arai/.opencode/scripts/create-command.js \
   --name dev --template "npm run dev"
 
-node /path/to/arai/shared/scripts/create-command.js \
+node /path/to/arai/.opencode/scripts/create-command.js \
   --name deploy --template "npm run deploy -- $ARGUMENTS"
 ```
 

@@ -19,7 +19,7 @@ Al iniciar, carga el skill `reference-creator` que contiene las instrucciones de
 Cuando te invoquen, ejecuta:
 
 ```bash
-node shared/scripts/create-reference.js [flags según el skill]
+node .opencode/scripts/create-reference.js [flags según el skill]
 ```
 
 ## Reglas

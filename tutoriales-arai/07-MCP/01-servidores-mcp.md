@@ -70,7 +70,7 @@ Conecta a una API remota:
 ## Crear un servidor MCP
 
 ```bash
-node shared/scripts/create-mcp.js --name context7 --type remote --url https://context7.com/mcp
+node .opencode/scripts/create-mcp.js --name context7 --type remote --url https://context7.com/mcp
 ```
 
 ## Skills relacionadas

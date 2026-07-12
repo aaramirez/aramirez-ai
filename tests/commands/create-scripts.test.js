@@ -4,7 +4,7 @@ import { spawnSync } from 'child_process';
 import { join } from 'path';
 import { REPO_ROOT } from '../helpers.js';
 
-const SCRIPTS_DIR = join(REPO_ROOT, 'shared', 'scripts');
+const SCRIPTS_DIR = join(REPO_ROOT, '.opencode', 'scripts');
 
 function runScript(name, args = []) {
   const result = spawnSync('node', [join(SCRIPTS_DIR, name), ...args], {

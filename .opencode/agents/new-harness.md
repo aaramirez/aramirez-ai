@@ -57,10 +57,13 @@ arai generate agent <nombre> --description "<desc>"
 arai generate skill <nombre> --description "<desc>"
 ```
 
-### Para generación directa desde JSON
+### Para generación directa desde scripts
 
 ```bash
-node shared/scripts/harness-generator.js --project project.json --output <dir>
+node .opencode/scripts/create-config.js --model opencode/big-pickle --output <dir>/opencode.json
+node .opencode/scripts/create-agent.js --name build --mode primary --output <dir>/.opencode/agents/build.md
+node .opencode/scripts/create-permission.js --strictness balanced --output <dir>/permission.json
+node .opencode/scripts/create-instructions.js --type web --output <dir>/AGENTS.md
 ```
 
 ## Reglas de comportamiento

@@ -53,13 +53,13 @@ permission:
 
 ```bash
 # Crear agente con preset (recomendado)
-node shared/scripts/create-agent.js --name reviewer --preset reviewer --output .opencode/agents/reviewer.md
+node .opencode/scripts/create-agent.js --name reviewer --preset reviewer --output .opencode/agents/reviewer.md
 
 # Crear agente primario manualmente
-node shared/scripts/create-agent.js --name orchestrator --description "Main orchestrator" --mode primary --output .opencode/agents/orchestrator.md
+node .opencode/scripts/create-agent.js --name orchestrator --description "Main orchestrator" --mode primary --output .opencode/agents/orchestrator.md
 
 # Crear subagente manualmente
-node shared/scripts/create-agent.js --name auditor --description "Security auditor" --mode subagent --edit deny --bash deny --output .opencode/agents/auditor.md
+node .opencode/scripts/create-agent.js --name auditor --description "Security auditor" --mode subagent --edit deny --bash deny --output .opencode/agents/auditor.md
 ```
 
 ### Opciones
@@ -84,19 +84,19 @@ node shared/scripts/create-agent.js --name auditor --description "Security audit
 
 ```bash
 # Crear reviewer con preset (auto-configura permisos)
-node shared/scripts/create-agent.js \
+node .opencode/scripts/create-agent.js \
   --name reviewer \
   --preset reviewer \
   --output .opencode/agents/reviewer.md
 
 # Crear tester con preset
-node shared/scripts/create-agent.js \
+node .opencode/scripts/create-agent.js \
   --name tester \
   --preset tester \
   --output .opencode/agents/tester.md
 
 # Crear agente custom con permisos restrictivos
-node shared/scripts/create-agent.js \
+node .opencode/scripts/create-agent.js \
   --name auditor \
   --description "Auditor de código y seguridad" \
   --mode subagent \

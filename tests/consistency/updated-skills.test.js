@@ -6,7 +6,7 @@ import { REPO_ROOT } from '../helpers.js';
 
 describe('updated creator skills', () => {
   test('agent-creator documents --mode and --preset flags', () => {
-    const content = readFileSync(join(REPO_ROOT, 'shared/skills/agent-creator/SKILL.md'), 'utf8');
+    const content = readFileSync(join(REPO_ROOT, '.opencode/skills/agent-creator/SKILL.md'), 'utf8');
     assert.ok(content.includes('--mode'), 'documents --mode');
     assert.ok(content.includes('--preset'), 'documents --preset');
     assert.ok(content.includes('primary'), 'mentions primary');
@@ -16,12 +16,12 @@ describe('updated creator skills', () => {
   });
 
   test('agent-creator no longer references create-subagent.js', () => {
-    const content = readFileSync(join(REPO_ROOT, 'shared/skills/agent-creator/SKILL.md'), 'utf8');
+    const content = readFileSync(join(REPO_ROOT, '.opencode/skills/agent-creator/SKILL.md'), 'utf8');
     assert.ok(!content.includes('create-subagent.js'), 'should not reference create-subagent.js');
   });
 
   test('agent-creator no longer references create-specialized-agent.js', () => {
-    const content = readFileSync(join(REPO_ROOT, 'shared/skills/agent-creator/SKILL.md'), 'utf8');
+    const content = readFileSync(join(REPO_ROOT, '.opencode/skills/agent-creator/SKILL.md'), 'utf8');
     assert.ok(!content.includes('create-specialized-agent.js'), 'should not reference create-specialized-agent.js');
   });
 

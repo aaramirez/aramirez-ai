@@ -190,12 +190,12 @@ if (isDir(specsDir)) {
 }
 
 // ── Creator scripts: TODO guard ──
-if (isDir(join(ROOT, 'shared', 'scripts'))) {
-  const creatorScripts = readdirSync(join(ROOT, 'shared', 'scripts')).filter(f =>
+if (isDir(join(ROOT, '.opencode', 'scripts'))) {
+  const creatorScripts = readdirSync(join(ROOT, '.opencode', 'scripts')).filter(f =>
     f.startsWith('create-') && f.endsWith('.js')
   );
   for (const script of creatorScripts) {
-    const content = readFileSync(join(ROOT, 'shared', 'scripts', script), 'utf8');
+    const content = readFileSync(join(ROOT, '.opencode', 'scripts', script), 'utf8');
     const hasTodo = /\/\/\s*TODO\b|TODO:|\[[ x]\]\s*TODO|\bFIXME\b|\bHACK\b|\bXXX\b/i.test(content);
     check(!hasTodo, `Creator "${script}" has no TODO/FIXME/HACK/XXX`, '', 'warn');
   }

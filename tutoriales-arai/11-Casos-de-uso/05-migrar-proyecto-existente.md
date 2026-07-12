@@ -30,20 +30,20 @@ Muestra qué se instaló y qué falta configurar.
 
 ```bash
 # Agente build (default para el proyecto)
-node /path/to/arai/shared/scripts/create-agent.js \
+node /path/to/arai/.opencode/scripts/create-agent.js \
   --name build --mode primary --description "Agente de desarrollo"
 ```
 
 ## Paso 4: Agregar comandos del proyecto
 
 ```bash
-node /path/to/arai/shared/scripts/create-command.js \
+node /path/to/arai/.opencode/scripts/create-command.js \
   --name build --template "npm run build"
 
-node /path/to/arai/shared/scripts/create-command.js \
+node /path/to/arai/.opencode/scripts/create-command.js \
   --name lint --template "npm run lint"
 
-node /path/to/arai/shared/scripts/create-command.js \
+node /path/to/arai/.opencode/scripts/create-command.js \
   --name test --template "npm test"
 ```
 

@@ -29,9 +29,9 @@ Crea scripts en JS (ESM), Python o Bash con estructura estándar, shebang, manej
 ## Referencia
 
 ```bash
-node shared/scripts/create-script.js \
+node .opencode/scripts/create-script.js \
   --name my-tool \
   --lang js \
   --description "Useful tool" \
-  --output ./shared/scripts/my-tool.js
+  --output ./.opencode/scripts/my-tool.js
 ```

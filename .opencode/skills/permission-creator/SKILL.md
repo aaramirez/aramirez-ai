@@ -53,7 +53,7 @@ El script ofrece tres perfiles predefinidos:
 ## Script de referencia
 
 ```bash
-node shared/scripts/create-permission.js --strictness balanced --output ./permission.json
+node .opencode/scripts/create-permission.js --strictness balanced --output ./permission.json
 ```
 
 ### Opciones
@@ -69,10 +69,10 @@ node shared/scripts/create-permission.js --strictness balanced --output ./permis
 
 ```bash
 # Generar permisos balanced
-node shared/scripts/create-permission.js --strictness balanced --output ./permission.json
+node .opencode/scripts/create-permission.js --strictness balanced --output ./permission.json
 
 # Generar permisos strict para producción
-node shared/scripts/create-permission.js --strictness strict --output ./prod-permission.json
+node .opencode/scripts/create-permission.js --strictness strict --output ./prod-permission.json
 
 # Integrar en opencode.json manualmente
 # Copia la sección "permission" generada en tu archivo opencode.json

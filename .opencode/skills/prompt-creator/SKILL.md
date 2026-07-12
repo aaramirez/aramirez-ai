@@ -30,7 +30,7 @@ Los fragmentos de prompt (prompt fragments) son bloques reutilizables de texto i
 ## Referencia
 
 ```bash
-node shared/scripts/create-prompt.js \
+node .opencode/scripts/create-prompt.js \
   --name commit-message \
   --content "Write a conventional commit..." \
   --output ./shared/prompts/commit-message.md
