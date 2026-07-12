@@ -4,7 +4,7 @@ dist/
 *.log
 .DS_Store
 repos/
-.opencode/
+.opencode/node_modules/
 opencode.json
 generated/
 .obsidian/workspace.json
