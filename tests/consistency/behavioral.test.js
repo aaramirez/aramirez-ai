@@ -1,11 +1,11 @@
 import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
-import { existsSync, readFileSync, readdirSync, statSync } from 'fs';
+import { existsSync, readFileSync, readdirSync } from 'fs';
 import { join } from 'path';
 import { REPO_ROOT, parseFrontmatter } from '../helpers.js';
 
-const AGENTS_DIR = join(REPO_ROOT, 'platforms', 'opencode', 'agents');
-const CONFIG_PATH = join(REPO_ROOT, 'platforms', 'opencode', 'opencode.json');
+const AGENTS_DIR = join(REPO_ROOT, '.opencode', 'agents');
+const CONFIG_PATH = join(REPO_ROOT, 'opencode.json');
 
 function getAgentFiles() {
   if (!existsSync(AGENTS_DIR)) return [];

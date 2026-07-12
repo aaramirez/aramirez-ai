@@ -17,8 +17,12 @@ aramirez-ai/
 │       ├── minimal/     Minimal template (core skills + opencode)
 │       ├── full/        Full template (all skills, assets, branding)
 │       └── partials/    Template partials (AGENTS.md, opencode.json, etc.)
-├── platforms/           Agent configurations
-│   └── opencode/        opencode.json, agents, commands
+├── .opencode/           Source of truth — agents, commands, plugins, tui
+│   ├── agents/          Agent .md files (docs, plan-arai, reviewer, tester)
+│   ├── commands/        Command .md files (commit, deploy, email, test)
+│   ├── plugins/         TUI plugins (custom-logo)
+│   └── tui.json         TUI plugin configuration
+├── opencode.json        Source of truth — full opencode configuration
 ├── assets/              Brand logos, CSS templates, test decks, generated docs
 │   ├── decks/           Test deck specs (JSON, MD)
 │   ├── templates/       deck.css, report.css
@@ -105,7 +109,7 @@ All creator scripts support `--dry-run` to preview output and `--help` for usage
 
 ## MCP Servers
 
-Additional MCP servers configured in `platforms/opencode/opencode.json` (all disabled by default):
+Additional MCP servers configured in `opencode.json` (all disabled by default):
 
 | Server | Type | Description |
 |--------|------|-------------|
@@ -126,11 +130,11 @@ Enable by setting `"enabled": true` in the server entry. Both google-workspace a
 | **tester** | subagent | `bash: allow` |
 | **docs** | subagent | `edit: allow`, `bash: deny` |
 
-All agents use model `opencode/big-pickle` by default. Agents are defined in `platforms/opencode/opencode.json` and configured with `.md` files in `platforms/opencode/agents/`.
+All agents use model `opencode/big-pickle` by default. Agents are defined in `opencode.json` and configured with `.md` files in `.opencode/agents/`.
 
 ## OpenCode commands
 
-4 commands defined in `platforms/opencode/commands/`:
+4 commands defined in `opencode.json` and configured with `.md` files in `.opencode/commands/`:
 
 | Command | Description |
 |---------|-------------|
@@ -143,15 +147,15 @@ Agents can invoke these via `/command` in conversation.
 
 ## TUI configuration
 
-`platforms/opencode/tui.json` and `platforms/opencode/tui-plugins/` configure the opencode terminal UI, including theme, keybindings, and plugin toolbars.
+`opencode.json` and `.opencode/tui.json` + `.opencode/plugins/` configure the opencode terminal UI, including theme, keybindings, and plugin toolbars.
 
 ## Install behavior by type
 
 | Type | Source | Destination | Auto-installs opencode? |
 |------|--------|-------------|------------------------|
-| platform | `platforms/opencode/` | `.opencode/` + `opencode.json` | N/A |
+| platform | `.opencode/` + `opencode.json` | `.opencode/` + `opencode.json` | N/A |
 | skill | `shared/skills/<name>/SKILL.md` | `.opencode/skills/<name>/SKILL.md` | Yes |
-| agent | `platforms/opencode/agents/<name>.md` | `.opencode/agents/<name>.md` + `opencode.json` entry | Yes |
+| agent | `.opencode/agents/<name>.md` | `.opencode/agents/<name>.md` + `opencode.json` entry | Yes |
 | script | `shared/scripts/<name>.js` | `shared/scripts/<name>.js` | No |
 | prompt | `shared/prompts/<name>.md` | `shared/prompts/<name>.md` | No |
 | rule | `shared/rules/<name>.md` | `shared/rules/<name>.md` | No |
@@ -166,7 +170,7 @@ Agents can invoke these via `/command` in conversation.
 
 ## aramirez-ai as base template for new projects
 
-Use `arai init <dir>` to scaffold a new project with the same AI-agent structure. The generated project gets the same `shared/`, `platforms/` structure, pre-configured with aramirez-ai's reusable skills.
+Use `arai init <dir>` to scaffold a new project with the same AI-agent structure. The generated project gets the same `shared/` structure with `.opencode/` and `opencode.json`, pre-configured with aramirez-ai's reusable skills.
 
 ```bash
 arai init my-new-project                 # minimal template (default)

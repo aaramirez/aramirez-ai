@@ -23,7 +23,7 @@ function listSkills() {
 }
 
 function listAgents() {
-  const configPath = join(REPO_ROOT, 'platforms', 'opencode', 'opencode.json');
+  const configPath = join(REPO_ROOT, 'opencode.json');
   if (!existsSync(configPath)) { log('No opencode.json found', 'err'); return; }
   const config = JSON.parse(readFileSync(configPath, 'utf8'));
   const agents = config.agent || {};
@@ -51,8 +51,8 @@ function listScripts() {
 }
 
 function listCommands() {
-  const cmdsDir = join(REPO_ROOT, 'platforms', 'opencode', 'commands');
-  if (!isDir(cmdsDir)) { log('No platforms/opencode/commands/ directory', 'err'); return; }
+  const cmdsDir = join(REPO_ROOT, '.opencode', 'commands');
+  if (!isDir(cmdsDir)) { log('No .opencode/commands/ directory', 'err'); return; }
   const files = readdirSync(cmdsDir).filter(f => f.endsWith('.md'));
   if (files.length === 0) { log('No commands found', 'info'); return; }
   console.log('\nAvailable opencode commands:\n');
@@ -64,7 +64,7 @@ function listCommands() {
 }
 
 function listMcp() {
-  const configPath = join(REPO_ROOT, 'platforms', 'opencode', 'opencode.json');
+  const configPath = join(REPO_ROOT, 'opencode.json');
   if (!existsSync(configPath)) { log('No opencode.json found', 'err'); return; }
   const config = JSON.parse(readFileSync(configPath, 'utf8'));
   const servers = config.mcp || {};

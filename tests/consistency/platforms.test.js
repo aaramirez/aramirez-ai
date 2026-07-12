@@ -1,13 +1,13 @@
 import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
-import { existsSync, readFileSync, readdirSync, statSync } from 'fs';
+import { existsSync, readFileSync, readdirSync } from 'fs';
 import { join } from 'path';
 import { REPO_ROOT, parseFrontmatter } from '../helpers.js';
 
-const OPENCODE_DIR = join(REPO_ROOT, 'platforms', 'opencode');
-const CONFIG_PATH = join(OPENCODE_DIR, 'opencode.json');
+const CONFIG_PATH = join(REPO_ROOT, 'opencode.json');
+const AGENTS_DIR = join(REPO_ROOT, '.opencode', 'agents');
 
-describe('platforms/opencode consistency', () => {
+describe('harness config consistency', () => {
   let config;
   test('opencode.json is valid JSON', () => {
     const raw = readFileSync(CONFIG_PATH, 'utf8');
@@ -36,21 +36,15 @@ describe('platforms/opencode consistency', () => {
     }
   });
 
-  test('MCP servers are NOT defined in mcp/servers.json (no duplication)', () => {
-    const mcpFile = join(OPENCODE_DIR, 'mcp', 'servers.json');
-    assert.ok(!existsSync(mcpFile), 'mcp/servers.json should not exist — MCP is in opencode.json');
-  });
-
   test('skills paths include ../shared/skills', () => {
     const paths = config.skills?.paths || [];
     assert.ok(paths.includes('../shared/skills'),
       'Skills paths should include ../shared/skills for direct shared skill access');
   });
 
-  test('agent .md files in agents/ have matching opencode.json entries', () => {
-    const agentsDir = join(OPENCODE_DIR, 'agents');
-    if (!existsSync(agentsDir)) return;
-    const mdFiles = readdirSync(agentsDir).filter(f => f.endsWith('.md'));
+  test('agent .md files in .opencode/agents/ have matching opencode.json entries', () => {
+    if (!existsSync(AGENTS_DIR)) return;
+    const mdFiles = readdirSync(AGENTS_DIR).filter(f => f.endsWith('.md'));
     for (const file of mdFiles) {
       const agentName = file.replace(/\.md$/, '');
       assert.ok(config.agent?.[agentName],
@@ -59,27 +53,25 @@ describe('platforms/opencode consistency', () => {
   });
 
   test('every subagent in opencode.json has a matching .md file (bidirectional)', () => {
-    const agentsDir = join(OPENCODE_DIR, 'agents');
-    if (!existsSync(agentsDir)) return;
-    const mdFiles = new Set(readdirSync(agentsDir)
+    if (!existsSync(AGENTS_DIR)) return;
+    const mdFiles = new Set(readdirSync(AGENTS_DIR)
       .filter(f => f.endsWith('.md'))
       .map(f => f.replace(/\.md$/, '')));
     for (const [name, agent] of Object.entries(config.agent || {})) {
       if (agent.mode !== 'subagent') continue;
       assert.ok(mdFiles.has(name),
-        `Subagent "${name}" in opencode.json has no .md file in agents/`);
+        `Subagent "${name}" in opencode.json has no .md file in .opencode/agents/`);
     }
   });
 
   test('agent .md frontmatter permission matches opencode.json entry', () => {
-    const agentsDir = join(OPENCODE_DIR, 'agents');
-    if (!existsSync(agentsDir)) return;
-    const mdFiles = readdirSync(agentsDir).filter(f => f.endsWith('.md'));
+    if (!existsSync(AGENTS_DIR)) return;
+    const mdFiles = readdirSync(AGENTS_DIR).filter(f => f.endsWith('.md'));
     for (const file of mdFiles) {
       const agentName = file.replace(/\.md$/, '');
       const expectedPerm = config.agent?.[agentName]?.permission;
       if (!expectedPerm) continue;
-      const fm = parseFrontmatter(join(agentsDir, file));
+      const fm = parseFrontmatter(join(AGENTS_DIR, file));
       const mdPerm = fm.permission || {};
       for (const key of Object.keys(expectedPerm)) {
         assert.equal(mdPerm[key], expectedPerm[key],
@@ -88,12 +80,8 @@ describe('platforms/opencode consistency', () => {
     }
   });
 
-  test('only opencode platform exists (no claude/cursor/codex)', () => {
-    const platformsDir = join(REPO_ROOT, 'platforms');
-    const platforms = readdirSync(platformsDir).filter(f =>
-      statSync(join(platformsDir, f)).isDirectory()
-    ).sort();
-    assert.deepEqual(platforms, ['opencode'],
-      `Only 'opencode' platform should exist. Found: ${platforms.join(', ')}`);
+  test('no platforms/ directory exists (single source of truth is .opencode/)', () => {
+    assert.ok(!existsSync(join(REPO_ROOT, 'platforms')),
+      'platforms/ directory should not exist — use .opencode/ + root opencode.json');
   });
 });

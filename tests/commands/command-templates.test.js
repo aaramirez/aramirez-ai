@@ -4,7 +4,7 @@ import { readFileSync } from 'fs';
 import { join } from 'path';
 import { REPO_ROOT } from '../helpers.js';
 
-const SOURCE_CONFIG = join(REPO_ROOT, 'platforms', 'opencode', 'opencode.json');
+const SOURCE_CONFIG = join(REPO_ROOT, 'opencode.json');
 const INSTALLED_CONFIG = join(REPO_ROOT, 'opencode.json');
 
 function loadConfig(path) {

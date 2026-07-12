@@ -5,7 +5,6 @@ dist/
 .DS_Store
 repos/
 .opencode/node_modules/
-opencode.json
 generated/
 .obsidian/workspace.json
 assets/docs/_temp_*.html

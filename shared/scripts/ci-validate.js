@@ -103,8 +103,11 @@ if (isDir(join(ROOT, 'shared', 'scripts'))) {
   }
 }
 
-// ── Platforms ──
-check(isDir(join(ROOT, 'platforms')), 'platforms/ directory exists', '', 'warn');
+// ── .opencode/ structure ──
+check(isDir(join(ROOT, '.opencode')), '.opencode/ directory exists');
+check(isDir(join(ROOT, '.opencode', 'agents')), '.opencode/agents/ directory exists');
+check(isDir(join(ROOT, '.opencode', 'commands')), '.opencode/commands/ directory exists');
+check(isFile(join(ROOT, 'opencode.json')), 'opencode.json exists at root');
 
 // ── brand.json ──
 if (isFile(join(ROOT, 'shared', 'brand.json'))) {

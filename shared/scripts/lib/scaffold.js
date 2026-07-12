@@ -132,13 +132,9 @@ function scaffoldProject(targetDir, templateName, vars) {
 }
 
 function scaffoldOpencode(absTarget, allVars) {
-  const srcPlatform = join(REPO_ROOT, 'platforms', 'opencode');
-  if (!existsSync(srcPlatform)) {
-    log('Platform opencode not found in platforms/', 'warn');
-    return;
-  }
+  const dotOpenCodeSrc = join(REPO_ROOT, '.opencode');
 
-  const srcConfig = join(srcPlatform, 'opencode.json');
+  const srcConfig = join(REPO_ROOT, 'opencode.json');
   if (existsSync(srcConfig)) {
     let config = readFileSync(srcConfig, 'utf8');
     config = applyVars(config, allVars);
@@ -169,7 +165,7 @@ function scaffoldOpencode(absTarget, allVars) {
     writeFileSync(join(absTarget, 'opencode.json'), JSON.stringify(parsed, null, 2) + '\n');
   }
 
-  const srcAgents = join(srcPlatform, 'agents');
+  const srcAgents = join(dotOpenCodeSrc, 'agents');
   if (existsSync(srcAgents)) {
     const dstAgents = join(absTarget, '.opencode', 'agents');
     ensureDir(dstAgents);
@@ -180,7 +176,7 @@ function scaffoldOpencode(absTarget, allVars) {
     }
   }
 
-  const srcCommands = join(srcPlatform, 'commands');
+  const srcCommands = join(dotOpenCodeSrc, 'commands');
   if (existsSync(srcCommands)) {
     const dstCommands = join(absTarget, '.opencode', 'commands');
     ensureDir(dstCommands);

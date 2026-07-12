@@ -13,17 +13,12 @@ function syncProject(projectRoot) {
     return;
   }
 
-  const source = join(REPO_ROOT, 'platforms', 'opencode');
-  if (!isDir(source)) {
-    log('platforms/opencode/ not found', 'err');
-    return;
-  }
-
+  const dotOpenCodeSrc = join(REPO_ROOT, '.opencode');
   const dotOpenCode = join(projectRoot, '.opencode');
   ensureDir(dotOpenCode);
 
   for (const sub of ['agents', 'commands']) {
-    const src = join(source, sub);
+    const src = join(dotOpenCodeSrc, sub);
     const dst = join(dotOpenCode, sub);
     if (isDir(src)) {
       const srcFiles = readdirSync(src).filter(f => f.endsWith('.md'));
@@ -37,7 +32,7 @@ function syncProject(projectRoot) {
     }
   }
 
-  const configSrc = join(source, 'opencode.json');
+  const configSrc = join(REPO_ROOT, 'opencode.json');
   const configDst = join(projectRoot, 'opencode.json');
   if (existsSync(configSrc)) {
     writeFileSync(configDst, readFileSync(configSrc, 'utf8'));

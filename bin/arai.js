@@ -145,7 +145,7 @@ generateCmd
 
 generateCmd
   .command('command <name>')
-  .description('Create a new opencode command in platforms/opencode/commands/<name>.md')
+  .description('Create a new opencode command in .opencode/commands/<name>.md')
   .option('--dir <path>', 'Project root directory', '.')
   .option('--description <desc>', 'Command description')
   .action((name, opts) => {

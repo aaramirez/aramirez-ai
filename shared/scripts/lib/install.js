@@ -48,19 +48,14 @@ function installPlatform(projectRoot) {
     return false;
   }
 
-  const source = join(REPO_ROOT, 'platforms', 'opencode');
-  if (!isDir(source)) {
-    log('platforms/opencode/ not found in repo', 'err');
-    return false;
-  }
-
   ensureDir(projectRoot);
 
   const dotOpenCode = join(projectRoot, '.opencode');
   ensureDir(dotOpenCode);
 
+  const dotOpenCodeSrc = join(REPO_ROOT, '.opencode');
   for (const sub of ['agents', 'commands']) {
-    const src = join(source, sub);
+    const src = join(dotOpenCodeSrc, sub);
     const dst = join(dotOpenCode, sub);
     if (isDir(src)) {
       cpSync(src, dst, { recursive: true });
@@ -69,11 +64,10 @@ function installPlatform(projectRoot) {
     }
   }
 
-  const skillsSrc = join(REPO_ROOT, 'shared', 'skills');
   const skillsDst = join(dotOpenCode, 'skills');
   ensureDir(skillsDst);
 
-  const configSrc = join(source, 'opencode.json');
+  const configSrc = join(REPO_ROOT, 'opencode.json');
   const configDst = join(projectRoot, 'opencode.json');
   if (existsSync(configSrc)) {
     writeFileSync(configDst, readFileSync(configSrc, 'utf8'));
@@ -117,7 +111,7 @@ function installSkill(name, projectRoot) {
 function installAgent(name, projectRoot) {
   let srcFile = join(REPO_ROOT, 'shared', 'agents', `${name}.md`);
   if (!existsSync(srcFile)) {
-    srcFile = join(REPO_ROOT, 'platforms', 'opencode', 'agents', `${name}.md`);
+    srcFile = join(REPO_ROOT, '.opencode', 'agents', `${name}.md`);
   }
   if (!existsSync(srcFile)) {
     log(`Agent '${name}' not found`, 'err');
