@@ -60,6 +60,13 @@ describe('command templates (Phase 4)', () => {
     );
   });
 
+  test('plan command is registered in opencode.json', () => {
+    assert.ok(config.command.plan, 'plan command should be registered');
+    assert.ok(config.command.plan.description?.length >= 10, 'plan description should be >= 10 chars');
+    assert.ok(config.command.plan.template?.length >= 20, 'plan template should be >= 20 chars');
+    assert.ok(/plan/i.test(config.command.plan.template), 'plan template should mention plan');
+  });
+
   test('all commands have description and template fields', () => {
     config = config || loadConfig(SOURCE_CONFIG);
     const commands = config.command || {};

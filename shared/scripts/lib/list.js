@@ -51,14 +51,28 @@ function listScripts() {
 }
 
 function listCommands() {
-  const cmdsDir = join(REPO_ROOT, '.opencode', 'commands');
-  if (!isDir(cmdsDir)) { log('No .opencode/commands/ directory', 'err'); return; }
-  const files = readdirSync(cmdsDir).filter(f => f.endsWith('.md'));
-  if (files.length === 0) { log('No commands found', 'info'); return; }
+  const localDir = join(REPO_ROOT, '.opencode', 'commands');
+  const sharedDir = join(REPO_ROOT, 'shared', 'commands');
+  const seen = new Map();
+
+  for (const dir of [sharedDir, localDir]) {
+    if (!isDir(dir)) continue;
+    for (const f of readdirSync(dir)) {
+      if (!f.endsWith('.md')) continue;
+      const name = f.replace(/\.md$/, '');
+      if (seen.has(name)) continue;
+      const content = readFileSync(join(dir, f), 'utf8');
+      const desc = content.match(/^description:\s*(.+)/m)?.[1]
+        || content.match(/^# (.+)/m)?.[1]
+        || name;
+      seen.set(name, desc);
+    }
+  }
+
+  if (seen.size === 0) { log('No commands found', 'info'); return; }
   console.log('\nAvailable opencode commands:\n');
-  for (const name of files.sort()) {
-    const desc = readFileSync(join(cmdsDir, name), 'utf8').match(/^# (.+)/m)?.[1] || name.replace(/\.md$/, '');
-    console.log(`  /${name.replace(/\.md$/, '').padEnd(20)} ${desc}`);
+  for (const [name, desc] of [...seen.entries()].sort()) {
+    console.log(`  /${name.padEnd(20)} ${desc}`);
   }
   console.log();
 }

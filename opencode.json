@@ -16,6 +16,7 @@
     "plan": {
       "description": "Planning agent for architecture and design",
       "mode": "primary",
+      "path": ".opencode/agents/plan.md",
       "permission": {
         "edit": "deny"
       }
@@ -136,6 +137,10 @@
     "email": {
       "description": "Send an email using project SMTP configuration.",
       "template": "Understand the email requirements from the user. Build a JSON payload with 'to', 'subject', 'body', and optionally 'cc', 'bcc', 'html', 'attachments'. Write it to .opencode/email-payload.json. Then run: node shared/scripts/send-email.js --payload .opencode/email-payload.json. Report success or error."
+    },
+    "plan": {
+      "description": "Generate a detailed requirements plan in plans/ with TDD philosophy",
+      "template": "Create a detailed implementation plan for: $ARGUMENTS. Follow the TDD process: understand the request, research the codebase, create a plan document in plans/<feature-slug>.md with objective, requirements, architecture decisions, file changes, TDD flow, and verification steps. Write failing tests first, then implement, then verify."
     }
   },
   "compaction": {

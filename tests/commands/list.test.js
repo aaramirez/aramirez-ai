@@ -34,12 +34,13 @@ describe('arai list', () => {
     assert.ok(result.stdout.includes('full'), 'Should list full template');
   });
 
-  test('arai list commands lists test, deploy, commit', () => {
+  test('arai list commands lists test, deploy, commit, plan', () => {
     const result = runArai(['list', 'commands']);
     assertExitCode(result, 0);
     assert.ok(result.stdout.includes('test'), 'Should list test command');
     assert.ok(result.stdout.includes('deploy'), 'Should list deploy command');
     assert.ok(result.stdout.includes('commit'), 'Should list commit command');
+    assert.ok(result.stdout.includes('plan'), 'Should list plan command');
   });
 
   test('arai list mcp lists github and playwright', () => {

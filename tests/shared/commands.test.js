@@ -13,6 +13,7 @@ const EXPECTED_COMMANDS = [
   'kb',
   'youtube-cmd',
   'export-pdf',
+  'plan',
 ];
 
 describe('shared commands', () => {
