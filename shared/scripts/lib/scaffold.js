@@ -160,7 +160,19 @@ function scaffoldProject(targetDir, templateName, vars) {
     if (logoWhitePartial) {
       writeFileSync(join(assetsDir, 'images', 'logo-white.svg'), applyVars(logoWhitePartial, allVars));
     }
-    writeFileSync(join(assetsDir, 'templates', '.gitkeep'), '');
+
+    const deckCssSrc = join(REPO_ROOT, 'assets', 'templates', 'deck.css');
+    if (existsSync(deckCssSrc)) {
+      cpSync(deckCssSrc, join(assetsDir, 'templates', 'deck.css'));
+    }
+    const reportCssSrc = join(REPO_ROOT, 'assets', 'templates', 'report.css');
+    if (existsSync(reportCssSrc)) {
+      cpSync(reportCssSrc, join(assetsDir, 'templates', 'report.css'));
+    }
+    const specsSrc = join(REPO_ROOT, 'assets', 'templates', 'specs');
+    if (existsSync(specsSrc)) {
+      cpSync(specsSrc, join(assetsDir, 'templates', 'specs'), { recursive: true });
+    }
   }
 
   const agentsPartial = resolvePartial('AGENTS.md');

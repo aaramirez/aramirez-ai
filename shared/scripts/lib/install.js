@@ -42,6 +42,22 @@ function installSkillScripts(skillName, projectRoot) {
   }
 }
 
+function installDocgenTemplates(projectRoot) {
+  const assetsDir = join(projectRoot, 'assets', 'templates');
+  ensureDir(assetsDir);
+
+  const deckCss = join(REPO_ROOT, 'assets', 'templates', 'deck.css');
+  if (existsSync(deckCss)) cpSync(deckCss, join(assetsDir, 'deck.css'));
+
+  const reportCss = join(REPO_ROOT, 'assets', 'templates', 'report.css');
+  if (existsSync(reportCss)) cpSync(reportCss, join(assetsDir, 'report.css'));
+
+  const specsSrc = join(REPO_ROOT, 'assets', 'templates', 'specs');
+  if (existsSync(specsSrc)) cpSync(specsSrc, join(assetsDir, 'specs'), { recursive: true });
+
+  log('Installed docgen templates → assets/templates/', 'ok');
+}
+
 function installPlatform(projectRoot) {
   if (opencodeInstalled(projectRoot)) {
     log('opencode already installed in this project', 'warn');
@@ -103,6 +119,10 @@ function installSkill(name, projectRoot) {
   log(`Installed skill '${name}' → .opencode/skills/${name}/`, 'ok');
 
   installSkillScripts(name, projectRoot);
+
+  if (name === 'document-generation') {
+    installDocgenTemplates(projectRoot);
+  }
 
   updateAgentsMd(projectRoot);
   return true;

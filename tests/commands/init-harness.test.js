@@ -168,6 +168,22 @@ describe('arai init — generación de harness funcional (TDD)', () => {
       'Debe tener docgen-vault.js');
   });
 
+  test('assets/templates/ tiene deck.css y report.css', () => {
+    const p = initFull();
+    assert.ok(existsSync(join(p, 'assets', 'templates', 'deck.css')),
+      'Debe tener deck.css');
+    assert.ok(existsSync(join(p, 'assets', 'templates', 'report.css')),
+      'Debe tener report.css');
+  });
+
+  test('assets/templates/specs/ tiene document templates', () => {
+    const p = initFull();
+    assertDir(join(p, 'assets', 'templates', 'specs'));
+    const specs = readdirSync(join(p, 'assets', 'templates', 'specs'))
+      .filter(f => f.endsWith('.json'));
+    assert.ok(specs.length >= 10, `Esperaba >=10 spec templates, obtuve ${specs.length}`);
+  });
+
   /* ─── AGENTS.md ─── */
 
   test('AGENTS.md referencia .opencode/skills (no shared/skills)', () => {
