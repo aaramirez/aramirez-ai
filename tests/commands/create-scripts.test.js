@@ -1,9 +1,7 @@
 import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
 import { spawnSync } from 'child_process';
-import { writeFileSync, mkdtempSync } from 'fs';
 import { join } from 'path';
-import { tmpdir } from 'os';
 import { REPO_ROOT } from '../helpers.js';
 
 const SCRIPTS_DIR = join(REPO_ROOT, 'shared', 'scripts');
@@ -26,8 +24,6 @@ const SCRIPTS_TO_TEST = [
   'create-permission.js',
   'create-instructions.js',
   'create-agent.js',
-  'create-subagent.js',
-  'create-specialized-agent.js',
   'create-architecture.js',
   'create-flow.js',
   'create-skill.js',
@@ -39,7 +35,6 @@ const SCRIPTS_TO_TEST = [
   'create-reference.js',
   'create-plugin.js',
   'create-tool.js',
-  'harness-generator.js',
 ];
 
 describe('creator scripts', () => {
@@ -109,26 +104,6 @@ describe('creator scripts', () => {
     const json = JSON.parse(jsonStr);
     assert.ok(json['test-mcp']);
     assert.equal(json['test-mcp'].type, 'remote');
-  });
-
-  test('harness-generator: generates full harness from JSON', () => {
-    const tmpDir = mkdtempSync(join(tmpdir(), 'harness-test-'));
-    const projectPath = join(tmpDir, 'project.json');
-    const projectJson = JSON.stringify({
-      name: 'test-project',
-      type: 'web',
-      language: 'typescript',
-      description: 'A test project',
-      workflow: 'plan-first',
-      strictness: 'balanced',
-    });
-    writeFileSync(projectPath, projectJson, 'utf8');
-    const result = runScript('harness-generator.js', [
-      '--project', projectPath,
-      '--dry-run',
-    ]);
-    assert.ok(result.stdout.includes('opencode.json') || result.stdout.includes('AGENTS.md'),
-      'harness-generator should output key files');
   });
 
   test('all scripts parse without syntax errors', () => {

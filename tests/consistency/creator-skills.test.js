@@ -7,13 +7,10 @@ import { REPO_ROOT } from '../helpers.js';
 const SKILLS_DIR = join(REPO_ROOT, 'shared', 'skills');
 
 const CREATOR_SKILLS = [
-  'harness-creator',
   'config-creator',
   'permission-creator',
   'instructions-creator',
   'agent-creator',
-  'subagent-creator',
-  'specialized-agent-creator',
   'architecture-creator',
   'flow-creator',
   'skill-creator',
@@ -28,7 +25,7 @@ const CREATOR_SKILLS = [
 ];
 
 describe('creator skills consistency', () => {
-  test('all 18 creator skills are present', () => {
+  test('all 15 creator skills are present', () => {
     const skills = readdirSync(SKILLS_DIR).filter(f =>
       statSync(join(SKILLS_DIR, f)).isDirectory()
     );

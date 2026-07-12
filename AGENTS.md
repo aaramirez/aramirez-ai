@@ -100,9 +100,9 @@ After creating or editing a skill, run `arai sync skill <name>` to sync it to th
 
 ```bash
 node shared/scripts/create-agent.js --name my-agent --mode primary
+node shared/scripts/create-agent.js --name reviewer --preset reviewer
 node shared/scripts/create-config.js --model opencode/big-pickle
 node shared/scripts/create-mcp.js --name my-mcp --type remote --url https://...
-node shared/scripts/harness-generator.js --project spec.json
 ```
 
 All creator scripts support `--dry-run` to preview output and `--help` for usage. See `docs/harness-course-plan.md` for the full reference.
@@ -125,10 +125,23 @@ Enable by setting `"enabled": true` in the server entry. Both google-workspace a
 |-------|------|-------------|
 | **build** (default) | primary | — |
 | **plan** | primary | `edit: deny` |
-| **plan-arai** | primary | Plan mode que documenta en `docs/` |
+| **plan-arai** | primary | Plan mode que documenta en `plans/` |
 | **reviewer** | subagent | `edit: deny` |
 | **tester** | subagent | `bash: allow` |
 | **docs** | subagent | `edit: allow`, `bash: deny` |
+| **new-harness** | primary | `edit: allow`, `bash: allow`, `read: allow` |
+| **config-creator** | subagent | Genera `opencode.json` personalizado |
+| **permission-creator** | subagent | Genera configuración de permisos |
+| **instructions-creator** | subagent | Genera `AGENTS.md` personalizado |
+| **mcp-creator** | subagent | Genera configuraciones MCP |
+| **architecture-creator** | subagent | Genera documentación de arquitectura |
+| **flow-creator** | subagent | Genera flujos de trabajo |
+| **plugin-creator** | subagent | Genera plugins de TUI |
+| **tool-creator** | subagent | Genera herramientas personalizadas |
+| **prompt-creator** | subagent | Genera prompts reutilizables |
+| **rule-creator** | subagent | Genera reglas de código |
+| **reference-creator** | subagent | Genera referencias a repos |
+| **command-creator** | subagent | Genera comandos personalizados |
 
 All agents use model `opencode/big-pickle` by default. Agents are defined in `opencode.json` and configured with `.md` files in `.opencode/agents/`.
 

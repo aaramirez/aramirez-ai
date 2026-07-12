@@ -38,6 +38,71 @@
       "permission": {
         "bash": "allow"
       }
+    },
+    "new-harness": {
+      "description": "Generador interactivo de harnesses de opencode",
+      "mode": "primary",
+      "path": ".opencode/agents/new-harness.md"
+    },
+    "config-creator": {
+      "description": "Genera configuraciones opencode.json personalizadas",
+      "mode": "subagent",
+      "path": ".opencode/agents/config-creator.md"
+    },
+    "permission-creator": {
+      "description": "Genera configuraciones de permisos con diferentes niveles de estrictitud",
+      "mode": "subagent",
+      "path": ".opencode/agents/permission-creator.md"
+    },
+    "instructions-creator": {
+      "description": "Genera AGENTS.md personalizado según el tipo y lenguaje del proyecto",
+      "mode": "subagent",
+      "path": ".opencode/agents/instructions-creator.md"
+    },
+    "mcp-creator": {
+      "description": "Genera configuraciones de servidores MCP locales o remotos",
+      "mode": "subagent",
+      "path": ".opencode/agents/mcp-creator.md"
+    },
+    "architecture-creator": {
+      "description": "Genera documentación de arquitectura de software",
+      "mode": "subagent",
+      "path": ".opencode/agents/architecture-creator.md"
+    },
+    "flow-creator": {
+      "description": "Genera flujos de trabajo y pipelines de automatización",
+      "mode": "subagent",
+      "path": ".opencode/agents/flow-creator.md"
+    },
+    "plugin-creator": {
+      "description": "Genera plugins de TUI para opencode",
+      "mode": "subagent",
+      "path": ".opencode/agents/plugin-creator.md"
+    },
+    "tool-creator": {
+      "description": "Genera herramientas personalizadas para agentes",
+      "mode": "subagent",
+      "path": ".opencode/agents/tool-creator.md"
+    },
+    "prompt-creator": {
+      "description": "Genera prompts reutilizables para agentes",
+      "mode": "subagent",
+      "path": ".opencode/agents/prompt-creator.md"
+    },
+    "rule-creator": {
+      "description": "Genera reglas de código y estándares de codificación",
+      "mode": "subagent",
+      "path": ".opencode/agents/rule-creator.md"
+    },
+    "reference-creator": {
+      "description": "Genera referencias a repositorios y documentación externa",
+      "mode": "subagent",
+      "path": ".opencode/agents/reference-creator.md"
+    },
+    "command-creator": {
+      "description": "Genera comandos personalizados de opencode",
+      "mode": "subagent",
+      "path": ".opencode/agents/command-creator.md"
     }
   },
   "command": {

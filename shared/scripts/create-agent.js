@@ -2,12 +2,24 @@
 import { parseArgs, writeFileNow, showHelp, println } from './create-base.js';
 
 const USAGE = `node shared/scripts/create-agent.js --name <name> --description <desc> [options]`;
-const DESC = 'Generates a primary agent markdown file with YAML frontmatter.';
+const DESC = 'Generates an agent markdown file with YAML frontmatter. Supports --mode and --preset.';
+
+const PRESETS = {
+  build:       { mode: 'primary',   edit: 'allow', bash: 'allow', read: 'allow',  desc: 'Primary builder agent for coding tasks' },
+  plan:        { mode: 'primary',   edit: 'deny',  bash: 'allow', read: 'allow',  desc: 'Planning agent for architecture and design' },
+  reviewer:    { mode: 'subagent',  edit: 'deny',  bash: 'ask',   read: 'allow',  desc: 'Code review specialist for PRs and quality checks' },
+  tester:      { mode: 'subagent',  edit: 'allow', bash: 'allow', read: 'allow',  desc: 'Testing specialist for writing and running tests' },
+  docs:        { mode: 'subagent',  edit: 'allow', bash: 'deny',  read: 'allow',  desc: 'Documentation specialist for README, docs, and changelogs' },
+  security:    { mode: 'subagent',  edit: 'deny',  bash: 'ask',   read: 'allow',  desc: 'Security auditor for vulnerability scanning and hardening' },
+  devops:      { mode: 'subagent',  edit: 'allow', bash: 'allow', read: 'allow',  desc: 'DevOps specialist for CI/CD and deployment pipelines' },
+  architect:   { mode: 'subagent',  edit: 'deny',  bash: 'ask',   read: 'allow',  desc: 'Software architect for system design and technical decisions' },
+};
 
 const OPTIONS = {
   '--name':            '(required) Agent name',
-  '--description':     '(required) Agent description',
-  '--mode':            'primary|all (default: primary)',
+  '--description':     '(required unless --preset) Agent description',
+  '--mode':            'primary|subagent|all (default: primary)',
+  '--preset':          `Predefined profile: ${Object.keys(PRESETS).join(', ')}`,
   '--model':           'Model identifier (optional)',
   '--temperature':     'Temperature (default: 0.3)',
   '--prompt':          'System prompt text (optional)',
@@ -55,8 +67,23 @@ function main() {
   }
 
   if (!opts.name) { println('  Error: --name is required'); process.exit(1); }
-  if (!opts.description) { println('  Error: --description is required'); process.exit(1); }
   if (!opts.output) { println('  Error: --output is required'); process.exit(1); }
+
+  // Apply preset if specified
+  if (opts.preset) {
+    const preset = PRESETS[opts.preset];
+    if (!preset) {
+      println(`  Error: --preset must be one of: ${Object.keys(PRESETS).join(', ')}`);
+      process.exit(1);
+    }
+    if (!opts.mode) opts.mode = preset.mode;
+    if (!opts.edit) opts.edit = preset.edit;
+    if (!opts.bash) opts.bash = preset.bash;
+    if (!opts.read) opts.read = preset.read;
+    if (!opts.description) opts.description = preset.desc;
+  }
+
+  if (!opts.description) { println('  Error: --description is required (or use --preset)'); process.exit(1); }
 
   if (!opts.temperature) opts.temperature = 0.3;
   if (!opts.edit) opts.edit = 'allow';
@@ -64,7 +91,7 @@ function main() {
   if (!opts.read) opts.read = 'allow';
   if (!opts.mode) opts.mode = 'primary';
 
-  const validModes = ['primary', 'all'];
+  const validModes = ['primary', 'subagent', 'all'];
   if (!validModes.includes(opts.mode)) {
     println(`  Error: --mode must be one of: ${validModes.join(', ')}`);
     process.exit(1);
