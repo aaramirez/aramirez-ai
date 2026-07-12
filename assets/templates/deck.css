@@ -132,7 +132,6 @@ ul.bullets li::before {
 .card {
   background: var(--card);
   border-radius: var(--radius);
-  box-shadow: var(--shadow);
   display: flex; flex-direction: column;
   overflow: hidden;
 }
@@ -162,7 +161,7 @@ ul.bullets li::before {
 /* ---- Dos columnas ---- */
 .twocol { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gap); height: 100%; align-content: center; }
 .panel {
-  background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow);
+  background: var(--card); border-radius: var(--radius);
   overflow: hidden;
 }
 .panel .panel-body { padding: 34px 34px 30px; }
@@ -183,7 +182,7 @@ ul.bullets li::before {
 /* ---- KPIs ---- */
 .kpis { display: grid; gap: var(--gap); height: 100%; align-content: center; }
 .kpi {
-  background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow);
+  background: var(--card); border-radius: var(--radius);
   padding: 34px 28px; text-align: center;
 }
 .kpi .kpi-value { font-size: 64px; font-weight: 800; color: var(--ink); letter-spacing: -0.02em; line-height: 1; }
@@ -192,7 +191,7 @@ ul.bullets li::before {
 /* ---- Personas ---- */
 .people { display: grid; gap: var(--gap); height: 100%; align-content: center; }
 .person {
-  background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow-sm);
+  background: var(--card); border-radius: var(--radius);
   padding: 28px 26px; display: flex; flex-direction: column; align-items: flex-start;
 }
 .person .avatar {
@@ -214,7 +213,7 @@ ul.bullets li::before {
 
 /* ---- Imagen / figura ---- */
 .figure { flex: 1; display: flex; align-items: center; justify-content: center; min-height: 0; }
-.figure img { max-width: 100%; max-height: 100%; border-radius: 14px; box-shadow: var(--shadow); }
+.figure img { max-width: 100%; max-height: 100%; border-radius: 14px; }
 .figure.bare img { box-shadow: none; border-radius: 0; }
 
 /* ---- Tabla ---- */
@@ -264,7 +263,7 @@ table.fibex tbody tr:last-child td:last-child { border-bottom-right-radius: 12px
 /* ---- Imagen + texto ---- */
 .imgtext { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; height: 100%; align-items: center; }
 .imgtext.reverse .it-text-col { order: 2; }
-.imgtext .it-media { height: 100%; max-height: 540px; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
+.imgtext .it-media { height: 100%; max-height: 540px; border-radius: var(--radius); overflow: hidden; }
 .imgtext .it-media img { width: 100%; height: 100%; }
 .imgtext .it-text { font-size: 22px; line-height: 1.45; color: var(--body); }
 .imgtext .head { margin-bottom: 20px; }
@@ -277,7 +276,7 @@ table.fibex tbody tr:last-child td:last-child { border-bottom-right-radius: 12px
 
 /* ---- Comparativa ---- */
 .comparativa { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gap); height: 100%; align-content: center; }
-.cmp-panel { background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; display: flex; flex-direction: column; }
+.cmp-panel { background: var(--card); border-radius: var(--radius); overflow: hidden; display: flex; flex-direction: column; }
 .cmp-media { height: 240px; }
 .cmp-media img { width: 100%; height: 100%; }
 .cmp-body { padding: 26px 30px 28px; }
@@ -302,7 +301,7 @@ table.fibex tbody tr:last-child td:last-child { border-bottom-right-radius: 12px
 }
 .proceso.proceso--many { grid-template-columns: repeat(3, 1fr); }
 .paso {
-  background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow);
+  background: var(--card); border-radius: var(--radius);
   padding: 24px 18px 22px; position: relative; display: flex; flex-direction: column;
 }
 .paso::after {
@@ -327,7 +326,7 @@ table.fibex tbody tr:last-child td:last-child { border-bottom-right-radius: 12px
 .masonry.cols-6 { column-count: 6; }
 .mas-item {
   break-inside: avoid; margin-bottom: var(--gap);
-  border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-sm);
+  border-radius: var(--radius); overflow: hidden; 
   background: var(--card); position: relative;
 }
 .mas-item img { display: block; width: 100%; height: auto; }
@@ -339,7 +338,7 @@ table.fibex tbody tr:last-child td:last-child { border-bottom-right-radius: 12px
 /* ---- FAQ / Acordeón ---- */
 .faq { display: flex; flex-direction: column; gap: 12px; flex: 1; justify-content: center; max-width: 1100px; margin: 0 auto; width: 100%; }
 .faq details {
-  background: var(--card); border-radius: 14px; box-shadow: var(--shadow-sm);
+  background: var(--card); border-radius: 14px; 
   overflow: hidden; border: 1px solid var(--accent-soft);
 }
 .faq details summary {
