@@ -16,7 +16,7 @@ arai generate skill mi-skill         # Crear skill desde CLI
 arai sync skill mi-skill             # Sincronizar al proyecto
 ```
 
-Las skills se almacenan en `shared/skills/<nombre>/SKILL.md` y opencode las lee nativamente.
+Las skills se almacenan en `.opencode/skills/<nombre>/SKILL.md` y opencode las lee nativamente.
 
 **Cuándo usarlas**: cuando necesitas que los agentes sigan un procedimiento específico (revisión de código, formato, análisis, etc.).
 

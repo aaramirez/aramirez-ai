@@ -2,6 +2,9 @@
 name: tool-creator
 description: Create custom tool definitions with JSON Schema input validation for specialized agent capabilities.
 license: MIT
+scripts:
+  - create-tool.js
+  - create-base.js
 ---
 
 # Creación de herramientas personalizadas

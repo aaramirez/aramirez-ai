@@ -2,6 +2,9 @@
 name: harness-creator
 description: Orchestrate the full harness creation process — interactively generate a complete opencode configuration based on project description.
 license: MIT
+scripts:
+  - harness-generator.js
+  - create-base.js
 ---
 
 # Harness Creator

@@ -2,6 +2,9 @@
 name: agent-creator
 description: Create primary agent definitions with custom prompts, permissions, and model overrides.
 license: MIT
+scripts:
+  - create-agent.js
+  - create-base.js
 ---
 
 # Agent Creator

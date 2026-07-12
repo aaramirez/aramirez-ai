@@ -9,6 +9,39 @@ import { updateAgentsMd } from './agents-md.js';
 
 /* ─── install ─── */
 
+function installSkillScripts(skillName, projectRoot) {
+  const skillMd = join(REPO_ROOT, 'shared', 'skills', skillName, 'SKILL.md');
+  if (!existsSync(skillMd)) return;
+
+  const content = readFileSync(skillMd, 'utf8');
+  const match = content.match(/^---\n([\s\S]+?)\n---/);
+  if (!match) return;
+
+  const fm = match[1];
+  const scriptsMatch = fm.match(/^scripts:\s*\n((?:\s+-\s+.+\n?)+)/m);
+  if (!scriptsMatch) return;
+
+  const scripts = scriptsMatch[1].split('\n')
+    .map(l => l.replace(/^\s*-\s+/, '').trim())
+    .filter(Boolean);
+
+  const scriptsDir = join(projectRoot, 'shared', 'scripts');
+  ensureDir(scriptsDir);
+
+  for (const item of scripts) {
+    const src = join(REPO_ROOT, 'shared', 'scripts', item);
+    const dst = join(scriptsDir, item);
+    if (existsSync(dst)) continue;
+    if (!existsSync(src)) {
+      log(`Script '${item}' declared in skill '${skillName}' not found`, 'warn');
+      continue;
+    }
+    ensureDir(dirname(dst));
+    cpSync(src, dst, { recursive: true });
+    log(`Installed script '${item}' (from skill '${skillName}')`, 'ok');
+  }
+}
+
 function installPlatform(projectRoot) {
   if (opencodeInstalled(projectRoot)) {
     log('opencode already installed in this project', 'warn');
@@ -74,6 +107,9 @@ function installSkill(name, projectRoot) {
   ensureDir(dirname(dest));
   cpSync(srcDir, dest, { recursive: true });
   log(`Installed skill '${name}' → .opencode/skills/${name}/`, 'ok');
+
+  installSkillScripts(name, projectRoot);
+
   updateAgentsMd(projectRoot);
   return true;
 }

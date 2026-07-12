@@ -3,7 +3,7 @@
  * CLI table, and update the project's AGENTS.md.
  */
 
-import { existsSync, readdirSync, readFileSync, writeFileSync } from 'fs';
+import { existsSync, readdirSync, readFileSync, writeFileSync, statSync } from 'fs';
 import { join, basename } from 'path';
 import { isDir, REPO_ROOT } from './helpers.js';
 import { resolvePartial, applyVars } from './template-utils.js';
@@ -13,14 +13,13 @@ function buildDirectoryTree(projectDir) {
   const lines = [];
   const topDirs = [];
 
-  const sharedDirs = ['agents', 'skills', 'prompts', 'scripts', 'rules']
+  const sharedDirs = ['prompts', 'scripts', 'rules']
     .filter(d => isDir(join(projectDir, 'shared', d)));
   if (sharedDirs.length > 0) topDirs.push({ name: 'shared', children: sharedDirs, label: 'Centralized reusable assets' });
 
-  const platformDirs = existsSync(join(projectDir, 'platforms'))
-    ? readdirSync(join(projectDir, 'platforms')).filter(d => isDir(join(projectDir, 'platforms', d)))
-    : [];
-  if (platformDirs.length > 0) topDirs.push({ name: 'platforms', children: platformDirs, label: 'Agent configurations' });
+  const openCodeDirs = ['skills', 'agents', 'commands']
+    .filter(d => isDir(join(projectDir, '.opencode', d)));
+  if (openCodeDirs.length > 0) topDirs.push({ name: '.opencode', children: openCodeDirs, label: 'OpenCode configuration' });
 
   const assetDirs = existsSync(join(projectDir, 'assets'))
     ? readdirSync(join(projectDir, 'assets')).filter(d => isDir(join(projectDir, 'assets', d)))
@@ -68,7 +67,7 @@ function buildAgentsTable(agents) {
 }
 
 function buildSkillsTable(projectDir) {
-  const skillsDir = join(projectDir, 'shared', 'skills');
+  const skillsDir = join(projectDir, '.opencode', 'skills');
   if (!isDir(skillsDir)) return '  (none installed)';
   const skills = readdirSync(skillsDir).filter(f => isDir(join(skillsDir, f)));
   if (skills.length === 0) return '  (none installed)';
@@ -81,6 +80,21 @@ function buildSkillsTable(projectDir) {
   }).join('\n');
 }
 
+function buildScriptsTable(projectDir) {
+  const scriptsDir = join(projectDir, 'shared', 'scripts');
+  if (!isDir(scriptsDir)) return '  (none installed)';
+  const items = readdirSync(scriptsDir).filter(f => {
+    if (f === '.gitkeep' || f === 'lib') return false;
+    return true;
+  });
+  if (items.length === 0) return '  (none installed)';
+  return items.map(name => {
+    const s = statSync(join(scriptsDir, name));
+    const type = s.isDirectory() ? 'dir' : 'file';
+    return `| shared/scripts/${name} | ${type} |`;
+  }).join('\n');
+}
+
 function buildCliTable() {
   return [
     '| `arai init <dir>` | Scaffold new project (`--template minimal\\|full`, `--description`) |',
@@ -90,7 +104,7 @@ function buildCliTable() {
     '| `arai uninstall <type> <name>` | Uninstall a specific component |',
     '| `arai status` | Show installation status in current directory |',
     '| `arai list skills\\|agents\\|scripts\\|templates\\|commands\\|mcp` | List resources |',
-    '| `arai generate skill <name>` | Create skill in shared/skills/ |',
+    '| `arai generate skill <name>` | Create skill in `.opencode/skills/` |',
     '| `arai generate agent <name>` | Create agent + register in opencode.json |',
     '| `arai generate script <name>` | Create reusable script |',
     '| `arai generate command <name>` | Create opencode command |',
@@ -100,7 +114,7 @@ function buildCliTable() {
 }
 
 function buildVarsFromProjectState(projectDir) {
-  const configPath = join(projectDir, 'platforms', 'opencode', 'opencode.json');
+  const configPath = join(projectDir, 'opencode.json');
   if (existsSync(configPath)) {
     try {
       const config = JSON.parse(readFileSync(configPath, 'utf8'));
@@ -108,6 +122,7 @@ function buildVarsFromProjectState(projectDir) {
         directory_tree: buildDirectoryTree(projectDir),
         agents_table: buildAgentsTable(config.agent || {}),
         skills_table: buildSkillsTable(projectDir),
+        scripts_table: buildScriptsTable(projectDir),
         cli_table: buildCliTable(),
       };
     } catch { /* fall through to defaults */ }
@@ -116,6 +131,7 @@ function buildVarsFromProjectState(projectDir) {
     directory_tree: buildDirectoryTree(projectDir),
     agents_table: buildAgentsTable({}),
     skills_table: buildSkillsTable(projectDir),
+    scripts_table: buildScriptsTable(projectDir),
     cli_table: buildCliTable(),
   };
 }
@@ -133,4 +149,4 @@ function updateAgentsMd(projectDir) {
   writeFileSync(destPath, applyVars(agentsPartial, vars));
 }
 
-export { buildDirectoryTree, buildAgentsTable, buildSkillsTable, buildCliTable, buildVarsFromProjectState, updateAgentsMd };
+export { buildDirectoryTree, buildAgentsTable, buildSkillsTable, buildScriptsTable, buildCliTable, buildVarsFromProjectState, updateAgentsMd };

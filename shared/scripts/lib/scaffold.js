@@ -38,7 +38,7 @@ function scaffoldProject(targetDir, templateName, vars) {
   for (const skill of skillsToCopy) {
     const src = join(REPO_ROOT, 'shared', 'skills', skill, 'SKILL.md');
     if (existsSync(src)) {
-      const dstDir = join(absTarget, 'shared', 'skills', skill);
+      const dstDir = join(absTarget, '.opencode', 'skills', skill);
       ensureDir(dstDir);
       writeFileSync(join(dstDir, 'SKILL.md'), readFileSync(src, 'utf8'));
     } else {
@@ -46,14 +46,14 @@ function scaffoldProject(targetDir, templateName, vars) {
     }
   }
 
-  for (const script of resolveScripts(include.scripts || [])) {
-    const src = join(REPO_ROOT, 'shared', 'scripts', script);
+  for (const item of resolveScripts(include.scripts || [])) {
+    const src = join(REPO_ROOT, 'shared', 'scripts', item);
     if (existsSync(src)) {
-      const dstDir = join(absTarget, 'shared', 'scripts');
-      ensureDir(dstDir);
-      writeFileSync(join(dstDir, script), readFileSync(src, 'utf8'));
+      const dst = join(absTarget, 'shared', 'scripts', item);
+      ensureDir(dirname(dst));
+      cpSync(src, dst, { recursive: true });
     } else {
-      log(`Script '${script}' not found in shared/scripts/`, 'warn');
+      log(`Script '${item}' not found in shared/scripts/`, 'warn');
     }
   }
 
@@ -75,22 +75,8 @@ function scaffoldProject(targetDir, templateName, vars) {
     }
   }
 
-  for (const platformName of include.platforms || []) {
-    const src = join(REPO_ROOT, 'platforms', platformName);
-    if (existsSync(src) && statSync(src).isDirectory()) {
-      const dst = join(absTarget, 'platforms', platformName);
-      ensureDir(dirname(dst));
-      cpSync(src, dst, { recursive: true });
-
-      if (platformName === 'opencode') {
-        const configPath = join(dst, 'opencode.json');
-        if (existsSync(configPath)) {
-          writeFileSync(configPath, applyVars(readFileSync(configPath, 'utf8'), allVars));
-        }
-      }
-    } else {
-      log(`Platform '${platformName}' not found in platforms/`, 'warn');
-    }
+  if (include.platforms?.includes('opencode')) {
+    scaffoldOpencode(absTarget, allVars);
   }
 
   if (include.package_json) {
@@ -143,6 +129,67 @@ function scaffoldProject(targetDir, templateName, vars) {
 
   log(`Done — ${absTarget} ready`, 'ok');
   return true;
+}
+
+function scaffoldOpencode(absTarget, allVars) {
+  const srcPlatform = join(REPO_ROOT, 'platforms', 'opencode');
+  if (!existsSync(srcPlatform)) {
+    log('Platform opencode not found in platforms/', 'warn');
+    return;
+  }
+
+  const srcConfig = join(srcPlatform, 'opencode.json');
+  if (existsSync(srcConfig)) {
+    let config = readFileSync(srcConfig, 'utf8');
+    config = applyVars(config, allVars);
+
+    let parsed = JSON.parse(config);
+
+    if (parsed.skills?.paths) {
+      delete parsed.skills.paths;
+      if (Object.keys(parsed.skills).length === 0) {
+        delete parsed.skills;
+      }
+    }
+
+    if (parsed.mcp) {
+      delete parsed.mcp.engram;
+      delete parsed.mcp.context7;
+    }
+
+    if (parsed.references) {
+      for (const [, ref] of Object.entries(parsed.references)) {
+        if (ref.path?.startsWith('../')) {
+          ref.path = './' + ref.path.slice(3);
+        }
+      }
+    }
+
+    ensureDir(absTarget);
+    writeFileSync(join(absTarget, 'opencode.json'), JSON.stringify(parsed, null, 2) + '\n');
+  }
+
+  const srcAgents = join(srcPlatform, 'agents');
+  if (existsSync(srcAgents)) {
+    const dstAgents = join(absTarget, '.opencode', 'agents');
+    ensureDir(dstAgents);
+    for (const f of readdirSync(srcAgents)) {
+      if (f.endsWith('.md')) {
+        writeFileSync(join(dstAgents, f), readFileSync(join(srcAgents, f), 'utf8'));
+      }
+    }
+  }
+
+  const srcCommands = join(srcPlatform, 'commands');
+  if (existsSync(srcCommands)) {
+    const dstCommands = join(absTarget, '.opencode', 'commands');
+    ensureDir(dstCommands);
+    for (const f of readdirSync(srcCommands)) {
+      if (f.endsWith('.md')) {
+        writeFileSync(join(dstCommands, f), readFileSync(join(srcCommands, f), 'utf8'));
+      }
+    }
+  }
 }
 
 function listTemplates() {

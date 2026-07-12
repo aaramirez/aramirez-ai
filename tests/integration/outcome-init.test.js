@@ -73,7 +73,7 @@ describe('init output deep validation (Phase 3b + 3c)', () => {
   test('generated skill .md has correct YAML frontmatter', () => {
     runInit('full');
     runArai(['generate', 'skill', 'snapshot-skill', '--dir', projectDir]);
-    const fm = parseFrontmatter(join(projectDir, 'shared', 'skills', 'snapshot-skill', 'SKILL.md'));
+    const fm = parseFrontmatter(join(projectDir, '.opencode', 'skills', 'snapshot-skill', 'SKILL.md'));
     assert.equal(fm.name, 'snapshot-skill');
     assert.equal(fm.license, 'MIT');
     assert.ok(fm.description, 'Should have description');
@@ -83,7 +83,7 @@ describe('init output deep validation (Phase 3b + 3c)', () => {
 
   test('full template opencode.json has all 5 source agents', () => {
     runInit('full');
-    const config = JSON.parse(readFileSync(join(projectDir, 'platforms', 'opencode', 'opencode.json'), 'utf8'));
+    const config = JSON.parse(readFileSync(join(projectDir, 'opencode.json'), 'utf8'));
     const expectedAgents = ['build', 'plan', 'plan-arai', 'reviewer', 'tester', 'docs'];
     for (const name of expectedAgents) {
       assert.ok(config.agent?.[name], `Should have agent: ${name}`);
@@ -94,7 +94,7 @@ describe('init output deep validation (Phase 3b + 3c)', () => {
 
   test('full template opencode.json agent modes are correct', () => {
     runInit('full');
-    const config = JSON.parse(readFileSync(join(projectDir, 'platforms', 'opencode', 'opencode.json'), 'utf8'));
+    const config = JSON.parse(readFileSync(join(projectDir, 'opencode.json'), 'utf8'));
     assert.equal(config.agent.build.mode, 'primary');
     assert.equal(config.agent.plan.mode, 'primary');
     assert.equal(config.agent.reviewer.mode, 'subagent');
@@ -104,7 +104,7 @@ describe('init output deep validation (Phase 3b + 3c)', () => {
 
   test('full template opencode.json agent permissions match source', () => {
     runInit('full');
-    const config = JSON.parse(readFileSync(join(projectDir, 'platforms', 'opencode', 'opencode.json'), 'utf8'));
+    const config = JSON.parse(readFileSync(join(projectDir, 'opencode.json'), 'utf8'));
     assert.deepEqual(config.agent.plan.permission, { edit: 'deny' });
     assert.deepEqual(config.agent.reviewer.permission, { edit: 'deny' });
     assert.deepEqual(config.agent.tester.permission, { bash: 'allow' });
@@ -113,7 +113,7 @@ describe('init output deep validation (Phase 3b + 3c)', () => {
 
   test('full template includes all available skills', () => {
     runInit('full');
-    const skillsDir = join(projectDir, 'shared', 'skills');
+    const skillsDir = join(projectDir, '.opencode', 'skills');
     const present = readdirSync(skillsDir).filter(f => statSync(join(skillsDir, f)).isDirectory());
     const expected = [
       'agent-creator', 'architecture-creator', 'branding', 'code-review',
@@ -134,7 +134,7 @@ describe('init output deep validation (Phase 3b + 3c)', () => {
 
   test('full template opencode.json has all 3 commands', () => {
     runInit('full');
-    const config = JSON.parse(readFileSync(join(projectDir, 'platforms', 'opencode', 'opencode.json'), 'utf8'));
+    const config = JSON.parse(readFileSync(join(projectDir, 'opencode.json'), 'utf8'));
     const expectedCommands = ['test', 'deploy', 'commit'];
     for (const name of expectedCommands) {
       assert.ok(config.command?.[name], `Should have command: ${name}`);
@@ -157,17 +157,17 @@ describe('init output deep validation (Phase 3b + 3c)', () => {
 
   test('full template has opencode platform with all subdirectories', () => {
     runInit('full');
-    assertDir(join(projectDir, 'platforms', 'opencode'));
-    assertDir(join(projectDir, 'platforms', 'opencode', 'agents'));
-    assertDir(join(projectDir, 'platforms', 'opencode', 'commands'));
-    assertFile(join(projectDir, 'platforms', 'opencode', 'opencode.json'));
+    assertFile(join(projectDir, 'opencode.json'));
+    assertDir(join(projectDir, '.opencode', 'agents'));
+    assertDir(join(projectDir, '.opencode', 'commands'));
+    assertDir(join(projectDir, '.opencode', 'skills'));
   });
 
   /* ─── 3c: Minimal template specific checks ─── */
 
   test('minimal template does NOT have full-only skills', () => {
     runInit('minimal');
-    const skillsDir = join(projectDir, 'shared', 'skills');
+    const skillsDir = join(projectDir, '.opencode', 'skills');
     if (existsSync(skillsDir)) {
       const present = readdirSync(skillsDir).filter(f => statSync(join(skillsDir, f)).isDirectory());
       const fullOnly = ['branding', 'content-ingestion', 'document-generation', 'kb-management', 'pdf-extraction', 'youtube'];
@@ -179,7 +179,7 @@ describe('init output deep validation (Phase 3b + 3c)', () => {
 
   test('minimal template has only git + code-review skills', () => {
     runInit('minimal');
-    const skillsDir = join(projectDir, 'shared', 'skills');
+    const skillsDir = join(projectDir, '.opencode', 'skills');
     const present = readdirSync(skillsDir).filter(f => statSync(join(skillsDir, f)).isDirectory());
     assert.ok(present.includes('git'), 'Should have git skill');
     assert.ok(present.includes('code-review'), 'Should have code-review skill');

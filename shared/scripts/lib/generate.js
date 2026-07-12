@@ -12,7 +12,7 @@ import { updateAgentsMd } from './agents-md.js';
 function findProjectRoot(start) {
   let dir = resolve(start || '.');
   while (true) {
-    if (existsSync(join(dir, 'AGENTS.md')) || existsSync(join(dir, 'shared', 'skills'))) return dir;
+    if (existsSync(join(dir, 'AGENTS.md')) || existsSync(join(dir, '.opencode', 'skills'))) return dir;
     const parent = dirname(dir);
     if (parent === dir) return null;
     dir = parent;
@@ -27,12 +27,12 @@ function generateSkill(name, projectDir) {
   const template = resolvePartial('skill.md');
   if (!template) { log('skill.md partial not found', 'err'); return false; }
 
-  const dir = join(projectDir, 'shared', 'skills', name);
+  const dir = join(projectDir, '.opencode', 'skills', name);
   if (existsSync(dir)) { log(`Skill '${name}' already exists`, 'warn'); return false; }
 
   ensureDir(dir);
   writeFileSync(join(dir, 'SKILL.md'), applyVars(template, { name }));
-  log(`Created shared/skills/${name}/SKILL.md`, 'ok');
+  log(`Created .opencode/skills/${name}/SKILL.md`, 'ok');
   updateAgentsMd(projectDir);
   return true;
 }
@@ -48,14 +48,13 @@ function generateAgent(name, projectDir, description) {
   if (existsSync(filePath)) { log(`Agent '${name}' already exists`, 'warn'); return false; }
 
   const desc = description || `${name.replace(/-/g, ' ')} specialist`;
-  const opencodeDir = join(projectDir, 'platforms', 'opencode');
-  const hasOpenCode = existsSync(join(opencodeDir, 'opencode.json'));
+  const configPath = join(projectDir, 'opencode.json');
+  const hasOpenCode = existsSync(configPath);
 
   writeFileSync(filePath, applyVars(template, { name, description: desc }));
   log(`Created shared/agents/${name}.md`, 'ok');
 
   if (hasOpenCode) {
-    const configPath = join(opencodeDir, 'opencode.json');
     const config = JSON.parse(readFileSync(configPath, 'utf8'));
     if (!config.agent) config.agent = {};
 
@@ -69,7 +68,7 @@ function generateAgent(name, projectDir, description) {
         permission: { edit: 'deny' },
       };
       writeFileSync(configPath, JSON.stringify(config, null, 2) + '\n');
-      log(`Registered '${name}' in platforms/opencode/opencode.json`, 'ok');
+      log(`Registered '${name}' in opencode.json`, 'ok');
     }
   }
 
@@ -99,8 +98,7 @@ function generateCommand(name, projectDir, description) {
   const template = resolvePartial('command.md');
   if (!template) { log('command.md partial not found', 'err'); return false; }
 
-  const opencodeDir = join(projectDir, 'platforms', 'opencode');
-  const commandsDir = join(opencodeDir, 'commands');
+  const commandsDir = join(projectDir, '.opencode', 'commands');
   ensureDir(commandsDir);
 
   const filePath = join(commandsDir, `${name}.md`);
@@ -109,18 +107,18 @@ function generateCommand(name, projectDir, description) {
   const desc = description || `${name.replace(/-/g, ' ')} command`;
   writeFileSync(filePath, applyVars(template, { name, description: desc }));
 
-  const configPath = join(opencodeDir, 'opencode.json');
+  const configPath = join(projectDir, 'opencode.json');
   if (existsSync(configPath)) {
     const config = JSON.parse(readFileSync(configPath, 'utf8'));
     if (!config.command) config.command = {};
     if (!config.command[name]) {
       config.command[name] = { description: desc, template: `Execute the ${name} task.` };
       writeFileSync(configPath, JSON.stringify(config, null, 2) + '\n');
-      log(`Registered '${name}' in platforms/opencode/opencode.json`, 'ok');
+      log(`Registered '${name}' in opencode.json`, 'ok');
     }
   }
 
-  log(`Created platforms/opencode/commands/${name}.md`, 'ok');
+  log(`Created .opencode/commands/${name}.md`, 'ok');
   updateAgentsMd(projectDir);
   return true;
 }

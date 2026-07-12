@@ -2,6 +2,9 @@
 name: mcp-creator
 description: Create MCP server configurations — local processes, remote APIs, environment variables, and authentication.
 license: MIT
+scripts:
+  - create-mcp.js
+  - create-base.js
 ---
 
 # Creador de MCP

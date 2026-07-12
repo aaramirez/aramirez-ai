@@ -2,6 +2,8 @@
 name: youtube
 description: Use for fetching and processing YouTube video transcriptions to feed into AI models, generate summaries, create course notes, or analyze video content.
 license: MIT
+scripts:
+  - youtube-transcript.js
 ---
 
 # YouTube Transcript Skill

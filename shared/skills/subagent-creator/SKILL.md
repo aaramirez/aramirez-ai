@@ -2,6 +2,9 @@
 name: subagent-creator
 description: Create subagent definitions for specialized tasks — auto-invoked or @-mentioned.
 license: MIT
+scripts:
+  - create-subagent.js
+  - create-base.js
 ---
 
 # Subagent Creator

@@ -23,7 +23,7 @@ Crear skills personalizadas para tu dominio, con frontmatter `name:`, `descripti
 arai generate skill mi-skill
 ```
 
-Esto crea `shared/skills/mi-skill/SKILL.md`:
+Esto crea `.opencode/skills/mi-skill/SKILL.md`:
 
 ```yaml
 ---

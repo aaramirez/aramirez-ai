@@ -2,6 +2,8 @@
 name: document-generation
 description: Generate branded PDF presentations, HTML decks, reports, and images using Node.js content builders.
 license: MIT
+scripts:
+  - docgen/
 ---
 
 # Document generation

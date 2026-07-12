@@ -38,14 +38,14 @@ describe('arai init', () => {
     dir = tmpDir();
     projectDir = join(dir, 'minimal-test');
     runArai(['init', projectDir, '--template', 'minimal']);
-    assertFile(join(projectDir, 'shared', 'skills', 'git', 'SKILL.md'));
+    assertFile(join(projectDir, '.opencode', 'skills', 'git', 'SKILL.md'));
   });
 
   test('minimal template includes code-review skill', () => {
     dir = tmpDir();
     projectDir = join(dir, 'minimal-test2');
     runArai(['init', projectDir, '--template', 'minimal']);
-    assertFile(join(projectDir, 'shared', 'skills', 'code-review', 'SKILL.md'));
+    assertFile(join(projectDir, '.opencode', 'skills', 'code-review', 'SKILL.md'));
   });
 
   test('minimal template includes commit-message prompt', () => {
@@ -66,15 +66,16 @@ describe('arai init', () => {
     dir = tmpDir();
     projectDir = join(dir, 'minimal-test5');
     runArai(['init', projectDir, '--template', 'minimal']);
-    assertDir(join(projectDir, 'platforms', 'opencode'));
-    assertFile(join(projectDir, 'platforms', 'opencode', 'opencode.json'));
+    assertFile(join(projectDir, 'opencode.json'));
+    assertDir(join(projectDir, '.opencode', 'agents'));
+    assertDir(join(projectDir, '.opencode', 'commands'));
   });
 
   test('minimal template does NOT include full skills (e.g. branding)', () => {
     dir = tmpDir();
     projectDir = join(dir, 'minimal-test6');
     runArai(['init', projectDir, '--template', 'minimal']);
-    assert.ok(!existsSync(join(projectDir, 'shared', 'skills', 'branding', 'SKILL.md')),
+    assert.ok(!existsSync(join(projectDir, '.opencode', 'skills', 'branding', 'SKILL.md')),
       'Minimal template should not include branding skill');
   });
 
@@ -90,7 +91,7 @@ describe('arai init', () => {
     dir = tmpDir();
     projectDir = join(dir, 'full-test');
     runArai(['init', projectDir, '--template', 'full']);
-    const skillsDir = join(projectDir, 'shared', 'skills');
+    const skillsDir = join(projectDir, '.opencode', 'skills');
     const dirs = readdirSync(skillsDir).filter(f => statSync(join(skillsDir, f)).isDirectory());
     assert.ok(dirs.length >= 8, `Expected at least 8 skills, got ${dirs.length}`);
   });
@@ -131,14 +132,14 @@ describe('arai init', () => {
     assertFileContent(join(projectDir, 'AGENTS.md'), /My custom project/);
   });
 
-  test('generated opencode.json has skills paths', () => {
+  test('generated opencode.json has no skills.paths (native discovery)', () => {
     dir = tmpDir();
     projectDir = join(dir, 'skills-test');
     runArai(['init', projectDir, '--template', 'minimal']);
-    const configPath = join(projectDir, 'platforms', 'opencode', 'opencode.json');
+    const configPath = join(projectDir, 'opencode.json');
     const config = JSON.parse(readFileSync(configPath, 'utf8'));
-    assert.ok(config.skills?.paths?.includes('../shared/skills'),
-      `Expected ../shared/skills in skills paths, got: ${JSON.stringify(config.skills?.paths)}`);
+    assert.ok(!config.skills?.paths,
+      `Expected no skills.paths, got: ${JSON.stringify(config.skills?.paths)}`);
   });
 
   test('fails gracefully if directory already exists and is not empty', () => {
@@ -157,7 +158,7 @@ describe('arai init', () => {
     projectDir = join(dir, 'acc-test');
     runArai(['init', projectDir, '--template', 'minimal']);
     const agentsContent = readFileSync(join(projectDir, 'AGENTS.md'), 'utf8');
-    assert.ok(agentsContent.includes('shared/skills'), 'AGENTS.md should mention shared/skills');
-    assert.ok(agentsContent.includes('platforms'), 'AGENTS.md should mention platforms');
+    assert.ok(agentsContent.includes('.opencode/skills'), 'AGENTS.md should mention .opencode/skills');
+    assert.ok(agentsContent.includes('.opencode'), 'AGENTS.md should mention .opencode');
   });
 });

@@ -49,7 +49,7 @@ cd mi-proyecto
 arai install skill youtube
 ```
 
-Esto copia `shared/skills/youtube/SKILL.md` a `.opencode/skills/youtube/SKILL.md`.
+Esto copia la skill desde el repositorio fuente a `.opencode/skills/youtube/SKILL.md` en tu proyecto.
 
 ---
 

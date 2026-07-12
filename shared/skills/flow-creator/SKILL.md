@@ -2,6 +2,9 @@
 name: flow-creator
 description: Create workflow sequences for agent collaboration — plan-first, TDD, hotfix, or custom stages.
 license: MIT
+scripts:
+  - create-flow.js
+  - create-base.js
 ---
 
 # Creador de flujos de trabajo

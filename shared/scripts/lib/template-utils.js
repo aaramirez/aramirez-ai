@@ -55,8 +55,9 @@ function resolveScripts(items) {
     const dir = join(REPO_ROOT, 'shared', 'scripts');
     if (!existsSync(dir)) return [];
     return readdirSync(dir).filter(f => {
+      if (f === '.gitkeep' || f === 'lib') return false;
       const p = join(dir, f);
-      return statSync(p).isFile() && f !== '.gitkeep';
+      return statSync(p).isFile() || statSync(p).isDirectory();
     });
   }
   return items;

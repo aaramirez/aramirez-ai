@@ -72,7 +72,7 @@ Para envíos rápidos desde el chat sin cargar el skill:
 /email Envía un correo a admin@example.com con el asunto "Prueba" y el cuerpo "Hola mundo"
 ```
 
-El comando está definido en `platforms/opencode/commands/email.md` y usa `$ARGUMENTS` para pasar el mensaje completo.
+El comando está definido en `.opencode/commands/email.md` y usa `$ARGUMENTS` para pasar el mensaje completo.
 
 ## Interfaz 3 — CLI directo
 
@@ -104,8 +104,8 @@ node shared/scripts/send-email.js \
 
 - `shared/scripts/send-email.js` — core: lógica SMTP con nodemailer
 - `shared/scripts/mcp-email.js` — wrapper MCP server (JSON-RPC sobre stdio)
-- `platforms/opencode/commands/email.md` — definición del comando opencode
-- `shared/skills/email/SKILL.md` — skill para cargar en agentes
+- `.opencode/commands/email.md` — definición del comando opencode
+- `.opencode/skills/email/SKILL.md` — skill para cargar en agentes
 
 ---
 

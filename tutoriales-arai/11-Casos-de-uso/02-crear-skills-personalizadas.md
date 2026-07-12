@@ -23,7 +23,7 @@ arai generate skill log-review
 
 ## Paso 3: Escribir la skill
 
-Editar `shared/skills/log-review/SKILL.md`:
+Editar `.opencode/skills/log-review/SKILL.md`:
 
 ```markdown
 ---

@@ -2,6 +2,9 @@
 name: skill-creator
 description: Create reusable SKILL.md files with valid YAML frontmatter for agent skill discovery.
 license: MIT
+scripts:
+  - create-skill.js
+  - create-base.js
 ---
 
 # Creador de skills

@@ -2,6 +2,9 @@
 name: permission-creator
 description: Create permission rules for agents and tools — global defaults and per-agent overrides with glob patterns.
 license: MIT
+scripts:
+  - create-permission.js
+  - create-base.js
 ---
 
 # Permission Creator

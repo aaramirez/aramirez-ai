@@ -2,6 +2,9 @@
 name: architecture-creator
 description: Create multi-agent architecture patterns — orchestrator, tiered, peer, or chain delegation models.
 license: MIT
+scripts:
+  - create-architecture.js
+  - create-base.js
 ---
 
 # Creador de arquitecturas multi-agente

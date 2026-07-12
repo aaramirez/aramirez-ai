@@ -2,6 +2,9 @@
 name: command-creator
 description: Create custom opencode commands for repetitive tasks with templates and optional agent/model overrides.
 license: MIT
+scripts:
+  - create-command.js
+  - create-base.js
 ---
 
 # Creador de comandos

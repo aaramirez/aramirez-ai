@@ -2,6 +2,9 @@
 name: script-creator
 description: Create reusable automation scripts in JavaScript (ESM), Python, or Bash with proper boilerplate.
 license: MIT
+scripts:
+  - create-script.js
+  - create-base.js
 ---
 
 # Creación de scripts reutilizables

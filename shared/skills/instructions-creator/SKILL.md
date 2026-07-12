@@ -2,6 +2,9 @@
 name: instructions-creator
 description: Create AGENTS.md with project instructions, workflow guidelines, and coding conventions.
 license: MIT
+scripts:
+  - create-instructions.js
+  - create-base.js
 ---
 
 # Instructions Creator

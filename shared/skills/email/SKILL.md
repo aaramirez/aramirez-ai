@@ -2,6 +2,9 @@
 name: email
 description: Send emails via SMTP (Gmail, Outlook/Office365) with CLI, MCP, and command support.
 license: MIT
+scripts:
+  - send-email.js
+  - mcp-email.js
 ---
 
 # Email Skill

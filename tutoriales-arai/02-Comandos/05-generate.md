@@ -32,7 +32,7 @@ arai generate kb [directorio]
 
 | Comando | Descripción |
 |---------|-------------|
-| `generate skill <nombre>` | Crea una skill en `shared/skills/<nombre>/SKILL.md` |
+| `generate skill <nombre>` | Crea una skill en `.opencode/skills/<nombre>/SKILL.md` |
 | `generate agent <nombre>` | Crea un agente + lo registra en opencode.json |
 | `generate script <nombre>` | Crea un script reutilizable en `shared/scripts/` |
 | `generate command <nombre>` | Crea un comando opencode personalizado |
@@ -45,7 +45,7 @@ arai generate kb [directorio]
 arai generate skill mi-skill
 ```
 
-Genera `shared/skills/mi-skill/SKILL.md`:
+Genera `.opencode/skills/mi-skill/SKILL.md`:
 
 ```yaml
 ---
@@ -61,7 +61,7 @@ license: MIT
 arai generate agent mi-agent
 ```
 
-Crea `platforms/opencode/agents/mi-agent.md` y agrega la entrada en `opencode.json`.
+Crea `.opencode/agents/mi-agent.md` y agrega la entrada en `opencode.json` (en la raíz del proyecto).
 
 ## Ejemplo: Crear un vault de Obsidian
 

@@ -2,6 +2,9 @@
 name: reference-creator
 description: Create shared reference configurations for scripts, rules, and prompts across projects.
 license: MIT
+scripts:
+  - create-reference.js
+  - create-base.js
 ---
 
 # Creación de referencias compartidas

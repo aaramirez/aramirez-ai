@@ -2,6 +2,9 @@
 name: prompt-creator
 description: Create reusable prompt fragments for commit messages, review criteria, planning, and common patterns.
 license: MIT
+scripts:
+  - create-prompt.js
+  - create-base.js
 ---
 
 # Creación de fragmentos de prompt

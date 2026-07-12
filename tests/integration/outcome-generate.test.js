@@ -23,7 +23,7 @@ describe('arai generate outcome validation (Phase 3a)', () => {
     initProject(dir);
     const result = runArai(['generate', 'skill', 'deep-skill', '--dir', dir]);
     assertExitCode(result, 0);
-    const content = readFileSync(join(dir, 'shared', 'skills', 'deep-skill', 'SKILL.md'), 'utf8');
+    const content = readFileSync(join(dir, '.opencode', 'skills', 'deep-skill', 'SKILL.md'), 'utf8');
     assert.ok(content.includes('license: MIT'), 'Should have MIT license');
     assert.ok(content.match(/^## /m), 'Should have at least one ## heading');
     assert.ok(content.includes('Usage'), 'Should have Usage section');
@@ -48,7 +48,7 @@ describe('arai generate outcome validation (Phase 3a)', () => {
     dir = tmpDir();
     initProject(dir);
     runArai(['generate', 'agent', 'deep-agent', '--dir', dir]);
-    const config = JSON.parse(readFileSync(join(dir, 'platforms', 'opencode', 'opencode.json'), 'utf8'));
+    const config = JSON.parse(readFileSync(join(dir, 'opencode.json'), 'utf8'));
     const entry = config.agent?.['deep-agent'];
     assert.ok(entry, 'Agent should be registered');
     assert.equal(entry.mode, 'subagent', 'Agent mode should be subagent');
@@ -63,8 +63,8 @@ describe('arai generate outcome validation (Phase 3a)', () => {
     initProject(dir);
     const result = runArai(['generate', 'command', 'deep-cmd', '--dir', dir, '--description', 'Test command']);
     assertExitCode(result, 0);
-    assertFile(join(dir, 'platforms', 'opencode', 'commands', 'deep-cmd.md'));
-    const config = JSON.parse(readFileSync(join(dir, 'platforms', 'opencode', 'opencode.json'), 'utf8'));
+    assertFile(join(dir, '.opencode', 'commands', 'deep-cmd.md'));
+    const config = JSON.parse(readFileSync(join(dir, 'opencode.json'), 'utf8'));
     const entry = config.command?.['deep-cmd'];
     assert.ok(entry, 'Command should be registered');
     assert.ok(entry.description?.length >= 5, `Should have description, got: ${entry.description}`);

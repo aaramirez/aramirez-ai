@@ -15,7 +15,7 @@ Skills, scripts, and prompts are installed from the [aramirez-ai](https://github
 ## Key principles
 
 - **OpenCode only**: All agent configuration is managed through opencode (opencode.json).
-- **All skills are SKILL.md**: Skills live in `shared/skills/<name>/SKILL.md` with YAML frontmatter.
+- **Skills live in `.opencode/skills/<name>/SKILL.md`** with YAML frontmatter.
 - **Cross-Platform Compatibility**: All code, scripts, and tools must run on both macOS and Windows.
 - **Per-project installs**: `arai install` copies files locally — projects are self-contained.
 
@@ -31,6 +31,12 @@ Skills, scripts, and prompts are installed from the [aramirez-ai](https://github
 |-------|-------------|
 {{skills_table}}
 
+## Available scripts
+
+| Script | Type |
+|--------|------|
+{{scripts_table}}
+
 ## CLI quick reference
 
 | Command | Description |
@@ -42,8 +48,4 @@ Skills, scripts, and prompts are installed from the [aramirez-ai](https://github
 - Follow the existing code style (see `shared/rules/code-style.md`)
 - Use conventional commits (`<type>(<scope>): <description>`)
 - Keep skills in SKILL.md format with YAML frontmatter
-- Add new skills as `shared/skills/<name>/SKILL.md`
-
-## Adding new agents
-
-Run `arai generate agent <name>` to create an agent definition in `shared/agents/` and register it in `platforms/opencode/opencode.json`.
+- Add new skills as `.opencode/skills/<name>/SKILL.md`

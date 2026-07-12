@@ -2,6 +2,9 @@
 name: vault-pdf-export
 description: Exporta contenido del vault Obsidian curso-ia a PDF profesional usando el pipeline document-generation.
 license: MIT
+scripts:
+  - docgen-vault.js
+  - docgen/
 ---
 
 # Vault PDF Export

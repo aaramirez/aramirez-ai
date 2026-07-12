@@ -27,19 +27,19 @@ arai sync agent build            # Sincroniza un agente específico
 
 ## ¿Qué hace sync?
 
-Lee los archivos fuente en `shared/` y `platforms/` y los copia a las ubicaciones de destino en el proyecto. Es útil después de:
+Lee los archivos fuente del repositorio arai (`shared/`, `platforms/`) y los copia a `.opencode/` en tu proyecto. Es útil después de:
 
-1. Editar una skill (`shared/skills/<nombre>/SKILL.md`)
-2. Modificar un agente (`platforms/opencode/agents/<nombre>.md`)
-3. Cambiar la configuración de opencode (`platforms/opencode/opencode.json`)
+1. Editar una skill en el repositorio fuente (`shared/skills/<nombre>/SKILL.md`)
+2. Modificar un agente en el repositorio fuente (`platforms/opencode/agents/<nombre>.md`)
+3. Actualizar la configuración de opencode (`opencode.json` en la raíz del proyecto)
 
 ## Flujo de trabajo típico
 
 ```bash
-# 1. Editas una skill
+# 1. Editas una skill en el repositorio fuente
 vim shared/skills/mi-skill/SKILL.md
 
-# 2. Sincronizas al proyecto
+# 2. Sincronizas al proyecto (.opencode/skills/mi-skill/)
 arai sync skill mi-skill
 
 # 3. Verificas

@@ -2,6 +2,9 @@
 name: specialized-agent-creator
 description: Create domain-specific agents with pre-built prompts for review, testing, docs, security, devops, and architecture roles.
 license: MIT
+scripts:
+  - create-specialized-agent.js
+  - create-base.js
 ---
 
 # Creador de agentes especializados

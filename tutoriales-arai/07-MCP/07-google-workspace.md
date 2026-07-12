@@ -82,7 +82,7 @@ Combínalo con el skill `email` para adjuntar archivos, o con `content-ingestion
 
 ## Referencia
 
-- Skill: `shared/skills/google-workspace/SKILL.md`
+- Skill: `.opencode/skills/google-workspace/SKILL.md`
 - Repo: https://github.com/googleapis/mcp-workspace
 
 ---

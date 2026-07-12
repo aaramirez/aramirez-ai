@@ -104,7 +104,7 @@ La primera vez, el server inicia un device-code flow para autenticar.
 
 ## Referencia
 
-- Skill: `shared/skills/m365/SKILL.md`
+- Skill: `.opencode/skills/m365/SKILL.md`
 - Repo: https://github.com/Softeria/ms-365-mcp-server
 
 ---

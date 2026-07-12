@@ -2,6 +2,9 @@
 name: config-creator
 description: Create base opencode.json configuration with model, shell, compaction, and runtime settings.
 license: MIT
+scripts:
+  - create-config.js
+  - create-base.js
 ---
 
 # Config Creator

@@ -17,11 +17,12 @@ describe('full lifecycle', () => {
     // 1. arai init minimal
     const initResult = runArai(['init', dir, '--template', 'minimal', '--description', 'Lifecycle test']);
     assertExitCode(initResult, 0);
-    assertDir(join(dir, 'shared', 'skills', 'git'));
-    assertFile(join(dir, 'shared', 'skills', 'code-review', 'SKILL.md'));
+    assertDir(join(dir, '.opencode', 'skills', 'git'));
+    assertFile(join(dir, '.opencode', 'skills', 'code-review', 'SKILL.md'));
     assertFile(join(dir, 'shared', 'prompts', 'commit-message.md'));
     assertFile(join(dir, 'shared', 'rules', 'code-style.md'));
-    assertDir(join(dir, 'platforms', 'opencode'));
+    assertFile(join(dir, 'opencode.json'));
+    assertDir(join(dir, '.opencode', 'agents'));
     assertFile(join(dir, 'AGENTS.md'));
 
     // 2. Verify AGENTS.md describes the project
@@ -115,7 +116,7 @@ describe('full lifecycle', () => {
     assertExitCode(initResult, 0);
 
     // All skills copied
-    const skillsDir = join(dir, 'shared', 'skills');
+    const skillsDir = join(dir, '.opencode', 'skills');
     const skillDirs = readdirSync(skillsDir).filter(f => statSync(join(skillsDir, f)).isDirectory());
     assert.ok(skillDirs.length >= 8, `Expected at least 8 skills, got ${skillDirs.length}`);
 
@@ -135,10 +136,10 @@ describe('full lifecycle', () => {
     assertFile(join(dir, 'assets', 'images', 'logo-white.svg'));
 
     // OpenCode platform
-    assertFile(join(dir, 'platforms', 'opencode', 'opencode.json'));
+    assertFile(join(dir, 'opencode.json'));
 
-    // Verify opencode.json has skills paths
-    const config = JSON.parse(readFileSync(join(dir, 'platforms', 'opencode', 'opencode.json'), 'utf8'));
-    assert.ok(config.skills?.paths?.includes('../shared/skills'));
+    // Verify opencode.json has no skills.paths (native discovery)
+    const config = JSON.parse(readFileSync(join(dir, 'opencode.json'), 'utf8'));
+    assert.ok(!config.skills?.paths, 'Should not have skills.paths (native discovery)');
   });
 });

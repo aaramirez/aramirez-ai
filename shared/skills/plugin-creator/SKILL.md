@@ -2,6 +2,9 @@
 name: plugin-creator
 description: Create plugin configurations — npm packages or local plugin directories extending opencode with custom tools and hooks.
 license: MIT
+scripts:
+  - create-plugin.js
+  - create-base.js
 ---
 
 # Creación de plugins para opencode

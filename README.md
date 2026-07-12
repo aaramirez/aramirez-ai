@@ -14,6 +14,7 @@ Tres sistemas en un solo repositorio:
 
 ## Índice
 
+- [Filosofía](#filosofía)
 - [Instalación](#instalación)
 - [CLI: arai](#cli-arai)
 - [Agentes disponibles](#agentes-disponibles)
@@ -26,6 +27,29 @@ Tres sistemas en un solo repositorio:
 - [Reference repos](#reference-repos)
 - [Cross-platform](#cross-platform)
 - [Requisitos](#requisitos)
+
+---
+
+## Filosofía
+
+**aramirez-ai es un generador de harnesses, no un proyecto para copiar.**
+
+La estructura de aramirez-ai (`shared/skills/`, `platforms/opencode/`) es interna al generador. Los harnesses que genera `arai init` usan la estructura nativa de opencode:
+
+| Componente | aramirez-ai (fuente) | Harness generado (salida) |
+|------------|---------------------|--------------------------|
+| Skills | `shared/skills/<name>/SKILL.md` | `.opencode/skills/<name>/SKILL.md` |
+| Agents | `platforms/opencode/agents/<name>.md` | `.opencode/agents/<name>.md` |
+| Commands | `platforms/opencode/commands/<name>.md` | `.opencode/commands/<name>.md` |
+| Config | `platforms/opencode/opencode.json` | `opencode.json` (raíz) |
+| Scripts | `shared/scripts/` | `shared/scripts/` |
+
+**Principios clave:**
+
+- **Descubrimiento nativo**: opencode descubre skills en `.opencode/skills/` — no necesita `skills.paths`
+- **Self-contained**: cada harness es independiente — `arai install` copia archivos, no crea dependencias
+- **Sin internals**: los harnesses no incluyen plugins, tui, MCP engram/context7 ni node_modules de aramirez-ai
+- **Siempre copia**: los archivos se copian, no se linkean ni se referencian por env vars
 
 ---
 
@@ -262,7 +286,7 @@ arai generate kb --force         # sobrescribe si existe
 
 #### `arai generate skill <name>`
 
-Crea una nueva skill en `shared/skills/<name>/SKILL.md`.
+Crea una nueva skill en `.opencode/skills/<name>/SKILL.md`.
 
 | Opción | Descripción |
 |--------|-------------|
@@ -301,7 +325,7 @@ arai generate script data-migration --description "DB migration utility"
 
 #### `arai generate command <name>`
 
-Crea un comando para opencode en `platforms/opencode/commands/`.
+Crea un comando para opencode en `.opencode/commands/`.
 
 | Opción | Descripción |
 |--------|-------------|
@@ -356,9 +380,9 @@ Actualiza `shared/brand.json` y copia los logos a `assets/images/`.
 
 | Archivo | Descripción |
 |---------|-------------|
-| `platforms/opencode/agents/reviewer.md` | Code review specialist checklist |
-| `platforms/opencode/agents/tester.md` | Testing specialist instructions |
-| `platforms/opencode/agents/docs.md` | Documentation specialist instructions |
+| `.opencode/agents/reviewer.md` | Code review specialist checklist |
+| `.opencode/agents/tester.md` | Testing specialist instructions |
+| `.opencode/agents/docs.md` | Documentation specialist instructions |
 
 ### Comandos opencode
 
@@ -412,7 +436,7 @@ Actualiza `shared/brand.json` y copia los logos a `assets/images/`.
 | **subagent-creator** | Genera subagentes con permisos restringidos y modo subagent |
 | **tool-creator** | Genera herramientas de agente con validación de entrada y tipo
 
-Todas las skills están en `shared/skills/<nombre>/SKILL.md` con formato estándar (frontmatter YAML + markdown).
+Todas las skills están en `.opencode/skills/<nombre>/SKILL.md` con formato estándar (frontmatter YAML + markdown).
 
 ---
 

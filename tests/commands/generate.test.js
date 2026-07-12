@@ -16,19 +16,19 @@ describe('arai generate', () => {
     assertExitCode(result, 0);
   }
 
-  test('arai generate skill <name> creates shared/skills/<name>/SKILL.md', () => {
+  test('arai generate skill <name> creates .opencode/skills/<name>/SKILL.md', () => {
     dir = tmpDir();
     initProject(dir);
     const result = runArai(['generate', 'skill', 'my-skill', '--dir', dir]);
     assertExitCode(result, 0);
-    assertFile(join(dir, 'shared', 'skills', 'my-skill', 'SKILL.md'));
+    assertFile(join(dir, '.opencode', 'skills', 'my-skill', 'SKILL.md'));
   });
 
   test('generated skill has frontmatter with name and description', () => {
     dir = tmpDir();
     initProject(dir);
     runArai(['generate', 'skill', 'test-skill', '--dir', dir]);
-    const content = readFileSync(join(dir, 'shared', 'skills', 'test-skill', 'SKILL.md'), 'utf8');
+    const content = readFileSync(join(dir, '.opencode', 'skills', 'test-skill', 'SKILL.md'), 'utf8');
     assert.ok(content.includes('name: test-skill'), 'Should have name in frontmatter');
     assert.ok(content.match(/^description:/m), 'Should have description in frontmatter');
   });
@@ -45,7 +45,7 @@ describe('arai generate', () => {
     dir = tmpDir();
     initProject(dir);
     runArai(['generate', 'agent', 'test-agent', '--dir', dir]);
-    const config = JSON.parse(readFileSync(join(dir, 'platforms', 'opencode', 'opencode.json'), 'utf8'));
+    const config = JSON.parse(readFileSync(join(dir, 'opencode.json'), 'utf8'));
     assert.ok(config.agent?.['test-agent'], 'Agent should be registered in opencode.json');
   });
 
@@ -57,19 +57,19 @@ describe('arai generate', () => {
     assertFile(join(dir, 'shared', 'scripts', 'my-script.js'));
   });
 
-  test('arai generate command <name> creates platforms/opencode/commands/<name>.md', () => {
+  test('arai generate command <name> creates .opencode/commands/<name>.md', () => {
     dir = tmpDir();
     initProject(dir);
     const result = runArai(['generate', 'command', 'my-cmd', '--dir', dir]);
     assertExitCode(result, 0);
-    assertFile(join(dir, 'platforms', 'opencode', 'commands', 'my-cmd.md'));
+    assertFile(join(dir, '.opencode', 'commands', 'my-cmd.md'));
   });
 
   test('generated command is registered in opencode.json', () => {
     dir = tmpDir();
     initProject(dir);
     runArai(['generate', 'command', 'test-cmd', '--dir', dir]);
-    const config = JSON.parse(readFileSync(join(dir, 'platforms', 'opencode', 'opencode.json'), 'utf8'));
+    const config = JSON.parse(readFileSync(join(dir, 'opencode.json'), 'utf8'));
     assert.ok(config.command?.['test-cmd'], 'Command should be registered in opencode.json');
   });
 
@@ -103,7 +103,7 @@ describe('arai generate', () => {
     initProject(dir);
     const result = runArai(['generate', 'agent', 'custom-agent', '--dir', dir, '--description', 'My custom agent']);
     assertExitCode(result, 0);
-    const config = JSON.parse(readFileSync(join(dir, 'platforms', 'opencode', 'opencode.json'), 'utf8'));
+    const config = JSON.parse(readFileSync(join(dir, 'opencode.json'), 'utf8'));
     assert.equal(config.agent['custom-agent'].description, 'My custom agent');
   });
 });

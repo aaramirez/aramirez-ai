@@ -2,6 +2,9 @@
 name: rule-creator
 description: Create coding standards and architecture rule files for project consistency.
 license: MIT
+scripts:
+  - create-rule.js
+  - create-base.js
 ---
 
 # Creación de reglas de proyecto

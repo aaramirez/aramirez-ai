@@ -35,7 +35,8 @@ arai init mi-proyecto
 
 Crea:
 - `shared/` — prompts, rules, scripts
-- `platforms/opencode/` — configuración opencode
+- `.opencode/` — configuración opencode (skills, agents, commands)
+- `opencode.json` — configuración principal en la raíz
 - `AGENTS.md` — instrucciones del proyecto
 
 ### Completa
