@@ -40,18 +40,18 @@ describe('docgen cross-harness validation', () => {
     assert.equal(specs.length, 29, `Expected 29 specs, got ${specs.length}`);
   });
 
-  test('shared/scripts/docgen/ has all 12 scripts', () => {
+  test('.opencode/scripts/docgen/ has all docgen scripts', () => {
     const p = initFull();
-    assertDir(join(p, 'shared', 'scripts', 'docgen'));
-    const scripts = readdirSync(join(p, 'shared', 'scripts', 'docgen'))
+    assertDir(join(p, '.opencode', 'scripts', 'docgen'));
+    const scripts = readdirSync(join(p, '.opencode', 'scripts', 'docgen'))
       .filter(f => f.endsWith('.js'));
     assert.ok(scripts.length >= 10, `Expected >=10 docgen scripts, got ${scripts.length}`);
   });
 
-  test('shared/brand.json exists with valid brand config', () => {
+  test('.opencode/brand.json exists with valid brand config', () => {
     const p = initFull();
-    assertFile(join(p, 'shared', 'brand.json'));
-    const brand = JSON.parse(readFileSync(join(p, 'shared', 'brand.json'), 'utf8'));
+    assertFile(join(p, '.opencode', 'brand.json'));
+    const brand = JSON.parse(readFileSync(join(p, '.opencode', 'brand.json'), 'utf8'));
     assert.ok(brand.brand, 'brand.json must have brand object');
     assert.ok(brand.brand.name, 'brand must have name');
     assert.ok(brand.brand.colors?.primary, 'brand must have primary color');
@@ -72,7 +72,7 @@ describe('docgen cross-harness validation', () => {
 
   test('docgen scripts parse without syntax errors', () => {
     const p = initFull();
-    const scriptsDir = join(p, 'shared', 'scripts', 'docgen');
+    const scriptsDir = join(p, '.opencode', 'scripts', 'docgen');
     const critical = ['index.js', 'charts.js', 'html-theme.js', 'report-theme.js',
       'build-deck.js', 'build-report.js', 'build-image.js', 'build-web.js'];
     for (const name of critical) {
@@ -105,12 +105,12 @@ describe('docgen cross-harness validation', () => {
     assert.ok(css.includes('.data-table'), 'report.css must have .data-table class');
   });
 
-  test('full template includes all 30 skills', () => {
+  test('full template includes all distributable skills', () => {
     const p = initFull();
     assertDir(join(p, '.opencode', 'skills'));
     const skills = readdirSync(join(p, '.opencode', 'skills'))
       .filter(f => statSync(join(p, '.opencode', 'skills', f)).isDirectory());
-    assert.equal(skills.length, 30, `Expected 30 skills, got ${skills.length}`);
+    assert.equal(skills.length, 14, `Expected 14 skills, got ${skills.length}`);
   });
 
   test('full template includes all agents', () => {
