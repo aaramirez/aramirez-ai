@@ -25,7 +25,7 @@ function installSkillScripts(skillName, projectRoot) {
     .map(l => l.replace(/^\s*-\s+/, '').trim())
     .filter(Boolean);
 
-  const scriptsDir = join(projectRoot, 'shared', 'scripts');
+  const scriptsDir = join(projectRoot, '.opencode', 'scripts');
   ensureDir(scriptsDir);
 
   for (const item of scripts) {
@@ -227,7 +227,7 @@ function installScript(name, projectRoot) {
     return false;
   }
 
-  const destDir = join(projectRoot, 'shared', 'scripts');
+  const destDir = join(projectRoot, '.opencode', 'scripts');
   const destFile = join(destDir, `${name}.js`);
   if (existsSync(destFile)) {
     log(`Script '${name}' already installed`, 'warn');
@@ -236,7 +236,7 @@ function installScript(name, projectRoot) {
 
   ensureDir(destDir);
   writeFileSync(destFile, readFileSync(srcFile, 'utf8'));
-  log(`Installed script '${name}' → shared/scripts/${name}.js`, 'ok');
+  log(`Installed script '${name}' → .opencode/scripts/${name}.js`, 'ok');
   updateAgentsMd(projectRoot);
   return true;
 }
@@ -250,7 +250,7 @@ function installPrompt(name, projectRoot) {
     return false;
   }
 
-  const destDir = join(projectRoot, 'shared', 'prompts');
+  const destDir = join(projectRoot, '.opencode', 'prompts');
   const destFile = join(destDir, `${name}.md`);
   if (existsSync(destFile)) {
     log(`Prompt '${name}' already installed`, 'warn');
@@ -259,7 +259,7 @@ function installPrompt(name, projectRoot) {
 
   ensureDir(destDir);
   writeFileSync(destFile, readFileSync(srcFile, 'utf8'));
-  log(`Installed prompt '${name}' → shared/prompts/${name}.md`, 'ok');
+  log(`Installed prompt '${name}' → .opencode/prompts/${name}.md`, 'ok');
   updateAgentsMd(projectRoot);
   return true;
 }
@@ -273,7 +273,7 @@ function installRule(name, projectRoot) {
     return false;
   }
 
-  const destDir = join(projectRoot, 'shared', 'rules');
+  const destDir = join(projectRoot, '.opencode', 'rules');
   const destFile = join(destDir, `${name}.md`);
   if (existsSync(destFile)) {
     log(`Rule '${name}' already installed`, 'warn');
@@ -282,7 +282,7 @@ function installRule(name, projectRoot) {
 
   ensureDir(destDir);
   writeFileSync(destFile, readFileSync(srcFile, 'utf8'));
-  log(`Installed rule '${name}' → shared/rules/${name}.md`, 'ok');
+  log(`Installed rule '${name}' → .opencode/rules/${name}.md`, 'ok');
   updateAgentsMd(projectRoot);
   return true;
 }
@@ -349,40 +349,40 @@ function uninstallAgent(name, projectRoot) {
 }
 
 function uninstallScript(name, projectRoot) {
-  const destFile = join(projectRoot, 'shared', 'scripts', `${name}.js`);
+  const destFile = join(projectRoot, '.opencode', 'scripts', `${name}.js`);
   if (!existsSync(destFile)) {
     log(`Script '${name}' not installed`, 'info');
     return false;
   }
 
   rmSync(destFile, { force: true });
-  log(`Uninstalled script '${name}' from shared/scripts/`, 'ok');
+  log(`Uninstalled script '${name}' from .opencode/scripts/`, 'ok');
   updateAgentsMd(projectRoot);
   return true;
 }
 
 function uninstallPrompt(name, projectRoot) {
-  const destFile = join(projectRoot, 'shared', 'prompts', `${name}.md`);
+  const destFile = join(projectRoot, '.opencode', 'prompts', `${name}.md`);
   if (!existsSync(destFile)) {
     log(`Prompt '${name}' not installed`, 'info');
     return false;
   }
 
   rmSync(destFile, { force: true });
-  log(`Uninstalled prompt '${name}' from shared/prompts/`, 'ok');
+  log(`Uninstalled prompt '${name}' from .opencode/prompts/`, 'ok');
   updateAgentsMd(projectRoot);
   return true;
 }
 
 function uninstallRule(name, projectRoot) {
-  const destFile = join(projectRoot, 'shared', 'rules', `${name}.md`);
+  const destFile = join(projectRoot, '.opencode', 'rules', `${name}.md`);
   if (!existsSync(destFile)) {
     log(`Rule '${name}' not installed`, 'info');
     return false;
   }
 
   rmSync(destFile, { force: true });
-  log(`Uninstalled rule '${name}' from shared/rules/`, 'ok');
+  log(`Uninstalled rule '${name}' from .opencode/rules/`, 'ok');
   updateAgentsMd(projectRoot);
   return true;
 }

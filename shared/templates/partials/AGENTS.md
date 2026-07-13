@@ -45,7 +45,7 @@ Skills, scripts, and prompts are installed from the [aramirez-ai](https://github
 
 ## When working
 
-- Follow the existing code style (see `shared/rules/code-style.md`)
+- Follow the existing code style (see `.opencode/rules/code-style.md`)
 - Use conventional commits (`<type>(<scope>): <description>`)
 - Keep skills in SKILL.md format with YAML frontmatter
 - Add new skills as `.opencode/skills/<name>/SKILL.md`

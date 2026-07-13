@@ -31,7 +31,7 @@ SMTP_FROM=Tu Nombre <tu-email@gmail.com>
 ### CLI
 
 ```bash
-node shared/scripts/send-email.js \
+node .opencode/scripts/send-email.js \
   --to "user@example.com" \
   --cc "cc@example.com" \
   --subject "Asunto" \
@@ -45,7 +45,7 @@ Flags: `--to`, `--subject`, `--body`, `--cc`, `--bcc`, `--html`, `--attachment` 
 ### Programmatic (Node.js)
 
 ```js
-import { sendEmail } from './shared/scripts/send-email.js';
+import { sendEmail } from './.opencode/scripts/send-email.js';
 
 const result = await sendEmail({
   to: 'user@example.com',
@@ -64,7 +64,7 @@ Enable the email MCP server in `opencode.json`:
 
 ```json
 "email": {
-  "command": ["node", "shared/scripts/mcp-email.js"],
+  "command": ["node", ".opencode/scripts/mcp-email.js"],
   "enabled": true,
   "type": "local"
 }
@@ -88,7 +88,7 @@ Generate a report and send it in one workflow:
 
 ```bash
 npm run docgen:report assets/templates/specs/weekly-status.json \
-  && node shared/scripts/send-email.js \
+  && node .opencode/scripts/send-email.js \
     --to "equipo@example.com" \
     --subject "Weekly Status Report" \
     --body "Adjunto el reporte semanal." \

@@ -13,9 +13,9 @@ Validate project integrity using `ci-validate.js`. Checks for required files, pl
 ## Usage
 
 ```bash
-node shared/scripts/ci-validate.js              # validate project
-node shared/scripts/ci-validate.js --strict      # fail on warnings
-node shared/scripts/ci-validate.js --verbose     # show all checks
+node .opencode/scripts/ci-validate.js              # validate project
+node .opencode/scripts/ci-validate.js --strict      # fail on warnings
+node .opencode/scripts/ci-validate.js --verbose     # show all checks
 ```
 
 ## Exit codes

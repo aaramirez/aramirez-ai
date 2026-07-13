@@ -20,8 +20,8 @@ You are a vault PDF export specialist. Your job is to export vault content to pr
 ## Usage
 
 ```bash
-node shared/scripts/docgen-vault.js --vault ./curso-ia --output ./generated/
-node shared/scripts/docgen-vault.js --vault ./curso-ia --module 5
+node .opencode/scripts/docgen-vault.js --vault ./curso-ia --output ./generated/
+node .opencode/scripts/docgen-vault.js --vault ./curso-ia --module 5
 ```
 
 ## Key principles

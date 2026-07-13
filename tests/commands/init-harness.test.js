@@ -41,12 +41,12 @@ describe('arai init — generación de harness funcional (TDD)', () => {
 
   /* ─── .opencode/ estructura nativa ─── */
 
-  test('.opencode/skills/ contiene las 12 skills distribuibles', () => {
+  test('.opencode/skills/ contiene las 14 skills distribuibles', () => {
     const p = initFull();
     assertDir(join(p, '.opencode', 'skills'));
     const skills = readdirSync(join(p, '.opencode', 'skills'))
       .filter(f => statSync(join(p, '.opencode', 'skills', f)).isDirectory());
-    assert.equal(skills.length, 12, `Esperaba 12 skills distribuibles, obtuve ${skills.length}`);
+    assert.equal(skills.length, 14, `Esperaba 14 skills distribuibles, obtuve ${skills.length}`);
   });
 
   test('.opencode/agents/ contiene archivos .md de agentes', () => {
@@ -113,20 +113,6 @@ describe('arai init — generación de harness funcional (TDD)', () => {
       'No debe tener skills.paths — opencode descubre desde .opencode/skills/');
   });
 
-  test('opencode.json references apuntan a ./shared/ (no ../shared/)', () => {
-    const p = initFull();
-    const config = JSON.parse(readFileSync(join(p, 'opencode.json'), 'utf8'));
-    if (config.references?.['shared-scripts']) {
-      assert.equal(config.references['shared-scripts'].path, './shared/scripts');
-    }
-    if (config.references?.['shared-prompts']) {
-      assert.equal(config.references['shared-prompts'].path, './shared/prompts');
-    }
-    if (config.references?.['shared-rules']) {
-      assert.equal(config.references['shared-rules'].path, './shared/rules');
-    }
-  });
-
   test('opencode.json NO tiene MCP servers de aramirez-ai', () => {
     const p = initFull();
     const config = JSON.parse(readFileSync(join(p, 'opencode.json'), 'utf8'));
@@ -148,10 +134,10 @@ describe('arai init — generación de harness funcional (TDD)', () => {
       'No debe copiar create-agent.js (es interno de aramirez-ai)');
   });
 
-  test('shared/scripts/docgen/ existe con archivos .js', () => {
+  test('.opencode/scripts/docgen/ existe con archivos .js', () => {
     const p = initFull();
-    assertDir(join(p, 'shared', 'scripts', 'docgen'));
-    const files = readdirSync(join(p, 'shared', 'scripts', 'docgen'))
+    assertDir(join(p, '.opencode', 'scripts', 'docgen'));
+    const files = readdirSync(join(p, '.opencode', 'scripts', 'docgen'))
       .filter(f => f.endsWith('.js'));
     assert.ok(files.length >= 10, `Esperaba >=10 archivos docgen, obtuve ${files.length}`);
   });
@@ -162,9 +148,9 @@ describe('arai init — generación de harness funcional (TDD)', () => {
       'No debe copiar lib/ (infraestructura CLI de arai)');
   });
 
-  test('shared/scripts/ tiene docgen-vault.js', () => {
+  test('.opencode/scripts/ tiene docgen-vault.js', () => {
     const p = initFull();
-    assert.ok(existsSync(join(p, 'shared', 'scripts', 'docgen-vault.js')),
+    assert.ok(existsSync(join(p, '.opencode', 'scripts', 'docgen-vault.js')),
       'Debe tener docgen-vault.js');
   });
 

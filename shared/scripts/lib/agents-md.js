@@ -13,11 +13,7 @@ function buildDirectoryTree(projectDir) {
   const lines = [];
   const topDirs = [];
 
-  const sharedDirs = ['prompts', 'scripts', 'rules']
-    .filter(d => isDir(join(projectDir, 'shared', d)));
-  if (sharedDirs.length > 0) topDirs.push({ name: 'shared', children: sharedDirs, label: 'Centralized reusable assets' });
-
-  const openCodeDirs = ['skills', 'agents', 'commands']
+  const openCodeDirs = ['skills', 'agents', 'commands', 'scripts', 'prompts', 'rules']
     .filter(d => isDir(join(projectDir, '.opencode', d)));
   if (openCodeDirs.length > 0) topDirs.push({ name: '.opencode', children: openCodeDirs, label: 'OpenCode configuration' });
 
@@ -81,7 +77,7 @@ function buildSkillsTable(projectDir) {
 }
 
 function buildScriptsTable(projectDir) {
-  const scriptsDir = join(projectDir, 'shared', 'scripts');
+  const scriptsDir = join(projectDir, '.opencode', 'scripts');
   if (!isDir(scriptsDir)) return '  (none installed)';
   const items = readdirSync(scriptsDir).filter(f => {
     if (f === '.gitkeep' || f === 'lib') return false;
@@ -91,7 +87,7 @@ function buildScriptsTable(projectDir) {
   return items.map(name => {
     const s = statSync(join(scriptsDir, name));
     const type = s.isDirectory() ? 'dir' : 'file';
-    return `| shared/scripts/${name} | ${type} |`;
+    return `| .opencode/scripts/${name} | ${type} |`;
   }).join('\n');
 }
 

@@ -8,9 +8,9 @@ scripts:
 
 # Branding
 
-Brand identity is centralized in `shared/brand.json`. All document generation and visual assets must use these tokens. Never hardcode brand colors, fonts, or logos.
+Brand identity is centralized in `.opencode/brand.json`. All document generation and visual assets must use these tokens. Never hardcode brand colors, fonts, or logos.
 
-## Token reference (`shared/brand.json`)
+## Token reference (`.opencode/brand.json`)
 
 | Field | Purpose | Example |
 |---|---|---|
@@ -33,16 +33,16 @@ Brand identity is centralized in `shared/brand.json`. All document generation an
 - Use **accent** sparingly — call-to-action, highlights, warnings.
 - On dark backgrounds, use the white logo variant.
 - Keep sufficient contrast ratios (WCAG AA minimum).
-- All generated documents should reference `shared/brand.json` for color values — never hardcode hex values in templates.
+- All generated documents should reference `.opencode/brand.json` for color values — never hardcode hex values in templates.
 
 ## Workflow
 
 ```bash
 # View current brand config
-cat shared/brand.json
+cat .opencode/brand.json
 
 # Edit brand.json directly or use the create-brand.js script
-node shared/scripts/create-brand.js --help
+node .opencode/scripts/create-brand.js --help
 ```
 
 ## Related

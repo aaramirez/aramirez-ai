@@ -7,21 +7,6 @@
 
   "instructions": ["AGENTS.md"],
 
-  "references": {
-    "shared-scripts": {
-      "path": "../shared/scripts",
-      "description": "Reusable automation scripts (deploy, test, etc.)"
-    },
-    "shared-rules": {
-      "path": "../shared/rules",
-      "description": "Coding standards, architecture, and documentation rules"
-    },
-    "shared-prompts": {
-      "path": "../shared/prompts",
-      "description": "Reusable prompt fragments for common patterns"
-    }
-  },
-
   "agent": {
     "build": {
       "mode": "primary",

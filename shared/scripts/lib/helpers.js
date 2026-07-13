@@ -59,9 +59,9 @@ function destDirFor(type, projectRoot) {
   const map = {
     skill: join(projectRoot, '.opencode', 'skills'),
     agent: join(projectRoot, '.opencode', 'agents'),
-    script: join(projectRoot, 'shared', 'scripts'),
-    prompt: join(projectRoot, 'shared', 'prompts'),
-    rule: join(projectRoot, 'shared', 'rules'),
+    script: join(projectRoot, '.opencode', 'scripts'),
+    prompt: join(projectRoot, '.opencode', 'prompts'),
+    rule: join(projectRoot, '.opencode', 'rules'),
   };
   return map[type];
 }

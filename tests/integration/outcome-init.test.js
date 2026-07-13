@@ -122,7 +122,7 @@ describe('init output deep validation (Phase 3b + 3c)', () => {
 
   test('full template brand.json has correct structure', () => {
     runInit('full');
-    const brand = JSON.parse(readFileSync(join(projectDir, 'shared', 'brand.json'), 'utf8'));
+    const brand = JSON.parse(readFileSync(join(projectDir, '.opencode', 'brand.json'), 'utf8'));
     assert.ok(brand.brand.colors, 'Should have colors');
     assert.ok(brand.brand.colors.primary, 'Should have primary color');
     assert.ok(brand.brand.fonts, 'Should have fonts');
@@ -165,5 +165,50 @@ describe('init output deep validation (Phase 3b + 3c)', () => {
     assert.ok(!existsSync(join(projectDir, 'shared', 'brand.json')), 'Minimal should not have brand.json');
     assert.ok(!existsSync(join(projectDir, 'assets')), 'Minimal should not have assets');
     assert.ok(!existsSync(join(projectDir, 'package.json')), 'Minimal should not have package.json');
+  });
+
+  /* ─── 3c: No shared/ directory in generated projects ─── */
+
+  test('full template has NO shared/ directory', () => {
+    runInit('full');
+    assert.ok(!existsSync(join(projectDir, 'shared')), 'Generated project must NOT have shared/ directory');
+  });
+
+  test('full template scripts go to .opencode/scripts/', () => {
+    runInit('full');
+    assertDir(join(projectDir, '.opencode', 'scripts'));
+    assert.ok(existsSync(join(projectDir, '.opencode', 'scripts', 'ci-validate.js')), 'Scripts should be in .opencode/scripts/');
+  });
+
+  test('full template prompts go to .opencode/prompts/', () => {
+    runInit('full');
+    assertDir(join(projectDir, '.opencode', 'prompts'));
+    assert.ok(existsSync(join(projectDir, '.opencode', 'prompts', 'commit-message.md')), 'Prompts should be in .opencode/prompts/');
+  });
+
+  test('full template rules go to .opencode/rules/', () => {
+    runInit('full');
+    assertDir(join(projectDir, '.opencode', 'rules'));
+    assert.ok(existsSync(join(projectDir, '.opencode', 'rules', 'code-style.md')), 'Rules should be in .opencode/rules/');
+  });
+
+  test('full template brand.json goes to .opencode/brand.json', () => {
+    runInit('full');
+    assert.ok(existsSync(join(projectDir, '.opencode', 'brand.json')), 'brand.json should be in .opencode/');
+    assert.ok(!existsSync(join(projectDir, 'shared', 'brand.json')), 'brand.json should NOT be in shared/');
+  });
+
+  test('full template opencode.json has no references section', () => {
+    runInit('full');
+    const config = JSON.parse(readFileSync(join(projectDir, 'opencode.json'), 'utf8'));
+    assert.ok(!config.references, 'opencode.json should NOT have references section');
+  });
+
+  test('full template AGENTS.md has no shared/ references', () => {
+    runInit('full');
+    const content = readFileSync(join(projectDir, 'AGENTS.md'), 'utf8');
+    assert.ok(!content.includes('shared/scripts'), 'AGENTS.md should not reference shared/scripts');
+    assert.ok(!content.includes('shared/rules'), 'AGENTS.md should not reference shared/rules');
+    assert.ok(!content.includes('shared/prompts'), 'AGENTS.md should not reference shared/prompts');
   });
 });

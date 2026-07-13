@@ -8,12 +8,12 @@ scripts:
 
 # Document generation
 
-Generate branded content using builders in `shared/scripts/docgen/`. Source files (JSON, Markdown, JS) define the content, which builders render into the final format.
+Generate branded content using builders in `.opencode/scripts/docgen/`. Source files (JSON, Markdown, JS) define the content, which builders render into the final format.
 
 ## Pipeline
 
 ```
-assets/decks/<name>.{json,md,js}  →  node shared/scripts/docgen/build-*.js  →  assets/docs/<name>.pdf
+assets/decks/<name>.{json,md,js}  →  node .opencode/scripts/docgen/build-*.js  →  assets/docs/<name>.pdf
                                                                               →  assets/images/<name>.png
 ```
 
@@ -40,9 +40,9 @@ JSON, YAML (`.yaml`/`.yml`), Markdown (`.md`), JS (`.js`/`.mjs` with `buildSlide
 ## Quick reference
 
 ```bash
-node shared/scripts/docgen/build-deck.js   assets/decks/mi-deck.json    # PDF
-node shared/scripts/docgen/build-image.js  assets/decks/mi-imagen.json  # PNG/SVG
-node shared/scripts/docgen/build-report.js assets/decks/mi-reporte.json # PDF Letter
+node .opencode/scripts/docgen/build-deck.js   assets/decks/mi-deck.json    # PDF
+node .opencode/scripts/docgen/build-image.js  assets/decks/mi-imagen.json  # PNG/SVG
+node .opencode/scripts/docgen/build-report.js assets/decks/mi-reporte.json # PDF Letter
 ```
 
 ## Report structure (JSON)
@@ -85,4 +85,4 @@ Report slide types: `doc-cover`, `section`, `text`, `callout`, `table`, `bullets
 
 ## Reference
 
-Adapted from the Python pipeline in gda-ai (`repos/GrupoConex/gda-ai/shared/scripts/`). Brand colors read from `shared/brand.json` at runtime.
+Adapted from the Python pipeline in gda-ai (`repos/GrupoConex/gda-ai/.opencode/scripts/`). Brand colors read from `.opencode/brand.json` at runtime.

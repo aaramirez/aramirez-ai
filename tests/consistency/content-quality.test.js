@@ -31,7 +31,7 @@ const REQUIRED_SECTIONS = {
   'code-review':          ['Focus areas', 'Review process'],
   'content-ingestion':    ['Sources', 'Rules', 'Workflow'],
   'document-generation':  ['Pipeline', 'Available builders'],
-  branding:               ['Token reference (`shared/brand.json`)', 'Visual conventions'],
+  branding:               ['Token reference (`.opencode/brand.json`)', 'Visual conventions'],
   'kb-management':        ['Structure', 'Maintenance tasks'],
   'pdf-extraction':       ['Techniques'],
   youtube:                ['Usage', 'Workflow'],

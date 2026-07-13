@@ -14,7 +14,7 @@ Exporta lecciones, módulos o el vault completo de Obsidian a PDF profesional us
 ## Pipeline
 
 ```
-curso-ia/*.md  →  node shared/scripts/docgen-vault.js  →  generated/<vault-name>-<timestamp>/
+curso-ia/*.md  →  node .opencode/scripts/docgen-vault.js  →  generated/<vault-name>-<timestamp>/
                                                               ├── leccion-03.pdf
                                                               ├── modulo-5.pdf
                                                               └── curso-completo.pdf
@@ -30,19 +30,19 @@ curso-ia/*.md  →  node shared/scripts/docgen-vault.js  →  generated/<vault-n
 
 ```bash
 # Una lección específica
-node shared/scripts/docgen-vault.js --scope lesson --module "Módulo 5" --lesson "03"
+node .opencode/scripts/docgen-vault.js --scope lesson --module "Módulo 5" --lesson "03"
 
 # Módulo completo (documento único)
-node shared/scripts/docgen-vault.js --scope module --module "Módulo 5"
+node .opencode/scripts/docgen-vault.js --scope module --module "Módulo 5"
 
 # Módulo completo (un PDF por lección)
-node shared/scripts/docgen-vault.js --scope module --module "Módulo 5" --mode separate
+node .opencode/scripts/docgen-vault.js --scope module --module "Módulo 5" --mode separate
 
 # Todo el vault (todos los módulos, un PDF por lección)
-node shared/scripts/docgen-vault.js --scope all --mode separate
+node .opencode/scripts/docgen-vault.js --scope all --mode separate
 
 # Todo el vault (documento único)
-node shared/scripts/docgen-vault.js --scope all --mode merged
+node .opencode/scripts/docgen-vault.js --scope all --mode merged
 ```
 
 ## Opciones
@@ -61,12 +61,12 @@ node shared/scripts/docgen-vault.js --scope all --mode merged
 - Excluye automáticamente `Transcripciones/`, `.obsidian/`, `Recursos/` e `Index.md`
 - Ordena lecciones por número de módulo y lección
 - Convierte markdown a HTML con formato: headers, bold, code, listas, blockquotes, tablas
-- Aplica branding corporativo desde `shared/brand.json`
+- Aplica branding corporativo desde `.opencode/brand.json`
 - Genera PDF en `generated/<vault-name>-<YYYYMMDD-HHmmss>/` (sin sobrescribir)
 
 ## Workflow para el agente
 
 1. Preguntar al usuario: alcance (lesson / module / all)
 2. Preguntar: modo merged (único PDF) o separate (un PDF por lección)
-3. Ejecutar `node shared/scripts/docgen-vault.js` con los flags correspondientes
+3. Ejecutar `node .opencode/scripts/docgen-vault.js` con los flags correspondientes
 4. Informar al usuario dónde se generaron los PDFs

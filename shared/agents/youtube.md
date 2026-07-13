@@ -20,8 +20,8 @@ You are a YouTube transcript specialist. Your job is to fetch, process, and anal
 ## Usage
 
 ```bash
-node shared/scripts/youtube-transcript.js <video-id-or-url>
-node shared/scripts/youtube-transcript.js <video-id> --lang es
+node .opencode/scripts/youtube-transcript.js <video-id-or-url>
+node .opencode/scripts/youtube-transcript.js <video-id> --lang es
 ```
 
 ## Key principles

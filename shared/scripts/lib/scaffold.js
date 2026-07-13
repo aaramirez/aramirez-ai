@@ -49,7 +49,7 @@ function scaffoldProject(targetDir, templateName, vars) {
   for (const item of resolveScripts(include.scripts || [])) {
     const src = join(REPO_ROOT, 'shared', 'scripts', item);
     if (existsSync(src)) {
-      const dst = join(absTarget, 'shared', 'scripts', item);
+      const dst = join(absTarget, '.opencode', 'scripts', item);
       ensureDir(dirname(dst));
       cpSync(src, dst, { recursive: true });
     } else {
@@ -60,7 +60,7 @@ function scaffoldProject(targetDir, templateName, vars) {
   for (const prompt of resolveFiles('prompts', include.prompts || [])) {
     const src = join(REPO_ROOT, 'shared', 'prompts', `${prompt}.md`);
     if (existsSync(src)) {
-      const dstDir = join(absTarget, 'shared', 'prompts');
+      const dstDir = join(absTarget, '.opencode', 'prompts');
       ensureDir(dstDir);
       writeFileSync(join(dstDir, `${prompt}.md`), readFileSync(src, 'utf8'));
     }
@@ -69,7 +69,7 @@ function scaffoldProject(targetDir, templateName, vars) {
   for (const rule of resolveFiles('rules', include.rules || [])) {
     const src = join(REPO_ROOT, 'shared', 'rules', `${rule}.md`);
     if (existsSync(src)) {
-      const dstDir = join(absTarget, 'shared', 'rules');
+      const dstDir = join(absTarget, '.opencode', 'rules');
       ensureDir(dstDir);
       writeFileSync(join(dstDir, `${rule}.md`), readFileSync(src, 'utf8'));
     }
@@ -143,7 +143,7 @@ function scaffoldProject(targetDir, templateName, vars) {
   if (include.branding) {
     const brandPartial = resolvePartial('brand.json');
     if (brandPartial) {
-      writeFileSync(join(absTarget, 'shared', 'brand.json'), applyVars(brandPartial, allVars));
+      writeFileSync(join(absTarget, '.opencode', 'brand.json'), applyVars(brandPartial, allVars));
     }
   }
 

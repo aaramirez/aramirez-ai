@@ -95,29 +95,29 @@ describe('arai install/uninstall', () => {
 
   // ── install script ──
 
-  test('arai install script <name> copies to shared/scripts/', () => {
+  test('arai install script <name> copies to .opencode/scripts/', () => {
     dir = tmpDir();
     const result = runArai(['install', 'script', 'ci-validate', '--project', dir]);
     assertExitCode(result, 0);
-    assertFile(join(dir, 'shared', 'scripts', 'ci-validate.js'));
+    assertFile(join(dir, '.opencode', 'scripts', 'ci-validate.js'));
   });
 
   // ── install prompt ──
 
-  test('arai install prompt <name> copies to shared/prompts/', () => {
+  test('arai install prompt <name> copies to .opencode/prompts/', () => {
     dir = tmpDir();
     const result = runArai(['install', 'prompt', 'commit-message', '--project', dir]);
     assertExitCode(result, 0);
-    assertFile(join(dir, 'shared', 'prompts', 'commit-message.md'));
+    assertFile(join(dir, '.opencode', 'prompts', 'commit-message.md'));
   });
 
   // ── install rule ──
 
-  test('arai install rule <name> copies to shared/rules/', () => {
+  test('arai install rule <name> copies to .opencode/rules/', () => {
     dir = tmpDir();
     const result = runArai(['install', 'rule', 'code-style', '--project', dir]);
     assertExitCode(result, 0);
-    assertFile(join(dir, 'shared', 'rules', 'code-style.md'));
+    assertFile(join(dir, '.opencode', 'rules', 'code-style.md'));
   });
 
   // ── uninstall (bare) ──
@@ -177,30 +177,30 @@ describe('arai install/uninstall', () => {
 
   // ── uninstall script/prompt/rule ──
 
-  test('arai uninstall script <name> removes from shared/scripts/', () => {
+  test('arai uninstall script <name> removes from .opencode/scripts/', () => {
     dir = tmpDir();
     runArai(['install', 'script', 'ci-validate', '--project', dir]);
-    assertFile(join(dir, 'shared', 'scripts', 'ci-validate.js'));
+    assertFile(join(dir, '.opencode', 'scripts', 'ci-validate.js'));
 
     const result = runArai(['uninstall', 'script', 'ci-validate', '--project', dir]);
     assertExitCode(result, 0);
-    assert.ok(!existsSync(join(dir, 'shared', 'scripts', 'ci-validate.js')));
+    assert.ok(!existsSync(join(dir, '.opencode', 'scripts', 'ci-validate.js')));
   });
 
-  test('arai uninstall prompt <name> removes from shared/prompts/', () => {
+  test('arai uninstall prompt <name> removes from .opencode/prompts/', () => {
     dir = tmpDir();
     runArai(['install', 'prompt', 'commit-message', '--project', dir]);
     const result = runArai(['uninstall', 'prompt', 'commit-message', '--project', dir]);
     assertExitCode(result, 0);
-    assert.ok(!existsSync(join(dir, 'shared', 'prompts', 'commit-message.md')));
+    assert.ok(!existsSync(join(dir, '.opencode', 'prompts', 'commit-message.md')));
   });
 
-  test('arai uninstall rule <name> removes from shared/rules/', () => {
+  test('arai uninstall rule <name> removes from .opencode/rules/', () => {
     dir = tmpDir();
     runArai(['install', 'rule', 'code-style', '--project', dir]);
     const result = runArai(['uninstall', 'rule', 'code-style', '--project', dir]);
     assertExitCode(result, 0);
-    assert.ok(!existsSync(join(dir, 'shared', 'rules', 'code-style.md')));
+    assert.ok(!existsSync(join(dir, '.opencode', 'rules', 'code-style.md')));
   });
 
   // ── composite scenarios ──

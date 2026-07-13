@@ -13,10 +13,10 @@ Synchronize reference repositories listed in `repos.json`. Clones or updates rep
 ## Usage
 
 ```bash
-node shared/scripts/repos-sync.js                  # sync all repos
-node shared/scripts/repos-sync.js --list           # list configured repos
-node shared/scripts/repos-sync.js <org/repo>       # sync specific repo
-node shared/scripts/repos-sync.js --help           # show help
+node .opencode/scripts/repos-sync.js                  # sync all repos
+node .opencode/scripts/repos-sync.js --list           # list configured repos
+node .opencode/scripts/repos-sync.js <org/repo>       # sync specific repo
+node .opencode/scripts/repos-sync.js --help           # show help
 ```
 
 ## Configuration

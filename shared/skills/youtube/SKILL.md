@@ -16,19 +16,19 @@ Fetch clean, timestamped transcriptions from any YouTube video.
 
 ```bash
 # Using the script directly
-node shared/scripts/youtube-transcript.js <video-id-or-url>
+node .opencode/scripts/youtube-transcript.js <video-id-or-url>
 
 # Example
-node shared/scripts/youtube-transcript.js GarWqdHzwac
+node .opencode/scripts/youtube-transcript.js GarWqdHzwac
 
 # With language selection
-node shared/scripts/youtube-transcript.js GarWqdHzwac --lang es
+node .opencode/scripts/youtube-transcript.js GarWqdHzwac --lang es
 ```
 
 ### Programmatic (Node.js)
 
 ```js
-import { fetchTranscript } from './shared/scripts/youtube-transcript.js';
+import { fetchTranscript } from './.opencode/scripts/youtube-transcript.js';
 
 const transcript = await fetchTranscript('GarWqdHzwac', 'es');
 console.log(transcript.text);   // Clean text
@@ -47,7 +47,7 @@ console.log(transcript.title);  // Video title
 
 ```bash
 # Obtener transcripción
-node shared/scripts/youtube-transcript.js ZZq4TpNgnvg --lang es > "curso-ia/Transcripciones/ZZq4TpNgnvg - Curso de OpenCode desde cero.md"
+node .opencode/scripts/youtube-transcript.js ZZq4TpNgnvg --lang es > "curso-ia/Transcripciones/ZZq4TpNgnvg - Curso de OpenCode desde cero.md"
 ```
 
 ## Cross-platform
