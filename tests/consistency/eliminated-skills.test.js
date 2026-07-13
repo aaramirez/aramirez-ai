@@ -12,6 +12,11 @@ describe('eliminated artifacts', () => {
     { path: 'shared/scripts/harness-generator.js', name: 'harness-generator.js' },
     { path: 'shared/scripts/create-subagent.js', name: 'create-subagent.js' },
     { path: 'shared/scripts/create-specialized-agent.js', name: 'create-specialized-agent.js' },
+    { path: 'shared/scripts/lib/generate.js', name: 'generate.js (arai generate removed)' },
+    { path: 'shared/templates/partials/skill.md', name: 'skill.md partial (arai generate removed)' },
+    { path: 'shared/templates/partials/agent.md', name: 'agent.md partial (arai generate removed)' },
+    { path: 'shared/templates/partials/script.js', name: 'script.js partial (arai generate removed)' },
+    { path: 'shared/templates/partials/command.md', name: 'command.md partial (arai generate removed)' },
   ];
 
   for (const { path, name } of ELIMINATED) {

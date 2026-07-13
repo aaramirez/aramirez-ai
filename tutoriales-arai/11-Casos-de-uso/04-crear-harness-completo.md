@@ -71,7 +71,7 @@ arai install skill code-review
 ## Paso 7: Agregar reglas
 
 ```bash
-arai generate rule api-standards
+node .opencode/scripts/create-rule.js api-standards
 arai install rule api-standards
 ```
 

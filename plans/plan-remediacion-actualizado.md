@@ -1,3 +1,7 @@
+> **DEPRECATED**: This plan references `arai generate`, which has been removed from the CLI.
+> Creators (`.opencode/scripts/create-*.js`) are the canonical way to generate artifacts.
+> See `plans/remove-arai-generate.md` for details.
+>
 # Plan de Remediación y Mejora — Versión Corregida
 
 Este documento presenta la hoja de ruta **actualizada** para corregir los problemas detectados en el repositorio, basada en la validación cruzada del plan original contra el estado real del código.

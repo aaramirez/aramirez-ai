@@ -12,8 +12,8 @@ arai está diseñado para ser **extensible en múltiples niveles**. Aquí están
 Las skills son el mecanismo más directo para agregar capacidades. Una skill es un archivo `SKILL.md` con frontmatter YAML que contiene instrucciones especializadas para que los agentes las usen.
 
 ```bash
-arai generate skill mi-skill         # Crear skill desde CLI
-arai sync skill mi-skill             # Sincronizar al proyecto
+node .opencode/scripts/create-skill.js mi-skill  # Crear skill desde script
+arai sync skill mi-skill                         # Sincronizar al proyecto
 ```
 
 Las skills se almacenan en `.opencode/skills/<nombre>/SKILL.md` y opencode las lee nativamente.
@@ -25,13 +25,13 @@ Las skills se almacenan en `.opencode/skills/<nombre>/SKILL.md` y opencode las l
 Puedes crear agentes con roles, prompts y permisos específicos:
 
 ```bash
-arai generate agent mi-agente --mode primary
+node .opencode/scripts/create-agent.js mi-agente --mode primary
 ```
 
 O subagentes para tareas especializadas:
 
 ```bash
-arai generate agent revisor-seguridad --subagent
+node .opencode/scripts/create-agent.js revisor-seguridad --mode subagent
 ```
 
 **Cuándo usarlos**: cuando necesitas un agente con un perfil y restricciones distintas al agente por defecto.
@@ -45,7 +45,7 @@ Para flujos de trabajo complejos, puedes definir arquitecturas que orquestan mú
 - **Chain**: agentes trabajan en secuencia
 
 ```bash
-arai generate flow flujo-personalizado
+node .opencode/scripts/create-flow.js flujo-personalizado
 ```
 
 ## 4. Scripts reutilizables
@@ -53,7 +53,7 @@ arai generate flow flujo-personalizado
 Los scripts en `shared/scripts/` son ejecutables (Node.js ESM, Python o Bash) que pueden ser invocados por los agentes:
 
 ```bash
-arai generate script mi-utilidad
+node .opencode/scripts/create-script.js mi-utilidad
 node shared/scripts/mi-utilidad.js
 ```
 
@@ -64,7 +64,7 @@ node shared/scripts/mi-utilidad.js
 Puedes integrar herramientas externas mediante el [Model Context Protocol (MCP)](https://modelcontextprotocol.io):
 
 ```bash
-arai generate mcp mi-api --type remote --url https://api.mi-servicio.com
+node .opencode/scripts/create-mcp.js mi-api --type remote --url https://api.mi-servicio.com
 ```
 
 **Cuándo usarlos**: cuando necesitas que los agentes accedan a APIs, bases de datos o servicios externos.
@@ -74,7 +74,7 @@ arai generate mcp mi-api --type remote --url https://api.mi-servicio.com
 Comandos reutilizables que ejecutan tareas frecuentes con un solo nombre:
 
 ```bash
-arai generate command revisar-pr
+node .opencode/scripts/create-command.js revisar-pr
 # Luego en opencode: @command revisar-pr
 ```
 
@@ -100,8 +100,13 @@ Esto genera 18 tipos de componentes en un solo paso.
 
 Puedes configurar la identidad visual de los documentos generados:
 
-```bash
-arai generate brand --primary "#1a365d" --name "Mi Organización"
+Edita `shared/brand.json` directamente para configurar colores, logos y tipografía:
+
+```json
+{
+  "name": "Mi Organización",
+  "primary": "#1a365d"
+}
 ```
 
 Los colores y logos se inyectan en todos los PDFs, HTML y presentaciones.

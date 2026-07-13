@@ -1,3 +1,7 @@
+> **DEPRECATED**: This plan references `arai generate`, which has been removed from the CLI.
+> Creators (`.opencode/scripts/create-*.js`) are the canonical way to generate artifacts.
+> See `plans/remove-arai-generate.md` for details.
+>
 # Plan: Fix `arai init` — Generación Funcional de Harnesses para OpenCode
 
 ## Problema Central

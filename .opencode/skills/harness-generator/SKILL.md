@@ -165,8 +165,8 @@ arai install skill <nombre> --project <dir>
 arai install agent <nombre> --project <dir>
 
 # Generar agentes personalizados
-arai generate agent <nombre> --description "<desc>"
-arai generate skill <nombre> --description "<desc>"
+node .opencode/scripts/create-agent.js <nombre> --description "<desc>"
+node .opencode/scripts/create-skill.js <nombre> --description "<desc>"
 ```
 
 ## Resumen previo a ejecución

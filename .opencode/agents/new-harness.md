@@ -53,8 +53,8 @@ arai list mcp
 ```bash
 arai install skill <nombre> --project <dir>
 arai install agent <nombre> --project <dir>
-arai generate agent <nombre> --description "<desc>"
-arai generate skill <nombre> --description "<desc>"
+node .opencode/scripts/create-agent.js <nombre> --description "<desc>"
+node .opencode/scripts/create-skill.js <nombre> --description "<desc>"
 ```
 
 ### Para generación directa desde scripts

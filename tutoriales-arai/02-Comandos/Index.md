@@ -8,7 +8,6 @@ Todos los comandos de arai explicados con ejemplos prácticos.
 2. [[02-Comandos/02-install.md|arai install]] — instalar plataforma y componentes.
 3. [[02-Comandos/03-sync.md|arai sync]] — sincronizar skills, agentes y configuraciones.
 4. [[02-Comandos/04-status.md|arai status]] — diagnosticar el estado del proyecto.
-5. [[02-Comandos/05-generate.md|arai generate]] — crear skills, agentes, scripts y más.
-6. [[02-Comandos/06-update.md|arai update]] — actualizar arai a la última versión.
-7. [[02-Comandos/07-uninstall.md|arai uninstall]] — desinstalar plataforma y componentes.
-8. [[02-Comandos/08-list.md|arai list]] — listar skills, agentes, scripts, plantillas.
+5. [[02-Comandos/06-update.md|arai update]] — actualizar arai a la última versión.
+6. [[02-Comandos/07-uninstall.md|arai uninstall]] — desinstalar plataforma y componentes.
+7. [[02-Comandos/08-list.md|arai list]] — listar skills, agentes, scripts, plantillas.

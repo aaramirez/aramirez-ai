@@ -59,7 +59,7 @@ echo "Reporte generado: reports/semana-$TIMESTAMP.pdf"
 ## Paso 4: Agregar como comando opencode
 
 ```bash
-arai generate command weekly-report
+node .opencode/scripts/create-command.js weekly-report
 ```
 
 Esto registra el comando en `opencode.json` para ejecutarlo desde la interfaz de opencode.

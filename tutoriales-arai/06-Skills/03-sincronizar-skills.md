@@ -27,7 +27,7 @@ arai sync
 
 ```bash
 # 1. Crear o editar la skill
-arai generate skill mi-skill
+node .opencode/scripts/create-skill.js mi-skill
 vim shared/skills/mi-skill/SKILL.md
 
 # 2. Sincronizar al proyecto

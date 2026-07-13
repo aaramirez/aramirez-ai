@@ -104,12 +104,7 @@ function buildCliTable() {
     '| `arai uninstall <type> <name>` | Uninstall a specific component |',
     '| `arai status` | Show installation status in current directory |',
     '| `arai list skills\\|agents\\|scripts\\|templates\\|commands\\|mcp` | List resources |',
-    '| `arai generate skill <name>` | Create skill in `.opencode/skills/` |',
-    '| `arai generate agent <name>` | Create agent + register in opencode.json |',
-    '| `arai generate script <name>` | Create reusable script |',
-    '| `arai generate command <name>` | Create opencode command |',
-    '| `arai generate brand` | Set brand identity (colors, logos) |',
-    '| `arai generate kb [dir]` | Create Obsidian vault (`--force` to overwrite) |',
+
   ].join('\n');
 }
 

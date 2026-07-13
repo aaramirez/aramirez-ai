@@ -2,7 +2,7 @@ import { test, describe, afterEach } from 'node:test';
 import assert from 'node:assert/strict';
 import { existsSync, readFileSync, readdirSync, statSync } from 'fs';
 import { join, basename } from 'path';
-import { runArai, tmpDir, cleanup, assertFile, assertDir, assertFileContent, assertExitCode, parseFrontmatter, REPO_ROOT } from '../helpers.js';
+import { runArai, tmpDir, cleanup, assertFile, assertDir, assertExitCode, REPO_ROOT } from '../helpers.js';
 
 describe('init output deep validation (Phase 3b + 3c)', () => {
   let dir;
@@ -36,7 +36,7 @@ describe('init output deep validation (Phase 3b + 3c)', () => {
     assert.ok(content.includes('arai install'), 'Should mention arai install');
     assert.ok(content.includes('arai uninstall'), 'Should mention arai uninstall');
     assert.ok(content.includes('arai status'), 'Should mention arai status');
-    assert.ok(content.includes('arai generate'), 'Should mention arai generate');
+    assert.ok(!content.includes('arai generate'), 'Should NOT mention arai generate (removed)');
   });
 
   test('AGENTS.md has expected sections', () => {
@@ -56,27 +56,6 @@ describe('init output deep validation (Phase 3b + 3c)', () => {
     assert.ok(content.includes('**reviewer**'), 'Should list reviewer agent');
     assert.ok(content.includes('**tester**'), 'Should list tester agent');
     assert.ok(content.includes('**docs**'), 'Should list docs agent');
-  });
-
-  /* ─── 3b: Agent .md frontmatter validation (via generate + init) ─── */
-
-  test('generated agent .md has correct YAML frontmatter', () => {
-    runInit('full');
-    runArai(['generate', 'agent', 'snapshot-agent', '--dir', projectDir, '--description', 'Snapshot test']);
-    const fm = parseFrontmatter(join(projectDir, 'shared', 'agents', 'snapshot-agent.md'));
-    assert.equal(fm.description, 'Snapshot test');
-    assert.equal(fm.mode, 'subagent');
-    assert.equal(fm.permission?.edit, 'deny');
-    assert.equal(fm.permission?.bash, 'deny');
-  });
-
-  test('generated skill .md has correct YAML frontmatter', () => {
-    runInit('full');
-    runArai(['generate', 'skill', 'snapshot-skill', '--dir', projectDir]);
-    const fm = parseFrontmatter(join(projectDir, '.opencode', 'skills', 'snapshot-skill', 'SKILL.md'));
-    assert.equal(fm.name, 'snapshot-skill');
-    assert.equal(fm.license, 'MIT');
-    assert.ok(fm.description, 'Should have description');
   });
 
   /* ─── 3c: Full template deep validation ─── */

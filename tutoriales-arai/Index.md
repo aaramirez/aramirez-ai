@@ -23,7 +23,7 @@ Qué es arai, para qué sirve, cómo extenderlo y arquitectura del ecosistema.
 Cómo instalar arai, preparar el entorno y crear tu primer proyecto con opencode.
 
 ### [[02-Comandos/Index|Comandos esenciales]]
-Todos los comandos de arai explicados con ejemplos: init, install, uninstall, sync, status, generate, list, update.
+Todos los comandos de arai explicados con ejemplos: init, install, uninstall, sync, status, list, update.
 
 ### [[03-Configuracion/Index|Configuración de opencode]]
 El archivo `opencode.json` a fondo: modelo, runtime, permisos, shell, formateadores, LSP.

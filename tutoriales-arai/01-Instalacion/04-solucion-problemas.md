@@ -69,7 +69,7 @@ Esto recrea el symlink global. Después, `arai` estará disponible desde cualqui
 
 ```bash
 arai sync
-arai generate brand
+# Editar shared/brand.json con los colores deseados
 ```
 
 ---

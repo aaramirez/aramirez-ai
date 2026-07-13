@@ -15,7 +15,7 @@ created: 2026-07-05
 
 ## Resultado esperado
 
-Entender cómo se valida cada comando de arai (init, generate, install) y cómo contribuir nuevos tests de validación.
+Entender cómo se valida cada comando de arai (init, install, sync) y cómo contribuir nuevos tests de validación.
 
 ## Plan de 5 fases
 
@@ -25,7 +25,7 @@ El plan completo está en `docs/outcome-validation-plan.md`. Resume:
 |------|-------------|:---:|
 | **Fase 1** | Estructura de archivos: directorios, skills, scripts existen | ✅ CI |
 | **Fase 2** | Contenido y formato: SKILL.md con frontmatter, scripts sin errores | ✅ CI |
-| **Fase 3** | Comandos CLI: init, install, sync, generate | ✅ CI |
+| **Fase 3** | Comandos CLI: init, install, sync | ✅ CI |
 | **Fase 4** | Pipeline docgen: builders, charts, validación | ✅ CI |
 | **Fase 5** | Sesiones de IA reales: verificación con `TEST_AI=true` | ⛔ Gated |
 

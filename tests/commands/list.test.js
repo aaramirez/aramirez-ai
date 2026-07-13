@@ -1,6 +1,8 @@
 import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
-import { runArai, assertExitCode } from '../helpers.js';
+import { readFileSync } from 'fs';
+import { join } from 'path';
+import { runArai, assertExitCode, REPO_ROOT } from '../helpers.js';
 
 describe('arai list', () => {
 
@@ -54,5 +56,18 @@ describe('arai list', () => {
     const result = runArai(['list', 'invalid-thing']);
     assert.ok(result.exitCode !== 0 || result.stderr.includes('unknown') || result.stderr.includes('Invalid') || result.stderr.includes('not found') || result.stdout.includes('unknown'),
       `Expected error for invalid list subcommand. Exit: ${result.exitCode}\nstdout: ${result.stdout}\nstderr: ${result.stderr}`);
+  });
+
+  test('arai generate is not a valid command (removed)', () => {
+    const result = runArai(['generate']);
+    assert.ok(result.exitCode !== 0, `arai generate should fail, got exit code ${result.exitCode}`);
+    assert.ok(result.stderr.includes('unknown command') || result.stdout.includes('unknown command'),
+      `Expected "unknown command" error. stdout: ${result.stdout}\nstderr: ${result.stderr}`);
+  });
+
+  test('bin/arai.js does not import generate.js', () => {
+    const content = readFileSync(join(REPO_ROOT, 'bin', 'arai.js'), 'utf8');
+    assert.ok(!content.includes('generate.js'), 'bin/arai.js should not import generate.js');
+    assert.ok(!content.includes("command('generate')"), 'bin/arai.js should not define generate subcommand');
   });
 });

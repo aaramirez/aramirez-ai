@@ -59,11 +59,7 @@ npm run docgen:report assets/decks/mi-reporte.json
 
 ## Paso 3: Personalizar con branding
 
-```bash
-arai generate brand
-```
-
-Esto configura colores, logos y tipografía en `shared/brand.json`. Todos los documentos generados usarán estos valores automáticamente.
+Edita `shared/brand.json` para configurar colores, logos y tipografía. Todos los documentos generados usarán estos valores automáticamente.
 
 ---
 

@@ -55,4 +55,4 @@ Templates: minimal, full
 
 ---
 
-**Siguiente**: [[02-Comandos/05-generate.md|arai generate]]
+**Siguiente**: [[02-Comandos/06-update.md|arai update]]

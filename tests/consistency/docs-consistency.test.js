@@ -51,7 +51,7 @@ describe('documentation consistency', () => {
   it('README.md lists all 9 commands', () => {
     const file = join(REPO_ROOT, 'README.md');
     const content = readFileSync(file, 'utf8');
-    const commands = ['ingest', 'generate', 'send-email', 'kb', 'youtube-cmd', 'export-pdf'];
+    const commands = ['ingest', 'send-email', 'kb', 'youtube-cmd', 'export-pdf'];
     for (const cmd of commands) {
       assert.ok(content.includes(cmd), `README.md should list command ${cmd}`);
     }

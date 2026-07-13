@@ -11,7 +11,7 @@ created: 2026-07-05
 
 **⏱ Tiempo estimado**: 5 minutos
 **🎯 Nivel**: Básico
-**📋 Requisitos**: [[02-Comandos/05-generate.md|arai generate]] completado
+**📋 Requisitos**: Archivo `shared/brand.json` disponible
 
 ## Resultado esperado
 
@@ -23,11 +23,7 @@ El branding define la identidad visual de todos los documentos generados por el 
 
 ## Configurar branding
 
-```bash
-arai generate brand
-```
-
-Esto inicia un asistente interactivo que configura:
+Edita `shared/brand.json` directamente para configurar:
 
 - **Colores**: primario, secundario, fondo, texto, acento
 - **Logos**: versiones azul y blanca (PNG)

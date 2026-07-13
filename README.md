@@ -145,14 +145,8 @@ Muestra el estado de opencode en el directorio actual.
 | `arai status` | Estado de opencode en el directorio actual |
 | `arai update` | `git pull` + `npm install` en el repo |
 | `arai sync [type] [name]` | Sincroniza proyecto o componente (`skill <name>` para sincronizar una skill) |
-| `arai generate kb [dir]` | Crea vault Obsidian (kb/) |
-| `arai init <dir>` | Scaffolding de nuevo proyecto |
 | `arai list skills\|agents\|scripts\|templates\|commands\|mcp` | Lista recursos |
-| `arai generate skill <name>` | Crea nueva skill |
-| `arai generate agent <name>` | Crea nuevo agente |
-| `arai generate script <name>` | Crea nuevo script |
-| `arai generate command <name>` | Crea nuevo comando opencode |
-| `arai generate brand` | Configura identidad visual |
+| `arai init <dir>` | Scaffolding de nuevo proyecto |
 
 ---
 
@@ -314,96 +308,6 @@ $ arai list mcp
   playwright           npx -y @playwright/mcp
                        (disabled)
 ```
-
-#### `arai generate kb [dir]`
-
-Crea un vault Obsidian (`kb/`) en el directorio especificado.
-
-| Opción | Descripción |
-|--------|-------------|
-| `--force` | Sobrescribe si existe |
-
-```bash
-arai generate kb                 # ./kb/
-arai generate kb ~/my-vault
-arai generate kb --force         # sobrescribe si existe
-```
-
-#### `arai generate skill <name>`
-
-Crea una nueva skill en `shared/skills/<name>/SKILL.md`.
-
-| Opción | Descripción |
-|--------|-------------|
-| `--dir <path>` | Directorio del proyecto (default: `.`) |
-
-```bash
-arai generate skill api-client
-arai generate skill data-pipeline --dir ~/proyectos/mi-app
-```
-
-#### `arai generate agent <name>`
-
-Crea un nuevo agente y lo registra automáticamente en `opencode.json`.
-
-| Opción | Descripción |
-|--------|-------------|
-| `--dir <path>` | Directorio del proyecto (default: `.`) |
-| `--description <text>` | Descripción del agente |
-
-```bash
-arai generate agent security-reviewer --description "Security code review specialist"
-```
-
-#### `arai generate script <name>`
-
-Crea un script reutilizable en `shared/scripts/`.
-
-| Opción | Descripción |
-|--------|-------------|
-| `--dir <path>` | Directorio del proyecto (default: `.`) |
-| `--description <text>` | Descripción del script |
-
-```bash
-arai generate script data-migration --description "DB migration utility"
-```
-
-#### `arai generate command <name>`
-
-Crea un comando para opencode en `.opencode/commands/`.
-
-| Opción | Descripción |
-|--------|-------------|
-| `--dir <path>` | Directorio del proyecto (default: `.`) |
-| `--description <text>` | Descripción del comando |
-
-```bash
-arai generate command lint --description "Run linter and fix issues"
-```
-
-#### `arai generate brand`
-
-Configura la identidad visual del proyecto.
-
-| Opción | Descripción |
-|--------|-------------|
-| `--dir <path>` | Directorio del proyecto (default: `.`) |
-| `--name <name>` | Nombre de la empresa/marca |
-| `--primary <hex>` | Color primario (ej. `#1a365d`) |
-| `--secondary <hex>` | Color secundario |
-| `--accent <hex>` | Color de acento |
-| `--text <hex>` | Color de texto |
-| `--background <hex>` | Color de fondo |
-| `--light-bg <hex>` | Color de fondo claro |
-| `--logo <path>` | Ruta al logo (SVG/PNG) |
-| `--logo-white <path>` | Ruta al logo en blanco |
-
-```bash
-arai generate brand --name "Mi Empresa" --primary "#1a365d" --secondary "#2b6cb0"
-arai generate brand --logo path/to/logo.svg --logo-white path/to/logo-white.svg
-```
-
-Actualiza `shared/brand.json` y copia los logos a `assets/images/`.
 
 ---
 
@@ -584,7 +488,7 @@ Las skills de distribución están en `shared/skills/<nombre>/SKILL.md`. Las cre
 
 ### Partials (`shared/templates/partials/`)
 
-12 archivos reutilizables: `.gitignore`, `AGENTS.md`, `agent.md`, `brand.json`, `command.md`, `logo-white.svg`, `logo.svg`, `opencode.json`, `package.json`, `repos.json`, `script.js`, `skill.md`
+8 archivos reutilizables: `.gitignore`, `AGENTS.md`, `brand.json`, `logo-white.svg`, `logo.svg`, `opencode.json`, `package.json`, `repos.json`
 
 ### Test decks (`assets/decks/`)
 
@@ -801,14 +705,11 @@ La identidad visual se centraliza en `shared/brand.json`:
 }
 ```
 
-Usar `arai generate brand` para configurar desde CLI:
+Usar los creators de opencode para configurar brand.json:
 
 ```bash
-# Configurar colores
-arai generate brand --name "Mi Empresa" --primary "#1a365d" --secondary "#2b6cb0"
-
-# Configurar logos
-arai generate brand --logo path/to/logo.svg --logo-white path/to/logo-white.svg
+# Desde opencode: usar el agente brand-creator
+# O editar directamente shared/brand.json
 ```
 
 Los colores se inyectan en runtime en las variables CSS `:root` de los temas HTML.  
@@ -832,7 +733,7 @@ node --test tests/consistency/   # solo tests de consistencia
 |------------|-------|-----------|
 | `tests/consistency/` | 46 | Estructura de skills, frontmatter YAML de agentes, calidad de contenido, consistencia plataforma→agentes |
 | `tests/integration/` | 99 | Salida del pipeline docgen (HTML, SVG, reportes), validación de generación CLI, validación de init, ciclo de vida completo, validación asistida por IA (gated) |
-| `tests/commands/` | 132 | Comandos CLI: init, install, uninstall, generate, list, status, sync, kb, command-templates |
+| `tests/commands/` | 132 | Comandos CLI: init, install, uninstall, list, status, sync, command-templates |
 
 ### CI validation
 
@@ -855,7 +756,7 @@ Fases 1–4 son deterministicas y corren en CI; Fase 5 requiere `TEST_AI=true` +
 |------|-------|--------|
 | 1 — Calidad de contenido | 48 tests | 🟢 |
 | 2 — Salida del pipeline docgen | 70 tests | 🟢 |
-| 3 — Profundidad de generate/init | 26 tests | 🟢 |
+| 3 — Profundidad de init | 26 tests | 🟢 |
 | 4 — Seguridad de templates CLI | 9 tests | 🟢 |
 | 5 — Validación asistida por IA | 3 suites (gated) | 🟢 |
 

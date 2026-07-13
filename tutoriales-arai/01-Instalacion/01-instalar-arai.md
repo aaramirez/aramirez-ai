@@ -48,7 +48,7 @@ Esto crea un symlink global que permite ejecutar `arai` desde cualquier director
 arai --help
 ```
 
-Deberías ver la lista de comandos disponibles: `init`, `install`, `sync`, `status`, `generate`, etc.
+Deberías ver la lista de comandos disponibles: `init`, `install`, `sync`, `status`, `list`, etc.
 
 ## Paso 5: Verificar los tests
 

@@ -41,11 +41,8 @@ Brand identity is centralized in `shared/brand.json`. All document generation an
 # View current brand config
 cat shared/brand.json
 
-# Update brand via CLI
-arai generate brand --primary "#1a365d" --secondary "#2b6cb0" --name "Mi Empresa"
-
-# Update logo
-arai generate brand --logo path/to/logo.svg
+# Edit brand.json directly or use the create-brand.js script
+node shared/scripts/create-brand.js --help
 ```
 
 ## Related
