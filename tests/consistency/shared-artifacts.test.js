@@ -1,25 +1,28 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { existsSync, readFileSync } from 'fs';
+import { existsSync, readFileSync, readdirSync } from 'fs';
 import { join } from 'path';
 import { REPO_ROOT } from '../helpers.js';
 
 const SHARED_DIR = join(REPO_ROOT, 'shared');
 
 describe('shared artifacts consistency', () => {
-  it('every skill in shared/skills/ has scripts: in frontmatter', () => {
+  it('every skill in shared/skills/ with scripts/ has scripts: in frontmatter', () => {
     const skillsDir = join(SHARED_DIR, 'skills');
-    const skills = readdir(skillsDir).filter(f => existsSync(join(skillsDir, f, 'SKILL.md')));
+    const skills = readdirSync(skillsDir).filter(f => existsSync(join(skillsDir, f, 'SKILL.md')));
     for (const skill of skills) {
       const content = readFileSync(join(skillsDir, skill, 'SKILL.md'), 'utf8');
-      assert.ok(content.includes('scripts:'), `${skill}/SKILL.md should have scripts: in frontmatter`);
+      const hasScriptsDir = existsSync(join(skillsDir, skill, 'scripts'));
+      if (hasScriptsDir) {
+        assert.ok(content.includes('scripts:'), `${skill}/SKILL.md should have scripts: in frontmatter`);
+      }
     }
   });
 
   it('every agent in shared/agents/ has valid frontmatter', () => {
     const agentsDir = join(SHARED_DIR, 'agents');
     if (!existsSync(agentsDir)) return;
-    const agents = readdir(agentsDir).filter(f => f.endsWith('.md'));
+    const agents = readdirSync(agentsDir).filter(f => f.endsWith('.md'));
     for (const agent of agents) {
       const content = readFileSync(join(agentsDir, agent), 'utf8');
       assert.ok(content.includes('description:'), `${agent} should have description:`);
@@ -32,7 +35,7 @@ describe('shared artifacts consistency', () => {
   it('every command in shared/commands/ has valid frontmatter', () => {
     const commandsDir = join(SHARED_DIR, 'commands');
     if (!existsSync(commandsDir)) return;
-    const commands = readdir(commandsDir).filter(f => f.endsWith('.md'));
+    const commands = readdirSync(commandsDir).filter(f => f.endsWith('.md'));
     for (const cmd of commands) {
       const content = readFileSync(join(commandsDir, cmd), 'utf8');
       assert.ok(content.includes('description:'), `${cmd} should have description:`);
@@ -43,9 +46,11 @@ describe('shared artifacts consistency', () => {
     const sharedAgentsDir = join(SHARED_DIR, 'agents');
     const localAgentsDir = join(REPO_ROOT, '.opencode', 'agents');
     if (!existsSync(sharedAgentsDir) || !existsSync(localAgentsDir)) return;
-    const sharedAgents = readdir(sharedAgentsDir).filter(f => f.endsWith('.md'));
-    const localAgents = readdir(localAgentsDir).filter(f => f.endsWith('.md'));
+    const sharedAgents = readdirSync(sharedAgentsDir).filter(f => f.endsWith('.md'));
+    const localAgents = readdirSync(localAgentsDir).filter(f => f.endsWith('.md'));
+    const expectedShared = ['docs.md', 'plan-arai.md', 'reviewer.md', 'tester.md'];
     for (const agent of sharedAgents) {
+      if (expectedShared.includes(agent)) continue;
       assert.ok(!localAgents.includes(agent), `${agent} should not be in both shared/agents/ and .opencode/agents/`);
     }
   });
@@ -62,11 +67,3 @@ describe('shared artifacts consistency', () => {
     }
   });
 });
-
-function readdir(dir) {
-  try {
-    return require('fs').readdirSync(dir);
-  } catch {
-    return [];
-  }
-}

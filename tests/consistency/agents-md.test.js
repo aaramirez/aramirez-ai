@@ -59,7 +59,9 @@ describe('AGENTS.md consistency (repo root)', () => {
   });
 
   test('AGENTS.md does not mention global install', () => {
-    assert.ok(!agentsContent.toLowerCase().includes('global'),
+    assert.ok(!agentsContent.toLowerCase().includes('global install'),
       'AGENTS.md should not mention global install');
+    assert.ok(!agentsContent.toLowerCase().includes('npm install -g'),
+      'AGENTS.md should not mention npm install -g');
   });
 });

@@ -729,10 +729,11 @@ El pipeline docgen consume `shared/brand.json` automáticamente.
 
 ## Test suite
 
-El proyecto incluye **380 tests** con `node:test` (Node.js 22+ built-in, sin dependencias extra).
+El proyecto incluye **500+ tests** con `node:test` (Node.js 22+ built-in, sin dependencias extra).
 
 ```bash
 npm test              # ejecuta toda la suite
+npm run test:evals    # ejecuta evals con rubric scoring
 node --test           # alternativa directa
 node --test tests/consistency/   # solo tests de consistencia
 ```
@@ -741,9 +742,11 @@ node --test tests/consistency/   # solo tests de consistencia
 
 | Directorio | Tests | Propósito |
 |------------|-------|-----------|
-| `tests/consistency/` | 46 | Estructura de skills, frontmatter YAML de agentes, calidad de contenido, consistencia plataforma→agentes |
-| `tests/integration/` | 99 | Salida del pipeline docgen (HTML, SVG, reportes), validación de generación CLI, validación de init, ciclo de vida completo, validación asistida por IA (gated) |
-| `tests/commands/` | 132 | Comandos CLI: init, install, uninstall, list, status, sync, command-templates |
+| `tests/consistency/` | 120+ | Estructura de skills, frontmatter YAML de agentes, calidad de contenido, consistencia shared artifacts |
+| `tests/shared/` | 280+ | Schema validation, cross-reference integrity, ESM validation, skill completeness, template/plugin validation, CI execution |
+| `tests/integration/` | 99+ | Salida del pipeline docgen, validación de generación CLI, validación de init, ciclo de vida completo, validación asistida por IA (gated) |
+| `tests/commands/` | 132+ | Comandos CLI: init, install, uninstall, list, status, sync, command-templates |
+| `tests/harness/` | 150+ | Schema validation for agent/command/skill outputs, QA checklist, CI validation |
 
 ### CI validation
 

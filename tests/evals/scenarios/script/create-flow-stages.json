@@ -1,0 +1,7 @@
+{
+  "name": "create-flow-stages",
+  "type": "script",
+  "description": "Create a flow with custom stages",
+  "script": ".opencode/skills/flow-creator/scripts/create-flow.js",
+  "args": ["--name", "test-flow", "--stages", "plan,build,review", "--output", "/tmp/test-eval-flow.json"]
+}

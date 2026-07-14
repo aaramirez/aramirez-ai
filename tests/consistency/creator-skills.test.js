@@ -52,10 +52,10 @@ describe('creator skills consistency', () => {
       assert.equal(license?.trim(), 'MIT', `License must be MIT for ${name}`);
     });
 
-    test(`${name}: references companion script in .opencode/scripts/`, () => {
+    test(`${name}: references companion script in .opencode/skills/*/scripts/`, () => {
       const content = readFileSync(join(SKILLS_DIR, name, 'SKILL.md'), 'utf8');
-      assert.ok(content.includes('.opencode/scripts/'),
-        `SKILL.md should reference a script in .opencode/scripts/`);
+      assert.ok(content.includes('.opencode/skills/') && content.includes('/scripts/'),
+        `SKILL.md should reference a script in .opencode/skills/*/scripts/`);
     });
   }
 });

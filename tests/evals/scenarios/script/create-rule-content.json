@@ -1,0 +1,7 @@
+{
+  "name": "create-rule-content",
+  "type": "script",
+  "description": "Create a rule with custom content",
+  "script": ".opencode/skills/rule-creator/scripts/create-rule.js",
+  "args": ["--name", "test-rule", "--description", "Test rule", "--content", "Always run tests before commit", "--output", "/tmp/test-eval-rule.md"]
+}

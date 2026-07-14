@@ -118,3 +118,66 @@ export function parseFrontmatter(filePath) {
 
   return root;
 }
+
+/**
+ * Run opencode debug command and return parsed result.
+ */
+export function runOpencode(...args) {
+  const flat = args.flat();
+  const opts = flat.find(a => typeof a === 'object' && a !== null && !Array.isArray(a)) || {};
+  const cmdArgs = flat.filter(a => typeof a === 'string' || Array.isArray(a)).flat();
+  const result = spawnSync('opencode', cmdArgs, {
+    cwd: REPO_ROOT,
+    encoding: 'utf8',
+    stdio: 'pipe',
+    timeout: opts.timeout || 30000,
+  });
+  return {
+    stdout: (result.stdout || '').trim(),
+    stderr: (result.stderr || '').trim(),
+    exitCode: result.status ?? 1,
+  };
+}
+
+/**
+ * Validate an object against a simple schema definition.
+ * Schema format: { required: [...], properties: { key: { type, enum, pattern, maxLength, minLength } } }
+ * Returns { valid: boolean, errors: string[] }
+ */
+export function validateSchema(obj, schema, context = '') {
+  const errors = [];
+  const prefix = context ? `${context}: ` : '';
+
+  if (schema.required) {
+    for (const key of schema.required) {
+      if (obj[key] === undefined || obj[key] === null || obj[key] === '') {
+        errors.push(`${prefix}Missing required field: ${key}`);
+      }
+    }
+  }
+
+  if (schema.properties) {
+    for (const [key, rules] of Object.entries(schema.properties)) {
+      const val = obj[key];
+      if (val === undefined || val === null) continue;
+
+      if (rules.enum && !rules.enum.includes(val)) {
+        errors.push(`${prefix}${key} must be one of [${rules.enum.join(', ')}], got: "${val}"`);
+      }
+      if (rules.type === 'string' && typeof val !== 'string') {
+        errors.push(`${prefix}${key} must be a string, got: ${typeof val}`);
+      }
+      if (rules.minLength && typeof val === 'string' && val.length < rules.minLength) {
+        errors.push(`${prefix}${key} must be >= ${rules.minLength} chars, got: ${val.length}`);
+      }
+      if (rules.maxLength && typeof val === 'string' && val.length > rules.maxLength) {
+        errors.push(`${prefix}${key} must be <= ${rules.maxLength} chars, got: ${val.length}`);
+      }
+      if (rules.pattern && typeof val === 'string' && !new RegExp(rules.pattern).test(val)) {
+        errors.push(`${prefix}${key} does not match pattern: ${rules.pattern}, got: "${val}"`);
+      }
+    }
+  }
+
+  return { valid: errors.length === 0, errors };
+}

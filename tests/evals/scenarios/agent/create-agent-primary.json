@@ -1,0 +1,7 @@
+{
+  "name": "create-agent-primary",
+  "type": "script",
+  "description": "Create a primary agent manually",
+  "script": ".opencode/skills/agent-creator/scripts/create-agent.js",
+  "args": ["--name", "test-primary", "--mode", "primary", "--description", "A test primary agent", "--output", "/tmp/test-eval-agent.md"]
+}

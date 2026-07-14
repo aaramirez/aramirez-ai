@@ -1,0 +1,7 @@
+{
+  "name": "create-mcp-remote",
+  "type": "script",
+  "description": "Create a remote MCP server config",
+  "script": ".opencode/skills/mcp-creator/scripts/create-mcp.js",
+  "args": ["--name", "test-mcp", "--type", "remote", "--url", "https://example.com/mcp", "--output", "/tmp/test-eval-mcp.json"]
+}

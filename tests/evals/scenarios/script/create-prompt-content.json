@@ -1,0 +1,7 @@
+{
+  "name": "create-prompt-content",
+  "type": "script",
+  "description": "Create a prompt with custom content",
+  "script": ".opencode/skills/prompt-creator/scripts/create-prompt.js",
+  "args": ["--name", "test-prompt", "--description", "Test prompt", "--content", "Review the code for security issues", "--output", "/tmp/test-eval-prompt.md"]
+}

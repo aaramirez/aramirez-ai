@@ -1,0 +1,7 @@
+{
+  "name": "create-agent-subagent",
+  "type": "script",
+  "description": "Create a subagent with --preset reviewer",
+  "script": ".opencode/skills/agent-creator/scripts/create-agent.js",
+  "args": ["--name", "test-reviewer", "--preset", "reviewer", "--output", "/tmp/test-eval-agent.md"]
+}

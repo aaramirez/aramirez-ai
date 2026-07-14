@@ -1,0 +1,7 @@
+{
+  "name": "create-command-basic",
+  "type": "script",
+  "description": "Create a basic command",
+  "script": ".opencode/skills/command-creator/scripts/create-command.js",
+  "args": ["--name", "test-cmd", "--description", "Test command", "--template", "echo test", "--output", "/tmp/test-eval-cmd.md"]
+}

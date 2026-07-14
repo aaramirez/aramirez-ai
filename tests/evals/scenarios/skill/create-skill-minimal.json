@@ -1,0 +1,7 @@
+{
+  "name": "create-skill-minimal",
+  "type": "script",
+  "description": "Create a minimal skill with --dry-run",
+  "script": ".opencode/skills/skill-creator/scripts/create-skill.js",
+  "args": ["--name", "test-skill", "--description", "A test skill for eval purposes", "--content", "Test skill content", "--output", "/tmp/test-eval-skill.md"]
+}

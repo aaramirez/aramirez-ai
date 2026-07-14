@@ -5,12 +5,16 @@ import { join } from 'path';
 import { REPO_ROOT } from '../helpers.js';
 
 describe('documentation consistency', () => {
-  it('AGENTS.md mentions all 10 shared agents', () => {
+  it('AGENTS.md mentions all 21 agents', () => {
     const file = join(REPO_ROOT, 'AGENTS.md');
     const content = readFileSync(file, 'utf8');
-    const agents = ['content-ingestion', 'document-generation', 'email', 'kb-management', 'youtube', 'vault-pdf-export'];
+    const agents = ['build', 'docs', 'plan', 'plan-arai', 'reviewer', 'tester', 'new-harness',
+      'config-creator', 'permission-creator', 'instructions-creator', 'mcp-creator',
+      'architecture-creator', 'flow-creator', 'plugin-creator', 'tool-creator',
+      'prompt-creator', 'rule-creator', 'reference-creator', 'command-creator',
+      'agent-creator', 'skill-creator', 'script-creator'];
     for (const agent of agents) {
-      assert.ok(content.includes(agent), `AGENTS.md should mention ${agent}`);
+      assert.ok(content.includes(`**${agent}**`), `AGENTS.md should mention ${agent}`);
     }
   });
 

@@ -87,10 +87,9 @@ aramirez-ai/
 
 | Script | Type |
 |--------|------|
-| .opencode/skills/agent-creator/scripts/create-agent.js | file |
+ | .opencode/skills/agent-creator/scripts/create-agent.js | file |
 | .opencode/skills/architecture-creator/scripts/create-architecture.js | file |
 | .opencode/scripts/create-base.js | file (shared utility) |
-| .opencode/skills/branding/scripts/create-brand.js | file |
 | .opencode/skills/command-creator/scripts/create-command.js | file |
 | .opencode/skills/config-creator/scripts/create-config.js | file |
 | .opencode/skills/flow-creator/scripts/create-flow.js | file |

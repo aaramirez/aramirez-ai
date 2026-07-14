@@ -1,0 +1,7 @@
+{
+  "name": "create-permission-balanced",
+  "type": "script",
+  "description": "Create balanced permission rules",
+  "script": ".opencode/skills/permission-creator/scripts/create-permission.js",
+  "args": ["--strictness", "balanced", "--output", "/tmp/test-eval-permission.json"]
+}

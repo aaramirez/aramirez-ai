@@ -1,0 +1,7 @@
+{
+  "name": "create-reference-docs",
+  "type": "script",
+  "description": "Create a reference to docs",
+  "script": ".opencode/skills/reference-creator/scripts/create-reference.js",
+  "args": ["--name", "test-ref", "--description", "Test reference", "--url", "https://example.com", "--content", "Example docs", "--path", "docs/test.md", "--output", "/tmp/test-eval-ref.md"]
+}

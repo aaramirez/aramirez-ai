@@ -1,0 +1,7 @@
+{
+  "name": "create-config-model",
+  "type": "script",
+  "description": "Create config with custom model",
+  "script": ".opencode/skills/config-creator/scripts/create-config.js",
+  "args": ["--model", "opencode/big-pickle", "--output", "/tmp/test-eval-config.json"]
+}
