@@ -433,12 +433,18 @@ Las skills de distribución están en `shared/skills/<nombre>/SKILL.md`. Las cre
 |--------|-------------|
 | `shared/scripts/ci-validate.js` | Validación CI/CD portable — estructura del proyecto, frontmatter de skills, placeholders, .gitignore, brand.json. Opciones: `--strict`, `--verbose`, `--dir <path>` |
 | `shared/scripts/repos-sync.js` | Gestor de repositorios de referencia desde `repos.json`. Opciones: `--list`, `<name>` (repo específico) |
-| `shared/scripts/create-brand.js` | Generador/validador de brand.json — crea identidad visual con colores y logos |
-| `shared/scripts/ingest-content.js` | Pipeline de ingesta de contenido — convierte cualquier fuente a notas de knowledge base |
-| `shared/scripts/kb-sync.js` | Sincronización de knowledge base — valida wikilinks, arregla rotos, reporta huérfanos |
-| `shared/scripts/extract-pdf.js` | Extracción de texto de PDFs — maneja columnas, párrafos y tablas |
-| `shared/scripts/mcp-email.js` | Servidor MCP para envío de emails vía SMTP — stdio JSON-RPC |
-| `shared/scripts/youtube-transcript.js` | Obtenedor de transcripciones de YouTube (API youtube-transcript.ai). Opciones: `--lang <code>`. API programática: `fetchTranscript()`, `parseVideoId()` |
+
+### Scripts de skills (co-localizados)
+
+| Script | Skill |
+|--------|-------|
+| `shared/skills/branding/scripts/create-brand.js` | Generador/validador de brand.json — crea identidad visual con colores y logos |
+| `shared/skills/content-ingestion/scripts/ingest-content.js` | Pipeline de ingesta de contenido — convierte cualquier fuente a notas de knowledge base |
+| `shared/skills/kb-management/scripts/kb-sync.js` | Sincronización de knowledge base — valida wikilinks, arregla rotos, reporta huérfanos |
+| `shared/skills/pdf-extraction/scripts/extract-pdf.js` | Extracción de texto de PDFs — maneja columnas, párrafos y tablas |
+| `shared/skills/email/scripts/mcp-email.js` | Servidor MCP para envío de emails vía SMTP — stdio JSON-RPC |
+| `shared/skills/youtube/scripts/youtube-transcript.js` | Obtenedor de transcripciones de YouTube (API youtube-transcript.ai). Opciones: `--lang <code>`. API programática: `fetchTranscript()`, `parseVideoId()` |
+| `shared/skills/document-generation/scripts/docgen/` | Pipeline completo de generación de documentos (decks, reports, images) |
 
 ### Creator scripts (`.opencode/scripts/`)
 
@@ -525,7 +531,7 @@ Contiene la identidad visual centralizada: nombre, colores (primary, secondary, 
 
 ## Document Pipeline (docgen)
 
-Sistema completo de generación de documentos desde `shared/scripts/docgen/`.  
+Sistema completo de generación de documentos desde `shared/skills/document-generation/scripts/docgen/`.  
 Portado de gda-ai (Python → Node.js ESM) sin dependencias externas.
 
 ### Arquitectura
@@ -565,26 +571,26 @@ spec.json/md ──────►│  index.js   │────►│  charts.
 
 ```bash
 # Deck PDF (motor HTML)
-node shared/scripts/docgen/build-deck.js assets/decks/deck.json
+node shared/skills/document-generation/scripts/docgen/build-deck.js assets/decks/deck.json
 npm run docgen:deck assets/decks/deck.json
 
 # Deck PDF (motor SVG desde Markdown)
-node shared/scripts/docgen/build-deck.js assets/decks/deck.md
+node shared/skills/document-generation/scripts/docgen/build-deck.js assets/decks/deck.md
 
 # Reporte ejecutivo PDF
-node shared/scripts/docgen/build-report.js assets/decks/report.json
+node shared/skills/document-generation/scripts/docgen/build-report.js assets/decks/report.json
 npm run docgen:report assets/decks/report.json
 
 # Imagen standalone (PNG o SVG)
-node shared/scripts/docgen/build-image.js assets/decks/slide.json --format png
+node shared/skills/document-generation/scripts/docgen/build-image.js assets/decks/slide.json --format png
 npm run docgen:image assets/decks/slide.json -- --format png
 
 # Presentación web HTML (navegación por teclado/touch)
-node shared/scripts/docgen/build-web.js assets/decks/deck.json
+node shared/skills/document-generation/scripts/docgen/build-web.js assets/decks/deck.json
 npm run docgen:web assets/decks/deck.json
 
 # PowerPoint (requiere python-pptx)
-node shared/scripts/docgen/build-pptx.js assets/decks/deck.json
+node shared/skills/document-generation/scripts/docgen/build-pptx.js assets/decks/deck.json
 npm run docgen:pptx assets/decks/deck.json
 ```
 
@@ -607,10 +613,10 @@ npm run docgen:validate -- --quick
 
 ```bash
 # Validación completa: sintaxis + templates + smoke tests
-node shared/scripts/docgen/validate.js
+node shared/skills/document-generation/scripts/docgen/validate.js
 
 # Solo sintaxis y templates (rápido)
-node shared/scripts/docgen/validate.js --quick
+node shared/skills/document-generation/scripts/docgen/validate.js --quick
 ```
 
 ## Document Templates
@@ -744,8 +750,8 @@ node shared/scripts/ci-validate.js --strict         # warnings fallan también
 node shared/scripts/ci-validate.js --verbose        # muestra todos los checks
 
 # Validación del pipeline docgen
-node shared/scripts/docgen/validate.js              # sintaxis + templates + smoke tests
-node shared/scripts/docgen/validate.js --quick      # solo sintaxis + templates
+node shared/skills/document-generation/scripts/docgen/validate.js              # sintaxis + templates + smoke tests
+node shared/skills/document-generation/scripts/docgen/validate.js --quick      # solo sintaxis + templates
 ```
 
 ### Outcome validation (5 fases)

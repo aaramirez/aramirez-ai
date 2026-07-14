@@ -52,13 +52,26 @@ function resolveItems(category, items) {
 
 function resolveScripts(items) {
   if (items.length === 1 && items[0] === '*') {
+    const names = [];
     const dir = join(REPO_ROOT, 'shared', 'scripts');
-    if (!existsSync(dir)) return [];
-    return readdirSync(dir).filter(f => {
-      if (f === '.gitkeep' || f === 'lib') return false;
-      const p = join(dir, f);
-      return statSync(p).isFile() || statSync(p).isDirectory();
-    });
+    if (existsSync(dir)) {
+      for (const f of readdirSync(dir)) {
+        if (f === '.gitkeep' || f === 'lib') continue;
+        const p = join(dir, f);
+        if (statSync(p).isFile() || statSync(p).isDirectory()) names.push(f);
+      }
+    }
+    const skillsDir = join(REPO_ROOT, 'shared', 'skills');
+    if (existsSync(skillsDir)) {
+      for (const skill of readdirSync(skillsDir)) {
+        const sd = join(skillsDir, skill, 'scripts');
+        if (!existsSync(sd)) continue;
+        for (const f of readdirSync(sd)) {
+          if (!names.includes(f)) names.push(f);
+        }
+      }
+    }
+    return names;
   }
   return items;
 }

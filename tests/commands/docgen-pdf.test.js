@@ -7,7 +7,7 @@ import { execSync } from 'child_process';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = resolve(__dirname, '..', '..');
-const DOCGEN_DIR = join(REPO_ROOT, 'shared', 'scripts', 'docgen');
+const DOCGEN_DIR = join(REPO_ROOT, 'shared', 'skills', 'document-generation', 'scripts', 'docgen');
 const SPECS_DIR = join(REPO_ROOT, 'assets', 'templates', 'specs');
 const OUTPUT_DIR = '/tmp/docgen-test-outputs';
 

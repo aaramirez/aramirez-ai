@@ -47,7 +47,7 @@ En `opencode.json`:
 ```json
 "email": {
   "type": "local",
-  "command": ["node", "shared/scripts/mcp-email.js"],
+  "command": ["node", "shared/skills/email/scripts/mcp-email.js"],
   "enabled": true
 }
 ```
@@ -80,20 +80,20 @@ Para scripting o integración con otras herramientas:
 
 ```bash
 # Texto plano
-node shared/scripts/send-email.js \
+node shared/skills/email/scripts/send-email.js \
   --to usuario@example.com \
   --subject "Asunto" \
   --body "Cuerpo del mensaje"
 
 # Con HTML
-node shared/scripts/send-email.js \
+node shared/skills/email/scripts/send-email.js \
   --to usuario@example.com \
   --subject "HTML" \
   --body "<h1>Título</h1><p>Párrafo</p>" \
   --html
 
 # Con adjunto
-node shared/scripts/send-email.js \
+node shared/skills/email/scripts/send-email.js \
   --to usuario@example.com \
   --subject "Con adjunto" \
   --body "Revisa el archivo" \
@@ -102,8 +102,8 @@ node shared/scripts/send-email.js \
 
 ## Archivos relacionados
 
-- `shared/scripts/send-email.js` — core: lógica SMTP con nodemailer
-- `shared/scripts/mcp-email.js` — wrapper MCP server (JSON-RPC sobre stdio)
+- `shared/skills/email/scripts/send-email.js` — core: lógica SMTP con nodemailer
+- `shared/skills/email/scripts/mcp-email.js` — wrapper MCP server (JSON-RPC sobre stdio)
 - `.opencode/commands/email.md` — definición del comando opencode
 - `.opencode/skills/email/SKILL.md` — skill para cargar en agentes
 

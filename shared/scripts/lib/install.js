@@ -29,7 +29,7 @@ function installSkillScripts(skillName, projectRoot) {
   ensureDir(scriptsDir);
 
   for (const item of scripts) {
-    const src = join(REPO_ROOT, 'shared', 'scripts', item);
+    const src = join(REPO_ROOT, 'shared', 'skills', skillName, 'scripts', item);
     const dst = join(scriptsDir, item);
     if (existsSync(dst)) continue;
     if (!existsSync(src)) {
@@ -219,7 +219,16 @@ function installAgent(name, projectRoot) {
 }
 
 function installScript(name, projectRoot) {
-  const srcFile = join(REPO_ROOT, 'shared', 'scripts', `${name}.js`);
+  let srcFile = join(REPO_ROOT, 'shared', 'scripts', `${name}.js`);
+  if (!existsSync(srcFile)) {
+    const skillsDir = join(REPO_ROOT, 'shared', 'skills');
+    if (isDir(skillsDir)) {
+      for (const skill of readdirSync(skillsDir)) {
+        const candidate = join(skillsDir, skill, 'scripts', `${name}.js`);
+        if (existsSync(candidate)) { srcFile = candidate; break; }
+      }
+    }
+  }
   if (!existsSync(srcFile)) {
     log(`Script '${name}.js' not found`, 'err');
     const available = listNames('script');

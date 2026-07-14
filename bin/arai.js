@@ -112,7 +112,7 @@ const listCmd = program
 
 listCmd.command('skills').description('List available shared skills').action(listSkills);
 listCmd.command('agents').description('List agents registered in opencode.json').action(listAgents);
-listCmd.command('scripts').description('List available scripts in shared/scripts/').action(listScripts);
+listCmd.command('scripts').description('List available scripts (standalone + co-located in skills)').action(listScripts);
 listCmd.command('templates').description('List available scaffolding templates').action(listTemplates);
 listCmd.command('commands').description('List opencode commands').action(listCommands);
 listCmd.command('mcp').description('List configured MCP servers').action(listMcp);

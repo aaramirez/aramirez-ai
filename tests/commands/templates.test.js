@@ -120,8 +120,8 @@ describe('templates — Group B: schema by builder type', () => {
 
 describe('templates — Group C: slide types exist in pipeline', () => {
   test('todos los tipos de slide existen en _LAYOUTS ∪ _RENDERERS', async () => {
-    const htmlTheme = await import(join(REPO_ROOT, 'shared/scripts/docgen/html-theme.js'));
-    const reportTheme = await import(join(REPO_ROOT, 'shared/scripts/docgen/report-theme.js'));
+    const htmlTheme = await import(join(REPO_ROOT, 'shared/skills/document-generation/scripts/docgen/html-theme.js'));
+    const reportTheme = await import(join(REPO_ROOT, 'shared/skills/document-generation/scripts/docgen/report-theme.js'));
 
     const deckTypes = new Set();
     const reportTypes = new Set();
@@ -162,7 +162,7 @@ describe('templates — Group C: slide types exist in pipeline', () => {
 
 describe('templates — Group D: chart types exist', () => {
   test('todos los chart.tipo existen en renderChart', async () => {
-    const charts = await import(join(REPO_ROOT, 'shared/scripts/docgen/charts.js'));
+    const charts = await import(join(REPO_ROOT, 'shared/skills/document-generation/scripts/docgen/charts.js'));
     const usedChartTypes = new Set();
 
     for (const name of ALL_SPECS) {
@@ -206,7 +206,7 @@ describe('templates — Group E: build smoke test', () => {
     test(`${name} se buildea a HTML sin error`, async () => {
       const spec = readSpec(name);
       if (!spec) return;
-      const theme = await import(join(REPO_ROOT, 'shared/scripts/docgen/html-theme.js'));
+      const theme = await import(join(REPO_ROOT, 'shared/skills/document-generation/scripts/docgen/html-theme.js'));
       const html = theme.buildHtml(spec.slides, spec.mostrar_paginas || false);
       assert.ok(html.startsWith('<!DOCTYPE html>'), `${name}: HTML debe empezar con DOCTYPE`);
       assert.ok(html.includes('<html'), `${name}: HTML debe tener <html>`);
@@ -218,7 +218,7 @@ describe('templates — Group E: build smoke test', () => {
     test(`${name} se buildea a HTML sin error`, async () => {
       const spec = readSpec(name);
       if (!spec) return;
-      const theme = await import(join(REPO_ROOT, 'shared/scripts/docgen/report-theme.js'));
+      const theme = await import(join(REPO_ROOT, 'shared/skills/document-generation/scripts/docgen/report-theme.js'));
       const html = theme.buildHtml(spec.meta, spec.slides);
       assert.ok(html.startsWith('<!DOCTYPE html>'), `${name}: HTML debe empezar con DOCTYPE`);
       assert.ok(html.includes('<html'), `${name}: HTML debe tener <html>`);

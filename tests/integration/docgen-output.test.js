@@ -9,7 +9,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 /* ─── 2f: Pipeline smoke test helpers ─── */
 
-const DOCGEN_DIR = join(REPO_ROOT, 'shared', 'scripts', 'docgen');
+const DOCGEN_DIR = join(REPO_ROOT, 'shared', 'skills', 'document-generation', 'scripts', 'docgen');
 const TEMPLATES_DIR = join(REPO_ROOT, 'assets', 'templates');
 
 const SCRIPTS = [

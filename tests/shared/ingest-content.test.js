@@ -6,7 +6,7 @@ import { tmpDir, cleanup, REPO_ROOT } from '../helpers.js';
 import { spawnSync } from 'child_process';
 
 function runScript(args = [], cwd) {
-  const result = spawnSync('node', [join(REPO_ROOT, 'shared', 'scripts', 'ingest-content.js'), ...args], {
+  const result = spawnSync('node', [join(REPO_ROOT, 'shared', 'skills', 'content-ingestion', 'scripts', 'ingest-content.js'), ...args], {
     cwd: cwd || REPO_ROOT,
     encoding: 'utf8',
     stdio: 'pipe',

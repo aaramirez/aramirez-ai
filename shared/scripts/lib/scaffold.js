@@ -47,13 +47,22 @@ function scaffoldProject(targetDir, templateName, vars) {
   }
 
   for (const item of resolveScripts(include.scripts || [])) {
-    const src = join(REPO_ROOT, 'shared', 'scripts', item);
+    let src = join(REPO_ROOT, 'shared', 'scripts', item);
+    if (!existsSync(src)) {
+      const skillsDir = join(REPO_ROOT, 'shared', 'skills');
+      if (existsSync(skillsDir)) {
+        for (const skill of readdirSync(skillsDir)) {
+          const candidate = join(skillsDir, skill, 'scripts', item);
+          if (existsSync(candidate)) { src = candidate; break; }
+        }
+      }
+    }
     if (existsSync(src)) {
       const dst = join(absTarget, '.opencode', 'scripts', item);
       ensureDir(dirname(dst));
       cpSync(src, dst, { recursive: true });
     } else {
-      log(`Script '${item}' not found in shared/scripts/`, 'warn');
+      log(`Script '${item}' not found`, 'warn');
     }
   }
 

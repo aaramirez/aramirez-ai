@@ -12,7 +12,7 @@ describe('installSkill() full package', () => {
       const result = runArai(['install', 'skill', 'email', '--project', project]);
       assert.equal(result.exitCode, 0);
       assert.ok(existsSync(join(project, '.opencode', 'skills', 'email', 'SKILL.md')));
-      assert.ok(existsSync(join(project, 'shared', 'scripts', 'send-email.js')));
+      assert.ok(existsSync(join(project, '.opencode', 'scripts', 'send-email.js')));
     } finally {
       cleanup(project);
     }

@@ -17,19 +17,19 @@ Convertir el vault de Obsidian `curso-ia/` en un PDF profesional con portada, m�
 
 ```bash
 # Módulo 1 — Fundamentos
-node shared/scripts/docgen-vault.js --scope module --module "Módulo 1" --mode merged
+node shared/skills/vault-pdf-export/scripts/docgen-vault.js --scope module --module "Módulo 1" --mode merged
 
 # Módulo 2 — Ingeniería de Prompts
-node shared/scripts/docgen-vault.js --scope module --module "Módulo 2" --mode merged
+node shared/skills/vault-pdf-export/scripts/docgen-vault.js --scope module --module "Módulo 2" --mode merged
 
 # Módulo 3 — Multiagentes
-node shared/scripts/docgen-vault.js --scope module --module "Módulo 3" --mode merged
+node shared/skills/vault-pdf-export/scripts/docgen-vault.js --scope module --module "Módulo 3" --mode merged
 ```
 
 ## Paso 2: Exportar el curso completo
 
 ```bash
-node shared/scripts/docgen-vault.js --scope all --mode merged
+node shared/skills/vault-pdf-export/scripts/docgen-vault.js --scope all --mode merged
 ```
 
 Genera `curso-completo.pdf` con las 39 lecciones en 6 módulos.
@@ -38,10 +38,10 @@ Genera `curso-completo.pdf` con las 39 lecciones en 6 módulos.
 
 ```bash
 # Una lección específica
-node shared/scripts/docgen-vault.js --scope lesson --module "Módulo 5" --lesson "05"
+node shared/skills/vault-pdf-export/scripts/docgen-vault.js --scope lesson --module "Módulo 5" --lesson "05"
 
 # Varias lecciones por separado (modo separate)
-node shared/scripts/docgen-vault.js --scope module --module "Módulo 1" --mode separate
+node shared/skills/vault-pdf-export/scripts/docgen-vault.js --scope module --module "Módulo 1" --mode separate
 ```
 
 ## Resultado

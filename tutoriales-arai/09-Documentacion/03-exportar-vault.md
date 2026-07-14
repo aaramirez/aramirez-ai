@@ -29,7 +29,7 @@ La skill `vault-pdf-export` convierte un vault de Obsidian en un documento PDF p
 ## Exportar un módulo completo
 
 ```bash
-node shared/scripts/docgen-vault.js --scope module --module "Módulo 1" --mode merged
+node shared/skills/vault-pdf-export/scripts/docgen-vault.js --scope module --module "Módulo 1" --mode merged
 ```
 
 Esto genera un PDF con todas las lecciones del Módulo 1 en un solo documento.
@@ -37,13 +37,13 @@ Esto genera un PDF con todas las lecciones del Módulo 1 en un solo documento.
 ## Exportar una lección específica
 
 ```bash
-node shared/scripts/docgen-vault.js --scope lesson --module "Módulo 5" --lesson "05"
+node shared/skills/vault-pdf-export/scripts/docgen-vault.js --scope lesson --module "Módulo 5" --lesson "05"
 ```
 
 ## Exportar el curso completo
 
 ```bash
-node shared/scripts/docgen-vault.js --scope all --mode merged
+node shared/skills/vault-pdf-export/scripts/docgen-vault.js --scope all --mode merged
 ```
 
 ## Opciones disponibles

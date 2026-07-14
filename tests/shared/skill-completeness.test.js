@@ -25,7 +25,6 @@ describe('shared skills completeness', () => {
     const fm = fmMatch[1];
     assert.ok(fm.includes('name:'), 'should have name');
     assert.ok(fm.includes('description:'), 'should have description');
-    assert.ok(fm.includes('scripts:'), 'should have scripts');
   });
 
   it('repos-sync has valid frontmatter', () => {
@@ -37,7 +36,6 @@ describe('shared skills completeness', () => {
     const fm = fmMatch[1];
     assert.ok(fm.includes('name:'), 'should have name');
     assert.ok(fm.includes('description:'), 'should have description');
-    assert.ok(fm.includes('scripts:'), 'should have scripts');
   });
 
   it('ci-validate references ci-validate.js', () => {

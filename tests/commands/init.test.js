@@ -102,7 +102,7 @@ describe('arai init', () => {
     dir = tmpDir();
     projectDir = join(dir, 'full-test2');
     runArai(['init', projectDir, '--template', 'full']);
-    assertDir(join(projectDir, 'shared', 'scripts'));
+    assertDir(join(projectDir, '.opencode', 'scripts'));
   });
 
   test('full template includes branding', () => {

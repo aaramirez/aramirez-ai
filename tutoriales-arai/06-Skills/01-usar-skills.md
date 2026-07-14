@@ -54,7 +54,7 @@ O el agente puede cargarla automáticamente según la tarea.
 ## Ejemplo: Transcripción de YouTube
 
 ```bash
-node shared/scripts/youtube-transcript.js https://youtube.com/watch?v=XXXX --lang es
+node shared/skills/youtube/scripts/youtube-transcript.js https://youtube.com/watch?v=XXXX --lang es
 ```
 
 La skill `youtube` provee las instrucciones para obtener, procesar y guardar la transcripción.
@@ -62,7 +62,7 @@ La skill `youtube` provee las instrucciones para obtener, procesar y guardar la 
 ## Ejemplo: Exportar vault a PDF
 
 ```bash
-node shared/scripts/docgen-vault.js --scope module --module "Módulo 1" --mode merged
+node shared/skills/vault-pdf-export/scripts/docgen-vault.js --scope module --module "Módulo 1" --mode merged
 ```
 
 La skill `vault-pdf-export` guía todo el proceso de exportación.

@@ -8,13 +8,13 @@ scripts:
 
 # Document generation
 
-Generate branded content using builders in `.opencode/scripts/docgen/`. Source files (JSON, Markdown, JS) define the content, which builders render into the final format.
+Generate branded content using builders in `.opencode/skills/document-generation/scripts/docgen/`. Source files (JSON, Markdown, JS) define the content, which builders render into the final format.
 
 ## Pipeline
 
 ```
-assets/decks/<name>.{json,md,js}  →  node .opencode/scripts/docgen/build-*.js  →  assets/docs/<name>.pdf
-                                                                              →  assets/images/<name>.png
+assets/decks/<name>.{json,md,js}  →  node .opencode/skills/document-generation/scripts/docgen/build-*.js  →  assets/docs/<name>.pdf
+                                                                               →  assets/images/<name>.png
 ```
 
 ## Available builders
@@ -40,9 +40,9 @@ JSON, YAML (`.yaml`/`.yml`), Markdown (`.md`), JS (`.js`/`.mjs` with `buildSlide
 ## Quick reference
 
 ```bash
-node .opencode/scripts/docgen/build-deck.js   assets/decks/mi-deck.json    # PDF
-node .opencode/scripts/docgen/build-image.js  assets/decks/mi-imagen.json  # PNG/SVG
-node .opencode/scripts/docgen/build-report.js assets/decks/mi-reporte.json # PDF Letter
+node .opencode/skills/document-generation/scripts/docgen/build-deck.js   assets/decks/mi-deck.json    # PDF
+node .opencode/skills/document-generation/scripts/docgen/build-image.js  assets/decks/mi-imagen.json  # PNG/SVG
+node .opencode/skills/document-generation/scripts/docgen/build-report.js assets/decks/mi-reporte.json # PDF Letter
 ```
 
 ## Report structure (JSON)

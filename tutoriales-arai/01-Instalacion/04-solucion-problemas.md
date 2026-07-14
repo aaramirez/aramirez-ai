@@ -25,7 +25,7 @@ Conocer los errores típicos, sus causas y las soluciones para resolverlos rápi
 
 ```bash
 cd /ruta/a/aramirez-ai
-node shared/scripts/docgen-vault.js ...
+node shared/skills/vault-pdf-export/scripts/docgen-vault.js ...
 ```
 
 ## Error: `spawnSync /Applications/Google Chrome.app/... ETIMEDOUT`

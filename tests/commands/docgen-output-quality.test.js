@@ -6,7 +6,7 @@ import { fileURLToPath } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = resolve(__dirname, '..', '..');
-const DOCGEN_DIR = join(REPO_ROOT, 'shared', 'scripts', 'docgen');
+const DOCGEN_DIR = join(REPO_ROOT, 'shared', 'skills', 'document-generation', 'scripts', 'docgen');
 const DECK_SPEC = join(REPO_ROOT, 'assets', 'decks', 'test-deck.json');
 const REPORT_SPEC = join(REPO_ROOT, 'assets', 'decks', 'test-report.json');
 const BRAND_PATH = join(REPO_ROOT, 'shared', 'brand.json');

@@ -55,7 +55,7 @@ npm run docgen:deck assets/decks/mi-deck.json
 O directamente:
 
 ```bash
-node shared/scripts/docgen/build-deck.js assets/decks/mi-deck.json
+node shared/skills/document-generation/scripts/docgen/build-deck.js assets/decks/mi-deck.json
 ```
 
 ## Paso 3: Ver el resultado

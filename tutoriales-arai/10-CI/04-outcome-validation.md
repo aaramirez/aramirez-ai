@@ -35,7 +35,7 @@ El plan completo está en `docs/outcome-validation-plan.md`. Resume:
 # Fases 1-4 (CI)
 npm test
 node shared/scripts/ci-validate.js
-node shared/scripts/docgen/validate.js
+node shared/skills/document-generation/scripts/docgen/validate.js
 
 # Fase 5 (requiere TEST_AI=true)
 TEST_AI=true npm test

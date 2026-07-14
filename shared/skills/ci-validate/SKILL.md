@@ -2,8 +2,6 @@
 name: ci-validate
 description: Validate project integrity — required files, placeholders, frontmatter, and structural consistency.
 license: MIT
-scripts:
-  - ci-validate.js
 ---
 
 # CI Validation

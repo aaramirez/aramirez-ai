@@ -12,7 +12,7 @@ import { fileURLToPath } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = resolve(__dirname, '..', '..');
-const DOCGEN_DIR = join(REPO_ROOT, 'shared', 'scripts', 'docgen');
+const DOCGEN_DIR = join(REPO_ROOT, 'shared', 'skills', 'document-generation', 'scripts', 'docgen');
 
 let themeUtils, components, indexModule;
 

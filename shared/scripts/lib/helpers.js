@@ -73,6 +73,16 @@ function nameExists(type, name) {
   if (type === 'skill') {
     return items.includes(name) && isDir(join(srcDir, name));
   }
+  if (type === 'script') {
+    if (items.includes(`${name}.js`)) return true;
+    const skillsDir = join(REPO_ROOT, 'shared', 'skills');
+    if (isDir(skillsDir)) {
+      for (const skill of readdirSync(skillsDir)) {
+        if (existsSync(join(skillsDir, skill, 'scripts', `${name}.js`))) return true;
+      }
+    }
+    return false;
+  }
   return items.includes(`${name}.js`) || items.includes(`${name}.md`);
 }
 
@@ -82,6 +92,22 @@ function listNames(type) {
   const items = readdirSync(srcDir).filter(f => f !== '.gitkeep');
   if (type === 'skill') {
     return items.filter(f => isDir(join(srcDir, f)));
+  }
+  if (type === 'script') {
+    const names = items.filter(f => f.endsWith('.js')).map(f => f.replace('.js', ''));
+    const skillsDir = join(REPO_ROOT, 'shared', 'skills');
+    if (isDir(skillsDir)) {
+      for (const skill of readdirSync(skillsDir)) {
+        const sd = join(skillsDir, skill, 'scripts');
+        if (!isDir(sd)) continue;
+        for (const f of readdirSync(sd)) {
+          if (f.endsWith('.js') && !names.includes(f.replace('.js', ''))) {
+            names.push(f.replace('.js', ''));
+          }
+        }
+      }
+    }
+    return names;
   }
   return items.map(f => f.replace(/\.(js|md)$/, '')).filter(Boolean);
 }

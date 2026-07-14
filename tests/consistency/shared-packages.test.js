@@ -1,6 +1,6 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { existsSync, readFileSync } from 'fs';
+import { existsSync, readFileSync, readdirSync, statSync } from 'fs';
 import { join } from 'path';
 import { REPO_ROOT } from '../helpers.js';
 
@@ -31,24 +31,71 @@ describe('shared packages completeness', () => {
     }
   });
 
-  it('skill frontmatter scripts match actual scripts in shared/scripts/', () => {
+  it('skill frontmatter scripts exist in co-located scripts/', () => {
     const skillsDir = join(SHARED_DIR, 'skills');
-    const skills = readdir(skillsDir).filter(f => existsSync(join(skillsDir, f, 'SKILL.md')));
+    const skills = readdirSync(skillsDir).filter(f => existsSync(join(skillsDir, f, 'SKILL.md')));
     for (const skill of skills) {
       const content = readFileSync(join(skillsDir, skill, 'SKILL.md'), 'utf8');
       const scriptsMatch = content.match(/scripts:\s*\n\s*-\s*(.+\.js)/);
       if (scriptsMatch) {
         const script = scriptsMatch[1].trim();
-        assert.ok(existsSync(join(SHARED_DIR, 'scripts', script)),
-          `${skill} references ${script} but it doesn't exist in shared/scripts/`);
+        if (script.startsWith('../')) continue;
+        assert.ok(existsSync(join(skillsDir, skill, 'scripts', script)),
+          `${skill} references ${script} but it doesn't exist in skill scripts/`);
       }
     }
+  });
+
+  it('skills with scripts field have co-located scripts/ directory', () => {
+    const skillsDir = join(SHARED_DIR, 'skills');
+    const skills = readdirSync(skillsDir).filter(f => existsSync(join(skillsDir, f, 'SKILL.md')));
+    for (const skill of skills) {
+      const content = readFileSync(join(skillsDir, skill, 'SKILL.md'), 'utf8');
+      const hasScripts = /scripts:\s*\n\s*-/.test(content);
+      if (hasScripts) {
+        const scriptsDir = join(skillsDir, skill, 'scripts');
+        assert.ok(existsSync(scriptsDir), `${skill} has scripts: in frontmatter but no scripts/ dir`);
+      }
+    }
+  });
+
+  it('all frontmatter scripts resolve to files in skill local scripts/', () => {
+    const skillsDir = join(SHARED_DIR, 'skills');
+    const skills = readdirSync(skillsDir).filter(f => existsSync(join(skillsDir, f, 'SKILL.md')));
+    for (const skill of skills) {
+      const content = readFileSync(join(skillsDir, skill, 'SKILL.md'), 'utf8');
+      const scriptLines = content.match(/scripts:\s*\n((?:\s*-\s*.+\n?)*)/);
+      if (!scriptLines) continue;
+      const scripts = scriptLines[1].match(/-\s+(.+)/g)?.map(s => s.replace(/-\s+/, '').trim()) || [];
+      for (const script of scripts) {
+        if (script.startsWith('../')) continue;
+        const path = join(skillsDir, skill, 'scripts', script);
+        assert.ok(existsSync(path), `${skill}: ${script} not found in local scripts/`);
+      }
+    }
+  });
+
+  it('shared/scripts/lib/ still exists (arai infrastructure)', () => {
+    assert.ok(existsSync(join(SHARED_DIR, 'scripts', 'lib')),
+      'shared/scripts/lib/ must exist — arai CLI depends on it');
+    const libFiles = ['helpers.js', 'install.js', 'scaffold.js', 'list.js', 'sync.js', 'status.js', 'agents-md.js', 'template-utils.js'];
+    for (const f of libFiles) {
+      assert.ok(existsSync(join(SHARED_DIR, 'scripts', 'lib', f)),
+        `shared/scripts/lib/${f} must exist`);
+    }
+  });
+
+  it('standalone scripts remain in shared/scripts/', () => {
+    assert.ok(existsSync(join(SHARED_DIR, 'scripts', 'ci-validate.js')),
+      'ci-validate.js must remain in shared/scripts/ (standalone)');
+    assert.ok(existsSync(join(SHARED_DIR, 'scripts', 'repos-sync.js')),
+      'repos-sync.js must remain in shared/scripts/ (standalone)');
   });
 });
 
 function readdir(dir) {
   try {
-    return require('fs').readdirSync(dir);
+    return readdirSync(dir);
   } catch {
     return [];
   }

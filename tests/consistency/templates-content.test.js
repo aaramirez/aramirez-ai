@@ -5,7 +5,7 @@ import { join } from 'path';
 import { REPO_ROOT } from '../helpers.js';
 
 const SPECS_DIR = join(REPO_ROOT, 'assets', 'templates', 'specs');
-const DOCGEN_DIR = join(REPO_ROOT, 'shared', 'scripts', 'docgen');
+const DOCGEN_DIR = join(REPO_ROOT, 'shared', 'skills', 'document-generation', 'scripts', 'docgen');
 const BRAND_PATH = join(REPO_ROOT, 'shared', 'brand.json');
 
 function getSpecs() {

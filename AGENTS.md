@@ -1,158 +1,125 @@
 # aramirez-ai — AI Agent Instructions
 
-This repository is a **harness for producing focused, specialized agent architectures** and complete opencode configurations. It generates new projects with pre-configured agents, skills, and commands via `arai init`.
+{{project_description}}
 
-## Architecture
+This repository uses **arai** (open-code AI configuration manager) for multi-agent configuration.
+Skills, scripts, and prompts are installed from the [aramirez-ai](https://github.com/aaramirez/aramirez-ai) repository.
 
-Two directories, two purposes:
-
-| Directory | Purpose | Contents |
-|-----------|---------|----------|
-| `.opencode/` | **The machine** — harness that produces new agent architectures | 16 creator triplets (skill + script + agent), runtime config, commands, plugins |
-| `shared/` | **The artifacts** — distributable components for new projects | 12 distributable skills, project templates, prompts, rules, docgen pipeline |
-
-### Creator Triplet Pattern
-
-Each creator follows a three-layer architecture:
+## Repository structure
 
 ```
-SKILL.md (instructions)  →  create-*.js (implementation)  →  agent .md (invocation wrapper)
+aramirez-ai/
+  ├── .opencode/  OpenCode configuration
+  │   ├── skills/
+  │   ├── agents/
+  │   ├── commands/
+  │   └── scripts/
+  ├── assets/  Brand logos, CSS templates, decks, images
+  │   ├── decks/
+  │   ├── docs/
+  │   ├── images/
+  │   └── templates/
+  ├── repos/  Cloned reference repos (gitignored)
+  ├── AGENTS.md
+  ├── README.md
+  ├── opencode.json
+  ├── package.json
+  └── repos.json
 ```
 
-- **SKILL.md** at `.opencode/skills/<name>/SKILL.md` — what to do, rules, validation
-- **Script** at `.opencode/scripts/create-*.js` — Node.js ESM generator
-- **Agent** at `.opencode/agents/<name>.md` — loads skill, runs script, enforces rules
+## Key principles
 
-16 creators: agent, architecture, command, config, flow, harness-generator, instructions, mcp, permission, plugin, prompt, reference, rule, script, skill, tool.
+- **OpenCode only**: All agent configuration is managed through opencode (opencode.json).
+- **Skills live in `.opencode/skills/<name>/SKILL.md`** with YAML frontmatter.
+- **Cross-Platform Compatibility**: All code, scripts, and tools must run on both macOS and Windows.
+- **Per-project installs**: `arai install` copies files locally — projects are self-contained.
 
-### How It Works
+## Available agents
 
-1. **User** invokes an agent (e.g., `@agent-creator`)
-2. **Agent** loads its skill (instructions + rules)
-3. **Agent** runs the script (`node .opencode/scripts/create-*.js`)
-4. **Script** produces the artifact (Markdown, JSON, or JS file)
-5. **Agent** validates output per skill rules, reports to user
+| Agent | Mode | Permissions |
+|-------|------|-------------|
+| **build** (default) | primary | — |
+| **docs** | subagent | bash: deny, edit: allow |
+| **plan** | primary | edit: deny |
+| **plan-arai** | primary | — |
+| **reviewer** | subagent | edit: deny |
+| **tester** | subagent | bash: allow |
+| **new-harness** | primary | — |
+| **config-creator** | subagent | — |
+| **permission-creator** | subagent | — |
+| **instructions-creator** | subagent | — |
+| **mcp-creator** | subagent | — |
+| **architecture-creator** | subagent | — |
+| **flow-creator** | subagent | — |
+| **plugin-creator** | subagent | — |
+| **tool-creator** | subagent | — |
+| **prompt-creator** | subagent | — |
+| **rule-creator** | subagent | — |
+| **reference-creator** | subagent | — |
+| **command-creator** | subagent | — |
+| **agent-creator** | subagent | — |
+| **skill-creator** | subagent | — |
+| **script-creator** | subagent | — |
 
-### Distributable Package Pattern
+## Available skills
 
-Each distributable artifact in `shared/` follows a four-layer package:
+| Skill | Description |
+|-------|-------------|
+| agent-creator | Create primary or subagent definitions with custom prompts, permissions, and model overrides. Use --preset for predefined profiles (reviewer, tester, docs, etc.). |
+| architecture-creator | Create multi-agent architecture patterns — orchestrator, tiered, peer, or chain delegation models. |
+| command-creator | Create custom opencode commands for repetitive tasks with templates and optional agent/model overrides. |
+| config-creator | Create base opencode.json configuration with model, shell, compaction, and runtime settings. |
+| distribution-pattern | Follow the four-layer distributable package pattern when creating new skills for shared/. |
+| flow-creator | Create workflow sequences for agent collaboration — plan-first, TDD, hotfix, or custom stages. |
+| harness-generator | Generate complete opencode harness configurations interactively via CLI commands. |
+| instructions-creator | Create AGENTS.md with project instructions, workflow guidelines, and coding conventions. |
+| mcp-creator | Create MCP server configurations — local processes, remote APIs, environment variables, and authentication. |
+| permission-creator | Create permission rules for agents and tools — global defaults and per-agent overrides with glob patterns. |
+| plugin-creator | Create plugin configurations — npm packages or local plugin directories extending opencode with custom tools and hooks. |
+| prompt-creator | Create reusable prompt fragments for commit messages, review criteria, planning, and common patterns. |
+| reference-creator | Create shared reference configurations for scripts, rules, and prompts across projects. |
+| rule-creator | Create coding standards and architecture rule files for project consistency. |
+| script-creator | Create reusable automation scripts in JavaScript (ESM), Python, or Bash with proper boilerplate. |
+| skill-creator | Create reusable SKILL.md files with valid YAML frontmatter for agent skill discovery. |
+| tool-creator | Create custom tool definitions with JSON Schema input validation for specialized agent capabilities. |
 
-```
-shared/
-├── skills/<name>/SKILL.md     ← instructions + frontmatter
-├── scripts/<name>.js          ← CLI implementation
-├── agents/<name>.md           ← agent that loads the skill
-└── commands/<name>.md         ← shortcut command
-```
+## Available scripts
 
-When a user runs `arai install skill <name>`, all four layers are installed:
-- Skill → `.opencode/skills/<name>/`
-- Scripts → `shared/scripts/`
-- Agent → `.opencode/agents/<name>/` + registered in `opencode.json`
-- Command → `.opencode/commands/<name>/`
+| Script | Type |
+|--------|------|
+| .opencode/scripts/create-agent.js | file |
+| .opencode/scripts/create-architecture.js | file |
+| .opencode/scripts/create-base.js | file |
+| .opencode/scripts/create-brand.js | file |
+| .opencode/scripts/create-command.js | file |
+| .opencode/scripts/create-config.js | file |
+| .opencode/scripts/create-flow.js | file |
+| .opencode/scripts/create-instructions.js | file |
+| .opencode/scripts/create-mcp.js | file |
+| .opencode/scripts/create-permission.js | file |
+| .opencode/scripts/create-plugin.js | file |
+| .opencode/scripts/create-prompt.js | file |
+| .opencode/scripts/create-reference.js | file |
+| .opencode/scripts/create-rule.js | file |
+| .opencode/scripts/create-script.js | file |
+| .opencode/scripts/create-skill.js | file |
+| .opencode/scripts/create-tool.js | file |
 
-**Three package types:**
-- **Full** (6): content-ingestion, document-generation, email, kb-management, youtube, vault-pdf-export
-- **Utility** (2): branding, pdf-extraction
-- **Instructive** (4): code-review, git, google-workspace, m365
+## CLI quick reference
 
-## Quick Start
+| Command | Description |
+|---------|-------------|
+| `arai init <dir>` | Scaffold new project (`--template minimal\|full`, `--description`) |
+| `arai install` | Install opencode platform in project |
+| `arai install <type> <name>` | Install component: skill, agent, script, prompt, rule |
+| `arai uninstall` | Uninstall opencode platform from project |
+| `arai uninstall <type> <name>` | Uninstall a specific component |
+| `arai status` | Show installation status in current directory |
+| `arai list skills\|agents\|scripts\|templates\|commands\|mcp` | List resources |
 
-```bash
-arai init my-project                    # scaffold with defaults
-arai init my-project --template full    # complete structure
-arai list skills                        # see available distributable skills
-arai list agents                        # see available agents
-```
+## When working
 
-All install/uninstall commands accept `--project <dir>` (default: `.`).
-
-## Creator Triplets
-
-| Creator | Skill | Script | Agent |
-|---------|-------|--------|-------|
-| agent | agent-creator | create-agent.js | agent-creator.md |
-| architecture | architecture-creator | create-architecture.js | architecture-creator.md |
-| command | command-creator | create-command.js | command-creator.md |
-| config | config-creator | create-config.js | config-creator.md |
-| flow | flow-creator | create-flow.js | flow-creator.md |
-| harness-generator | harness-generator | *(orchestrates others)* | new-harness.md |
-| instructions | instructions-creator | create-instructions.js | instructions-creator.md |
-| mcp | mcp-creator | create-mcp.js | mcp-creator.md |
-| permission | permission-creator | create-permission.js | permission-creator.md |
-| plugin | plugin-creator | create-plugin.js | plugin-creator.md |
-| prompt | prompt-creator | create-prompt.js | prompt-creator.md |
-| reference | reference-creator | create-reference.js | reference-creator.md |
-| rule | rule-creator | create-rule.js | rule-creator.md |
-| script | script-creator | create-script.js | script-creator.md |
-| skill | skill-creator | create-skill.js | skill-creator.md |
-| tool | tool-creator | create-tool.js | tool-creator.md |
-
-All scripts support `--dry-run` (preview) and `--help` (usage).
-
-## Agent Registry
-
-| Agent | Mode | Purpose |
-|-------|------|---------|
-| **build** | primary | Default — implementation of features |
-| **plan** | primary | Strategic planning (`edit: deny`) |
-| **plan-arai** | primary | Plan mode, documents in `plans/` |
-| **new-harness** | primary | Interactive harness generator (7-step workflow) |
-| **reviewer** | subagent | Code review (`edit: deny`) |
-| **tester** | subagent | Testing and TDD |
-| **docs** | subagent | Documentation (`bash: deny`) |
-| **config-creator** | subagent | Generates `opencode.json` |
-| **permission-creator** | subagent | Generates permission config |
-| **instructions-creator** | subagent | Generates `AGENTS.md` |
-| **mcp-creator** | subagent | Generates MCP server configs |
-| **architecture-creator** | subagent | Generates architecture docs |
-| **flow-creator** | subagent | Generates workflow definitions |
-| **plugin-creator** | subagent | Generates TUI plugins |
-| **tool-creator** | subagent | Generates custom tools |
-| **prompt-creator** | subagent | Generates reusable prompts |
-| **rule-creator** | subagent | Generates code rules |
-| **reference-creator** | subagent | Generates repo references |
-| **command-creator** | subagent | Generates opencode commands |
-| **agent-creator** | subagent | Generates agent definitions |
-| **skill-creator** | subagent | Creates SKILL.md files |
-| **script-creator** | subagent | Creates reusable scripts |
-| **content-ingestion** | subagent | Content ingestion from any source |
-| **document-generation** | subagent | Generate documents from templates |
-| **email** | subagent | Send email via MCP |
-| **kb-management** | subagent | Knowledge base maintenance |
-| **youtube** | subagent | YouTube transcript extraction |
-| **vault-pdf-export** | subagent | Export vault notes to PDF |
-
-All agents use model `opencode/big-pickle`. Defined in `opencode.json`, configured with `.md` files in `.opencode/agents/`.
-
-## Mandatory TDD Flow
-
-Every new agent MUST follow this flow — all steps are mandatory:
-
-```
-1. Write tests    → 2. Create .md  → 3. Register  → 4. Verify  → 5. Done
-   (FAIL first)      (file)           (opencode.json)  (npm test)
-```
-
-1. **Write tests first** — add to `subagents.test.js`, `opencode-agents.test.js`, and `opencode-debug-agents.test.js`. Tests MUST fail before implementation.
-2. **Create agent .md** — use `create-agent.js` or write manually. Frontmatter must have `description`, `mode`, `model`, `permission`.
-3. **Register in opencode.json** — add entry under `"agent"` with `description`, `mode`, `path`.
-4. **Verify** — run `npm test`. ALL tests must pass.
-5. **Done** — update this file's agent table. Commit.
-
-See `agent-creator` skill for the full specification.
-
-## Key Principles
-
-- **Test-driven**: Every change starts with a failing test. Run `npm test` before committing.
-- **Copy-not-symlink**: Files are copied to projects, not symlinked or env-var based.
-- **Cross-platform**: All code, scripts, and configurations run on both macOS and Windows.
-- **SKILL.md format**: Skills use YAML frontmatter (`name:`, `description:`, `license: MIT`).
-- **Proactive Skills**: When a new problem is resolved, create a new skill so the solution is reusable.
-
-## Test Suite
-
-```bash
-npm test                              # full suite (node:test)
-node --test tests/consistency/        # consistency subset only
-```
+- Follow the existing code style (see `.opencode/rules/code-style.md`)
+- Use conventional commits (`<type>(<scope>): <description>`)
+- Keep skills in SKILL.md format with YAML frontmatter
+- Add new skills as `.opencode/skills/<name>/SKILL.md`

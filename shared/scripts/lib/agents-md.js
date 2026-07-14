@@ -77,18 +77,29 @@ function buildSkillsTable(projectDir) {
 }
 
 function buildScriptsTable(projectDir) {
+  const items = [];
   const scriptsDir = join(projectDir, '.opencode', 'scripts');
-  if (!isDir(scriptsDir)) return '  (none installed)';
-  const items = readdirSync(scriptsDir).filter(f => {
-    if (f === '.gitkeep' || f === 'lib') return false;
-    return true;
-  });
+  if (isDir(scriptsDir)) {
+    for (const f of readdirSync(scriptsDir)) {
+      if (f === '.gitkeep' || f === 'lib') continue;
+      const s = statSync(join(scriptsDir, f));
+      items.push({ path: `.opencode/scripts/${f}`, type: s.isDirectory() ? 'dir' : 'file' });
+    }
+  }
+  const skillsDir = join(projectDir, '.opencode', 'skills');
+  if (isDir(skillsDir)) {
+    for (const skill of readdirSync(skillsDir)) {
+      const sd = join(skillsDir, skill, 'scripts');
+      if (!isDir(sd)) continue;
+      for (const f of readdirSync(sd)) {
+        const full = join(sd, f);
+        const s = statSync(full);
+        items.push({ path: `.opencode/skills/${skill}/scripts/${f}`, type: s.isDirectory() ? 'dir' : 'file' });
+      }
+    }
+  }
   if (items.length === 0) return '  (none installed)';
-  return items.map(name => {
-    const s = statSync(join(scriptsDir, name));
-    const type = s.isDirectory() ? 'dir' : 'file';
-    return `| .opencode/scripts/${name} | ${type} |`;
-  }).join('\n');
+  return items.map(({ path, type }) => `| ${path} | ${type} |`).join('\n');
 }
 
 function buildCliTable() {

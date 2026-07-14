@@ -2,8 +2,6 @@
 name: repos-sync
 description: Synchronize reference repositories for knowledge sharing and dependency management.
 license: MIT
-scripts:
-  - repos-sync.js
 ---
 
 # Repos Sync

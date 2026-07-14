@@ -52,7 +52,7 @@ Crea `shared/scripts/generar-reporte-semanal.sh`:
 #!/bin/bash
 TIMESTAMP=$(date +%Y%m%d)
 cp assets/templates/specs/weekly-status.json "reports/semana-$TIMESTAMP.json"
-node shared/scripts/docgen/build-report.js "reports/semana-$TIMESTAMP.json" --output "reports/"
+node shared/skills/document-generation/scripts/docgen/build-report.js "reports/semana-$TIMESTAMP.json" --output "reports/"
 echo "Reporte generado: reports/semana-$TIMESTAMP.pdf"
 ```
 

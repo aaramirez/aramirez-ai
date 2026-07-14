@@ -40,12 +40,36 @@ function listAgents() {
 
 function listScripts() {
   const scriptsDir = join(REPO_ROOT, 'shared', 'scripts');
-  if (!isDir(scriptsDir)) { log('No shared/scripts/ directory', 'err'); return; }
-  const files = readdirSync(scriptsDir).filter(f => statSync(join(scriptsDir, f)).isFile() && f !== '.gitkeep');
-  if (files.length === 0) { log('No scripts found', 'info'); return; }
+  const skillsDir = join(REPO_ROOT, 'shared', 'skills');
+  const all = [];
+
+  if (isDir(scriptsDir)) {
+    for (const f of readdirSync(scriptsDir)) {
+      if (statSync(join(scriptsDir, f)).isFile() && f !== '.gitkeep') {
+        all.push({ name: f, source: 'standalone' });
+      }
+    }
+  }
+
+  if (isDir(skillsDir)) {
+    for (const skill of readdirSync(skillsDir)) {
+      const sd = join(skillsDir, skill, 'scripts');
+      if (!isDir(sd)) continue;
+      for (const f of readdirSync(sd)) {
+        const full = join(sd, f);
+        if (f === 'docgen' && statSync(full).isDirectory()) {
+          all.push({ name: `${f}/ (dir)`, source: skill });
+        } else if (f.endsWith('.js')) {
+          all.push({ name: f, source: skill });
+        }
+      }
+    }
+  }
+
+  if (all.length === 0) { log('No scripts found', 'info'); return; }
   console.log('\nAvailable scripts:\n');
-  for (const name of files.sort()) {
-    console.log(`  ${name}`);
+  for (const { name, source } of all.sort((a, b) => a.name.localeCompare(b.name))) {
+    console.log(`  ${name.padEnd(30)} (${source})`);
   }
   console.log();
 }

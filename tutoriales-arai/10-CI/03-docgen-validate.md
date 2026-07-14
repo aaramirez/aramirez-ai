@@ -25,10 +25,10 @@ Valida el pipeline de documentación: verifica que los specs JSON/MD, templates 
 
 ```bash
 # Validación completa
-node shared/scripts/docgen/validate.js
+node shared/skills/document-generation/scripts/docgen/validate.js
 
 # Validación rápida (solo sintaxis + templates)
-node shared/scripts/docgen/validate.js --quick
+node shared/skills/document-generation/scripts/docgen/validate.js --quick
 ```
 
 ## Qué verifica

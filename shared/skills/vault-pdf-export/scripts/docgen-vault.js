@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 import { readFileSync, readdirSync, mkdirSync, existsSync } from 'fs';
 import { join, basename, extname, resolve, dirname } from 'path';
-import { htmlToPdf, brand, loadBrand } from './docgen/index.js';
-import { brandCss, logoHref } from './docgen/theme-utils.js';
+import { htmlToPdf, brand, loadBrand } from '../document-generation/scripts/docgen/index.js';
+import { brandCss, logoHref } from '../document-generation/scripts/docgen/theme-utils.js';
 
 const REPO_ROOT = resolve(new URL('.', import.meta.url).pathname, '../..');
 const BRAND_PATH = join(REPO_ROOT, 'shared', 'brand.json');
