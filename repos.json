@@ -35,5 +35,9 @@
   {
     "name": "anthropics/claude-code",
     "url": "https://github.com/anthropics/claude-code.git"
+  },
+  {
+    "name": "affaan-m/ecc",
+    "url": "https://github.com/affaan-m/ecc.git"
   }
 ]
