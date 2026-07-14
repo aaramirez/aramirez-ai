@@ -19,7 +19,7 @@ Al iniciar, carga el skill `plugin-creator` que contiene las instrucciones detal
 Cuando te invoquen, ejecuta:
 
 ```bash
-node .opencode/scripts/create-plugin.js [flags según el skill]
+node .opencode/skills/plugin-creator/scripts/create-plugin.js [flags según el skill]
 ```
 
 ## Reglas

@@ -19,7 +19,7 @@ Al iniciar, carga el skill `instructions-creator` que contiene las instrucciones
 Cuando te invoquen, ejecuta:
 
 ```bash
-node .opencode/scripts/create-instructions.js [flags según el skill]
+node .opencode/skills/instructions-creator/scripts/create-instructions.js [flags según el skill]
 ```
 
 ## Reglas

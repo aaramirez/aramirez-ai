@@ -23,7 +23,7 @@ Poder definir prompts para tareas frecuentes (commits, reviews, planning) y regl
 Los prompts son fragmentos de instrucciones que los agentes pueden cargar en contexto. Útiles para patrones recurrentes como mensajes de commit o criterios de revisión.
 
 ```bash
-node .opencode/scripts/create-prompt.js commit-msg
+node .opencode/skills/prompt-creator/scripts/create-prompt.js commit-msg
 ```
 
 Esto crea `shared/prompts/commit-msg.md`:
@@ -42,7 +42,7 @@ Escribe mensajes de commit siguiendo Conventional Commits:
 Las reglas definen estándares que los agentes deben seguir al escribir código.
 
 ```bash
-node .opencode/scripts/create-rule.js code-style
+node .opencode/skills/rule-creator/scripts/create-rule.js code-style
 ```
 
 Esto crea `shared/rules/code-style.md`:

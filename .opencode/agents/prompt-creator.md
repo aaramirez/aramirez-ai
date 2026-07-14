@@ -19,7 +19,7 @@ Al iniciar, carga el skill `prompt-creator` que contiene las instrucciones detal
 Cuando te invoquen, ejecuta:
 
 ```bash
-node .opencode/scripts/create-prompt.js [flags según el skill]
+node .opencode/skills/prompt-creator/scripts/create-prompt.js [flags según el skill]
 ```
 
 ## Reglas

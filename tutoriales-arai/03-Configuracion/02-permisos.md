@@ -78,9 +78,9 @@ Sin bloque `permission`, hereda los permisos globales (que por defecto permiten 
 ## Generar permisos
 
 ```bash
-node .opencode/scripts/create-permission.js --strictness balanced
-node .opencode/scripts/create-permission.js --strictness strict
-node .opencode/scripts/create-permission.js --strictness permissive
+node .opencode/skills/permission-creator/scripts/create-permission.js --strictness balanced
+node .opencode/skills/permission-creator/scripts/create-permission.js --strictness strict
+node .opencode/skills/permission-creator/scripts/create-permission.js --strictness permissive
 ```
 
 ---

@@ -19,7 +19,7 @@ Al iniciar, carga el skill `permission-creator` que contiene las instrucciones d
 Cuando te invoquen, ejecuta:
 
 ```bash
-node .opencode/scripts/create-permission.js [flags según el skill]
+node .opencode/skills/permission-creator/scripts/create-permission.js [flags según el skill]
 ```
 
 ## Reglas

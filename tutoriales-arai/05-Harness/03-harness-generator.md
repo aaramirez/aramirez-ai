@@ -39,7 +39,7 @@ Desde opencode, selecciona el agente `new-harness` (tab-cycling) y responde las 
 ## Vista previa
 
 ```bash
-node .opencode/scripts/create-config.js (individual scripts) --project spec.json --dry-run
+node .opencode/skills/config-creator/scripts/create-config.js (individual scripts) --project spec.json --dry-run
 ```
 
 ---

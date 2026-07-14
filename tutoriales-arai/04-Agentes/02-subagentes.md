@@ -54,7 +54,7 @@ Un subagente (`mode: subagent`) es un agente que **no** aparece en la interfaz p
 ## Crear un subagente
 
 ```bash
-node .opencode/scripts/create-agent.js --mode subagent \
+node .opencode/skills/agent-creator/scripts/create-agent.js --mode subagent \
   --name mi-subagente \
   --description "Audita dependencias" \
   --model opencode/big-pickle

@@ -66,10 +66,10 @@ Anthropic recomienda: **empieza permisivo, ajusta lo que necesites**. No gates t
 
 ```bash
 # Generar configuración base
-node .opencode/scripts/create-config.js --model opencode/big-pickle
+node .opencode/skills/config-creator/scripts/create-config.js --model opencode/big-pickle
 
 # Con permisos específicos
-node .opencode/scripts/create-config.js --model opencode/big-pickle --permissions balanced
+node .opencode/skills/config-creator/scripts/create-config.js --model opencode/big-pickle --permissions balanced
 ```
 
 ---

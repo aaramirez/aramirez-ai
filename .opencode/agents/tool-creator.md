@@ -19,7 +19,7 @@ Al iniciar, carga el skill `tool-creator` que contiene las instrucciones detalla
 Cuando te invoquen, ejecuta:
 
 ```bash
-node .opencode/scripts/create-tool.js [flags según el skill]
+node .opencode/skills/tool-creator/scripts/create-tool.js [flags según el skill]
 ```
 
 ## Reglas

@@ -19,7 +19,7 @@ Al iniciar, carga el skill `skill-creator` que contiene las instrucciones detall
 Cuando te invoquen, ejecuta:
 
 ```bash
-node .opencode/scripts/create-skill.js [flags según el skill]
+node .opencode/skills/skill-creator/scripts/create-skill.js [flags según el skill]
 ```
 
 ## Reglas

@@ -19,7 +19,7 @@ Al iniciar, carga el skill `architecture-creator` que contiene las instrucciones
 Cuando te invoquen, ejecuta:
 
 ```bash
-node .opencode/scripts/create-architecture.js [flags según el skill]
+node .opencode/skills/architecture-creator/scripts/create-architecture.js [flags según el skill]
 ```
 
 ## Reglas

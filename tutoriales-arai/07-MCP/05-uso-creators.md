@@ -21,33 +21,33 @@ Poder generar cualquier extensión de opencode usando `node .opencode/scripts/cr
 
 ```bash
 # Servidor local
-node .opencode/scripts/create-mcp.js --name mi-servidor --type local --command node --args "server.js"
+node .opencode/skills/mcp-creator/scripts/create-mcp.js --name mi-servidor --type local --command node --args "server.js"
 
 # Servidor remoto
-node .opencode/scripts/create-mcp.js --name context7 --type remote --url https://context7.com/mcp
+node .opencode/skills/mcp-creator/scripts/create-mcp.js --name context7 --type remote --url https://context7.com/mcp
 ```
 
 ## create-command
 
 ```bash
-node .opencode/scripts/create-command.js --name test --template "npm test"
-node .opencode/scripts/create-command.js --name deploy --template "npm run deploy -- $ARGUMENTS"
+node .opencode/skills/command-creator/scripts/create-command.js --name test --template "npm test"
+node .opencode/skills/command-creator/scripts/create-command.js --name deploy --template "npm run deploy -- $ARGUMENTS"
 ```
 
 ## create-plugin
 
 ```bash
 # Plugin npm
-node .opencode/scripts/create-plugin.js --name mi-plugin --type npm
+node .opencode/skills/plugin-creator/scripts/create-plugin.js --name mi-plugin --type npm
 
 # Plugin local
-node .opencode/scripts/create-plugin.js --name mi-plugin --type local
+node .opencode/skills/plugin-creator/scripts/create-plugin.js --name mi-plugin --type local
 ```
 
 ## create-tool
 
 ```bash
-node .opencode/scripts/create-tool.js \
+node .opencode/skills/tool-creator/scripts/create-tool.js \
   --name mi-herramienta \
   --description "Descripción" \
   --schema '{"type":"object","properties":{"input":{"type":"string"}}}'

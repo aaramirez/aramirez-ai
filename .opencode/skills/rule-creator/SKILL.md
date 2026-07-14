@@ -31,7 +31,7 @@ Las reglas definen estándares de codificación y arquitectura que aplican a tod
 ## Referencia
 
 ```bash
-node .opencode/scripts/create-rule.js \
+node .opencode/skills/rule-creator/scripts/create-rule.js \
   --name code-style \
   --content "# Code style\n\n## General\n- Follow patterns" \
   --output ./shared/rules/code-style.md

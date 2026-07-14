@@ -20,7 +20,7 @@ Crear skills personalizadas para tu dominio, con frontmatter `name:`, `descripti
 ## Paso 1: Generar el esqueleto
 
 ```bash
-node .opencode/scripts/create-skill.js mi-skill
+node .opencode/skills/skill-creator/scripts/create-skill.js mi-skill
 ```
 
 Esto crea `.opencode/skills/mi-skill/SKILL.md`:

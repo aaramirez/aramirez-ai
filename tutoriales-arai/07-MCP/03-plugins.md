@@ -57,13 +57,13 @@ Los plugins extienden el runtime de opencode con herramientas y hooks personaliz
 ## Crear un plugin
 
 ```bash
-node .opencode/scripts/create-plugin.js --name mi-plugin --type local
+node .opencode/skills/plugin-creator/scripts/create-plugin.js --name mi-plugin --type local
 ```
 
 Con `--dry-run` para previsualizar la estructura:
 
 ```bash
-node .opencode/scripts/create-plugin.js --name mi-plugin --type local --dry-run
+node .opencode/skills/plugin-creator/scripts/create-plugin.js --name mi-plugin --type local --dry-run
 ```
 
 ---

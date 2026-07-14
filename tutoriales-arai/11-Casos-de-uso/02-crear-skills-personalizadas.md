@@ -18,7 +18,7 @@ Tu equipo revisa logs de aplicación manualmente cada semana. Quieres crear una 
 ## Paso 2: Generar la skill
 
 ```bash
-node .opencode/scripts/create-skill.js log-review
+node .opencode/skills/skill-creator/scripts/create-skill.js log-review
 ```
 
 ## Paso 3: Escribir la skill
@@ -55,7 +55,7 @@ Analiza archivos de log en busca de patrones de error conocidos y genera un repo
 ## Paso 4: Crear el script asociado
 
 ```bash
-node .opencode/scripts/create-script.js analyze-logs
+node .opencode/skills/script-creator/scripts/create-script.js analyze-logs
 ```
 
 ## Paso 5: Sincronizar

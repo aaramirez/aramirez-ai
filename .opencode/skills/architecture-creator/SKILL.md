@@ -37,5 +37,5 @@ Pipeline secuencial: `plan` → `build` → `review` → `deploy`. Cada etapa re
 ## Uso
 
 ```bash
-node .opencode/scripts/create-architecture.js --pattern orchestrator --description "Full team" --output ./.opencode/agents/
+node .opencode/skills/architecture-creator/scripts/create-architecture.js --pattern orchestrator --description "Full team" --output ./.opencode/agents/
 ```

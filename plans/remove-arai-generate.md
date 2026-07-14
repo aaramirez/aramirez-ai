@@ -46,7 +46,7 @@ Eliminar `arai generate` del CLI de arai. La creación es trabajo de los creator
 | Archivo | Acción | Detalle |
 |---------|--------|---------|
 | `shared/skills/branding/SKILL.md` | MODIFY | Líneas 45, 48: reemplazar `arai generate brand` por instrucciones para crear `shared/brand.json` manualmente o vía agent |
-| `.opencode/skills/harness-generator/SKILL.md` | MODIFY | Líneas 168-169: reemplazar `arai generate agent/skill` por `node .opencode/scripts/create-agent.js` |
+| `.opencode/skills/harness-generator/SKILL.md` | MODIFY | Líneas 168-169: reemplazar `arai generate agent/skill` por `node .opencode/skills/agent-creator/scripts/create-agent.js` |
 
 ### 5. Tutorials — modificar/eliminar (19 archivos)
 

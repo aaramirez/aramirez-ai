@@ -22,7 +22,7 @@ Poder generar cualquier tipo de agente o arquitectura usando `node .opencode/scr
 Crea un agente primario con prompt personalizado:
 
 ```bash
-node .opencode/scripts/create-agent.js --name mi-agent --mode primary --description "Experto en X"
+node .opencode/skills/agent-creator/scripts/create-agent.js --name mi-agent --mode primary --description "Experto en X"
 ```
 
 ## create-subagent
@@ -30,7 +30,7 @@ node .opencode/scripts/create-agent.js --name mi-agent --mode primary --descript
 Crea un subagente para tareas específicas:
 
 ```bash
-node .opencode/scripts/create-agent.js --mode subagent --name auditor --description "Audita logs"
+node .opencode/skills/agent-creator/scripts/create-agent.js --mode subagent --name auditor --description "Audita logs"
 ```
 
 ## create-specialized-agent
@@ -38,7 +38,7 @@ node .opencode/scripts/create-agent.js --mode subagent --name auditor --descript
 Crea agentes pre-configurados por dominio:
 
 ```bash
-node .opencode/scripts/create-agent.js --mode subagent --name code-reviewer --domain reviewer
+node .opencode/skills/agent-creator/scripts/create-agent.js --mode subagent --name code-reviewer --domain reviewer
 ```
 
 ## create-architecture
@@ -46,7 +46,7 @@ node .opencode/scripts/create-agent.js --mode subagent --name code-reviewer --do
 Crea una arquitectura multi-agente completa:
 
 ```bash
-node .opencode/scripts/create-architecture.js --name full-dev --pattern tiered
+node .opencode/skills/architecture-creator/scripts/create-architecture.js --name full-dev --pattern tiered
 ```
 
 ## create-flow
@@ -54,7 +54,7 @@ node .opencode/scripts/create-architecture.js --name full-dev --pattern tiered
 Crea un flujo de trabajo con etapas definidas:
 
 ```bash
-node .opencode/scripts/create-flow.js --name plan-first --stages "plan,build,review,test"
+node .opencode/skills/flow-creator/scripts/create-flow.js --name plan-first --stages "plan,build,review,test"
 ```
 
 ## Flags comunes

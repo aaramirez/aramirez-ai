@@ -19,7 +19,7 @@ Al iniciar, carga el skill `agent-creator` que contiene las instrucciones detall
 Cuando te invoquen, ejecuta:
 
 ```bash
-node .opencode/scripts/create-agent.js [flags según el skill]
+node .opencode/skills/agent-creator/scripts/create-agent.js [flags según el skill]
 ```
 
 ## Reglas

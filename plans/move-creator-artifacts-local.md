@@ -61,7 +61,7 @@ shared/
 
 - `.opencode/` is already the "local to aramirez-ai" directory
 - Agent .md files live here, skills live here → scripts that those skills reference should also live here
-- The path becomes shorter and clearer: `node .opencode/scripts/create-agent.js` instead of `node shared/scripts/create-agent.js`
+- The path becomes shorter and clearer: `node .opencode/skills/agent-creator/scripts/create-agent.js` instead of `node shared/scripts/create-agent.js`
 - opencode doesn't process `.opencode/scripts/` — it's just a directory convention we own
 
 ---
@@ -114,18 +114,18 @@ Change: `shared/scripts/` → `.opencode/scripts/`
 
 | File | Line | Old | New |
 |------|------|-----|-----|
-| `.opencode/agents/config-creator.md` | 22 | `node shared/scripts/create-config.js` | `node .opencode/scripts/create-config.js` |
-| `.opencode/agents/permission-creator.md` | ~22 | `node shared/scripts/create-permission.js` | `node .opencode/scripts/create-permission.js` |
-| `.opencode/agents/instructions-creator.md` | ~22 | `node shared/scripts/create-instructions.js` | `node .opencode/scripts/create-instructions.js` |
-| `.opencode/agents/mcp-creator.md` | ~22 | `node shared/scripts/create-mcp.js` | `node .opencode/scripts/create-mcp.js` |
-| `.opencode/agents/architecture-creator.md` | ~22 | `node shared/scripts/create-architecture.js` | `node .opencode/scripts/create-architecture.js` |
-| `.opencode/agents/flow-creator.md` | ~22 | `node shared/scripts/create-flow.js` | `node .opencode/scripts/create-flow.js` |
-| `.opencode/agents/plugin-creator.md` | ~22 | `node shared/scripts/create-plugin.js` | `node .opencode/scripts/create-plugin.js` |
-| `.opencode/agents/tool-creator.md` | ~22 | `node shared/scripts/create-tool.js` | `node .opencode/scripts/create-tool.js` |
-| `.opencode/agents/prompt-creator.md` | ~22 | `node shared/scripts/create-prompt.js` | `node .opencode/scripts/create-prompt.js` |
-| `.opencode/agents/rule-creator.md` | ~22 | `node shared/scripts/create-rule.js` | `node .opencode/scripts/create-rule.js` |
-| `.opencode/agents/reference-creator.md` | ~22 | `node shared/scripts/create-reference.js` | `node .opencode/scripts/create-reference.js` |
-| `.opencode/agents/command-creator.md` | ~22 | `node shared/scripts/create-command.js` | `node .opencode/scripts/create-command.js` |
+| `.opencode/agents/config-creator.md` | 22 | `node shared/scripts/create-config.js` | `node .opencode/skills/config-creator/scripts/create-config.js` |
+| `.opencode/agents/permission-creator.md` | ~22 | `node shared/scripts/create-permission.js` | `node .opencode/skills/permission-creator/scripts/create-permission.js` |
+| `.opencode/agents/instructions-creator.md` | ~22 | `node shared/scripts/create-instructions.js` | `node .opencode/skills/instructions-creator/scripts/create-instructions.js` |
+| `.opencode/agents/mcp-creator.md` | ~22 | `node shared/scripts/create-mcp.js` | `node .opencode/skills/mcp-creator/scripts/create-mcp.js` |
+| `.opencode/agents/architecture-creator.md` | ~22 | `node shared/scripts/create-architecture.js` | `node .opencode/skills/architecture-creator/scripts/create-architecture.js` |
+| `.opencode/agents/flow-creator.md` | ~22 | `node shared/scripts/create-flow.js` | `node .opencode/skills/flow-creator/scripts/create-flow.js` |
+| `.opencode/agents/plugin-creator.md` | ~22 | `node shared/scripts/create-plugin.js` | `node .opencode/skills/plugin-creator/scripts/create-plugin.js` |
+| `.opencode/agents/tool-creator.md` | ~22 | `node shared/scripts/create-tool.js` | `node .opencode/skills/tool-creator/scripts/create-tool.js` |
+| `.opencode/agents/prompt-creator.md` | ~22 | `node shared/scripts/create-prompt.js` | `node .opencode/skills/prompt-creator/scripts/create-prompt.js` |
+| `.opencode/agents/rule-creator.md` | ~22 | `node shared/scripts/create-rule.js` | `node .opencode/skills/rule-creator/scripts/create-rule.js` |
+| `.opencode/agents/reference-creator.md` | ~22 | `node shared/scripts/create-reference.js` | `node .opencode/skills/reference-creator/scripts/create-reference.js` |
+| `.opencode/agents/command-creator.md` | ~22 | `node shared/scripts/create-command.js` | `node .opencode/skills/command-creator/scripts/create-command.js` |
 
 ### 2B. Fix stale reference in new-harness.md
 
@@ -143,21 +143,21 @@ Each creator skill's SKILL.md has:
 
 | Skill | Matches | Change |
 |-------|---------|--------|
-| agent-creator | 6 | `shared/scripts/create-agent.js` → `.opencode/scripts/create-agent.js` |
-| config-creator | 3 | `shared/scripts/create-config.js` → `.opencode/scripts/create-config.js` |
-| permission-creator | 3 | `shared/scripts/create-permission.js` → `.opencode/scripts/create-permission.js` |
-| instructions-creator | 3 | `shared/scripts/create-instructions.js` → `.opencode/scripts/create-instructions.js` |
-| architecture-creator | 1 | `shared/scripts/create-architecture.js` → `.opencode/scripts/create-architecture.js` |
-| flow-creator | 1 | `shared/scripts/create-flow.js` → `.opencode/scripts/create-flow.js` |
-| mcp-creator | 1 | `shared/scripts/create-mcp.js` → `.opencode/scripts/create-mcp.js` |
-| command-creator | 1 | `shared/scripts/create-command.js` → `.opencode/scripts/create-command.js` |
-| plugin-creator | 1 | `shared/scripts/create-plugin.js` → `.opencode/scripts/create-plugin.js` |
-| tool-creator | 1 | `shared/scripts/create-tool.js` → `.opencode/scripts/create-tool.js` |
-| prompt-creator | 1 | `shared/scripts/create-prompt.js` → `.opencode/scripts/create-prompt.js` |
-| rule-creator | 1 | `shared/scripts/create-rule.js` → `.opencode/scripts/create-rule.js` |
-| reference-creator | 1 | `shared/scripts/create-reference.js` → `.opencode/scripts/create-reference.js` |
-| skill-creator | 1 | `shared/scripts/create-skill.js` → `.opencode/scripts/create-skill.js` |
-| script-creator | 1 | `shared/scripts/create-script.js` → `.opencode/scripts/create-script.js` |
+| agent-creator | 6 | `shared/scripts/create-agent.js` → `.opencode/skills/agent-creator/scripts/create-agent.js` |
+| config-creator | 3 | `shared/scripts/create-config.js` → `.opencode/skills/config-creator/scripts/create-config.js` |
+| permission-creator | 3 | `shared/scripts/create-permission.js` → `.opencode/skills/permission-creator/scripts/create-permission.js` |
+| instructions-creator | 3 | `shared/scripts/create-instructions.js` → `.opencode/skills/instructions-creator/scripts/create-instructions.js` |
+| architecture-creator | 1 | `shared/scripts/create-architecture.js` → `.opencode/skills/architecture-creator/scripts/create-architecture.js` |
+| flow-creator | 1 | `shared/scripts/create-flow.js` → `.opencode/skills/flow-creator/scripts/create-flow.js` |
+| mcp-creator | 1 | `shared/scripts/create-mcp.js` → `.opencode/skills/mcp-creator/scripts/create-mcp.js` |
+| command-creator | 1 | `shared/scripts/create-command.js` → `.opencode/skills/command-creator/scripts/create-command.js` |
+| plugin-creator | 1 | `shared/scripts/create-plugin.js` → `.opencode/skills/plugin-creator/scripts/create-plugin.js` |
+| tool-creator | 1 | `shared/scripts/create-tool.js` → `.opencode/skills/tool-creator/scripts/create-tool.js` |
+| prompt-creator | 1 | `shared/scripts/create-prompt.js` → `.opencode/skills/prompt-creator/scripts/create-prompt.js` |
+| rule-creator | 1 | `shared/scripts/create-rule.js` → `.opencode/skills/rule-creator/scripts/create-rule.js` |
+| reference-creator | 1 | `shared/scripts/create-reference.js` → `.opencode/skills/reference-creator/scripts/create-reference.js` |
+| skill-creator | 1 | `shared/scripts/create-skill.js` → `.opencode/skills/skill-creator/scripts/create-skill.js` |
+| script-creator | 1 | `shared/scripts/create-script.js` → `.opencode/skills/script-creator/scripts/create-script.js` |
 
 **DO NOT touch** these non-creator skills that also reference `shared/scripts/`:
 - `email/SKILL.md` — references `send-email.js`, `mcp-email.js` (distributable, stays)

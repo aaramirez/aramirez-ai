@@ -71,8 +71,8 @@ npm test
 ## Crear un comando
 
 ```bash
-node .opencode/scripts/create-command.js --name test --template "npm test"
-node .opencode/scripts/create-command.js \
+node .opencode/skills/command-creator/scripts/create-command.js --name test --template "npm test"
+node .opencode/skills/command-creator/scripts/create-command.js \
   --name deploy \
   --template "npm run deploy -- $ARGUMENTS" \
   --description "Desplegar a producción"

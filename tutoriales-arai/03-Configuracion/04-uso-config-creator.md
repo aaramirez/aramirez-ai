@@ -25,7 +25,7 @@ Poder crear archivos `opencode.json` completos y válidos sin escribir JSON manu
 ## Uso
 
 ```bash
-node .opencode/scripts/create-config.js --model opencode/big-pickle
+node .opencode/skills/config-creator/scripts/create-config.js --model opencode/big-pickle
 ```
 
 ## Opciones
@@ -41,7 +41,7 @@ node .opencode/scripts/create-config.js --model opencode/big-pickle
 ## Ejemplo con permisos
 
 ```bash
-node .opencode/scripts/create-config.js \
+node .opencode/skills/config-creator/scripts/create-config.js \
   --model anthropic/claude-sonnet-4-6 \
   --small-model anthropic/claude-haiku-4-6 \
   --shell zsh \

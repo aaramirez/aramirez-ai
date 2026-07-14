@@ -24,20 +24,20 @@ Crea un `spec.json` con la descripción de tu proyecto (ver [[05-Harness/03-harn
 ## Paso 2: Generar el harness
 
 ```bash
-node .opencode/scripts/create-config.js (individual scripts) --project spec.json --dry-run
+node .opencode/skills/config-creator/scripts/create-config.js (individual scripts) --project spec.json --dry-run
 ```
 
 Revisa la salida. Si todo se ve bien:
 
 ```bash
-node .opencode/scripts/create-config.js (individual scripts) --project spec.json
+node .opencode/skills/config-creator/scripts/create-config.js (individual scripts) --project spec.json
 ```
 
 ## Paso 3: Personalizar agentes y skills
 
 ```bash
 # Crear agentes adicionales
-node .opencode/scripts/create-agent.js --name security-auditor --mode subagent --description "Audita seguridad"
+node .opencode/skills/agent-creator/scripts/create-agent.js --name security-auditor --mode subagent --description "Audita seguridad"
 
 # Instalar skills
 arai install skill code-review
@@ -47,7 +47,7 @@ arai install skill git
 ## Paso 4: Configurar permisos
 
 ```bash
-node .opencode/scripts/create-permission.js --strictness balanced
+node .opencode/skills/permission-creator/scripts/create-permission.js --strictness balanced
 ```
 
 Ajusta los permisos en `opencode.json` según sea necesario.
@@ -55,14 +55,14 @@ Ajusta los permisos en `opencode.json` según sea necesario.
 ## Paso 5: Agregar comandos personalizados
 
 ```bash
-node .opencode/scripts/create-command.js --name test --template "npm test"
-node .opencode/scripts/create-command.js --name deploy --template "npm run deploy -- $ARGUMENTS"
+node .opencode/skills/command-creator/scripts/create-command.js --name test --template "npm test"
+node .opencode/skills/command-creator/scripts/create-command.js --name deploy --template "npm run deploy -- $ARGUMENTS"
 ```
 
 ## Paso 6: Agregar servidores MCP
 
 ```bash
-node .opencode/scripts/create-mcp.js --name context7 --type remote --url https://context7.com/mcp
+node .opencode/skills/mcp-creator/scripts/create-mcp.js --name context7 --type remote --url https://context7.com/mcp
 ```
 
 ## Paso 7: Validar

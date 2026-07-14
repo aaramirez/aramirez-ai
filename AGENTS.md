@@ -87,23 +87,25 @@ aramirez-ai/
 
 | Script | Type |
 |--------|------|
-| .opencode/scripts/create-agent.js | file |
-| .opencode/scripts/create-architecture.js | file |
-| .opencode/scripts/create-base.js | file |
-| .opencode/scripts/create-brand.js | file |
-| .opencode/scripts/create-command.js | file |
-| .opencode/scripts/create-config.js | file |
-| .opencode/scripts/create-flow.js | file |
-| .opencode/scripts/create-instructions.js | file |
-| .opencode/scripts/create-mcp.js | file |
-| .opencode/scripts/create-permission.js | file |
-| .opencode/scripts/create-plugin.js | file |
-| .opencode/scripts/create-prompt.js | file |
-| .opencode/scripts/create-reference.js | file |
-| .opencode/scripts/create-rule.js | file |
-| .opencode/scripts/create-script.js | file |
-| .opencode/scripts/create-skill.js | file |
-| .opencode/scripts/create-tool.js | file |
+| .opencode/skills/agent-creator/scripts/create-agent.js | file |
+| .opencode/skills/architecture-creator/scripts/create-architecture.js | file |
+| .opencode/scripts/create-base.js | file (shared utility) |
+| .opencode/skills/branding/scripts/create-brand.js | file |
+| .opencode/skills/command-creator/scripts/create-command.js | file |
+| .opencode/skills/config-creator/scripts/create-config.js | file |
+| .opencode/skills/flow-creator/scripts/create-flow.js | file |
+| .opencode/skills/instructions-creator/scripts/create-instructions.js | file |
+| .opencode/skills/mcp-creator/scripts/create-mcp.js | file |
+| .opencode/skills/permission-creator/scripts/create-permission.js | file |
+| .opencode/skills/plugin-creator/scripts/create-plugin.js | file |
+| .opencode/skills/prompt-creator/scripts/create-prompt.js | file |
+| .opencode/skills/reference-creator/scripts/create-reference.js | file |
+| .opencode/skills/rule-creator/scripts/create-rule.js | file |
+| .opencode/skills/script-creator/scripts/create-script.js | file |
+| .opencode/skills/skill-creator/scripts/create-skill.js | file |
+| .opencode/skills/tool-creator/scripts/create-tool.js | file |
+| .opencode/scripts/getrepo.js | file |
+| .opencode/scripts/updaterepos.js | file |
 
 ## CLI quick reference
 

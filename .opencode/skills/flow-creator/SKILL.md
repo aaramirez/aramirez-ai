@@ -32,5 +32,5 @@ Los flujos se documentan en `AGENTS.md` como una sección de workflows. Cada flu
 ## Uso
 
 ```bash
-node .opencode/scripts/create-flow.js --name "my-flow" --stages "plan,build,review,deploy" --output ./flow.json
+node .opencode/skills/flow-creator/scripts/create-flow.js --name "my-flow" --stages "plan,build,review,deploy" --output ./flow.json
 ```

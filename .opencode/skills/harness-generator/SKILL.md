@@ -147,9 +147,9 @@ arai init <nombre-proyecto> --template <minimal|full> --description "<descripcio
 Usar los scripts individuales para generar componentes específicos:
 
 ```bash
-node .opencode/scripts/create-config.js --model opencode/big-pickle --output <dir>/opencode.json
-node .opencode/scripts/create-agent.js --name build --mode primary --output <dir>/.opencode/agents/build.md
-node .opencode/scripts/create-permission.js --strictness balanced --output <dir>/permission.json
+node .opencode/skills/config-creator/scripts/create-config.js --model opencode/big-pickle --output <dir>/opencode.json
+node .opencode/skills/agent-creator/scripts/create-agent.js --name build --mode primary --output <dir>/.opencode/agents/build.md
+node .opencode/skills/permission-creator/scripts/create-permission.js --strictness balanced --output <dir>/permission.json
 ```
 
 ### Componentes individuales
@@ -165,8 +165,8 @@ arai install skill <nombre> --project <dir>
 arai install agent <nombre> --project <dir>
 
 # Generar agentes personalizados
-node .opencode/scripts/create-agent.js <nombre> --description "<desc>"
-node .opencode/scripts/create-skill.js <nombre> --description "<desc>"
+node .opencode/skills/agent-creator/scripts/create-agent.js <nombre> --description "<desc>"
+node .opencode/skills/skill-creator/scripts/create-skill.js <nombre> --description "<desc>"
 ```
 
 ## Resumen previo a ejecución

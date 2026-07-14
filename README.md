@@ -59,7 +59,7 @@ Dos directorios, dos propósitos:
 | Directorio | Propósito | Contenido |
 |------------|-----------|-----------|
 | `.opencode/` | **La máquina** — harness que produce arquitecturas de agentes | 16 triplets creadores (skill + script + agent), config runtime, commands, plugins |
-| `shared/` | **Los artefactos** — componentes distribuibles para nuevos proyectos | 14 skills distribuibles, 9 scripts, 10 agents, 9 commands, templates, prompts, rules, pipeline docgen |
+| `shared/` | **Los artefactos** — componentes distribuibles para nuevos proyectos | 14 skills distribuibles, 11 scripts, 10 agents, 11 commands, templates, prompts, rules, pipeline docgen |
 
 ### Patrón Triplet Creador
 
@@ -70,7 +70,7 @@ SKILL.md (instrucciones)  →  create-*.js (implementación)  →  agent .md (wr
 ```
 
 - **SKILL.md** en `.opencode/skills/<name>/SKILL.md` — qué hacer, reglas, validación
-- **Script** en `.opencode/scripts/create-*.js` — generador Node.js ESM
+- **Script** en `.opencode/skills/<name>/scripts/create-*.js` — generador Node.js ESM (co-located)
 - **Agent** en `.opencode/agents/<name>.md` — carga skill, ejecuta script, aplica reglas
 
 16 creadores: agent, architecture, command, config, flow, harness-generator, instructions, mcp, permission, plugin, prompt, reference, rule, script, skill, tool.
@@ -79,7 +79,7 @@ SKILL.md (instrucciones)  →  create-*.js (implementación)  →  agent .md (wr
 
 1. **Usuario** invoca un agente (ej: `@agent-creator`)
 2. **Agente** carga su skill (instrucciones + reglas)
-3. **Agente** ejecuta el script (`node .opencode/scripts/create-*.js`)
+3. **Agente** ejecuta el script (`node .opencode/skills/<name>/scripts/create-*.js`)
 4. **Script** produce el artefacto (archivo Markdown, JSON, o JS)
 5. **Agente** valida la salida según reglas del skill, reporta al usuario
 
@@ -369,6 +369,8 @@ $ arai list mcp
 | `/kb` | Gestiona la knowledge base — validar wikilinks, arreglar rotos |
 | `/youtube-cmd` | Obtiene transcripciones de YouTube |
 | `/export-pdf` | Exporta notas del vault Obsidian a PDF |
+| `/getrepo` | Añade un repositorio GitHub a repos.json y lo clona en repos/ |
+| `/updaterepos` | Actualiza todos los repositorios de referencia en repos/ |
 
 ### Plugins y MCP
 
@@ -433,6 +435,8 @@ Las skills de distribución están en `shared/skills/<nombre>/SKILL.md`. Las cre
 |--------|-------------|
 | `shared/scripts/ci-validate.js` | Validación CI/CD portable — estructura del proyecto, frontmatter de skills, placeholders, .gitignore, brand.json. Opciones: `--strict`, `--verbose`, `--dir <path>` |
 | `shared/scripts/repos-sync.js` | Gestor de repositorios de referencia desde `repos.json`. Opciones: `--list`, `<name>` (repo específico) |
+| `shared/scripts/getrepo.js` | Añade un repositorio GitHub a repos.json y lo clona. Soporta URLs completas y formato org/repo. Opciones: `--description "text"` |
+| `shared/scripts/updaterepos.js` | Actualiza repos clonados con git pull. Opciones: `<org/repo>` (repo específico) |
 
 ### Scripts de skills (co-localizados)
 
@@ -446,25 +450,25 @@ Las skills de distribución están en `shared/skills/<nombre>/SKILL.md`. Las cre
 | `shared/skills/youtube/scripts/youtube-transcript.js` | Obtenedor de transcripciones de YouTube (API youtube-transcript.ai). Opciones: `--lang <code>`. API programática: `fetchTranscript()`, `parseVideoId()` |
 | `shared/skills/document-generation/scripts/docgen/` | Pipeline completo de generación de documentos (decks, reports, images) |
 
-### Creator scripts (`.opencode/scripts/`)
+### Creator scripts (`.opencode/skills/<name>/scripts/`)
 
 | Script | Descripción |
 |--------|-------------|
-| `.opencode/scripts/create-config.js` | Genera archivo `opencode.json` — modelo, shell, agentes, skills |
-| `.opencode/scripts/create-permission.js` | Genera modelo de permisos con roles y controles de acceso |
-| `.opencode/scripts/create-instructions.js` | Genera instrucciones, referencias, prompts y reglas |
-| `.opencode/scripts/create-agent.js` | Genera agente primario — nombre, modo, permisos |
-| `.opencode/scripts/create-architecture.js` | Genera documento de arquitectura técnica |
-| `.opencode/scripts/create-flow.js` | Genera flujo multi-agente con orquestación |
-| `.opencode/scripts/create-skill.js` | Genera skill con frontmatter YAML |
-| `.opencode/scripts/create-mcp.js` | Genera servidor MCP (remoto/local) |
-| `.opencode/scripts/create-command.js` | Genera comando personalizado de opencode |
-| `.opencode/scripts/create-script.js` | Genera script Node.js reutilizable |
-| `.opencode/scripts/create-prompt.js` | Genera fragmento de prompt reutilizable |
-| `.opencode/scripts/create-rule.js` | Genera regla de codificación/documentación |
-| `.opencode/scripts/create-reference.js` | Genera referencia externa |
-| `.opencode/scripts/create-plugin.js` | Genera plugin de opencode |
-| `.opencode/scripts/create-tool.js` | Genera herramienta de agente |
+| `.opencode/skills/config-creator/scripts/create-config.js` | Genera archivo `opencode.json` — modelo, shell, agentes, skills |
+| `.opencode/skills/permission-creator/scripts/create-permission.js` | Genera modelo de permisos con roles y controles de acceso |
+| `.opencode/skills/instructions-creator/scripts/create-instructions.js` | Genera instrucciones, referencias, prompts y reglas |
+| `.opencode/skills/agent-creator/scripts/create-agent.js` | Genera agente primario — nombre, modo, permisos |
+| `.opencode/skills/architecture-creator/scripts/create-architecture.js` | Genera documento de arquitectura técnica |
+| `.opencode/skills/flow-creator/scripts/create-flow.js` | Genera flujo multi-agente con orquestación |
+| `.opencode/skills/skill-creator/scripts/create-skill.js` | Genera skill con frontmatter YAML |
+| `.opencode/skills/mcp-creator/scripts/create-mcp.js` | Genera servidor MCP (remoto/local) |
+| `.opencode/skills/command-creator/scripts/create-command.js` | Genera comando personalizado de opencode |
+| `.opencode/skills/script-creator/scripts/create-script.js` | Genera script Node.js reutilizable |
+| `.opencode/skills/prompt-creator/scripts/create-prompt.js` | Genera fragmento de prompt reutilizable |
+| `.opencode/skills/rule-creator/scripts/create-rule.js` | Genera regla de codificación/documentación |
+| `.opencode/skills/reference-creator/scripts/create-reference.js` | Genera referencia externa |
+| `.opencode/skills/plugin-creator/scripts/create-plugin.js` | Genera plugin de opencode |
+| `.opencode/skills/tool-creator/scripts/create-tool.js` | Genera herramienta de agente |
 
 ### Docgen library (10 scripts)
 

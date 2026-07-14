@@ -66,7 +66,7 @@ Uses `opencode debug skill` to verify all 16 creator skills are discovered:
 
 End-to-end: generate agent with script → validate with opencode:
 
-1. Run `node .opencode/scripts/create-agent.js --name roundtrip-test --preset reviewer --output <tmpdir>/roundtrip-test.md`
+1. Run `node .opencode/skills/agent-creator/scripts/create-agent.js --name roundtrip-test --preset reviewer --output <tmpdir>/roundtrip-test.md`
 2. Copy to `.opencode/agents/` temporarily
 3. Run `opencode debug agent roundtrip-test`
 4. Assert valid JSON with correct mode/permissions
@@ -98,7 +98,7 @@ permission:
 
 Body sections:
 - **Inicio**: loads skill `agent-creator`
-- **Ejecución**: `node .opencode/scripts/create-agent.js [flags]`
+- **Ejecución**: `node .opencode/skills/agent-creator/scripts/create-agent.js [flags]`
 - **Reglas**: dry-run first, validate YAML frontmatter, register in opencode.json after creation, report generated file
 
 #### `.opencode/agents/skill-creator.md`

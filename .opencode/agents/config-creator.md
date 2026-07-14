@@ -19,7 +19,7 @@ Al iniciar, carga el skill `config-creator` que contiene las instrucciones detal
 Cuando te invoquen, ejecuta:
 
 ```bash
-node .opencode/scripts/create-config.js [flags según el skill]
+node .opencode/skills/config-creator/scripts/create-config.js [flags según el skill]
 ```
 
 ## Reglas

@@ -42,7 +42,7 @@ Brand identity is centralized in `.opencode/brand.json`. All document generation
 cat .opencode/brand.json
 
 # Edit brand.json directly or use the create-brand.js script
-node .opencode/scripts/create-brand.js --help
+node .opencode/skills/branding/scripts/create-brand.js --help
 ```
 
 ## Related

@@ -12,7 +12,7 @@ arai está diseñado para ser **extensible en múltiples niveles**. Aquí están
 Las skills son el mecanismo más directo para agregar capacidades. Una skill es un archivo `SKILL.md` con frontmatter YAML que contiene instrucciones especializadas para que los agentes las usen.
 
 ```bash
-node .opencode/scripts/create-skill.js mi-skill  # Crear skill desde script
+node .opencode/skills/skill-creator/scripts/create-skill.js mi-skill  # Crear skill desde script
 arai sync skill mi-skill                         # Sincronizar al proyecto
 ```
 
@@ -25,13 +25,13 @@ Las skills se almacenan en `.opencode/skills/<nombre>/SKILL.md` y opencode las l
 Puedes crear agentes con roles, prompts y permisos específicos:
 
 ```bash
-node .opencode/scripts/create-agent.js mi-agente --mode primary
+node .opencode/skills/agent-creator/scripts/create-agent.js mi-agente --mode primary
 ```
 
 O subagentes para tareas especializadas:
 
 ```bash
-node .opencode/scripts/create-agent.js revisor-seguridad --mode subagent
+node .opencode/skills/agent-creator/scripts/create-agent.js revisor-seguridad --mode subagent
 ```
 
 **Cuándo usarlos**: cuando necesitas un agente con un perfil y restricciones distintas al agente por defecto.
@@ -45,7 +45,7 @@ Para flujos de trabajo complejos, puedes definir arquitecturas que orquestan mú
 - **Chain**: agentes trabajan en secuencia
 
 ```bash
-node .opencode/scripts/create-flow.js flujo-personalizado
+node .opencode/skills/flow-creator/scripts/create-flow.js flujo-personalizado
 ```
 
 ## 4. Scripts reutilizables
@@ -53,7 +53,7 @@ node .opencode/scripts/create-flow.js flujo-personalizado
 Los scripts en `shared/scripts/` son ejecutables (Node.js ESM, Python o Bash) que pueden ser invocados por los agentes:
 
 ```bash
-node .opencode/scripts/create-script.js mi-utilidad
+node .opencode/skills/script-creator/scripts/create-script.js mi-utilidad
 node shared/scripts/mi-utilidad.js
 ```
 
@@ -64,7 +64,7 @@ node shared/scripts/mi-utilidad.js
 Puedes integrar herramientas externas mediante el [Model Context Protocol (MCP)](https://modelcontextprotocol.io):
 
 ```bash
-node .opencode/scripts/create-mcp.js mi-api --type remote --url https://api.mi-servicio.com
+node .opencode/skills/mcp-creator/scripts/create-mcp.js mi-api --type remote --url https://api.mi-servicio.com
 ```
 
 **Cuándo usarlos**: cuando necesitas que los agentes accedan a APIs, bases de datos o servicios externos.
@@ -74,7 +74,7 @@ node .opencode/scripts/create-mcp.js mi-api --type remote --url https://api.mi-s
 Comandos reutilizables que ejecutan tareas frecuentes con un solo nombre:
 
 ```bash
-node .opencode/scripts/create-command.js revisar-pr
+node .opencode/skills/command-creator/scripts/create-command.js revisar-pr
 # Luego en opencode: @command revisar-pr
 ```
 
@@ -91,7 +91,7 @@ arai install plugin mi-plugin
 Para proyectos grandes, el **harness generator** crea una configuración completa de agentes, skills, MCP y flujos a partir de una especificación JSON:
 
 ```bash
-node .opencode/scripts/create-config.js (individual scripts) --project spec.json
+node .opencode/skills/config-creator/scripts/create-config.js (individual scripts) --project spec.json
 ```
 
 Esto genera 18 tipos de componentes en un solo paso.

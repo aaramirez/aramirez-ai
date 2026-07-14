@@ -68,7 +68,7 @@ Agentes en secuencia, donde la salida de uno alimenta al siguiente:
 ## Crear una arquitectura
 
 ```bash
-node .opencode/scripts/create-architecture.js \
+node .opencode/skills/architecture-creator/scripts/create-architecture.js \
   --name full-dev \
   --pattern orchestrator \
   --agents "plan,build,reviewer"

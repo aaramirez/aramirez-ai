@@ -40,7 +40,7 @@ Las referencias en `opencode.json` (clave `references`) permiten que los agentes
 ## Referencia
 
 ```bash
-node .opencode/scripts/create-reference.js \
+node .opencode/skills/reference-creator/scripts/create-reference.js \
   --name shared-scripts \
   --path ../shared/scripts \
   --description "Reusable scripts" \

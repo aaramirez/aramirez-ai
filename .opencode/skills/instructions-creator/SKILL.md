@@ -41,7 +41,7 @@ El contenido de `AGENTS.md` se inyecta en el array `instructions` de `opencode.j
 ## Script de referencia
 
 ```bash
-node .opencode/scripts/create-instructions.js --type web --language typescript --description "Mi proyecto" --output ./AGENTS.md
+node .opencode/skills/instructions-creator/scripts/create-instructions.js --type web --language typescript --description "Mi proyecto" --output ./AGENTS.md
 ```
 
 ### Opciones
@@ -59,12 +59,12 @@ node .opencode/scripts/create-instructions.js --type web --language typescript -
 
 ```bash
 # Generar instructions para API TypeScript
-node .opencode/scripts/create-instructions.js \
+node .opencode/skills/instructions-creator/scripts/create-instructions.js \
   --type api \
   --language typescript \
   --description "API REST para gestión de usuarios" \
   --output ./AGENTS.md
 
 # Vista previa
-node .opencode/scripts/create-instructions.js --type web --dry-run
+node .opencode/skills/instructions-creator/scripts/create-instructions.js --type web --dry-run
 ```

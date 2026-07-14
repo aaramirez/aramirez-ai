@@ -35,7 +35,7 @@ Agentes pre-configurados para dominios específicos. Vienen con prompts, permiso
 ## Crear un agente especializado
 
 ```bash
-node .opencode/scripts/create-agent.js --mode subagent --name mi-reviewer --domain reviewer
+node .opencode/skills/agent-creator/scripts/create-agent.js --mode subagent --name mi-reviewer --domain reviewer
 ```
 
 Esto genera un agente con:
@@ -46,7 +46,7 @@ Esto genera un agente con:
 ## Ejemplo: security agent
 
 ```bash
-node .opencode/scripts/create-agent.js --mode subagent \
+node .opencode/skills/agent-creator/scripts/create-agent.js --mode subagent \
   --name security-auditor \
   --domain security \
   --model anthropic/claude-sonnet-4-6
