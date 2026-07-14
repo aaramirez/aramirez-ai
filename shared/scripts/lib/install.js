@@ -7,6 +7,28 @@ import { join, dirname } from 'path';
 import { REPO_ROOT, log, ensureDir, isDir, listNames, opencodeInstalled } from './helpers.js';
 import { updateAgentsMd } from './agents-md.js';
 
+/* ─── helpers ─── */
+
+function ensureOpenCodePackageJson(projectRoot) {
+  const pkgPath = join(projectRoot, '.opencode', 'package.json');
+  let pkg = {};
+
+  if (existsSync(pkgPath)) {
+    try {
+      pkg = JSON.parse(readFileSync(pkgPath, 'utf8'));
+    } catch {
+      log('Could not parse .opencode/package.json, recreating', 'warn');
+    }
+  }
+
+  if (pkg.type === 'module') return;
+
+  pkg.type = 'module';
+  ensureDir(dirname(pkgPath));
+  writeFileSync(pkgPath, JSON.stringify(pkg, null, 2) + '\n');
+  log('Ensured .opencode/package.json has "type": "module"', 'ok');
+}
+
 /* ─── install ─── */
 
 function installSkillScripts(skillName, projectRoot) {
@@ -68,6 +90,8 @@ function installPlatform(projectRoot) {
 
   const dotOpenCode = join(projectRoot, '.opencode');
   ensureDir(dotOpenCode);
+
+  ensureOpenCodePackageJson(projectRoot);
 
   const agentsSrc = join(REPO_ROOT, 'shared', 'agents');
   const agentsDst = join(dotOpenCode, 'agents');
@@ -397,6 +421,7 @@ function uninstallRule(name, projectRoot) {
 }
 
 export {
+  ensureOpenCodePackageJson,
   installPlatform, installSkill, installAgent, installScript, installPrompt, installRule,
   uninstallPlatform, uninstallSkill, uninstallAgent, uninstallScript, uninstallPrompt, uninstallRule,
 };

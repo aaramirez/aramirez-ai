@@ -7,6 +7,7 @@ import { join, resolve, dirname, basename } from 'path';
 import { REPO_ROOT, log, ensureDir } from './helpers.js';
 import { loadTemplates, resolvePartial, applyVars, resolveItems, resolveScripts, resolveFiles, resolvePlugins } from './template-utils.js';
 import { buildVarsFromProjectState } from './agents-md.js';
+import { ensureOpenCodePackageJson } from './install.js';
 
 function scaffoldProject(targetDir, templateName, vars) {
   const templates = loadTemplates();
@@ -129,6 +130,8 @@ function scaffoldProject(targetDir, templateName, vars) {
   if (include.platforms?.includes('opencode')) {
     scaffoldOpencode(absTarget, allVars);
   }
+
+  ensureOpenCodePackageJson(absTarget);
 
   if (include.package_json) {
     const pkgPartial = resolvePartial('package.json');
