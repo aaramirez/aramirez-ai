@@ -14,6 +14,8 @@ const EXPECTED_COMMANDS = [
   'youtube-cmd',
   'export-pdf',
   'plan',
+  'getrepo',
+  'updaterepos',
 ];
 
 describe('shared commands', () => {

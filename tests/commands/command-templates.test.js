@@ -1,6 +1,6 @@
 import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'fs';
+import { readFileSync, existsSync } from 'fs';
 import { join } from 'path';
 import { REPO_ROOT } from '../helpers.js';
 
@@ -65,6 +65,46 @@ describe('command templates (Phase 4)', () => {
     assert.ok(config.command.plan.description?.length >= 10, 'plan description should be >= 10 chars');
     assert.ok(config.command.plan.template?.length >= 20, 'plan template should be >= 20 chars');
     assert.ok(/plan/i.test(config.command.plan.template), 'plan template should mention plan');
+  });
+
+  test('getrepo command is registered in opencode.json', () => {
+    assert.ok(config.command.getrepo, 'getrepo command should be registered');
+    assert.ok(config.command.getrepo.description?.length >= 10, 'getrepo description should be >= 10 chars');
+    assert.ok(config.command.getrepo.template?.length >= 20, 'getrepo template should be >= 20 chars');
+    assert.ok(/repo/i.test(config.command.getrepo.template), 'getrepo template should mention repo');
+  });
+
+  test('updaterepos command is registered in opencode.json', () => {
+    assert.ok(config.command.updaterepos, 'updaterepos command should be registered');
+    assert.ok(config.command.updaterepos.description?.length >= 10, 'updaterepos description should be >= 10 chars');
+    assert.ok(config.command.updaterepos.template?.length >= 20, 'updaterepos template should be >= 20 chars');
+    assert.ok(/update/i.test(config.command.updaterepos.template), 'updaterepos template should mention update');
+  });
+
+  test('getrepo and updaterepos command files exist in .opencode/commands/', () => {
+    assert.ok(existsSync(join(REPO_ROOT, '.opencode', 'commands', 'getrepo.md')), '.opencode/commands/getrepo.md should exist');
+    assert.ok(existsSync(join(REPO_ROOT, '.opencode', 'commands', 'updaterepos.md')), '.opencode/commands/updaterepos.md should exist');
+  });
+
+  test('getrepo and updaterepos scripts exist in .opencode/scripts/', () => {
+    assert.ok(existsSync(join(REPO_ROOT, '.opencode', 'scripts', 'getrepo.js')), '.opencode/scripts/getrepo.js should exist');
+    assert.ok(existsSync(join(REPO_ROOT, '.opencode', 'scripts', 'updaterepos.js')), '.opencode/scripts/updaterepos.js should exist');
+  });
+
+  test('.opencode commands reference .opencode/scripts/ not shared/', () => {
+    for (const name of ['getrepo', 'updaterepos']) {
+      const file = join(REPO_ROOT, '.opencode', 'commands', `${name}.md`);
+      if (!existsSync(file)) continue;
+      const content = readFileSync(file, 'utf8');
+      assert.ok(
+        content.includes('.opencode/scripts/'),
+        `${name}.md should reference .opencode/scripts/`
+      );
+      assert.ok(
+        !content.includes('shared/scripts/'),
+        `${name}.md should NOT reference shared/scripts/`
+      );
+    }
   });
 
   test('all commands have description and template fields', () => {

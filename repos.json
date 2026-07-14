@@ -23,5 +23,17 @@
     "name": "anthropics/claude-quickstarts",
     "url": "https://github.com/anthropics/claude-quickstarts.git",
     "description": "Anthropic Claude quickstart templates — reference for MCP, agents, and API integration patterns"
+  },
+  {
+    "name": "agentskills/agentskills",
+    "url": "https://github.com/agentskills/agentskills.git"
+  },
+  {
+    "name": "anthropics/claude-plugins-official",
+    "url": "https://github.com/anthropics/claude-plugins-official.git"
+  },
+  {
+    "name": "anthropics/claude-code",
+    "url": "https://github.com/anthropics/claude-code.git"
   }
 ]
