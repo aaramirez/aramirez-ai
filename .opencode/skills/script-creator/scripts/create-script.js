@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { parseArgs, writeFileNow, showHelp, println } from './create-base.js';
+import { parseArgs, writeFileNow, showHelp, println } from '../../../scripts/create-base.js';
 
 const USAGE = `node .opencode/scripts/create-script.js --name <name> --lang <js|py|sh> --description <desc> --output <path>`;
 const DESC = 'Generates a boilerplate reusable script.';
@@ -15,7 +15,7 @@ const OPTIONS = {
 
 function generateJS(name, description) {
   return `#!/usr/bin/env node
-import { parseArgs, writeFileNow, showHelp, println } from './create-base.js';
+import { parseArgs, writeFileNow, showHelp, println } from '../../../scripts/create-base.js';
 
 const USAGE = \`node shared/scripts/${name}.js\`;
 const DESC = '${description}';

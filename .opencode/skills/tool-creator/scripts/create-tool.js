@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { parseArgs, writeFileNow, showHelp, println } from './create-base.js';
+import { parseArgs, writeFileNow, showHelp, println } from '../../../scripts/create-base.js';
 import { resolve } from 'path';
 
 const USAGE = `node .opencode/scripts/create-tool.js --name <name> --description <desc> --schema <json> --output <path> [options]`;

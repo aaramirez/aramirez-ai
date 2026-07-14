@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { parseArgs, writeFileNow, showHelp, println } from './create-base.js';
+import { parseArgs, writeFileNow, showHelp, println } from '../../../scripts/create-base.js';
 
 const opts = parseArgs(process.argv.slice(2));
 

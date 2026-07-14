@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { parseArgs, writeFileNow, showHelp, println } from './create-base.js';
+import { parseArgs, writeFileNow, showHelp, println } from '../../../scripts/create-base.js';
 
 const USAGE = `node .opencode/scripts/create-agent.js --name <name> --description <desc> [options]`;
 const DESC = 'Generates an agent markdown file with YAML frontmatter. Supports --mode and --preset.';

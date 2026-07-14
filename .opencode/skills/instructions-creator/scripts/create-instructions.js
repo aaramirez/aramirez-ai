@@ -8,7 +8,7 @@
  */
 
 import { resolve } from 'path';
-import { parseArgs, writeFileNow, showHelp, println } from './create-base.js';
+import { parseArgs, writeFileNow, showHelp, println } from '../../../scripts/create-base.js';
 
 const USAGE = 'node .opencode/scripts/create-instructions.js [options]';
 const DESC = 'Generate an AGENTS.md file with project instructions for opencode agents.';
