@@ -9,6 +9,64 @@ import { loadTemplates, resolvePartial, applyVars, resolveItems, resolveScripts,
 import { buildVarsFromProjectState } from './agents-md.js';
 import { ensureOpenCodePackageJson } from './install.js';
 
+function appendGitignore(targetPath, newContent) {
+  if (!existsSync(targetPath)) {
+    writeFileSync(targetPath, newContent);
+    return;
+  }
+  const existing = readFileSync(targetPath, 'utf8');
+  const existingSet = new Set(existing.split('\n').map(l => l.trim()).filter(Boolean));
+  const newLines = newContent.split('\n')
+    .map(l => l.trim())
+    .filter(l => l && !existingSet.has(l));
+  if (newLines.length > 0) {
+    const sep = existing.endsWith('\n') ? '' : '\n';
+    writeFileSync(targetPath, existing + sep + newLines.join('\n') + '\n');
+    log(`Merged ${newLines.length} new entries into .gitignore`, 'ok');
+  } else {
+    log('.gitignore already contains all arai entries', 'info');
+  }
+}
+
+function mergePackageJson(targetPath, templateVars) {
+  const templateRaw = resolvePartial('package.json');
+  const applied = JSON.parse(applyVars(templateRaw, templateVars));
+
+  if (!existsSync(targetPath)) {
+    writeFileSync(targetPath, JSON.stringify(applied, null, 2) + '\n');
+    return;
+  }
+
+  try {
+    const existing = JSON.parse(readFileSync(targetPath, 'utf8'));
+    let changed = false;
+
+    if (!existing.name) { existing.name = applied.name; changed = true; }
+    if (existing.type !== 'module') {
+      log(`Updating package.json type: "${existing.type || '(none)'}" → "module"`, 'warn');
+      existing.type = 'module';
+      changed = true;
+    }
+    if (!existing.engines) { existing.engines = applied.engines; changed = true; }
+    if (applied.scripts && Object.keys(applied.scripts).length > 0) {
+      if (!existing.scripts) existing.scripts = {};
+      for (const [k, v] of Object.entries(applied.scripts)) {
+        if (!(k in existing.scripts)) { existing.scripts[k] = v; changed = true; }
+      }
+    }
+
+    if (changed) {
+      writeFileSync(targetPath, JSON.stringify(existing, null, 2) + '\n');
+      log('Merged arai fields into existing package.json', 'ok');
+    } else {
+      log('Existing package.json already has all arai fields', 'info');
+    }
+  } catch {
+    log('Could not parse existing package.json — overwriting with template', 'warn');
+    writeFileSync(targetPath, JSON.stringify(applied, null, 2) + '\n');
+  }
+}
+
 function scaffoldProject(targetDir, templateName, vars) {
   const templates = loadTemplates();
   const template = templates.find(t => t.name === templateName);
@@ -22,9 +80,10 @@ function scaffoldProject(targetDir, templateName, vars) {
   const projectName = basename(absTarget);
   const allVars = { ...vars, project_name: projectName, project_description: vars.description || `${projectName} — AI-enhanced project` };
 
-  if (existsSync(absTarget) && readdirSync(absTarget).length > 0) {
-    log(`Directory ${absTarget} already exists and is not empty`, 'err');
-    return false;
+  const isExistingProject = existsSync(absTarget) && readdirSync(absTarget).length > 0;
+
+  if (isExistingProject) {
+    log(`Existing project detected — adding arai configuration to ${absTarget}`, 'info');
   }
 
   ensureDir(absTarget);
@@ -32,7 +91,7 @@ function scaffoldProject(targetDir, templateName, vars) {
 
   const gitignorePartial = resolvePartial('.gitignore');
   if (gitignorePartial) {
-    writeFileSync(join(absTarget, '.gitignore'), gitignorePartial);
+    appendGitignore(join(absTarget, '.gitignore'), gitignorePartial);
   }
 
   const skillsToCopy = resolveItems('skills', include.skills || []);
@@ -134,16 +193,24 @@ function scaffoldProject(targetDir, templateName, vars) {
   ensureOpenCodePackageJson(absTarget);
 
   if (include.package_json) {
-    const pkgPartial = resolvePartial('package.json');
-    if (pkgPartial) {
-      writeFileSync(join(absTarget, 'package.json'), applyVars(pkgPartial, allVars));
+    if (isExistingProject) {
+      mergePackageJson(join(absTarget, 'package.json'), allVars);
+    } else {
+      const pkgPartial = resolvePartial('package.json');
+      if (pkgPartial) {
+        writeFileSync(join(absTarget, 'package.json'), applyVars(pkgPartial, allVars));
+      }
     }
   }
 
   if (include.repos_json) {
     const reposPartial = resolvePartial('repos.json');
     if (reposPartial) {
-      writeFileSync(join(absTarget, 'repos.json'), reposPartial);
+      if (isExistingProject && existsSync(join(absTarget, 'repos.json'))) {
+        log('repos.json already exists — skipping (preserving user config)', 'info');
+      } else {
+        writeFileSync(join(absTarget, 'repos.json'), reposPartial);
+      }
     }
   }
 
@@ -166,24 +233,43 @@ function scaffoldProject(targetDir, templateName, vars) {
 
     const logoPartial = resolvePartial('logo.svg');
     if (logoPartial) {
-      writeFileSync(join(assetsDir, 'images', 'logo.svg'), applyVars(logoPartial, allVars));
+      const dst = join(assetsDir, 'images', 'logo.svg');
+      if (isExistingProject && existsSync(dst)) {
+        log('assets/images/logo.svg already exists — skipping', 'info');
+      } else {
+        writeFileSync(dst, applyVars(logoPartial, allVars));
+      }
     }
     const logoWhitePartial = resolvePartial('logo-white.svg');
     if (logoWhitePartial) {
-      writeFileSync(join(assetsDir, 'images', 'logo-white.svg'), applyVars(logoWhitePartial, allVars));
+      const dst = join(assetsDir, 'images', 'logo-white.svg');
+      if (isExistingProject && existsSync(dst)) {
+        log('assets/images/logo-white.svg already exists — skipping', 'info');
+      } else {
+        writeFileSync(dst, applyVars(logoWhitePartial, allVars));
+      }
     }
 
     const deckCssSrc = join(REPO_ROOT, 'assets', 'templates', 'deck.css');
     if (existsSync(deckCssSrc)) {
-      cpSync(deckCssSrc, join(assetsDir, 'templates', 'deck.css'));
+      const dst = join(assetsDir, 'templates', 'deck.css');
+      if (!isExistingProject || !existsSync(dst)) {
+        cpSync(deckCssSrc, dst);
+      }
     }
     const reportCssSrc = join(REPO_ROOT, 'assets', 'templates', 'report.css');
     if (existsSync(reportCssSrc)) {
-      cpSync(reportCssSrc, join(assetsDir, 'templates', 'report.css'));
+      const dst = join(assetsDir, 'templates', 'report.css');
+      if (!isExistingProject || !existsSync(dst)) {
+        cpSync(reportCssSrc, dst);
+      }
     }
     const specsSrc = join(REPO_ROOT, 'assets', 'templates', 'specs');
     if (existsSync(specsSrc)) {
-      cpSync(specsSrc, join(assetsDir, 'templates', 'specs'), { recursive: true });
+      const dst = join(assetsDir, 'templates', 'specs');
+      if (!isExistingProject || !existsSync(dst)) {
+        cpSync(specsSrc, dst, { recursive: true });
+      }
     }
   }
 
@@ -191,6 +277,10 @@ function scaffoldProject(targetDir, templateName, vars) {
   if (agentsPartial) {
     const dynamicVars = buildVarsFromProjectState(absTarget);
     writeFileSync(join(absTarget, 'AGENTS.md'), applyVars(agentsPartial, { ...allVars, ...dynamicVars }));
+  }
+
+  if (isExistingProject) {
+    log('Existing project files preserved — only arai configuration added/updated', 'info');
   }
 
   log(`Done — ${absTarget} ready`, 'ok');

@@ -1,7 +1,7 @@
 import { test, describe, afterEach } from 'node:test';
 import assert from 'node:assert/strict';
-import { existsSync, readFileSync, readdirSync, statSync } from 'fs';
-import { join } from 'path';
+import { existsSync, readFileSync, readdirSync, statSync, mkdirSync, writeFileSync } from 'fs';
+import { join, dirname } from 'path';
 import { runArai, tmpDir, cleanup, assertFile, assertDir, assertNoFile, assertExitCode } from '../helpers.js';
 
 describe('arai init — generación de harness funcional (TDD)', () => {
@@ -236,5 +236,62 @@ describe('arai init — generación de harness funcional (TDD)', () => {
     const p = initMinimal();
     assert.ok(!existsSync(join(p, '.opencode', 'commands')),
       'Minimal no debe tener commands');
+  });
+});
+
+describe('arai init — existing project (additive mode)', () => {
+  let dir;
+  let projectDir;
+
+  afterEach(() => { if (dir) cleanup(dir); });
+
+  function setupExistingProject(files = {}) {
+    dir = tmpDir();
+    projectDir = join(dir, 'existing-proj');
+    mkdirSync(projectDir, { recursive: true });
+    for (const [name, content] of Object.entries(files)) {
+      const filePath = join(projectDir, name);
+      mkdirSync(dirname(filePath), { recursive: true });
+      writeFileSync(filePath, content);
+    }
+    return projectDir;
+  }
+
+  test('full template creates all .opencode/ dirs on existing project', () => {
+    setupExistingProject({ 'src/index.js': 'console.log("hi")' });
+    runArai(['init', projectDir, '--template', 'full']);
+    assertDir(join(projectDir, '.opencode', 'skills'));
+    assertDir(join(projectDir, '.opencode', 'scripts'));
+    assertDir(join(projectDir, '.opencode', 'agents'));
+    assertDir(join(projectDir, '.opencode', 'commands'));
+  });
+
+  test('existing user files are not deleted', () => {
+    setupExistingProject({
+      'src/index.js': '// my code',
+      'README.md': '# My README',
+      '.eslintrc.json': '{}',
+    });
+    runArai(['init', projectDir, '--template', 'full']);
+    assertFile(join(projectDir, 'src', 'index.js'));
+    assertFile(join(projectDir, 'README.md'));
+    assertFile(join(projectDir, '.eslintrc.json'));
+  });
+
+  test('opencode.json is correct after init on existing project', () => {
+    setupExistingProject({ 'package.json': '{"name":"test"}' });
+    runArai(['init', projectDir, '--template', 'full']);
+    const config = JSON.parse(readFileSync(join(projectDir, 'opencode.json'), 'utf8'));
+    assert.ok(config.model, 'Should have model');
+    assert.ok(config.agent, 'Should have agents');
+    assert.ok(!config.skills?.paths, 'Should not have skills.paths');
+  });
+
+  test('AGENTS.md references .opencode/skills (not shared/skills)', () => {
+    setupExistingProject({ 'src/app.js': '' });
+    runArai(['init', projectDir, '--template', 'full']);
+    const content = readFileSync(join(projectDir, 'AGENTS.md'), 'utf8');
+    assert.ok(content.includes('.opencode/skills'));
+    assert.ok(!content.includes('shared/skills'));
   });
 });
