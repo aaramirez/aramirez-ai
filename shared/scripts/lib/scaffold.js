@@ -28,6 +28,16 @@ function appendGitignore(targetPath, newContent) {
   }
 }
 
+function rewriteSharedRefs(content) {
+  return content
+    .replace(/node\s+shared\/scripts\//g, 'node .opencode/scripts/')
+    .replace(/shared\/scripts\//g, '.opencode/scripts/')
+    .replace(/shared\/brand\.json/g, '.opencode/brand.json')
+    .replace(/shared\/skills\//g, '.opencode/skills/')
+    .replace(/shared\/rules\//g, '.opencode/rules/')
+    .replace(/shared\/prompts\//g, '.opencode/prompts/');
+}
+
 function mergePackageJson(targetPath, templateVars) {
   const templateRaw = resolvePartial('package.json');
   const applied = JSON.parse(applyVars(templateRaw, templateVars));
@@ -100,7 +110,7 @@ function scaffoldProject(targetDir, templateName, vars) {
     if (existsSync(src)) {
       const dstDir = join(absTarget, '.opencode', 'skills', skill);
       ensureDir(dstDir);
-      writeFileSync(join(dstDir, 'SKILL.md'), readFileSync(src, 'utf8'));
+      writeFileSync(join(dstDir, 'SKILL.md'), rewriteSharedRefs(readFileSync(src, 'utf8')));
     } else {
       log(`Skill '${skill}' not found in shared/skills/`, 'warn');
     }
@@ -120,7 +130,12 @@ function scaffoldProject(targetDir, templateName, vars) {
     if (existsSync(src)) {
       const dst = join(absTarget, '.opencode', 'scripts', item);
       ensureDir(dirname(dst));
-      cpSync(src, dst, { recursive: true });
+      if (statSync(src).isDirectory()) {
+        cpSync(src, dst, { recursive: true });
+      } else {
+        const content = readFileSync(src, 'utf8');
+        writeFileSync(dst, rewriteSharedRefs(content));
+      }
     } else {
       log(`Script '${item}' not found`, 'warn');
     }
@@ -131,7 +146,7 @@ function scaffoldProject(targetDir, templateName, vars) {
     if (existsSync(src)) {
       const dstDir = join(absTarget, '.opencode', 'prompts');
       ensureDir(dstDir);
-      writeFileSync(join(dstDir, `${prompt}.md`), readFileSync(src, 'utf8'));
+      writeFileSync(join(dstDir, `${prompt}.md`), rewriteSharedRefs(readFileSync(src, 'utf8')));
     }
   }
 
@@ -140,7 +155,7 @@ function scaffoldProject(targetDir, templateName, vars) {
     if (existsSync(src)) {
       const dstDir = join(absTarget, '.opencode', 'rules');
       ensureDir(dstDir);
-      writeFileSync(join(dstDir, `${rule}.md`), readFileSync(src, 'utf8'));
+      writeFileSync(join(dstDir, `${rule}.md`), rewriteSharedRefs(readFileSync(src, 'utf8')));
     }
   }
 
@@ -149,7 +164,7 @@ function scaffoldProject(targetDir, templateName, vars) {
     if (existsSync(src)) {
       const dstDir = join(absTarget, '.opencode', 'agents');
       ensureDir(dstDir);
-      writeFileSync(join(dstDir, `${agent}.md`), readFileSync(src, 'utf8'));
+      writeFileSync(join(dstDir, `${agent}.md`), rewriteSharedRefs(readFileSync(src, 'utf8')));
     } else {
       log(`Agent '${agent}' not found in shared/agents/`, 'warn');
     }
@@ -160,7 +175,7 @@ function scaffoldProject(targetDir, templateName, vars) {
     if (existsSync(src)) {
       const dstDir = join(absTarget, '.opencode', 'commands');
       ensureDir(dstDir);
-      writeFileSync(join(dstDir, `${cmd}.md`), readFileSync(src, 'utf8'));
+      writeFileSync(join(dstDir, `${cmd}.md`), rewriteSharedRefs(readFileSync(src, 'utf8')));
     } else {
       log(`Command '${cmd}' not found in shared/commands/`, 'warn');
     }

@@ -53,14 +53,14 @@ describe('arai init', () => {
     dir = tmpDir();
     projectDir = join(dir, 'minimal-test3');
     runArai(['init', projectDir, '--template', 'minimal']);
-    assertFile(join(projectDir, 'shared', 'prompts', 'commit-message.md'));
+    assertFile(join(projectDir, '.opencode', 'prompts', 'commit-message.md'));
   });
 
   test('minimal template includes code-style rule', () => {
     dir = tmpDir();
     projectDir = join(dir, 'minimal-test4');
     runArai(['init', projectDir, '--template', 'minimal']);
-    assertFile(join(projectDir, 'shared', 'rules', 'code-style.md'));
+    assertFile(join(projectDir, '.opencode', 'rules', 'code-style.md'));
   });
 
   test('minimal template includes opencode platform', () => {
@@ -110,7 +110,7 @@ describe('arai init', () => {
     dir = tmpDir();
     projectDir = join(dir, 'full-test3');
     runArai(['init', projectDir, '--template', 'full']);
-    assertFile(join(projectDir, 'shared', 'brand.json'));
+    assertFile(join(projectDir, '.opencode', 'brand.json'));
   });
 
   test('full template includes assets with logos', () => {

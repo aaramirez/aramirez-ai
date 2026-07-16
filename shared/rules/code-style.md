@@ -7,6 +7,20 @@
 - Use meaningful names; avoid abbreviations
 - Prefer immutability where practical
 
+## Plan Files
+
+Plan documents MUST follow this naming convention:
+
+```
+plans/XXX-nombre-fecha-YYYY-MM-DD.md
+```
+
+- `XXX`: Sequential number (001, 002, 003...)
+- `nombre`: kebab-case slug (no accents, no spaces)
+- `fecha`: Creation date (YYYY-MM-DD)
+
+Example: `plans/003-fix-auth-flow-2025-07-15.md`
+
 ## TypeScript / JavaScript
 - Use TypeScript strict mode
 - Prefer `const` over `let`; never use `var`

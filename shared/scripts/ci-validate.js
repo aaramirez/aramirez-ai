@@ -52,6 +52,8 @@ function exists(p) { return existsSync(p); }
 function isDir(p) { return existsSync(p) && statSync(p).isDirectory(); }
 function isFile(p) { return existsSync(p) && statSync(p).isFile(); }
 
+const planNameRe = /^\d{3}-[a-z0-9-]+-\d{4}-\d{2}-\d{2}\.md$/;
+
 console.log(`\n🔍 ci-validate — ${ROOT}\n`);
 
 // ── Project structure ──
@@ -208,6 +210,22 @@ if (isFile(join(ROOT, '.gitignore'))) {
   const gi = readFileSync(join(ROOT, '.gitignore'), 'utf8');
   check(gi.includes('node_modules'), '.gitignore excludes node_modules');
   check(gi.includes('.env'), '.gitignore excludes .env');
+}
+
+// ── Plan naming convention ──
+const plansDir = join(ROOT, 'plans');
+if (isDir(plansDir)) {
+  const planFiles = readdirSync(plansDir).filter(f => f.endsWith('.md'));
+  let invalidPlans = 0;
+  for (const plan of planFiles) {
+    if (!planNameRe.test(plan)) {
+      check(false, `Plan "${plan}" follows naming convention`, 'Expected: XXX-nombre-fecha-YYYY-MM-DD.md', 'warn');
+      invalidPlans++;
+    }
+  }
+  if (VERBOSE && invalidPlans === 0 && planFiles.length > 0) {
+    console.log(`  Plans: ${planFiles.length} files, all valid`);
+  }
 }
 
 // ── Summary ──
