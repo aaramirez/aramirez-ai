@@ -24,12 +24,12 @@ Create a detailed implementation plan for: $ARGUMENTS
 Plan files MUST follow this format:
 
 ```
-plans/XXX-nombre-fecha-YYYY-MM-DD.md
+plans/XXX-name-YYYY-MM-DD.md
 ```
 
 - `XXX`: Sequential number (001, 002, 003...)
-- `nombre`: kebab-case slug (no accents, no spaces)
-- `fecha`: Creation date (YYYY-MM-DD)
+- `name`: kebab-case slug (no accents, no spaces)
+- `YYYY-MM-DD`: Creation date
 
 Example: `plans/003-fix-auth-flow-2025-07-15.md`
 

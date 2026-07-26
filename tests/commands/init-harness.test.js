@@ -41,12 +41,12 @@ describe('arai init — generación de harness funcional (TDD)', () => {
 
   /* ─── .opencode/ estructura nativa ─── */
 
-  test('.opencode/skills/ contiene las 14 skills distribuibles', () => {
+  test('.opencode/skills/ contiene las 11 skills distribuibles', () => {
     const p = initFull();
     assertDir(join(p, '.opencode', 'skills'));
     const skills = readdirSync(join(p, '.opencode', 'skills'))
       .filter(f => statSync(join(p, '.opencode', 'skills', f)).isDirectory());
-    assert.equal(skills.length, 14, `Esperaba 14 skills distribuibles, obtuve ${skills.length}`);
+    assert.equal(skills.length, 11, `Esperaba 11 skills distribuibles, obtuve ${skills.length}`);
   });
 
   test('.opencode/agents/ contiene archivos .md de agentes', () => {
@@ -81,17 +81,16 @@ describe('arai init — generación de harness funcional (TDD)', () => {
       'No debe haber package-lock.json');
   });
 
-  test('.opencode/plugins/ tiene custom-logo.tsx', () => {
+  test('.opencode/plugins/ NO debe existir (no hay plugins distribuibles)', () => {
     const p = initFull();
-    assert.ok(existsSync(join(p, '.opencode', 'plugins', 'custom-logo.tsx')),
-      'Debe tener custom-logo.tsx');
+    assert.ok(!existsSync(join(p, '.opencode', 'plugins')),
+      'No debe haber directorio plugins/');
   });
 
-  test('.opencode/tui.json existe', () => {
+  test('.opencode/tui.json NO debe existir', () => {
     const p = initFull();
-    assertFile(join(p, '.opencode', 'tui.json'));
-    const tui = JSON.parse(readFileSync(join(p, '.opencode', 'tui.json'), 'utf8'));
-    assert.ok(tui.plugin, 'tui.json debe tener plugin array');
+    assert.ok(!existsSync(join(p, '.opencode', 'tui.json')),
+      'No debe haber tui.json');
   });
 
   /* ─── package.json en raíz ─── */
@@ -146,12 +145,6 @@ describe('arai init — generación de harness funcional (TDD)', () => {
     const p = initFull();
     assert.ok(!existsSync(join(p, 'shared', 'scripts', 'lib')),
       'No debe copiar lib/ (infraestructura CLI de arai)');
-  });
-
-  test('.opencode/scripts/ tiene docgen-vault.js', () => {
-    const p = initFull();
-    assert.ok(existsSync(join(p, '.opencode', 'scripts', 'docgen-vault.js')),
-      'Debe tener docgen-vault.js');
   });
 
   test('assets/templates/ tiene deck.css y report.css', () => {

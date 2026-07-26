@@ -1,19 +1,29 @@
 {
   "name": "full",
-  "description": "Full AI agent structure: all skills, scripts, opencode platform, branding, assets",
-  "version": "1.0.0",
+  "description": "Full AI agent structure: distributable skills, scripts, opencode platform, branding, assets",
+  "version": "1.1.0",
   "include": {
-    "skills": ["*"],
-    "scripts": ["*"],
+    "skills": [
+      "git", "code-review", "email", "content-ingestion", "pdf-extraction",
+      "youtube", "document-generation", "branding", "google-workspace",
+      "m365", "kb-management"
+    ],
+    "scripts": ["ci-validate.js", "docgen"],
     "prompts": ["*"],
     "rules": ["*"],
-    "agents": ["*"],
-    "commands": ["*"],
-    "plugins": ["*"],
-    "tui": true,
+    "agents": [
+      "reviewer", "tester", "docs", "branding", "content-ingestion",
+      "document-generation", "email", "kb-management", "pdf-extraction", "youtube"
+    ],
+    "commands": [
+      "commit", "deploy", "test", "plan", "generate", "ingest",
+      "kb", "send-email", "youtube-cmd"
+    ],
+    "plugins": [],
+    "tui": false,
     "platforms": ["opencode"],
     "package_json": true,
-    "repos_json": true,
+    "repos_json": false,
     "branding": true,
     "assets": true
   }
