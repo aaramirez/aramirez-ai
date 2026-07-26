@@ -177,12 +177,16 @@
       "type": "local"
     },
     "github": {
-      "enabled": false,
-      "headers": {
-        "Authorization": "Bearer {env:GITHUB_TOKEN}"
-      },
-      "type": "remote",
-      "url": "https://api.github.com/mcp"
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "@modelcontextprotocol/server-github"
+      ],
+      "enabled": true,
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "{env:GITHUB_TOKEN}"
+      }
     },
     "playwright": {
       "command": [

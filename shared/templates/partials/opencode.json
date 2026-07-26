@@ -66,11 +66,11 @@
       "env": {}
     },
     "github": {
-      "type": "remote",
-      "url": "https://api.github.com/mcp",
+      "type": "local",
+      "command": ["npx", "-y", "@modelcontextprotocol/server-github"],
       "enabled": false,
-      "headers": {
-        "Authorization": "Bearer {env:GITHUB_TOKEN}"
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "{env:GITHUB_TOKEN}"
       }
     }
   },
