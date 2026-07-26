@@ -8,6 +8,7 @@ import { REPO_ROOT, log, ensureDir } from './helpers.js';
 import { loadTemplates, resolvePartial, applyVars, resolveItems, resolveScripts, resolveFiles, resolvePlugins } from './template-utils.js';
 import { buildVarsFromProjectState } from './agents-md.js';
 import { ensureOpenCodePackageJson } from './install.js';
+import { shouldSkip } from './protection.js';
 
 function appendGitignore(targetPath, newContent) {
   if (!existsSync(targetPath)) {
@@ -77,7 +78,7 @@ function mergePackageJson(targetPath, templateVars) {
   }
 }
 
-function scaffoldProject(targetDir, templateName, vars) {
+function scaffoldProject(targetDir, templateName, vars, { force = false } = {}) {
   const templates = loadTemplates();
   const template = templates.find(t => t.name === templateName);
   if (!template) {
@@ -202,7 +203,7 @@ function scaffoldProject(targetDir, templateName, vars) {
   }
 
   if (include.platforms?.includes('opencode')) {
-    scaffoldOpencode(absTarget, allVars);
+    scaffoldOpencode(absTarget, allVars, { force, isExistingProject });
   }
 
   ensureOpenCodePackageJson(absTarget);
@@ -221,8 +222,8 @@ function scaffoldProject(targetDir, templateName, vars) {
   if (include.repos_json) {
     const reposPartial = resolvePartial('repos.json');
     if (reposPartial) {
-      if (isExistingProject && existsSync(join(absTarget, 'repos.json'))) {
-        log('repos.json already exists — skipping (preserving user config)', 'info');
+      if (isExistingProject && existsSync(join(absTarget, 'repos.json')) && !force) {
+        log('repos.json already exists — skipping (use --force to overwrite)', 'info');
       } else {
         writeFileSync(join(absTarget, 'repos.json'), reposPartial);
       }
@@ -290,8 +291,12 @@ function scaffoldProject(targetDir, templateName, vars) {
 
   const agentsPartial = resolvePartial('AGENTS.md');
   if (agentsPartial) {
-    const dynamicVars = buildVarsFromProjectState(absTarget);
-    writeFileSync(join(absTarget, 'AGENTS.md'), applyVars(agentsPartial, { ...allVars, ...dynamicVars }));
+    if (isExistingProject && existsSync(join(absTarget, 'AGENTS.md')) && !force) {
+      log('AGENTS.md already exists — skipping (use --force to overwrite)', 'info');
+    } else {
+      const dynamicVars = buildVarsFromProjectState(absTarget);
+      writeFileSync(join(absTarget, 'AGENTS.md'), applyVars(agentsPartial, { ...allVars, ...dynamicVars }));
+    }
   }
 
   if (isExistingProject) {
@@ -302,13 +307,18 @@ function scaffoldProject(targetDir, templateName, vars) {
   return true;
 }
 
-function scaffoldOpencode(absTarget, allVars) {
+function scaffoldOpencode(absTarget, allVars, { force = false, isExistingProject = false } = {}) {
   const partialSrc = join(REPO_ROOT, 'shared', 'templates', 'partials', 'opencode.json');
   if (existsSync(partialSrc)) {
-    let config = readFileSync(partialSrc, 'utf8');
-    config = applyVars(config, allVars);
-    ensureDir(absTarget);
-    writeFileSync(join(absTarget, 'opencode.json'), config);
+    const configDst = join(absTarget, 'opencode.json');
+    if (isExistingProject && existsSync(configDst) && shouldSkip('opencode.json', force)) {
+      log('opencode.json already exists — skipping (use --force to overwrite)', 'info');
+    } else {
+      let config = readFileSync(partialSrc, 'utf8');
+      config = applyVars(config, allVars);
+      ensureDir(absTarget);
+      writeFileSync(configDst, config);
+    }
   }
 }
 

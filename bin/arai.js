@@ -24,9 +24,11 @@ program
   .command('install [type] [name]')
   .description('Install opencode platform or components (skill, agent, script, prompt, rule)')
   .option('--project <dir>', 'Project directory', '.')
+  .option('--force', 'Overwrite existing protected files')
   .action((type, name, opts) => {
     const projectRoot = resolve(opts.project);
-    if (!type) return installPlatform(projectRoot);
+    const force = opts.force || false;
+    if (!type) return installPlatform(projectRoot, { force });
     if (!VALID_TYPES.includes(type)) {
       log(`Unknown type: '${type}'. Valid: ${VALID_TYPES.join(', ')}`, 'err');
       return;
@@ -36,7 +38,7 @@ program
       return;
     }
     const installers = { skill: installSkill, agent: installAgent, script: installScript, prompt: installPrompt, rule: installRule };
-    installers[type](name, projectRoot);
+    installers[type](name, projectRoot, { force });
   });
 
 // --- uninstall ---
@@ -80,15 +82,17 @@ program
   .command('sync [type] [name]')
   .description('Sync project config or components (skill)')
   .option('--project <dir>', 'Project directory', '.')
+  .option('--force', 'Overwrite existing protected files')
   .action((type, name, opts) => {
     const projectRoot = resolve(opts.project);
-    if (!type) return syncProject(projectRoot);
+    const force = opts.force || false;
+    if (!type) return syncProject(projectRoot, { force });
     if (!VALID_TYPES.includes(type)) {
       log(`Unknown type: '${type}'. Valid: ${VALID_TYPES.join(', ')}`, 'err');
       return;
     }
     if (type === 'skill') {
-      return skillsSync(projectRoot, name || null);
+      return skillsSync(projectRoot, name || null, { force });
     }
     log(`Sync for type '${type}' not yet implemented`, 'info');
   });
@@ -100,8 +104,9 @@ program
   .description('Scaffold a new project with AI agent configuration')
   .option('--template <name>', 'Template to use (minimal, full)', 'minimal')
   .option('--description <desc>', 'Project description')
+  .option('--force', 'Overwrite existing protected files')
   .action((dir, opts) => {
-    scaffoldProject(dir, opts.template, { description: opts.description });
+    scaffoldProject(dir, opts.template, { description: opts.description }, { force: opts.force || false });
   });
 
 // --- list ---

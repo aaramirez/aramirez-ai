@@ -5,8 +5,9 @@
 import { readFileSync, writeFileSync, existsSync, readdirSync } from 'fs';
 import { join, resolve } from 'path';
 import { REPO_ROOT, log, ensureDir, isDir, opencodeInstalled } from './helpers.js';
+import { shouldSkip, isExcludedFromSync, isExcludedSkill } from './protection.js';
 
-function syncProject(projectRoot) {
+function syncProject(projectRoot, { force = false } = {}) {
   projectRoot = projectRoot || process.cwd();
   if (!opencodeInstalled(projectRoot)) {
     log('No opencode installation found. Run `arai install` first.', 'info');
@@ -24,6 +25,7 @@ function syncProject(projectRoot) {
       const srcFiles = readdirSync(src).filter(f => f.endsWith('.md'));
       ensureDir(dst);
       for (const file of srcFiles) {
+        if (sub === 'agents' && isExcludedFromSync(file)) continue;
         const dstFile = join(dst, file);
         if (!existsSync(dstFile)) {
           writeFileSync(dstFile, readFileSync(join(src, file), 'utf8'));
@@ -35,13 +37,17 @@ function syncProject(projectRoot) {
   const configSrc = join(REPO_ROOT, 'opencode.json');
   const configDst = join(projectRoot, 'opencode.json');
   if (existsSync(configSrc)) {
-    writeFileSync(configDst, readFileSync(configSrc, 'utf8'));
+    if (existsSync(configDst) && shouldSkip('opencode.json', force)) {
+      log('opencode.json exists — skipping (use --force to overwrite)', 'info');
+    } else {
+      writeFileSync(configDst, readFileSync(configSrc, 'utf8'));
+    }
   }
 
   log(`Re-synced opencode config in ${projectRoot}`, 'ok');
 }
 
-function skillsSync(projectDir, skillName) {
+function skillsSync(projectDir, skillName, { force = false } = {}) {
   const skillsDir = join(REPO_ROOT, 'shared', 'skills');
   if (!isDir(skillsDir)) { log('No shared/skills/ found', 'err'); return; }
 
@@ -50,7 +56,7 @@ function skillsSync(projectDir, skillName) {
 
   const skills = skillName
     ? (allSkills.includes(skillName) ? [skillName] : (log(`Skill '${skillName}' not found in shared/skills/`, 'err'), null))
-    : allSkills;
+    : allSkills.filter(s => !isExcludedSkill(s));
   if (!skills) return;
 
   const dest = join(resolve(projectDir), '.opencode', 'skills');
@@ -62,7 +68,12 @@ function skillsSync(projectDir, skillName) {
     if (!existsSync(src)) continue;
     const dstDir = join(dest, skill);
     ensureDir(dstDir);
-    writeFileSync(join(dstDir, 'SKILL.md'), readFileSync(src, 'utf8'));
+    const dstFile = join(dstDir, 'SKILL.md');
+    if (existsSync(dstFile) && !force) {
+      log(`SKILL.md for '${skill}' exists — skipping (use --force to overwrite)`, 'info');
+      continue;
+    }
+    writeFileSync(dstFile, readFileSync(src, 'utf8'));
     count++;
   }
 

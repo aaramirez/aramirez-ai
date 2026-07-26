@@ -6,6 +6,7 @@ import { readFileSync, writeFileSync, existsSync, readdirSync, cpSync, rmSync } 
 import { join, dirname } from 'path';
 import { REPO_ROOT, log, ensureDir, isDir, listNames, opencodeInstalled } from './helpers.js';
 import { updateAgentsMd } from './agents-md.js';
+import { shouldSkip } from './protection.js';
 
 /* ─── helpers ─── */
 
@@ -80,7 +81,7 @@ function installDocgenTemplates(projectRoot) {
   log('Installed docgen templates → assets/templates/', 'ok');
 }
 
-function installPlatform(projectRoot) {
+function installPlatform(projectRoot, { force = false } = {}) {
   if (opencodeInstalled(projectRoot)) {
     log('opencode already installed in this project', 'warn');
     return false;
@@ -121,15 +122,21 @@ function installPlatform(projectRoot) {
   const partialSrc = join(REPO_ROOT, 'shared', 'templates', 'partials', 'opencode.json');
   const configDst = join(projectRoot, 'opencode.json');
   if (existsSync(partialSrc)) {
-    writeFileSync(configDst, readFileSync(partialSrc, 'utf8'));
+    if (existsSync(configDst) && shouldSkip('opencode.json', force)) {
+      log('opencode.json exists — skipping (use --force to overwrite)', 'info');
+    } else {
+      writeFileSync(configDst, readFileSync(partialSrc, 'utf8'));
+    }
   }
 
   log(`Installed opencode config in ${projectRoot}/`, 'ok');
-  updateAgentsMd(projectRoot);
+  if (!(existsSync(join(projectRoot, 'AGENTS.md')) && shouldSkip('AGENTS.md', force))) {
+    updateAgentsMd(projectRoot);
+  }
   return true;
 }
 
-function installSkill(name, projectRoot) {
+function installSkill(name, projectRoot, { force = false } = {}) {
   const srcDir = join(REPO_ROOT, 'shared', 'skills', name);
   if (!isDir(srcDir)) {
     log(`Skill '${name}' not found`, 'err');
@@ -140,7 +147,7 @@ function installSkill(name, projectRoot) {
 
   if (!opencodeInstalled(projectRoot)) {
     log('Installing opencode platform first...', 'info');
-    installPlatform(projectRoot);
+    installPlatform(projectRoot, { force });
   }
 
   const dest = join(projectRoot, '.opencode', 'skills', name);
@@ -198,7 +205,7 @@ function installSkill(name, projectRoot) {
   return true;
 }
 
-function installAgent(name, projectRoot) {
+function installAgent(name, projectRoot, { force = false } = {}) {
   const srcFile = join(REPO_ROOT, 'shared', 'agents', `${name}.md`);
   if (!existsSync(srcFile)) {
     log(`Agent '${name}' not found`, 'err');
@@ -209,7 +216,7 @@ function installAgent(name, projectRoot) {
 
   if (!opencodeInstalled(projectRoot)) {
     log('Installing opencode platform first...', 'info');
-    installPlatform(projectRoot);
+    installPlatform(projectRoot, { force });
   }
 
   const destDir = join(projectRoot, '.opencode', 'agents');
@@ -242,7 +249,7 @@ function installAgent(name, projectRoot) {
   return true;
 }
 
-function installScript(name, projectRoot) {
+function installScript(name, projectRoot, { force = false } = {}) {
   let srcFile = join(REPO_ROOT, 'shared', 'scripts', `${name}.js`);
   if (!existsSync(srcFile)) {
     const skillsDir = join(REPO_ROOT, 'shared', 'skills');
@@ -274,7 +281,7 @@ function installScript(name, projectRoot) {
   return true;
 }
 
-function installPrompt(name, projectRoot) {
+function installPrompt(name, projectRoot, { force = false } = {}) {
   const srcFile = join(REPO_ROOT, 'shared', 'prompts', `${name}.md`);
   if (!existsSync(srcFile)) {
     log(`Prompt '${name}.md' not found`, 'err');
@@ -297,7 +304,7 @@ function installPrompt(name, projectRoot) {
   return true;
 }
 
-function installRule(name, projectRoot) {
+function installRule(name, projectRoot, { force = false } = {}) {
   const srcFile = join(REPO_ROOT, 'shared', 'rules', `${name}.md`);
   if (!existsSync(srcFile)) {
     log(`Rule '${name}.md' not found`, 'err');

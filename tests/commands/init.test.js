@@ -211,24 +211,44 @@ describe('arai init', () => {
     assert.equal(content, '<svg>custom</svg>', 'Preserves existing custom logo');
   });
 
-  test('overwrites opencode.json (arai-managed)', () => {
+  test('protects existing opencode.json on init (no --force)', () => {
     dir = tmpDir();
-    projectDir = join(dir, 'overwrite-config');
+    projectDir = join(dir, 'protect-config');
     mkdirSync(projectDir, { recursive: true });
-    writeFileSync(join(projectDir, 'opencode.json'), '{}');
+    writeFileSync(join(projectDir, 'opencode.json'), '{"custom": true}');
     runArai(['init', projectDir, '--template', 'minimal']);
     const config = JSON.parse(readFileSync(join(projectDir, 'opencode.json'), 'utf8'));
-    assert.ok(config.model, 'opencode.json should be overwritten with template');
+    assert.ok(config.custom, 'opencode.json should be preserved without --force');
   });
 
-  test('overwrites AGENTS.md (auto-generated)', () => {
+  test('--force overwrites existing opencode.json on init', () => {
     dir = tmpDir();
-    projectDir = join(dir, 'overwrite-agents');
+    projectDir = join(dir, 'force-config');
     mkdirSync(projectDir, { recursive: true });
-    writeFileSync(join(projectDir, 'AGENTS.md'), '# Old content');
+    writeFileSync(join(projectDir, 'opencode.json'), '{"custom": true}');
+    runArai(['init', projectDir, '--template', 'minimal', '--force']);
+    const config = JSON.parse(readFileSync(join(projectDir, 'opencode.json'), 'utf8'));
+    assert.ok(config.model, 'opencode.json should be overwritten with --force');
+  });
+
+  test('protects existing AGENTS.md on init (no --force)', () => {
+    dir = tmpDir();
+    projectDir = join(dir, 'protect-agents');
+    mkdirSync(projectDir, { recursive: true });
+    writeFileSync(join(projectDir, 'AGENTS.md'), '# My Custom Instructions');
     runArai(['init', projectDir]);
     const content = readFileSync(join(projectDir, 'AGENTS.md'), 'utf8');
-    assert.ok(!content.includes('Old content'), 'AGENTS.md should be regenerated');
+    assert.ok(content.includes('My Custom Instructions'), 'AGENTS.md should be preserved without --force');
+  });
+
+  test('--force overwrites existing AGENTS.md on init', () => {
+    dir = tmpDir();
+    projectDir = join(dir, 'force-agents');
+    mkdirSync(projectDir, { recursive: true });
+    writeFileSync(join(projectDir, 'AGENTS.md'), '# My Custom Instructions');
+    runArai(['init', projectDir, '--force']);
+    const content = readFileSync(join(projectDir, 'AGENTS.md'), 'utf8');
+    assert.ok(!content.includes('My Custom Instructions'), 'AGENTS.md should be overwritten with --force');
     assert.ok(content.includes('AI Agent Instructions'), 'AGENTS.md should have arai template');
   });
 
