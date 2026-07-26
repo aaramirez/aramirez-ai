@@ -41,12 +41,12 @@ describe('arai init — generación de harness funcional (TDD)', () => {
 
   /* ─── .opencode/ estructura nativa ─── */
 
-  test('.opencode/skills/ contiene las 11 skills distribuibles', () => {
+  test('.opencode/skills/ contiene las 14 skills distribuibles', () => {
     const p = initFull();
     assertDir(join(p, '.opencode', 'skills'));
     const skills = readdirSync(join(p, '.opencode', 'skills'))
       .filter(f => statSync(join(p, '.opencode', 'skills', f)).isDirectory());
-    assert.equal(skills.length, 11, `Esperaba 11 skills distribuibles, obtuve ${skills.length}`);
+    assert.equal(skills.length, 14, `Esperaba 14 skills distribuibles, obtuve ${skills.length}`);
   });
 
   test('.opencode/agents/ contiene archivos .md de agentes', () => {

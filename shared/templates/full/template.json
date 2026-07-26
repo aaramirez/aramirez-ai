@@ -6,9 +6,9 @@
     "skills": [
       "git", "code-review", "email", "content-ingestion", "pdf-extraction",
       "youtube", "document-generation", "branding", "google-workspace",
-      "m365", "kb-management"
+      "m365", "kb-management", "repos-sync", "vault-pdf-export", "ci-validate"
     ],
-    "scripts": ["ci-validate.js", "docgen"],
+    "scripts": ["ci-validate.js", "docgen", "getrepo.js", "updaterepos.js", "repos-sync.js"],
     "prompts": ["*"],
     "rules": ["*"],
     "agents": [
@@ -17,7 +17,7 @@
     ],
     "commands": [
       "commit", "deploy", "test", "plan", "generate", "ingest",
-      "kb", "send-email", "youtube-cmd"
+      "kb", "send-email", "youtube-cmd", "getrepo", "updaterepos", "export-pdf"
     ],
     "plugins": [],
     "tui": false,
