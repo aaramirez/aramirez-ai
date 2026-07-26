@@ -59,7 +59,7 @@ Dos directorios, dos propósitos:
 | Directorio | Propósito | Contenido |
 |------------|-----------|-----------|
 | `.opencode/` | **La máquina** — harness que produce arquitecturas de agentes | 16 triplets creadores (skill + script + agent), config runtime, commands, plugins |
-| `shared/` | **Los artefactos** — componentes distribuibles para nuevos proyectos | 14 skills distribuibles, 11 scripts, 10 agents, 11 commands, templates, prompts, rules, pipeline docgen |
+| `shared/` | **Los artefactos** — componentes distribuibles para nuevos proyectos | 14 skills distribuibles, 5 scripts, 10 agents, 12 commands, templates, prompts, rules, pipeline docgen |
 
 ### Patrón Triplet Creador
 
@@ -102,9 +102,9 @@ Cuando el usuario ejecuta `arai install skill <name>`, las cuatro capas se insta
 - Command → `shared/commands/<name>/`
 
 **Tres tipos de paquete:**
-- **Full** (6): content-ingestion, document-generation, email, kb-management, youtube, vault-pdf-export
-- **Utility** (2): branding, pdf-extraction
-- **Instructive** (4): code-review, git, google-workspace, m365
+- **Full** (6): content-ingestion, document-generation, email, kb-management, youtube, repos-sync
+- **Utility** (3): branding, pdf-extraction, vault-pdf-export
+- **Instructive** (5): code-review, git, google-workspace, m365, ci-validate
 
 ---
 
@@ -230,12 +230,19 @@ Scaffolding: genera un nuevo proyecto con estructura de agente AI.
 |--------|-------------|
 | `--template <name>` | Plantilla a usar (`minimal` por defecto, `full` para completo) |
 | `--description <text>` | Descripción del proyecto |
+| `--force` | Sobrescribe archivos protegidos (opencode.json, AGENTS.md, repos.json) |
 
 ```bash
 arai init mi-proyecto                       # template minimal
 arai init mi-proyecto --template full        # estructura completa
 arai init mi-proyecto --description "API REST"
+arai init mi-proyecto --template full --force  # sobrescribe archivos existentes
 ```
+
+**File Protection:**
+- `opencode.json`, `AGENTS.md`, `repos.json` — skipped if exist (use `--force` to overwrite)
+- SKILL.md files — skipped if exist (use `--force` to overwrite)
+- Creator agents and internal scripts — never installed in external projects
 
 **Templates disponibles**:
 
@@ -303,8 +310,8 @@ $ arai list agents
 
 $ arai list mcp
 
-  github               https://api.github.com/mcp
-                       (disabled)
+  github               @modelcontextprotocol/server-github (local)
+                       (enabled)
   playwright           npx -y @playwright/mcp
                        (disabled)
 ```
@@ -339,12 +346,14 @@ $ arai list mcp
 | **agent-creator** | `subagent` | Genera definiciones de agentes | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
 | **skill-creator** | `subagent` | Crea skills SKILL.md reutilizables | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
 | **script-creator** | `subagent` | Crea scripts reutilizables en JS/Python/Bash | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
+| **branding** | `subagent` | Brand identity management | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
 | **content-ingestion** | `subagent` | Content ingestion from any source | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
 | **document-generation** | `subagent` | Generate documents from templates | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
 | **email** | `subagent` | Send email via MCP | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
 | **kb-management** | `subagent` | Knowledge base maintenance | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
-| **youtube** | `subagent` | YouTube transcript extraction | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
+| **pdf-extraction** | `subagent` | Extract text from PDFs | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
 | **vault-pdf-export** | `subagent` | Export vault notes to PDF | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
+| **youtube** | `subagent` | YouTube transcript extraction | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
 
 **Default agent**: `build`
 
@@ -380,7 +389,7 @@ $ arai list mcp
 | MCP: context7 | Habilitado | Documentación de librerías en tiempo real |
 | MCP: engram | Habilitado | Memoria persistente entre sesiones |
 | MCP: playwright | Deshabilitado | Navegador headless |
-| MCP: github | Deshabilitado | API de GitHub |
+| MCP: github | Habilitado | GitHub MCP server (local) |
 | MCP: email | Deshabilitado | Envío de emails vía SMTP |
 | MCP: google-workspace | Deshabilitado | Google Drive, Docs, Sheets |
 | MCP: m365 | Deshabilitado | Microsoft 365 Graph API |
@@ -392,6 +401,7 @@ $ arai list mcp
 | Skill | Descripción |
 |-------|-------------|
 | **branding** | Define y aplica identidad visual (colores, logos, tipografía) para documentos generados |
+| **ci-validate** | Validación CI/CD portable — estructura del proyecto, frontmatter de skills, placeholders |
 | **code-review** | Revisión de PRs, auditorías de código y estándares de calidad |
 | **content-ingestion** | Toma contenido de cualquier fuente (PDF, DOCX, web, texto, markdown) y lo estructura en una knowledge base con frontmatter, wikilinks y formato |
 | **document-generation** | Genera presentaciones PDF, HTML decks, reportes e imágenes usando los builders Node.js |
@@ -401,6 +411,8 @@ $ arai list mcp
 | **kb-management** | Mantenimiento de vault knowledge base — actualizar notas, wikilinks, reestructurar, mantener workspace y graph sincronizados |
 | **m365** | Acceso a OneDrive y SharePoint vía Microsoft Graph API |
 | **pdf-extraction** | Extrae texto literal de PDFs — maneja saltos de columna, reconstrucción de párrafos, detección de tablas y problemas de encoding |
+| **repos-sync** | Sincroniza repositorios de referencia desde repos.json |
+| **vault-pdf-export** | Exporta notas del vault Obsidian a PDF formateado |
 | **youtube** | Obtiene y procesa transcripciones de YouTube para alimentar modelos AI, generar resúmenes, crear notas de curso o analizar contenido de video |
 | **vault-pdf-export** | Exporta notas del vault Obsidian a PDF formateado |
 | **ci-validate** | Validación CI/CD portable — estructura del proyecto, frontmatter de skills, placeholders |
@@ -745,7 +757,7 @@ node --test tests/consistency/   # solo tests de consistencia
 | `tests/consistency/` | 120+ | Estructura de skills, frontmatter YAML de agentes, calidad de contenido, consistencia shared artifacts |
 | `tests/shared/` | 280+ | Schema validation, cross-reference integrity, ESM validation, skill completeness, template/plugin validation, CI execution |
 | `tests/integration/` | 99+ | Salida del pipeline docgen, validación de generación CLI, validación de init, ciclo de vida completo, validación asistida por IA (gated) |
-| `tests/commands/` | 132+ | Comandos CLI: init, install, uninstall, list, status, sync, command-templates |
+| `tests/commands/` | 140+ | Comandos CLI: init, install, uninstall, list, status, sync, command-templates, protection |
 | `tests/harness/` | 150+ | Schema validation for agent/command/skill outputs, QA checklist, CI validation |
 
 ### CI validation

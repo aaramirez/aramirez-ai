@@ -18,6 +18,7 @@ Skills, scripts, and prompts are installed from the [aramirez-ai](https://github
 - **Skills live in `.opencode/skills/<name>/SKILL.md`** with YAML frontmatter.
 - **Cross-Platform Compatibility**: All code, scripts, and tools must run on both macOS and Windows.
 - **Per-project installs**: `arai install` copies files locally — projects are self-contained.
+- **File Protection**: `opencode.json`, `AGENTS.md`, `repos.json` are not overwritten by default (use `--force` to override).
 
 ## Available agents
 
