@@ -1,11 +1,38 @@
 ---
-description: Sync and validate knowledge base structure.
+description: Create, sync, and validate knowledge base structure.
 ---
 
-Validate and maintain the knowledge base vault.
+Manage knowledge base vaults.
 
-1. Run `kb-sync.js --validate` to check wikilinks and frontmatter
-2. Fix broken links with `--fix-links`
-3. Reindex structure with `--reindex` when needed
+## Init a new KB
+
+Create a new knowledge base with standard structure:
+
+```bash
+node shared/skills/kb-management/scripts/kb-init.js <name> --prefix <prefix> --description "Description"
+```
+
+Example:
+```bash
+node shared/skills/kb-management/scripts/kb-init.js lean-kb --prefix lean --description "Lean Manufacturing Knowledge Base"
+```
+
+## Validate existing KB
+
+```bash
+node shared/skills/kb-management/scripts/kb-sync.js --validate <kb-directory>
+```
+
+## Fix broken wikilinks
+
+```bash
+node shared/skills/kb-management/scripts/kb-sync.js --fix-links <kb-directory>
+```
+
+## Reindex structure
+
+```bash
+node shared/skills/kb-management/scripts/kb-sync.js --reindex <kb-directory>
+```
 
 Use `kb-management` skill for vault conventions and maintenance tasks.
