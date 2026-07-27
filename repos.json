@@ -49,5 +49,15 @@
     "name": "GrupoConex/corpfibex-kb",
     "url": "https://github.com/GrupoConex/corpfibex-kb.git",
     "description": "Corporación Fibex Telecom - Base de conocimiento corporativo (gobierno, estrategia, comités)"
+  },
+  {
+    "name": "GrupoConex/gda-kb",
+    "url": "https://github.com/GrupoConex/gda-kb.git",
+    "description": "GDA Knowledge Base - Base de conocimiento operativa (arquitectura, procesos, cobranza)"
+  },
+  {
+    "name": "aaramirez/kb",
+    "url": "https://github.com/aaramirez/kb.git",
+    "description": "KB personal - Base de conocimiento pessoale"
   }
 ]
