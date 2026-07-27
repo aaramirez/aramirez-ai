@@ -39,5 +39,10 @@
   {
     "name": "affaan-m/ecc",
     "url": "https://github.com/affaan-m/ecc.git"
+  },
+  {
+    "name": "aaramirez/ia-en-la-empresa",
+    "url": "https://github.com/aaramirez/ia-en-la-empresa.git",
+    "description": "IA en la Empresa — reference for AI implementation in enterprise environments"
   }
 ]
