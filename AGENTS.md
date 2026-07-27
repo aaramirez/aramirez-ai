@@ -60,6 +60,8 @@ aramirez-ai/
 | **agent-creator** | subagent | — |
 | **skill-creator** | subagent | — |
 | **script-creator** | subagent | — |
+| **lean** | primary | edit: deny, bash: deny, read: allow |
+| **lean-expert** | subagent | edit: deny, bash: deny, read: allow |
 
 ## Available skills
 
@@ -73,6 +75,7 @@ aramirez-ai/
 | flow-creator | Create workflow sequences for agent collaboration — plan-first, TDD, hotfix, or custom stages. |
 | harness-generator | Generate complete opencode harness configurations interactively via CLI commands. |
 | instructions-creator | Create AGENTS.md with project instructions, workflow guidelines, and coding conventions. |
+| lean | Navigation guide for Lean knowledge bases — lean-kb, leanc-kb, mgmt3-kb. |
 | mcp-creator | Create MCP server configurations — local processes, remote APIs, environment variables, and authentication. |
 | permission-creator | Create permission rules for agents and tools — global defaults and per-agent overrides with glob patterns. |
 | plugin-creator | Create plugin configurations — npm packages or local plugin directories extending opencode with custom tools and hooks. |

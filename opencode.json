@@ -119,6 +119,25 @@
       "description": "Crea scripts reutilizables en JavaScript, Python o Bash",
       "mode": "subagent",
       "path": ".opencode/agents/script-creator.md"
+    },
+    "lean": {
+      "description": "Asistente de conocimiento Lean, metodologías ágiles, Lean Change y Management 3.0. Respaldado por lean-kb, leanc-kb y mgmt3-kb.",
+      "mode": "primary",
+      "permission": {
+        "edit": "deny",
+        "bash": "deny",
+        "read": "allow"
+      }
+    },
+    "lean-expert": {
+      "description": "Experto en Lean para consultas complejas que requieren buscar en múltiples KBs, comparar modelos o generar síntesis cruzadas.",
+      "mode": "subagent",
+      "model": "opencode/big-pickle",
+      "permission": {
+        "edit": "deny",
+        "bash": "deny",
+        "read": "allow"
+      }
     }
   },
   "command": {
@@ -149,6 +168,10 @@
     "updaterepos": {
       "description": "Pull latest changes for all reference repositories in repos/",
       "template": "Update all cloned reference repositories. Run node .opencode/scripts/updaterepos.js to pull latest changes. Report the results: how many updated, up to date, or failed. To update a specific repo: node .opencode/scripts/updaterepos.js org/repo"
+    },
+    "lean": {
+      "description": "Consultar el conocimiento Lean, agilidad y Lean Change.",
+      "template": "Load the lean skill. Answer the user's question about Lean, methodologies, agility, or Lean Change using the knowledge bases at ../kb. If the question is complex or spans multiple KBs, use the lean-expert subagent."
     }
   },
   "compaction": {

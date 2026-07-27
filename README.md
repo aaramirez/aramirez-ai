@@ -328,9 +328,27 @@ $ arai list mcp
 | **plan** | `primary` | Planning agent for architecture and design | `big-pickle` | `edit: deny` |
 | **plan-arai** | `primary` | Plan mode, documents in `plans/` | `big-pickle` | — |
 | **new-harness** | `primary` | Interactive harness generator (7-step workflow) | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
+| **lean** | `primary` | Asistente de conocimiento Lean, metodologías ágiles, Lean Change y Management 3.0 | `big-pickle` | `edit: deny`, `bash: deny`, `read: allow` |
 | **reviewer** | `subagent` | Code review specialist | `big-pickle` | `edit: deny` |
 | **tester** | `subagent` | Testing specialist | `big-pickle` | `bash: allow` |
 | **docs** | `subagent` | Documentation specialist | `big-pickle` | `edit: allow`, `bash: deny` |
+| **lean-expert** | `subagent` | Experto en Lean para consultas complejas multi-KB | `big-pickle` | `edit: deny`, `bash: deny`, `read: allow` |
+| **arch-docs** | `subagent` | Documentador arquitectónico (ADRs, C4, catálogo) | `haiku-4-5` | `edit: allow`, `bash: deny` |
+| **arch-guardian** | `subagent` | Guardián de estándares arquitectónicos | `sonnet-4-6` | `edit: deny`, `bash: deny` |
+| **arch-reviewer** | `subagent` | Revisor de propuestas de arquitectura | `sonnet-4-6` | `edit: deny`, `bash: deny` |
+| **arch-techwatch** | `subagent` | Vigilancia tecnológica permanente | `haiku-4-5` | `edit: allow`, `bash: deny` |
+| **branding** | `subagent` | Brand identity management | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
+| **content-ingestion** | `subagent` | Content ingestion from any source | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
+| **document-generation** | `subagent` | Generate documents from templates | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
+| **email** | `subagent` | Send email via SMTP | `big-pickle` | `edit: deny`, `bash: allow`, `read: allow` |
+| **kb-management** | `subagent` | Knowledge base maintenance | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
+| **pdf-extraction** | `subagent` | Extract text from PDFs | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
+| **vault-pdf-export** | `subagent` | Export vault notes to PDF | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
+| **youtube** | `subagent` | YouTube transcript extraction | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
+| **pmo-intake** | `subagent` | Gestor de solicitudes entrantes PMO | `haiku-4-5` | `edit: allow`, `bash: deny` |
+| **pmo-integrator** | `subagent` | Integración GitHub Projects, Teams, Planner | `sonnet-4-6` | `edit: allow`, `bash: deny` |
+| **pmo-reporter** | `subagent` | Reportes y dashboards de la PMO | `sonnet-4-6` | `edit: allow`, `bash: deny` |
+| **pmo-tracker** | `subagent` | Seguimiento diario del portafolio de proyectos | `haiku-4-5` | `edit: allow`, `bash: deny` |
 | **config-creator** | `subagent` | Genera `opencode.json` personalizado | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
 | **permission-creator** | `subagent` | Genera configuración de permisos | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
 | **instructions-creator** | `subagent` | Genera `AGENTS.md` personalizado | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
@@ -346,14 +364,6 @@ $ arai list mcp
 | **agent-creator** | `subagent` | Genera definiciones de agentes | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
 | **skill-creator** | `subagent` | Crea skills SKILL.md reutilizables | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
 | **script-creator** | `subagent` | Crea scripts reutilizables en JS/Python/Bash | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
-| **branding** | `subagent` | Brand identity management | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
-| **content-ingestion** | `subagent` | Content ingestion from any source | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
-| **document-generation** | `subagent` | Generate documents from templates | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
-| **email** | `subagent` | Send email via MCP | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
-| **kb-management** | `subagent` | Knowledge base maintenance | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
-| **pdf-extraction** | `subagent` | Extract text from PDFs | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
-| **vault-pdf-export** | `subagent` | Export vault notes to PDF | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
-| **youtube** | `subagent` | YouTube transcript extraction | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
 
 **Default agent**: `build`
 
@@ -372,12 +382,9 @@ $ arai list mcp
 | `/test` | Ejecuta tests |
 | `/deploy` | Despliega la aplicación |
 | `/commit` | Crea commit convencional |
-| `/ingest` | Ingesta contenido desde cualquier fuente a la knowledge base |
-| `/generate` | Genera documentos (PDF, HTML, PNG) desde templates |
-| `/send-email` | Envía emails vía SMTP |
-| `/kb` | Gestiona la knowledge base — validar wikilinks, arreglar rotos |
-| `/youtube-cmd` | Obtiene transcripciones de YouTube |
-| `/export-pdf` | Exporta notas del vault Obsidian a PDF |
+| `/plan` | Genera plan de implementación detallado |
+| `/lean` | Consultar conocimiento Lean, agilidad y Lean Change |
+| `/email` | Envía emails vía SMTP |
 | `/getrepo` | Añade un repositorio GitHub a repos.json y lo clona en repos/ |
 | `/updaterepos` | Actualiza todos los repositorios de referencia en repos/ |
 
@@ -400,38 +407,8 @@ $ arai list mcp
 
 | Skill | Descripción |
 |-------|-------------|
+| **lean** | Navigation guide for Lean knowledge bases — lean-kb, leanc-kb, mgmt3-kb |
 | **branding** | Define y aplica identidad visual (colores, logos, tipografía) para documentos generados |
-| **ci-validate** | Validación CI/CD portable — estructura del proyecto, frontmatter de skills, placeholders |
-| **code-review** | Revisión de PRs, auditorías de código y estándares de calidad |
-| **content-ingestion** | Toma contenido de cualquier fuente (PDF, DOCX, web, texto, markdown) y lo estructura en una knowledge base con frontmatter, wikilinks y formato |
-| **document-generation** | Genera presentaciones PDF, HTML decks, reportes e imágenes usando los builders Node.js |
-| **email** | Envío de emails vía SMTP — 3 interfaces: MCP server, comando `/email` y CLI `send-email.js` |
-| **git** | Operaciones git, estrategias de branching, convenciones de commit, gestión de repos |
-| **google-workspace** | Acceso a Google Drive, Docs y Sheets vía MCP server oficial de Google |
-| **kb-management** | Mantenimiento de vault knowledge base — actualizar notas, wikilinks, reestructurar, mantener workspace y graph sincronizados |
-| **m365** | Acceso a OneDrive y SharePoint vía Microsoft Graph API |
-| **pdf-extraction** | Extrae texto literal de PDFs — maneja saltos de columna, reconstrucción de párrafos, detección de tablas y problemas de encoding |
-| **repos-sync** | Sincroniza repositorios de referencia desde repos.json |
-| **vault-pdf-export** | Exporta notas del vault Obsidian a PDF formateado |
-| **youtube** | Obtiene y procesa transcripciones de YouTube para alimentar modelos AI, generar resúmenes, crear notas de curso o analizar contenido de video |
-| **vault-pdf-export** | Exporta notas del vault Obsidian a PDF formateado |
-| **ci-validate** | Validación CI/CD portable — estructura del proyecto, frontmatter de skills, placeholders |
-| **repos-sync** | Sincroniza repositorios de referencia desde repos.json |
-| **agent-creator** | Genera agentes primarios desde línea de comandos — nombre, modo, descripción, permisos |
-| **architecture-creator** | Genera documentos de arquitectura técnica (ADR, diagramas, runbooks) |
-| **command-creator** | Genera comandos personalizados de opencode con template y descripción |
-| **config-creator** | Genera archivos `opencode.json` con modelo, shell, agentes y skills |
-| **flow-creator** | Genera flujos multi-agente con orquestación y secuencia de pasos |
-| **instructions-creator** | Genera archivos de instrucciones (instrucciones, referencias, prompts, reglas) |
-| **mcp-creator** | Genera servidores MCP (remotos, locales, con autenticación y herramientas) |
-| **permission-creator** | Genera modelos de permisos con roles, acciones y controles de acceso |
-| **plugin-creator** | Genera plugins de opencode con ciclo de vida, eventos y herramientas |
-| **prompt-creator** | Genera fragmentos de prompt reutilizables con frontmatter y variables |
-| **reference-creator** | Genera referencias a repositorios, APIs y documentos externos |
-| **rule-creator** | Genera reglas de codificación, arquitectura y documentación |
-| **script-creator** | Genera scripts Node.js reutilizables con CLI argumentos |
-| **skill-creator** | Genera skills con frontmatter YAML, descripción y contenido template |
-| **tool-creator** | Genera herramientas de agente con validación de entrada y tipo
 
 Las skills de distribución están en `shared/skills/<nombre>/SKILL.md`. Las creator skills están en `.opencode/skills/<nombre>/SKILL.md`.
 
