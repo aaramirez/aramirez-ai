@@ -34,7 +34,7 @@ Options:
   --format <fmt>      Output format (default: text)
   --help              Show this help
 
-Requires one of: pdftotext (poppler), or fallback to raw extraction.
+Requires one of: pdftotext (poppler), or Python PyPDF2.
 `;
 
 function parseArgs(argv) {
@@ -65,12 +65,26 @@ function extractWithPdftotext(filePath) {
   return null;
 }
 
-function extractRaw(filePath) {
-  const content = readFileSync(filePath);
-  const text = content.toString('utf8');
-  const printable = text.replace(/[^\x20-\x7E\n\r\t]/g, ' ').replace(/\s+/g, ' ').trim();
-  if (printable.length > 50) {
-    return printable;
+function extractWithPython(filePath) {
+  const script = `
+import sys
+try:
+    from PyPDF2 import PdfReader
+    reader = PdfReader(sys.argv[1])
+    text = ""
+    for page in reader.pages:
+        text += page.extract_text() or ""
+    print(text)
+except Exception as e:
+    print(f"Error: {e}", file=sys.stderr)
+    sys.exit(1)
+`;
+  const result = spawnSync('python3', ['-c', script, filePath], {
+    encoding: 'utf8',
+    stdio: 'pipe',
+  });
+  if (result.status === 0 && result.stdout && result.stdout.trim().length > 0) {
+    return result.stdout;
   }
   return null;
 }
@@ -88,7 +102,7 @@ function extractPdf(filePath) {
   }
 
   if (!text) {
-    text = extractRaw(filePath);
+    text = extractWithPython(filePath);
   }
 
   if (!text) {
