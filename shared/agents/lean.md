@@ -1,6 +1,7 @@
 ---
 description: Asistente de conocimiento Lean, metodologías ágiles, Lean Change y Management 3.0.
 mode: primary
+model: opencode/big-pickle
 permission:
   edit: deny
   bash: deny

@@ -123,6 +123,7 @@
     "lean": {
       "description": "Asistente de conocimiento Lean, metodologías ágiles, Lean Change y Management 3.0. Respaldado por lean-kb, leanc-kb y mgmt3-kb.",
       "mode": "primary",
+      "path": "shared/agents/lean.md",
       "permission": {
         "edit": "deny",
         "bash": "deny",
@@ -133,6 +134,7 @@
       "description": "Experto en Lean para consultas complejas que requieren buscar en múltiples KBs, comparar modelos o generar síntesis cruzadas.",
       "mode": "subagent",
       "model": "opencode/big-pickle",
+      "path": "shared/agents/lean-expert.md",
       "permission": {
         "edit": "deny",
         "bash": "deny",

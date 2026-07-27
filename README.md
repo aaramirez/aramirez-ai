@@ -333,22 +333,6 @@ $ arai list mcp
 | **tester** | `subagent` | Testing specialist | `big-pickle` | `bash: allow` |
 | **docs** | `subagent` | Documentation specialist | `big-pickle` | `edit: allow`, `bash: deny` |
 | **lean-expert** | `subagent` | Experto en Lean para consultas complejas multi-KB | `big-pickle` | `edit: deny`, `bash: deny`, `read: allow` |
-| **arch-docs** | `subagent` | Documentador arquitectónico (ADRs, C4, catálogo) | `haiku-4-5` | `edit: allow`, `bash: deny` |
-| **arch-guardian** | `subagent` | Guardián de estándares arquitectónicos | `sonnet-4-6` | `edit: deny`, `bash: deny` |
-| **arch-reviewer** | `subagent` | Revisor de propuestas de arquitectura | `sonnet-4-6` | `edit: deny`, `bash: deny` |
-| **arch-techwatch** | `subagent` | Vigilancia tecnológica permanente | `haiku-4-5` | `edit: allow`, `bash: deny` |
-| **branding** | `subagent` | Brand identity management | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
-| **content-ingestion** | `subagent` | Content ingestion from any source | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
-| **document-generation** | `subagent` | Generate documents from templates | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
-| **email** | `subagent` | Send email via SMTP | `big-pickle` | `edit: deny`, `bash: allow`, `read: allow` |
-| **kb-management** | `subagent` | Knowledge base maintenance | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
-| **pdf-extraction** | `subagent` | Extract text from PDFs | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
-| **vault-pdf-export** | `subagent` | Export vault notes to PDF | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
-| **youtube** | `subagent` | YouTube transcript extraction | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
-| **pmo-intake** | `subagent` | Gestor de solicitudes entrantes PMO | `haiku-4-5` | `edit: allow`, `bash: deny` |
-| **pmo-integrator** | `subagent` | Integración GitHub Projects, Teams, Planner | `sonnet-4-6` | `edit: allow`, `bash: deny` |
-| **pmo-reporter** | `subagent` | Reportes y dashboards de la PMO | `sonnet-4-6` | `edit: allow`, `bash: deny` |
-| **pmo-tracker** | `subagent` | Seguimiento diario del portafolio de proyectos | `haiku-4-5` | `edit: allow`, `bash: deny` |
 | **config-creator** | `subagent` | Genera `opencode.json` personalizado | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
 | **permission-creator** | `subagent` | Genera configuración de permisos | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
 | **instructions-creator** | `subagent` | Genera `AGENTS.md` personalizado | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
@@ -366,6 +350,21 @@ $ arai list mcp
 | **script-creator** | `subagent` | Crea scripts reutilizables en JS/Python/Bash | `big-pickle` | `edit: allow`, `bash: allow`, `read: allow` |
 
 **Default agent**: `build`
+
+### Agentes distribuibles (shared/agents/)
+
+Estos agentes se instalan via `arai install agent <nombre>`:
+
+| Nombre | Descripción |
+|--------|-------------|
+| **branding** | Brand identity management |
+| **content-ingestion** | Content ingestion from any source |
+| **document-generation** | Generate documents from templates |
+| **email** | Send email via SMTP |
+| **kb-management** | Knowledge base maintenance |
+| **pdf-extraction** | Extract text from PDFs |
+| **vault-pdf-export** | Export vault notes to PDF |
+| **youtube** | YouTube transcript extraction |
 
 ### Archivos de definición
 
@@ -385,8 +384,11 @@ $ arai list mcp
 | `/plan` | Genera plan de implementación detallado |
 | `/lean` | Consultar conocimiento Lean, agilidad y Lean Change |
 | `/email` | Envía emails vía SMTP |
+| `/send-email` | Envía emails vía SMTP (script CLI) |
 | `/getrepo` | Añade un repositorio GitHub a repos.json y lo clona en repos/ |
 | `/updaterepos` | Actualiza todos los repositorios de referencia en repos/ |
+| `/youtube-cmd` | Obtiene transcripciones de YouTube |
+| `/export-pdf` | Exporta notas del vault a PDF |
 
 ### Plugins y MCP
 
@@ -405,12 +407,51 @@ $ arai list mcp
 
 ## Skills disponibles
 
+### Skills distribuibles (shared/skills/)
+
+Se instalan via `arai install skill <nombre>`:
+
 | Skill | Descripción |
 |-------|-------------|
 | **lean** | Navigation guide for Lean knowledge bases — lean-kb, leanc-kb, mgmt3-kb |
 | **branding** | Define y aplica identidad visual (colores, logos, tipografía) para documentos generados |
+| **ci-validate** | Validación CI/CD portable — estructura del proyecto, frontmatter de skills, placeholders |
+| **code-review** | Revisión de PRs, auditorías de código y estándares de calidad |
+| **content-ingestion** | Toma contenido de cualquier fuente y lo estructura en una knowledge base |
+| **document-generation** | Genera presentaciones PDF, HTML decks, reportes e imágenes |
+| **email** | Envío de emails vía SMTP — MCP server, comando y CLI |
+| **git** | Operaciones git, estrategias de branching, convenciones de commit |
+| **google-workspace** | Acceso a Google Drive, Docs y Sheets vía MCP server |
+| **kb-management** | Mantenimiento de vault knowledge base |
+| **m365** | Acceso a OneDrive y SharePoint vía Microsoft Graph API |
+| **pdf-extraction** | Extrae texto literal de PDFs |
+| **repos-sync** | Sincroniza repositorios de referencia desde repos.json |
+| **vault-pdf-export** | Exporta notas del vault Obsidian a PDF formateado |
+| **youtube** | Obtiene y procesa transcripciones de YouTube |
 
-Las skills de distribución están en `shared/skills/<nombre>/SKILL.md`. Las creator skills están en `.opencode/skills/<nombre>/SKILL.md`.
+### Creator skills (.opencode/skills/)
+
+Skills internas del harness para generar componentes:
+
+| Skill | Descripción |
+|-------|-------------|
+| agent-creator | Genera definiciones de agentes |
+| architecture-creator | Genera documentación de arquitectura |
+| command-creator | Genera comandos personalizados |
+| config-creator | Genera configuraciones opencode.json |
+| distribution-pattern | Patrón de paquetes distribuibles |
+| flow-creator | Genera flujos de trabajo |
+| harness-generator | Genera harnesses de opencode |
+| instructions-creator | Genera AGENTS.md |
+| mcp-creator | Genera configuraciones MCP |
+| permission-creator | Genera configuraciones de permisos |
+| plugin-creator | Genera plugins de TUI |
+| prompt-creator | Genera prompts reutilizables |
+| reference-creator | Genera referencias a repos |
+| rule-creator | Genera reglas de código |
+| script-creator | Genera scripts reutilizables |
+| skill-creator | Crea skills SKILL.md |
+| tool-creator | Genera herramientas personalizadas |
 
 ---
 
@@ -436,6 +477,7 @@ Las skills de distribución están en `shared/skills/<nombre>/SKILL.md`. Las cre
 | `shared/skills/kb-management/scripts/kb-sync.js` | Sincronización de knowledge base — valida wikilinks, arregla rotos, reporta huérfanos |
 | `shared/skills/pdf-extraction/scripts/extract-pdf.js` | Extracción de texto de PDFs — maneja columnas, párrafos y tablas |
 | `shared/skills/email/scripts/mcp-email.js` | Servidor MCP para envío de emails vía SMTP — stdio JSON-RPC |
+| `shared/skills/email/scripts/send-email.js` | Script CLI para envío de emails vía SMTP — soporta --to, --subject, --body, --html |
 | `shared/skills/youtube/scripts/youtube-transcript.js` | Obtenedor de transcripciones de YouTube (API youtube-transcript.ai). Opciones: `--lang <code>`. API programática: `fetchTranscript()`, `parseVideoId()` |
 | `shared/skills/document-generation/scripts/docgen/` | Pipeline completo de generación de documentos (decks, reports, images) |
 
