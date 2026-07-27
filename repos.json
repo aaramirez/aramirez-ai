@@ -44,5 +44,10 @@
     "name": "aaramirez/ia-en-la-empresa",
     "url": "https://github.com/aaramirez/ia-en-la-empresa.git",
     "description": "IA en la Empresa — reference for AI implementation in enterprise environments"
+  },
+  {
+    "name": "GrupoConex/corpfibex-kb",
+    "url": "https://github.com/GrupoConex/corpfibex-kb.git",
+    "description": "Corporación Fibex Telecom - Base de conocimiento corporativo (gobierno, estrategia, comités)"
   }
 ]
