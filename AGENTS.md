@@ -77,6 +77,7 @@ aramirez-ai/
 | instructions-creator | Create AGENTS.md with project instructions, workflow guidelines, and coding conventions. |
 | lean | Navigation guide for Lean knowledge bases — lean-kb, leanc-kb, mgmt3-kb. |
 | mcp-creator | Create MCP server configurations — local processes, remote APIs, environment variables, and authentication. |
+| mytasks | Manage mytasks tasks via the CLI — list, create, update, follow-ups and notes (`.opencode/scripts/mytasks.js`, always `--json`). |
 | permission-creator | Create permission rules for agents and tools — global defaults and per-agent overrides with glob patterns. |
 | plugin-creator | Create plugin configurations — npm packages or local plugin directories extending opencode with custom tools and hooks. |
 | prompt-creator | Create reusable prompt fragments for commit messages, review criteria, planning, and common patterns. |
@@ -107,7 +108,20 @@ aramirez-ai/
 | .opencode/skills/skill-creator/scripts/create-skill.js | file |
 | .opencode/skills/tool-creator/scripts/create-tool.js | file |
 | .opencode/scripts/getrepo.js | file |
+| .opencode/scripts/mytasks.js | file |
 | .opencode/scripts/updaterepos.js | file |
+
+## Available commands
+
+| Command | Description |
+|---------|-------------|
+| `/mytasks-list` | List mytasks tasks with filters (status, project, priority, tags, search, all) |
+| `/mytasks-create` | Create a task in mytasks (title, description, project, priority, due, tags, assignees) |
+| `/mytasks-update` | Update an existing mytasks task (status, priority, due, project, tags, assignees) |
+| `/mytasks-followup` | Create, close, or list mytasks follow-ups for a task |
+| `/mytasks-note` | Add or list mytasks notes (timestamped free-text log) on a task |
+
+All commands run `node .opencode/scripts/mytasks.js ... --json`; load the `mytasks` skill for the full CLI reference.
 
 ## CLI quick reference
 
