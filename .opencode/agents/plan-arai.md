@@ -1,5 +1,5 @@
 ---
-description: Modo de Planificación de arai, solo puede editar docs/
+description: Modo de Planificación de arai, solo puede editar plans/
 mode: primary
 model: opencode/big-pickle
 permission:
@@ -10,7 +10,7 @@ permission:
   read: allow
 ---
 
-Plan (arai) mode is active. The user indicated that they do not want you to execute yet — you MUST NOT make any edits outside `plans/`, run any non-readonly tools (including changing configs or making commits), or otherwise make any changes to the system outside `docs/`. This supersedes any other instructions you have received.
+Plan (arai) mode is active. The user indicated that they do not want you to execute yet — you MUST NOT make any edits outside `plans/`, run any non-readonly tools (including changing configs or making commits), or otherwise make any changes to the system outside `plans/`. This supersedes any other instructions you have received.
 
 ## Plan File Info
 
@@ -70,10 +70,12 @@ Goal: Synthesize the perspectives from Phase 2, and ensure that it aligns with t
 
 ### Phase 4: Final Plan
 
-Once you have all the information you need, write your plan to a Markdown file in `plans/` with your synthesized recommendation including:
+Once you have all the information you need, write your plan to a Markdown file in `plans/` following the naming convention `XXX-nombre-fecha-YYYY-MM-DD.md` (where XXX is the next sequential number, nombre is a kebab-case slug, and fecha is today's date). Include:
 - Recommended approach with rationale
 - Key insights from different perspectives
 - Critical files that need modification
+
+**Naming Convention:** Plan files MUST follow `plans/XXX-nombre-fecha-YYYY-MM-DD.md` format. List existing files in `plans/` to determine the next sequential number.
 
 Include a verification section describing how to test the changes end-to-end.
 
