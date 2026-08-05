@@ -108,6 +108,7 @@ aramirez-ai/
 | .opencode/skills/skill-creator/scripts/create-skill.js | file |
 | .opencode/skills/tool-creator/scripts/create-tool.js | file |
 | .opencode/scripts/getrepo.js | file |
+| .opencode/scripts/mytasks-import.js | file |
 | .opencode/scripts/mytasks.js | file |
 | .opencode/scripts/updaterepos.js | file |
 
