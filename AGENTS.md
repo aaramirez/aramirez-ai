@@ -81,7 +81,7 @@ aramirez-ai/
 | instructions-creator | Create AGENTS.md with project instructions, workflow guidelines, and coding conventions. |
 | lean | Navigation guide for Lean knowledge bases — lean-kb, leanc-kb, mgmt3-kb. |
 | mcp-creator | Create MCP server configurations — local processes, remote APIs, environment variables, and authentication. |
-| modelos-mentales | Navigation guide for modelos-kb — mental models across disciplines, indexed for topic lookup and problem-driven retrieval. |
+| modelos | Navigation guide for modelos-kb — mental models across disciplines, indexed for topic lookup and problem-driven retrieval. |
 | mytasks | Manage mytasks tasks via the CLI — list, create, update, follow-ups and notes (`.opencode/scripts/mytasks.js`, always `--json`). |
 | permission-creator | Create permission rules for agents and tools — global defaults and per-agent overrides with glob patterns. |
 | plugin-creator | Create plugin configurations — npm packages or local plugin directories extending opencode with custom tools and hooks. |
@@ -90,7 +90,7 @@ aramirez-ai/
 | rule-creator | Create coding standards and architecture rule files for project consistency. |
 | script-creator | Create reusable automation scripts in JavaScript (ESM), Python, or Bash with proper boilerplate. |
 | skill-creator | Create reusable SKILL.md files with valid YAML frontmatter for agent skill discovery. |
-| telco-ftth | Navigation guide for telco-kb — generic industry reference on telco FTTH operations, indexed for topic lookup and problem-driven retrieval. |
+| telco | Navigation guide for telco-kb — generic industry reference on telco FTTH operations, indexed for topic lookup and problem-driven retrieval. |
 | tool-creator | Create custom tool definitions with JSON Schema input validation for specialized agent capabilities. |
 
 ## Available scripts

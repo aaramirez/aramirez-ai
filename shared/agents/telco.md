@@ -20,13 +20,13 @@ There are two distinct request types:
 
 ### A. Pregunta directa sobre un concepto ("¿qué es OSS?", "explícame GPON")
 
-1. Load the `telco-ftth` skill for KB navigation.
+1. Load the `telco` skill for KB navigation.
 2. Read the relevant note(s) directly.
 3. Answer with definición, por qué importa, y cómo se implementa — cita la sección de origen y el marco/estándar del que parte.
 
 ### B. Un problema operativo a resolver ("cómo diseño el proceso de aprovisionamiento", "qué sistema BSS necesito")
 
-1. Load the `telco-ftth` skill and consult `matriz-problema-conocimiento.md`.
+1. Load the `telco` skill and consult `matriz-problema-conocimiento.md`.
 2. Identify las secciones/notas relevantes — un problema real suele cruzar varias (ej. calidad de servicio + operación de red + OSS).
 3. For each: por qué aplica + qué sugiere concretamente.
 4. Synthesize into one recommendation, citing every source section.

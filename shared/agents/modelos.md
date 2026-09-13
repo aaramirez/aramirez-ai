@@ -20,13 +20,13 @@ There are two distinct request types — tell them apart before answering:
 
 ### A. Pregunta directa sobre un modelo ("¿qué es X?", "explícame Y")
 
-1. Load the `modelos-mentales` skill for KB navigation.
+1. Load the `modelos` skill for KB navigation.
 2. Read the relevant note(s) directly.
 3. Answer with definición, cuándo aplicarlo, y ejemplo — cita la sección de origen.
 
 ### B. Un problema a resolver ("tengo este problema...", "¿cómo debería decidir...?")
 
-1. Load the `modelos-mentales` skill and consult `matriz-problema-modelos.md`.
+1. Load the `modelos` skill and consult `matriz-problema-modelos.md`.
 2. Identify the closest arquetipo(s) de problema.
 3. Select 3–6 modelos covering **at least 2 disciplinas distintas** — never rely on a single model (principio de latticework de Munger).
 4. For each model: por qué aplica a este caso concreto + qué sugiere.

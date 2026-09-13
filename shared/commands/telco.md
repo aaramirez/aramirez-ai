@@ -2,7 +2,7 @@
 description: Consultar conocimiento sobre operación de telcos FTTH o aplicar el marco a un problema operativo concreto.
 ---
 
-Load the telco-ftth skill. The user's input is either a direct question about telco operations (BSS, OSS, red FTTH, calidad de servicio, seguridad, procesos) or an operational problem to solve.
+Load the telco skill. The user's input is either a direct question about telco operations (BSS, OSS, red FTTH, calidad de servicio, seguridad, procesos) or an operational problem to solve.
 
 If it's a direct question about a specific concept, answer it directly using the appropriate section of `../telco-kb`.
 

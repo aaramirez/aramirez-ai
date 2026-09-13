@@ -23,7 +23,7 @@ You have access to `../modelos-kb/` — 12 secciones numeradas, `matriz-problema
 
 ## Workflow
 
-1. Load the `modelos-mentales` skill for KB navigation and the problem→models matrix.
+1. Load the `modelos` skill for KB navigation and the problem→models matrix.
 2. Identify every arquetipo de problema relevante (usualmente ≥2).
 3. Reunir modelos candidatos de **al menos 3 disciplinas distintas**.
 4. Leer cada nota relevante y extraer "Cómo aplicarlo" aplicado al caso.
