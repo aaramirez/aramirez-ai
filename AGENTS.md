@@ -64,6 +64,8 @@ aramirez-ai/
 | **lean-expert** | subagent | edit: deny, bash: deny, read: allow |
 | **modelos** | primary | edit: deny, bash: deny, read: allow |
 | **modelos-expert** | subagent | edit: deny, bash: deny, read: allow |
+| **telco** | primary | edit: deny, bash: deny, read: allow |
+| **telco-expert** | subagent | edit: deny, bash: deny, read: allow |
 
 ## Available skills
 
@@ -88,6 +90,7 @@ aramirez-ai/
 | rule-creator | Create coding standards and architecture rule files for project consistency. |
 | script-creator | Create reusable automation scripts in JavaScript (ESM), Python, or Bash with proper boilerplate. |
 | skill-creator | Create reusable SKILL.md files with valid YAML frontmatter for agent skill discovery. |
+| telco-ftth | Navigation guide for telco-kb — generic industry reference on telco FTTH operations, indexed for topic lookup and problem-driven retrieval. |
 | tool-creator | Create custom tool definitions with JSON Schema input validation for specialized agent capabilities. |
 
 ## Available scripts

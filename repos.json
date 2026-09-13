@@ -64,5 +64,10 @@
     "name": "aaramirez/modelos-kb",
     "url": "https://github.com/aaramirez/modelos-kb.git",
     "description": "Modelos Mentales - Base de conocimiento multidisciplinaria para proponer soluciones a problemas (latticework de Munger, sesgos, estrategia, producto e IA)"
+  },
+  {
+    "name": "aaramirez/telco-kb",
+    "url": "https://github.com/aaramirez/telco-kb.git",
+    "description": "Operacion de un Telco FTTH - Base de conocimiento generica de industria (procesos, cadena de valor, arquitectura, BSS, OSS, red, calidad de servicio, seguridad)"
   }
 ]
