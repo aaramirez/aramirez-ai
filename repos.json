@@ -74,5 +74,15 @@
     "name": "aaramirez/news-agent",
     "url": "https://github.com/aaramirez/news-agent.git",
     "description": "Agente de Claude Code que recolecta noticias (YouTube/RSS), las resume y clasifica, genera un reporte y lo entrega por Gmail"
+  },
+  {
+    "name": "GrupoConex/fibex-noc-kb",
+    "url": "https://github.com/GrupoConex/fibex-noc-kb.git",
+    "description": "Knowledge Base NOC de Fibex Telecom - Fundamentos, procedimientos, troubleshooting GPON, gestion de ordenes, sistemas, SLA/KPIs, gobernanza AI (NOC Nivel 1)"
+  },
+  {
+    "name": "GrupoConex/proyectos-kb",
+    "url": "https://github.com/GrupoConex/proyectos-kb.git",
+    "description": "Vault de tracking de proyectos vivos de GrupoConex - Proyectos, Reportes, Requerimientos"
   }
 ]
