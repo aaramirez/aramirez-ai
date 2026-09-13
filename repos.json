@@ -59,5 +59,10 @@
     "name": "aaramirez/kb",
     "url": "https://github.com/aaramirez/kb.git",
     "description": "KB personal - Base de conocimiento pessoale"
+  },
+  {
+    "name": "aaramirez/modelos-kb",
+    "url": "https://github.com/aaramirez/modelos-kb.git",
+    "description": "Modelos Mentales - Base de conocimiento multidisciplinaria para proponer soluciones a problemas (latticework de Munger, sesgos, estrategia, producto e IA)"
   }
 ]
