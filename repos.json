@@ -84,5 +84,10 @@
     "name": "GrupoConex/proyectos-kb",
     "url": "https://github.com/GrupoConex/proyectos-kb.git",
     "description": "Vault de tracking de proyectos vivos de GrupoConex - Proyectos, Reportes, Requerimientos"
+  },
+  {
+    "name": "aaramirez/chatbots-kb",
+    "url": "https://github.com/aaramirez/chatbots-kb.git",
+    "description": "Chatbots Empresariales - Base de conocimiento generica de industria (diseno conversacional, arquitectura, canales, IA/RAG/agentes, flujos de negocio, integraciones, guardrails, costos)"
   }
 ]

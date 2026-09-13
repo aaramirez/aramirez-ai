@@ -66,6 +66,8 @@ aramirez-ai/
 | **modelos-expert** | subagent | edit: deny, bash: deny, read: allow |
 | **telco** | primary | edit: deny, bash: deny, read: allow |
 | **telco-expert** | subagent | edit: deny, bash: deny, read: allow |
+| **chatbots** | primary | edit: deny, bash: deny, read: allow |
+| **chatbots-expert** | subagent | edit: deny, bash: deny, read: allow |
 
 ## Available skills
 
@@ -73,6 +75,7 @@ aramirez-ai/
 |-------|-------------|
 | agent-creator | Create primary or subagent definitions with custom prompts, permissions, and model overrides. Use --preset for predefined profiles (reviewer, tester, docs, etc.). |
 | architecture-creator | Create multi-agent architecture patterns — orchestrator, tiered, peer, or chain delegation models. |
+| chatbots | Navigation guide for chatbots-kb — generic industry reference on designing/implementing enterprise chatbots, indexed for topic lookup and problem-driven retrieval. |
 | command-creator | Create custom opencode commands for repetitive tasks with templates and optional agent/model overrides. |
 | config-creator | Create base opencode.json configuration with model, shell, compaction, and runtime settings. |
 | distribution-pattern | Follow the four-layer distributable package pattern when creating new skills for shared/. |
