@@ -74,5 +74,10 @@
     "name": "GrupoConex/sofia-kb",
     "url": "https://github.com/GrupoConex/sofia-kb.git",
     "description": "Sofía KB - Base de conocimiento del agente/chatbot de IA de Fibex Telecom (arquitectura, seguridad, APIs, estatus, planes)"
+  },
+  {
+    "name": "aaramirez/chatbots-kb",
+    "url": "https://github.com/aaramirez/chatbots-kb.git",
+    "description": "Chatbots Empresariales - Base de conocimiento generica de industria (diseno conversacional, arquitectura, canales, IA/RAG/agentes, flujos de negocio, integraciones, guardrails, costos)"
   }
 ]
