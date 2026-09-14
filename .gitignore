@@ -11,3 +11,7 @@ generated/
 .obsidian/workspace.json
 assets/docs/_temp_*.html
 docs/
+
+# Material de referencia local pesado (~700MB, docx/pptx/pdf) — no se versiona
+references/Arquitectura/
+references/01 - Gobierno Corporativo de Tecnología/
