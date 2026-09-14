@@ -1,5 +1,5 @@
 ---
-name: modelos-mentales
+name: modelos
 description: Navigation guide for modelos-kb — mental models across disciplines, indexed for both topic lookup and problem-driven retrieval.
 ---
 

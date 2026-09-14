@@ -2,7 +2,7 @@
 description: Aplicar modelos mentales a una pregunta o a un problema concreto.
 ---
 
-Load the modelos-mentales skill. The user's input is either a direct question about a mental model, or a problem to solve.
+Load the modelos skill. The user's input is either a direct question about a mental model, or a problem to solve.
 
 If it's a direct question about a specific model or concept, answer it directly using the appropriate section of `../modelos-kb`.
 

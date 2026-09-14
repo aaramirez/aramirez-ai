@@ -22,7 +22,7 @@ You have access to `../telco-kb/` — 12 secciones, `matriz-problema-conocimient
 
 ## Workflow
 
-1. Load the `telco-ftth` skill for navigation and the matriz problema→conocimiento.
+1. Load the `telco` skill for navigation and the matriz problema→conocimiento.
 2. Identify todas las secciones relevantes, agrupadas por dominio (negocio/proceso, sistemas/BSS/OSS, red, calidad, seguridad, gobierno).
 3. Leer las notas relevantes de cada dominio.
 4. Cuando dos recomendaciones choquen, no promediar — nombrar la tensión y argumentar cuál pesa más en este contexto y por qué.
