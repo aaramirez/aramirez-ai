@@ -71,8 +71,8 @@
     "description": "Operacion de un Telco FTTH - Base de conocimiento generica de industria (procesos, cadena de valor, arquitectura, BSS, OSS, red, calidad de servicio, seguridad)"
   },
   {
-    "name": "aaramirez/sofia-kb",
-    "url": "https://github.com/aaramirez/sofia-kb.git",
+    "name": "GrupoConex/sofia-kb",
+    "url": "https://github.com/GrupoConex/sofia-kb.git",
     "description": "Sofía KB - Base de conocimiento del agente/chatbot de IA de Fibex Telecom (arquitectura, seguridad, APIs, estatus, planes)"
   }
 ]
