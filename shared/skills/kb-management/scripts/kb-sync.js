@@ -66,16 +66,23 @@ function extractWikilinks(content) {
   const regex = /\[\[([^\]]+)\]\]/g;
   let match;
   while ((match = regex.exec(content)) !== null) {
-    links.push({ text: match[1], index: match.index });
+    // Obsidian alias syntax [[target|display text]] — the target is only
+    // the part before the first pipe; strip it here so every caller gets
+    // a resolvable note name instead of re-deriving this themselves.
+    const target = match[1].split('|')[0].trim();
+    links.push({ text: match[1], target, index: match.index });
   }
   return links;
 }
 
 function extractFrontmatter(content) {
-  const match = content.match(/^---\n([\s\S]+?)\n---/);
+  // \r?\n tolerates CRLF-terminated files (common on Windows) — a literal
+  // \n here silently fails to match and every CRLF file gets misreported
+  // as having no frontmatter at all.
+  const match = content.match(/^---\r?\n([\s\S]+?)\r?\n---/);
   if (!match) return null;
   const fm = {};
-  for (const line of match[1].split('\n')) {
+  for (const line of match[1].split(/\r?\n/)) {
     const [key, ...rest] = line.split(':');
     if (key && rest.length) fm[key.trim()] = rest.join(':').trim();
   }
@@ -97,9 +104,8 @@ function validate(kbDir) {
     }
 
     for (const link of links) {
-      const target = link.text.split('|')[0].trim();
-      if (!allNotes.has(target)) {
-        issues.push({ file, issue: `Broken wikilink: [[${target}]]` });
+      if (!allNotes.has(link.target)) {
+        issues.push({ file, issue: `Broken wikilink: [[${link.target}]]` });
       }
     }
   }
@@ -126,9 +132,8 @@ function fixLinks(kbDir) {
     const links = extractWikilinks(content);
 
     for (const link of links) {
-      const target = link.text.split('|')[0].trim();
-      if (!allNotes.has(target)) {
-        const suggestion = [...allNotes].find(n => n.toLowerCase() === target.toLowerCase());
+      if (!allNotes.has(link.target)) {
+        const suggestion = [...allNotes].find(n => n.toLowerCase() === link.target.toLowerCase());
         if (suggestion) {
           content = content.replace(`[[${link.text}]]`, `[[${suggestion}]]`);
           fixed++;
