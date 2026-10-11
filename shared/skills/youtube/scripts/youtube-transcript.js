@@ -3,7 +3,10 @@
  * youtube-transcript.js — Cross-platform YouTube transcript fetcher
  *
  * Fetches clean, timestamped transcripts from any YouTube video.
- * Uses the free youtube-transcript.ai API (no API key required).
+ * Uses the youtube-transcript.ai API. NOTE: the API now requires an API key
+ * (~10 requests/day) and this script does not send one, so requests fail with
+ * 401. For batches use the Python `youtube-transcript-api` in slow mode
+ * (see SKILL.md, "Descargas en lote").
  *
  * Usage:
  *   node shared/scripts/youtube-transcript.js <video-id-or-url>
