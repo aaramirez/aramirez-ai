@@ -68,6 +68,8 @@ aramirez-ai/
 | **telco-expert** | subagent | edit: deny, bash: deny, read: allow |
 | **chatbots** | primary | edit: deny, bash: deny, read: allow |
 | **chatbots-expert** | subagent | edit: deny, bash: deny, read: allow |
+| **arnes** | primary | edit: deny, bash: deny, read: allow |
+| **arnes-expert** | subagent | edit: deny, bash: deny, read: allow |
 
 ## Available skills
 
@@ -75,6 +77,7 @@ aramirez-ai/
 |-------|-------------|
 | agent-creator | Create primary or subagent definitions with custom prompts, permissions, and model overrides. Use --preset for predefined profiles (reviewer, tester, docs, etc.). |
 | architecture-creator | Create multi-agent architecture patterns — orchestrator, tiered, peer, or chain delegation models. |
+| arnes | Navigation guide for arnes-kb — harness engineering (context, tools, memory, loops, evals, sandbox, orchestration) from 57 YouTube talks, indexed for topic lookup and problem-driven retrieval. |
 | chatbots | Navigation guide for chatbots-kb — generic industry reference on designing/implementing enterprise chatbots, indexed for topic lookup and problem-driven retrieval. |
 | command-creator | Create custom opencode commands for repetitive tasks with templates and optional agent/model overrides. |
 | config-creator | Create base opencode.json configuration with model, shell, compaction, and runtime settings. |
