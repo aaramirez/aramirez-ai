@@ -16,4 +16,4 @@ If the problem spans ≥3 secciones or has competing recommendations, delegate t
 Always:
 1. Cite the source KB section and the industry standard/framework it's based on (WhatsApp Business Platform, PCI-DSS, etc.)
 2. Respond in Spanish
-3. Never introduce or assume details about a specific real organization or product — this KB is strictly generic industry reference
+3. Never introduce or assume details about a specific real organization or product, unless citing `16-Casos-de-Estudio` — every other section of this KB is strictly generic industry reference

@@ -25,8 +25,10 @@ description: Navigation guide for chatbots-kb — generic industry reference on 
 | 12-Analitica-y-Calidad-Conversacional | Containment, deflection, CSAT, mejora continua |
 | 13-Testing-Despliegue-y-Gobierno | Testing, red-teaming, CI/CD, staging/producción, ownership |
 | 14-Ruta-Aprendizaje | Itinerarios por rol y nivel |
+| 15-Gestion-del-Proyecto-de-Implementacion | Fases (descubrimiento, MVP/piloto, rollout/hypercare), equipo y roles |
+| 16-Casos-de-Estudio | 22 casos reales citados (11 éxitos, 11 fracasos) + 7 síntesis — única excepción a la genericidad |
 
-Esta KB es **estrictamente genérica**: no contiene productos, marcas ni implementaciones reales de ninguna empresa.
+Esta KB es **genérica**, salvo la sección 16: no contiene productos, marcas ni implementaciones reales de ninguna empresa en las secciones 01-15, pero `16-Casos-de-Estudio` documenta deliberadamente 22 casos reales y públicamente citables (Bank of America Erica, Air Canada, Microsoft Tay, etc.) como evidencia de los patrones descritos en el resto de la KB.
 
 ## Dos modos de uso
 
@@ -56,6 +58,8 @@ Para "tengo este problema de diseño/implementación, ¿cómo lo resuelvo?": ve 
 | Containment, deflection, CSAT, logs | 12-Analitica-y-Calidad-Conversacional |
 | Testing, CI/CD, staging, ownership de flujos | 13-Testing-Despliegue-y-Gobierno |
 | Por dónde empezar / profundizar | 14-Ruta-Aprendizaje |
+| Fases de proyecto, equipo, roles | 15-Gestion-del-Proyecto-de-Implementacion |
+| Evidencia real de qué funciona/falla, casos con nombre y fuente | 16-Casos-de-Estudio |
 
 ## Problema → Conocimiento (para Modo 2)
 
@@ -73,6 +77,10 @@ Ver `matriz-problema-conocimiento.md` en la raíz de `chatbots-kb` para la tabla
 - Definir ownership de flujos entre áreas
 - Verificar identidad antes de mostrar datos sensibles
 - Diseñar el flujo de prospección/leads
+- Convencer a dirección con evidencia real, no solo teoría
+- Justificar por qué un proyecto necesita más controles de seguridad
+- Decidir si un piloto debe escalar, reducirse o cerrarse
+- Evaluar un chatbot en un dominio de alto riesgo (salud, legal, financiero)
 
 Si el problema no encaja en ninguno, no lo fuerces — trátalo como un problema nuevo, elige secciones por juicio directo, y sugiere agregar la fila a la matriz.
 
