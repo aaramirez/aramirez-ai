@@ -1,12 +1,11 @@
 import { readFileSync, existsSync } from 'fs';
 import { join, resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
-import { brand, esc } from './index.js';
+import { brand, esc, REPO_ROOT } from './index.js';
 import { brandCss, logoHref } from './theme-utils.js';
 import { foot, sectionBlock, bullets, tableV, callout, recommendation, roadmap, kpiTable, closing } from './components.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const REPO_ROOT = resolve(__dirname, '..', '..', '..');
 
 const CSS_PATH = join(REPO_ROOT, 'assets', 'templates', 'report.css');
 

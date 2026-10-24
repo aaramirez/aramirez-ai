@@ -1,6 +1,7 @@
 ---
 name: chatbots
 description: Navigation guide for chatbots-kb — generic industry reference on designing and implementing advanced enterprise chatbots, indexed for topic lookup and problem-driven retrieval.
+license: MIT
 ---
 
 # Skill: Chatbots — KB Navigation Guide

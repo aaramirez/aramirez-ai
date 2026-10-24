@@ -16,9 +16,9 @@ import { existsSync } from 'fs';
 import { join, resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { execSync } from 'child_process';
+import { REPO_ROOT } from './index.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const REPO_ROOT = resolve(__dirname, '..', '..', '..');
 const PY_SCRIPT = join(REPO_ROOT, 'repos', 'GrupoConex', 'gda-ai', 'shared', 'scripts', 'build-pptx.py');
 
 function resolveOutput(specOutput, source) {

@@ -17,11 +17,10 @@
 import { existsSync } from 'fs';
 import { join, resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
-import { loadSource, htmlToPdf, svgsToPdf, slideToSvg, findBrowser } from './index.js';
+import { loadSource, htmlToPdf, svgsToPdf, slideToSvg, findBrowser, REPO_ROOT } from './index.js';
 import { buildHtml, slideToHtml } from './html-theme.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const REPO_ROOT = resolve(__dirname, '..', '..', '..');
 
 function resolveEngine(requested, deckEngine) {
   if (requested && requested !== 'auto') return requested;

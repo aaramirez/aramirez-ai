@@ -19,9 +19,9 @@ import { existsSync } from 'fs';
 import { join, resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { execSync } from 'child_process';
+import { REPO_ROOT } from './index.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const REPO_ROOT = resolve(__dirname, '..', '..', '..');
 const DOCGEN_DIR = resolve(__dirname);
 const TEMPLATES_DIR = join(REPO_ROOT, 'assets', 'templates');
 

@@ -25,6 +25,22 @@ import { fileURLToPath } from 'url';
 const __dirname = resolve(fileURLToPath(import.meta.url), '..');
 const args = process.argv.slice(2);
 
+if (args.includes('--help') || args.includes('-h')) {
+  console.log(`ci-validate.js — Portable CI/CD validation script
+
+Usage:
+  node shared/scripts/ci-validate.js [--dir <path>] [--strict] [--verbose]
+
+Options:
+  --dir <path>   Project root to validate (default: repo root)
+  --strict       Fail on warnings
+  --verbose      Show all checks
+  --help, -h     Show this help
+
+Exit codes: 0 pass · 1 errors · 2 warnings (non-strict)`);
+  process.exit(0);
+}
+
 const dirIndex = args.indexOf('--dir');
 const ROOT = resolve(dirIndex >= 0 && args[dirIndex + 1] ? args[dirIndex + 1] : resolve(__dirname, '..', '..'));
 

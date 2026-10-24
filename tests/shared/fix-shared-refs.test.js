@@ -36,11 +36,12 @@ describe('Fix shared/ references in copied artifacts', () => {
       'opencode.json plan template must include auto-number reference');
   });
 
-  test('code-style.md has plan naming rule', () => {
+  // Plan 052 removed the arai-specific plan naming section from the distributable code-style.md.
+  test('code-style.md does not carry the arai-internal plan naming rule', () => {
     assertFile(join(process.cwd(), 'shared', 'rules', 'code-style.md'));
     const content = readFileSync(join(process.cwd(), 'shared', 'rules', 'code-style.md'), 'utf8');
-    assert.ok(content.includes('Plan Files') || content.includes('plan') || content.includes('XXX-nombre'),
-      'code-style.md must include plan naming rule');
+    assert.ok(!content.includes('## Plan Files'),
+      'code-style.md is distributed to harnesses and must not include the internal plan naming rule');
   });
 
   /* ─── ci-validate.js checks .opencode/ not shared/ ─── */

@@ -1,10 +1,10 @@
 import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
 import { spawnSync } from 'child_process';
-import { REPO_ROOT } from '../helpers.js';
+import { REPO_ROOT, OPENCODE_BIN } from '../helpers.js';
 
 function runOpencode(...args) {
-  const result = spawnSync('opencode', args, {
+  const result = spawnSync(OPENCODE_BIN, args, {
     cwd: REPO_ROOT,
     encoding: 'utf8',
     stdio: 'pipe',

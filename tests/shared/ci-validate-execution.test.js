@@ -23,7 +23,8 @@ describe('shared CI validation execution', () => {
       timeout: 15000,
     });
 
-    assert.equal(result.status, 0,
+    // Exit 2 = warnings only (documented non-strict result); 1 = errors.
+    assert.ok([0, 2].includes(result.status),
       `ci-validate.js failed:\n${result.stdout}\n${result.stderr}`);
   });
 

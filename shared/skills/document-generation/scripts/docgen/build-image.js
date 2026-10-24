@@ -16,10 +16,9 @@
 import { existsSync, writeFileSync } from 'fs';
 import { join, resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
-import { loadSource, svgToPng, slideToSvg } from './index.js';
+import { loadSource, svgToPng, slideToSvg, REPO_ROOT } from './index.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const REPO_ROOT = resolve(__dirname, '..', '..', '..');
 
 function resolveOutput(specOutput, source) {
   if (specOutput) return resolve(String(specOutput));

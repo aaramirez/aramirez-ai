@@ -42,6 +42,8 @@ describe('AGENTS.md consistency (repo root)', () => {
       pathStack[depth] = entry;
       const relPath = pathStack.slice(0, depth + 1).join('/');
       const fullPath = join(REPO_ROOT, relPath);
+      // Entries documented as gitignored (e.g. repos/) only exist after a local clone.
+      if (/gitignored/i.test(line)) continue;
       if (!existsSync(fullPath)) {
         errors.push(`Structure diagram entry does not exist: "${relPath}"`);
       }

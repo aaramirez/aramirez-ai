@@ -4,9 +4,9 @@ import { spawnSync } from 'child_process';
 import { mkdtempSync, rmSync, readFileSync, copyFileSync, writeFileSync } from 'fs';
 import { join } from 'path';
 import { tmpdir } from 'os';
-import { REPO_ROOT } from '../helpers.js';
+import { REPO_ROOT, creatorScriptPath, OPENCODE_BIN } from '../helpers.js';
 
-const CREATE_AGENT = join(REPO_ROOT, '.opencode', 'scripts', 'create-agent.js');
+const CREATE_AGENT = creatorScriptPath('create-agent.js');
 const AGENTS_DIR = join(REPO_ROOT, '.opencode', 'agents');
 const CONFIG_PATH = join(REPO_ROOT, 'opencode.json');
 
@@ -24,7 +24,7 @@ function runScript(args = []) {
 }
 
 function debugAgent(name) {
-  const result = spawnSync('opencode', ['debug', 'agent', name], {
+  const result = spawnSync(OPENCODE_BIN, ['debug', 'agent', name], {
     encoding: 'utf8',
     stdio: 'pipe',
     timeout: 30000,

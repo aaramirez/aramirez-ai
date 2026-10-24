@@ -17,11 +17,10 @@
 import { existsSync, writeFileSync } from 'fs';
 import { join, resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
-import { loadSource } from './index.js';
+import { loadSource, REPO_ROOT } from './index.js';
 import { buildHtml } from './html-theme.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const REPO_ROOT = resolve(__dirname, '..', '..', '..');
 
 const NAV_JS = `
 <script>

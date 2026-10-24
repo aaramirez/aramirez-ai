@@ -86,9 +86,10 @@ describe('schema validation', () => {
           `Agent ${name} mode should be primary or subagent, got: ${agent.mode}`
         );
         if (agent.path) {
+          // Distributable package agents (e.g. lean) are registered from shared/agents/.
           assert.ok(
-            agent.path.startsWith('.opencode/agents/'),
-            `Agent ${name} path should start with .opencode/agents/`
+            agent.path.startsWith('.opencode/agents/') || agent.path.startsWith('shared/agents/'),
+            `Agent ${name} path should start with .opencode/agents/ or shared/agents/`
           );
           assert.ok(
             agent.path.endsWith('.md'),

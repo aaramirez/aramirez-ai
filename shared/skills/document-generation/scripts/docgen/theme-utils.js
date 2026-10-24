@@ -9,12 +9,11 @@
 import { readFileSync, existsSync } from 'fs';
 import { join, resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
-import { brand, esc } from './index.js';
+import { brand, esc, REPO_ROOT } from './index.js';
 
 export { esc };
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const REPO_ROOT = resolve(__dirname, '..', '..', '..');
 
 const MIME_MAP = {
   svg: 'image/svg+xml',

@@ -263,16 +263,17 @@ describe('mytasks-import real data (integration)', {
     const pmo = JSON.parse(readFileSync(PMO_JSON, 'utf8'));
     const team = JSON.parse(readFileSync(TEAM_JSON, 'utf8'));
 
+    // Live portfolio: its size changes over time, so assert invariants, not counts.
     const items = [...pmo.Proyectos, ...pmo.Requerimientos];
-    assert.equal(items.length, 64);
+    assert.ok(items.length > 0);
 
     const plans = mod.planTasks(items);
-    assert.equal(plans.length, 64);
+    assert.equal(plans.length, items.length);
     assert.ok(plans.every((p) => p.title && ['project', 'requirement'].includes(p.type)));
     assert.ok(plans.every((p) => ['high', 'med', 'low'].includes(p.priority)));
 
     const categories = mod.planProjects(items);
-    assert.equal(categories.length, 7);
+    assert.ok(categories.length >= 1);
 
     const units = mod.planUnits(team.groups);
     assert.ok(units.length >= 6);

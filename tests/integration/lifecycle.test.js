@@ -19,8 +19,8 @@ describe('full lifecycle', () => {
     assertExitCode(initResult, 0);
     assertDir(join(dir, '.opencode', 'skills', 'git'));
     assertFile(join(dir, '.opencode', 'skills', 'code-review', 'SKILL.md'));
-    assertFile(join(dir, 'shared', 'prompts', 'commit-message.md'));
-    assertFile(join(dir, 'shared', 'rules', 'code-style.md'));
+    assertFile(join(dir, '.opencode', 'prompts', 'commit-message.md'));
+    assertFile(join(dir, '.opencode', 'rules', 'code-style.md'));
     assertFile(join(dir, 'opencode.json'));
     assert.ok(!existsSync(join(dir, '.opencode', 'agents')),
       'Minimal template should not have agents (agents: [])');
@@ -68,17 +68,17 @@ describe('full lifecycle', () => {
     // 9. arai install prompt commit-message
     const promptResult = runArai(['install', 'prompt', 'commit-message', '--project', dir]);
     assertExitCode(promptResult, 0);
-    assertFile(join(dir, 'shared', 'prompts', 'commit-message.md'));
+    assertFile(join(dir, '.opencode', 'prompts', 'commit-message.md'));
 
     // 10. arai install rule code-style
     const ruleResult = runArai(['install', 'rule', 'code-style', '--project', dir]);
     assertExitCode(ruleResult, 0);
-    assertFile(join(dir, 'shared', 'rules', 'code-style.md'));
+    assertFile(join(dir, '.opencode', 'rules', 'code-style.md'));
 
     // 11. arai install script ci-validate
     const scriptResult = runArai(['install', 'script', 'ci-validate', '--project', dir]);
     assertExitCode(scriptResult, 0);
-    assertFile(join(dir, 'shared', 'scripts', 'ci-validate.js'));
+    assertFile(join(dir, '.opencode', 'scripts', 'ci-validate.js'));
 
     // 12. arai uninstall skill git
     const unskillResult = runArai(['uninstall', 'skill', 'git', '--project', dir]);
@@ -96,15 +96,15 @@ describe('full lifecycle', () => {
 
     // 15. arai uninstall prompt
     runArai(['uninstall', 'prompt', 'commit-message', '--project', dir]);
-    assert.ok(!existsSync(join(dir, 'shared', 'prompts', 'commit-message.md')));
+    assert.ok(!existsSync(join(dir, '.opencode', 'prompts', 'commit-message.md')));
 
     // 16. arai uninstall rule
     runArai(['uninstall', 'rule', 'code-style', '--project', dir]);
-    assert.ok(!existsSync(join(dir, 'shared', 'rules', 'code-style.md')));
+    assert.ok(!existsSync(join(dir, '.opencode', 'rules', 'code-style.md')));
 
     // 17. arai uninstall script
     runArai(['uninstall', 'script', 'ci-validate', '--project', dir]);
-    assert.ok(!existsSync(join(dir, 'shared', 'scripts', 'ci-validate.js')));
+    assert.ok(!existsSync(join(dir, '.opencode', 'scripts', 'ci-validate.js')));
 
     // 18. arai uninstall (bare) — remove opencode platform
     const uninstallResult = runArai(['uninstall', '--project', dir]);
@@ -125,7 +125,7 @@ describe('full lifecycle', () => {
     assert.ok(skillDirs.length >= 8, `Expected at least 8 skills, got ${skillDirs.length}`);
 
     // All scripts copied
-    const scriptsDir = join(dir, 'shared', 'scripts');
+    const scriptsDir = join(dir, '.opencode', 'scripts');
     const scriptFiles = readdirSync(scriptsDir).filter(f => f.endsWith('.js'));
     assert.ok(scriptFiles.length > 0, 'Should have scripts');
 
@@ -133,7 +133,7 @@ describe('full lifecycle', () => {
     assertFile(join(dir, 'package.json'));
 
     // Branding
-    assertFile(join(dir, 'shared', 'brand.json'));
+    assertFile(join(dir, '.opencode', 'brand.json'));
 
     // Assets
     assertFile(join(dir, 'assets', 'images', 'logo.svg'));

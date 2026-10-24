@@ -7,12 +7,16 @@ import { parseFrontmatter } from '../helpers.js';
 
 const SHARED = join(REPO_ROOT, 'shared');
 
+// install-skill-full.test.js writes temporary test-*-skill fixtures into shared/
+// while other test files run in parallel; they are not real artifacts.
+const isFixture = name => /^test-[a-z]+-skill(\.md)?$/.test(name);
+
 describe('shared artifacts schema validation', () => {
   describe('agents', () => {
     const agentsDir = join(SHARED, 'agents');
     if (!existsSync(agentsDir)) return;
 
-    const agentFiles = readdirSync(agentsDir).filter(f => f.endsWith('.md'));
+    const agentFiles = readdirSync(agentsDir).filter(f => f.endsWith('.md') && !isFixture(f));
 
     for (const file of agentFiles) {
       const name = file.replace(/\.md$/, '');
@@ -44,7 +48,7 @@ describe('shared artifacts schema validation', () => {
     const commandsDir = join(SHARED, 'commands');
     if (!existsSync(commandsDir)) return;
 
-    const commandFiles = readdirSync(commandsDir).filter(f => f.endsWith('.md'));
+    const commandFiles = readdirSync(commandsDir).filter(f => f.endsWith('.md') && !isFixture(f));
 
     for (const file of commandFiles) {
       const name = file.replace(/\.md$/, '');
@@ -69,7 +73,7 @@ describe('shared artifacts schema validation', () => {
     const skillsDir = join(SHARED, 'skills');
     if (!existsSync(skillsDir)) return;
 
-    const skillDirs = readdirSync(skillsDir).filter(d =>
+    const skillDirs = readdirSync(skillsDir).filter(d => !isFixture(d) &&
       statSync(join(skillsDir, d)).isDirectory() &&
       existsSync(join(skillsDir, d, 'SKILL.md'))
     );

@@ -1,14 +1,7 @@
 import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
 import { spawnSync } from 'child_process';
-import { join } from 'path';
-import { REPO_ROOT } from '../helpers.js';
-
-// Each creator script lives in its skill: create-<x>.js → .opencode/skills/<x>-creator/scripts/
-function scriptPath(name) {
-  const kind = name.replace(/^create-/, '').replace(/\.js$/, '');
-  return join(REPO_ROOT, '.opencode', 'skills', `${kind}-creator`, 'scripts', name);
-}
+import { REPO_ROOT, creatorScriptPath as scriptPath } from '../helpers.js';
 
 function runScript(name, args = []) {
   const result = spawnSync('node', [scriptPath(name), ...args], {

@@ -90,10 +90,12 @@ describe('shared cross-reference integrity', () => {
     for (const agentName of agentNames) {
       if (builtInAgents.includes(agentName) || creatorAgents.includes(agentName)) continue;
 
+      // KB packages pair <name> with a <name>-expert subagent that shares the <name> skill.
+      const skillName = agentName.replace(/-expert$/, '');
       test(`agent "${agentName}" has matching skill`, () => {
         assert.ok(
-          skillDirs.includes(agentName),
-          `Agent ${agentName} has no matching skill directory`
+          skillDirs.includes(skillName),
+          `Agent ${agentName} has no matching skill directory (${skillName})`
         );
       });
     }

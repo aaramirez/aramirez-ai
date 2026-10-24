@@ -15,11 +15,10 @@
 import { existsSync } from 'fs';
 import { join, resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
-import { loadSource, htmlToPdf } from './index.js';
+import { loadSource, htmlToPdf, REPO_ROOT } from './index.js';
 import { buildHtml } from './report-theme.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const REPO_ROOT = resolve(__dirname, '..', '..', '..');
 
 function resolveOutput(specOutput, source) {
   if (specOutput) return resolve(String(specOutput));

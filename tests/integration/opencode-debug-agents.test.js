@@ -1,11 +1,12 @@
 import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
 import { spawnSync } from 'child_process';
+import { OPENCODE_BIN } from '../helpers.js';
 
 const NEW_AGENTS = ['agent-creator', 'skill-creator', 'script-creator'];
 
 function debugAgent(name) {
-  const result = spawnSync('opencode', ['debug', 'agent', name], {
+  const result = spawnSync(OPENCODE_BIN, ['debug', 'agent', name], {
     encoding: 'utf8',
     stdio: 'pipe',
     timeout: 30000,

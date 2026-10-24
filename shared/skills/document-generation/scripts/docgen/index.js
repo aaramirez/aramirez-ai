@@ -15,7 +15,23 @@ import { execSync, spawnSync } from 'child_process';
 import { homedir, platform as osPlatform } from 'os';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const REPO_ROOT = resolve(__dirname, '..', '..', '..');
+
+/**
+ * Project root = nearest ancestor with opencode.json. docgen lives at different
+ * depths (shared/skills/document-generation/scripts/docgen in aramirez-ai,
+ * .opencode/scripts/docgen in a generated harness), so a fixed '..' count breaks.
+ */
+function findProjectRoot(start) {
+  let dir = start;
+  while (true) {
+    if (existsSync(join(dir, 'opencode.json'))) return dir;
+    const parent = dirname(dir);
+    if (parent === dir) return resolve(start, '..', '..', '..');
+    dir = parent;
+  }
+}
+
+export const REPO_ROOT = findProjectRoot(__dirname);
 
 /* ─── Brand loading ─── */
 
@@ -25,9 +41,12 @@ export function loadBrand(brandPath) {
   if (brandPath) {
     _brand = JSON.parse(readFileSync(brandPath, 'utf8')).brand;
   } else {
+    // aramirez-ai keeps brand.json in shared/; generated harnesses in .opencode/.
     const paths = [
       join(REPO_ROOT, 'shared', 'brand.json'),
+      join(REPO_ROOT, '.opencode', 'brand.json'),
       join(process.cwd(), 'shared', 'brand.json'),
+      join(process.cwd(), '.opencode', 'brand.json'),
     ];
     for (const p of paths) {
       if (existsSync(p)) {

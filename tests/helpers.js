@@ -9,6 +9,27 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 export const REPO_ROOT = resolve(__dirname, '..');
 export const ARAI_PATH = join(REPO_ROOT, 'bin', 'arai.js');
 
+/**
+ * On Windows `opencode` on PATH is an npm .cmd shim, which spawnSync cannot run
+ * without a shell (ENOENT). Use the native binary the shim wraps instead.
+ */
+function resolveOpencodeBin() {
+  if (process.platform !== 'win32') return 'opencode';
+  for (const dir of (process.env.PATH || '').split(';')) {
+    const exe = join(dir, 'node_modules', 'opencode-ai', 'bin', 'opencode.exe');
+    if (existsSync(exe)) return exe;
+  }
+  return 'opencode';
+}
+
+export const OPENCODE_BIN = resolveOpencodeBin();
+
+/** Creator scripts live in their skill: create-<x>.js → .opencode/skills/<x>-creator/scripts/ */
+export function creatorScriptPath(name) {
+  const kind = name.replace(/^create-/, '').replace(/\.js$/, '');
+  return join(REPO_ROOT, '.opencode', 'skills', `${kind}-creator`, 'scripts', name);
+}
+
 export function runArai(args = [], cwd) {
   const cmdArgs = [ARAI_PATH, ...args];
   const result = spawnSync('node', cmdArgs, {
@@ -127,7 +148,7 @@ export function runOpencode(...args) {
   const flat = args.flat();
   const opts = flat.find(a => typeof a === 'object' && a !== null && !Array.isArray(a)) || {};
   const cmdArgs = flat.filter(a => typeof a === 'string' || Array.isArray(a)).flat();
-  const result = spawnSync('opencode', cmdArgs, {
+  const result = spawnSync(OPENCODE_BIN, cmdArgs, {
     cwd: REPO_ROOT,
     encoding: 'utf8',
     stdio: 'pipe',

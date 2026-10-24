@@ -1,6 +1,7 @@
 ---
 name: telco
 description: Navigation guide for telco-kb — generic industry reference on how a telco offering FTTH services should operate, indexed for topic lookup and problem-driven retrieval.
+license: MIT
 ---
 
 # Skill: Telco FTTH — KB Navigation Guide

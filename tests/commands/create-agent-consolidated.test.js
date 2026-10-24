@@ -4,9 +4,9 @@ import { spawnSync } from 'child_process';
 import { join } from 'path';
 import { mkdtempSync, rmSync, existsSync } from 'fs';
 import { tmpdir } from 'os';
-import { REPO_ROOT } from '../helpers.js';
+import { REPO_ROOT, creatorScriptPath } from '../helpers.js';
 
-const SCRIPT = join(REPO_ROOT, '.opencode', 'skills', 'agent-creator', 'scripts', 'create-agent.js');
+const SCRIPT = creatorScriptPath('create-agent.js');
 
 function run(args = []) {
   const result = spawnSync('node', [SCRIPT, ...args], {

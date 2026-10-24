@@ -44,8 +44,12 @@ describe('shared/skills/ consistency', () => {
     test(`${name}: does not contain inline [[wikilinks]]`, () => {
       const content = readFileSync(join(SKILLS_DIR, name, 'SKILL.md'), 'utf8');
       const lines = content.split('\n');
+      let inFence = false;
       for (let i = 0; i < lines.length; i++) {
         const line = lines[i];
+        // Fenced code blocks show example syntax (e.g. a frontmatter template), not links.
+        if (/^\s*```/.test(line)) { inFence = !inFence; continue; }
+        if (inFence) continue;
         let searchFrom = 0;
         while (true) {
           const openIdx = line.indexOf('[[', searchFrom);

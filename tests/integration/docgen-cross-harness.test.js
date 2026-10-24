@@ -129,9 +129,10 @@ describe('docgen cross-harness validation', () => {
     assert.ok(cmds.length >= 3, `Expected >=3 commands, got ${cmds.length}`);
   });
 
-  test('full template includes plugins and tui', () => {
+  // Plan 052: plugins and tui are internal to aramirez-ai and excluded from the full template.
+  test('full template excludes internal plugins and tui', () => {
     const p = initFull();
-    assertFile(join(p, '.opencode', 'plugins', 'custom-logo.tsx'));
-    assertFile(join(p, '.opencode', 'tui.json'));
+    assert.ok(!existsSync(join(p, '.opencode', 'plugins', 'custom-logo.tsx')), 'plugins should not be copied');
+    assert.ok(!existsSync(join(p, '.opencode', 'tui.json')), 'tui.json should not be copied');
   });
 });

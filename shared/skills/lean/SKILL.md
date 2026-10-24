@@ -1,6 +1,7 @@
 ---
 name: lean
 description: Navigation guide for Lean knowledge bases — lean-kb, leanc-kb, mgmt3-kb.
+license: MIT
 ---
 
 # Skill: Lean — KB Navigation Guide

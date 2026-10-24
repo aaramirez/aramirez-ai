@@ -4,12 +4,10 @@ import { spawnSync } from 'child_process';
 import { mkdtempSync, rmSync, existsSync, readFileSync, mkdirSync } from 'fs';
 import { join } from 'path';
 import { tmpdir } from 'os';
-import { REPO_ROOT } from '../helpers.js';
-
-const SCRIPTS_DIR = join(REPO_ROOT, '.opencode', 'scripts');
+import { REPO_ROOT, creatorScriptPath } from '../helpers.js';
 
 function runScript(name, args = []) {
-  const result = spawnSync('node', [join(SCRIPTS_DIR, name), ...args], {
+  const result = spawnSync('node', [creatorScriptPath(name), ...args], {
     cwd: REPO_ROOT,
     encoding: 'utf8',
     stdio: 'pipe',

@@ -59,8 +59,10 @@ describe('harness config consistency', () => {
       .map(f => f.replace(/\.md$/, '')));
     for (const [name, agent] of Object.entries(config.agent || {})) {
       if (agent.mode !== 'subagent') continue;
-      assert.ok(mdFiles.has(name),
-        `Subagent "${name}" in opencode.json has no .md file in .opencode/agents/`);
+      // Distributable package agents declare their own path (e.g. shared/agents/lean-expert.md).
+      const declared = agent.path && existsSync(join(REPO_ROOT, agent.path));
+      assert.ok(mdFiles.has(name) || declared,
+        `Subagent "${name}" in opencode.json has no .md file in .opencode/agents/ or at its declared path`);
     }
   });
 

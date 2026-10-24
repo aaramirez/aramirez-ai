@@ -32,7 +32,7 @@ const REQUIRED_SECTIONS = {
   'content-ingestion':    ['Sources', 'Rules', 'Workflow'],
   'document-generation':  ['Pipeline', 'Available builders'],
   branding:               ['Token reference (`.opencode/brand.json`)', 'Visual conventions'],
-  'kb-management':        ['Structure', 'Maintenance tasks'],
+  'kb-management':        ['Create a new KB', 'Maintain existing KB'],
   'pdf-extraction':       ['Techniques'],
   youtube:                ['Usage', 'Workflow'],
 };
