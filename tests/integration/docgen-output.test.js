@@ -2,7 +2,7 @@ import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
 import { existsSync, readFileSync, readdirSync, statSync } from 'fs';
 import { join, resolve, dirname } from 'path';
-import { fileURLToPath } from 'url';
+import { fileURLToPath, pathToFileURL } from 'url';
 import { REPO_ROOT } from '../helpers.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -61,7 +61,7 @@ describe('html-theme.js output (Phase 2c)', () => {
   let buildHtml, slideToHtml;
 
   test('modules import successfully', async () => {
-    const theme = await import(join(DOCGEN_DIR, 'html-theme.js'));
+    const theme = await import(pathToFileURL(join(DOCGEN_DIR, 'html-theme.js')).href);
     buildHtml = theme.buildHtml;
     slideToHtml = theme.slideToHtml;
     assert.ok(typeof buildHtml === 'function');
@@ -318,7 +318,7 @@ describe('report-theme.js output (Phase 2e)', () => {
   };
 
   test('modules import successfully', async () => {
-    const theme = await import(join(DOCGEN_DIR, 'report-theme.js'));
+    const theme = await import(pathToFileURL(join(DOCGEN_DIR, 'report-theme.js')).href);
     buildHtml = theme.buildHtml;
     assert.ok(typeof buildHtml === 'function');
   });
@@ -428,7 +428,7 @@ describe('charts.js SVG output (Phase 2d)', () => {
   let radarChart, waterfallChart, heatmapChart, renderChart;
 
   test('modules import successfully', async () => {
-    const charts = await import(join(DOCGEN_DIR, 'charts.js'));
+    const charts = await import(pathToFileURL(join(DOCGEN_DIR, 'charts.js')).href);
     barChart = charts.barChart;
     groupedBarChart = charts.groupedBarChart;
     stackedBarChart = charts.stackedBarChart;
@@ -598,7 +598,7 @@ describe('index.js utility functions (Phase 2f)', () => {
   let esc, svgOpen, svgClose;
 
   test('modules import successfully', async () => {
-    const idx = await import(join(DOCGEN_DIR, 'index.js'));
+    const idx = await import(pathToFileURL(join(DOCGEN_DIR, 'index.js')).href);
     esc = idx.esc;
     svgOpen = idx.svgOpen;
     svgClose = idx.svgClose;

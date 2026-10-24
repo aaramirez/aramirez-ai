@@ -35,7 +35,7 @@ describe('shared skills completeness', () => {
       const file = join(SKILLS_DIR, name, 'SKILL.md');
       if (!existsSync(file)) return;
       const content = readFileSync(file, 'utf8');
-      const fmMatch = content.match(/^---\n([\s\S]+?)\n---/);
+      const fmMatch = content.match(/^---\r?\n([\s\S]+?)\r?\n---/);
       assert.ok(fmMatch, `${name} should have frontmatter`);
       const fm = fmMatch[1];
       assert.ok(fm.includes('name:'), `${name} should have name`);

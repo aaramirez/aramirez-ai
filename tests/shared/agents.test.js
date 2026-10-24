@@ -27,7 +27,7 @@ describe('shared agents', () => {
       const file = join(AGENTS_DIR, `${name}.md`);
       if (!existsSync(file)) continue;
       const content = readFileSync(file, 'utf8');
-      const fmMatch = content.match(/^---\n([\s\S]+?)\n---/);
+      const fmMatch = content.match(/^---\r?\n([\s\S]+?)\r?\n---/);
       assert.ok(fmMatch, `${name}.md should have frontmatter`);
       const fm = fmMatch[1];
       assert.ok(fm.includes('description:'), `${name}.md should have description`);

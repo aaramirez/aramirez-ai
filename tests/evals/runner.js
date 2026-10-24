@@ -12,7 +12,7 @@
  */
 import { readdirSync, readFileSync, existsSync } from 'fs';
 import { join, dirname } from 'path';
-import { fileURLToPath } from 'url';
+import { fileURLToPath, pathToFileURL } from 'url';
 import { spawnSync } from 'child_process';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -32,7 +32,7 @@ const verbose = process.env.EVAL_VERBOSE === '1';
 async function loadRubric(name) {
   const rubricPath = join(__dirname, 'rubrics', `${name}.js`);
   if (!existsSync(rubricPath)) return null;
-  const mod = await import(rubricPath);
+  const mod = await import(pathToFileURL(rubricPath).href);
   return mod.default || mod;
 }
 

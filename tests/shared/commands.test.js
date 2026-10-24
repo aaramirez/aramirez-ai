@@ -30,7 +30,7 @@ describe('shared commands', () => {
       const file = join(COMMANDS_DIR, `${name}.md`);
       if (!existsSync(file)) continue;
       const content = readFileSync(file, 'utf8');
-      const fmMatch = content.match(/^---\n([\s\S]+?)\n---/);
+      const fmMatch = content.match(/^---\r?\n([\s\S]+?)\r?\n---/);
       assert.ok(fmMatch, `${name}.md should have frontmatter`);
       const fm = fmMatch[1];
       assert.ok(fm.includes('description:'), `${name}.md should have description`);
@@ -42,7 +42,7 @@ describe('shared commands', () => {
       const file = join(COMMANDS_DIR, `${name}.md`);
       if (!existsSync(file)) continue;
       const content = readFileSync(file, 'utf8');
-      const body = content.replace(/^---\n[\s\S]+?\n---\n?/, '').trim();
+      const body = content.replace(/^---\r?\n[\s\S]+?\r?\n---\r?\n?/, '').trim();
       assert.ok(body.length > 20, `${name}.md should have meaningful content`);
     }
   });

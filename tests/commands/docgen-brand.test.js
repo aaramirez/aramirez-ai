@@ -2,7 +2,7 @@ import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
 import { existsSync, readFileSync } from 'fs';
 import { join, resolve, dirname } from 'path';
-import { fileURLToPath } from 'url';
+import { fileURLToPath, pathToFileURL } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = resolve(__dirname, '..', '..');
@@ -12,14 +12,14 @@ const BRAND_PATH = join(REPO_ROOT, 'shared', 'brand.json');
 let brandCss, logoHref, brand, buildDeckHtml, buildReportHtml;
 
 test('load docgen modules', async () => {
-  const themeUtils = await import(join(DOCGEN_DIR, 'theme-utils.js'));
+  const themeUtils = await import(pathToFileURL(join(DOCGEN_DIR, 'theme-utils.js')).href);
   brandCss = themeUtils.brandCss;
   logoHref = themeUtils.logoHref;
-  const idx = await import(join(DOCGEN_DIR, 'index.js'));
+  const idx = await import(pathToFileURL(join(DOCGEN_DIR, 'index.js')).href);
   brand = idx.brand;
-  const htmlTheme = await import(join(DOCGEN_DIR, 'html-theme.js'));
+  const htmlTheme = await import(pathToFileURL(join(DOCGEN_DIR, 'html-theme.js')).href);
   buildDeckHtml = htmlTheme.buildHtml;
-  const reportTheme = await import(join(DOCGEN_DIR, 'report-theme.js'));
+  const reportTheme = await import(pathToFileURL(join(DOCGEN_DIR, 'report-theme.js')).href);
   buildReportHtml = reportTheme.buildHtml;
 });
 

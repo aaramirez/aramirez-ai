@@ -8,7 +8,7 @@
 import { describe, test, before } from 'node:test';
 import assert from 'node:assert/strict';
 import { join, resolve, dirname } from 'path';
-import { fileURLToPath } from 'url';
+import { fileURLToPath, pathToFileURL } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = resolve(__dirname, '..', '..');
@@ -17,9 +17,9 @@ const DOCGEN_DIR = join(REPO_ROOT, 'shared', 'skills', 'document-generation', 's
 let themeUtils, components, indexModule;
 
 before(async () => {
-  themeUtils = await import(join(DOCGEN_DIR, 'theme-utils.js'));
-  components = await import(join(DOCGEN_DIR, 'components.js'));
-  indexModule = await import(join(DOCGEN_DIR, 'index.js'));
+  themeUtils = await import(pathToFileURL(join(DOCGEN_DIR, 'theme-utils.js')).href);
+  components = await import(pathToFileURL(join(DOCGEN_DIR, 'components.js')).href);
+  indexModule = await import(pathToFileURL(join(DOCGEN_DIR, 'index.js')).href);
 });
 
 /* ═══════════════════════════════════════════════════════════════════

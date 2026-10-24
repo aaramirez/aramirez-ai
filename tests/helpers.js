@@ -86,11 +86,12 @@ export function assertOk(condition, message) {
  */
 export function parseFrontmatter(filePath) {
   const content = readFileSync(filePath, 'utf8');
-  const match = content.match(/^---\n([\s\S]+?)\n---/);
+  // \r?\n: with core.autocrlf=true, Windows checkouts are CRLF.
+  const match = content.match(/^---\r?\n([\s\S]+?)\r?\n---/);
   if (!match) return {};
 
   const body = match[1];
-  const lines = body.split('\n');
+  const lines = body.split(/\r?\n/);
   const root = {};
   const stack = [{ obj: root, indent: -1 }];
 

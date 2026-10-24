@@ -4,10 +4,14 @@ import { spawnSync } from 'child_process';
 import { join } from 'path';
 import { REPO_ROOT } from '../helpers.js';
 
-const SCRIPTS_DIR = join(REPO_ROOT, '.opencode', 'scripts');
+// Each creator script lives in its skill: create-<x>.js → .opencode/skills/<x>-creator/scripts/
+function scriptPath(name) {
+  const kind = name.replace(/^create-/, '').replace(/\.js$/, '');
+  return join(REPO_ROOT, '.opencode', 'skills', `${kind}-creator`, 'scripts', name);
+}
 
 function runScript(name, args = []) {
-  const result = spawnSync('node', [join(SCRIPTS_DIR, name), ...args], {
+  const result = spawnSync('node', [scriptPath(name), ...args], {
     cwd: REPO_ROOT,
     encoding: 'utf8',
     stdio: 'pipe',
@@ -108,7 +112,7 @@ describe('creator scripts', () => {
 
   test('all scripts parse without syntax errors', () => {
     for (const script of SCRIPTS_TO_TEST) {
-      const result = spawnSync('node', ['--check', join(SCRIPTS_DIR, script)], {
+      const result = spawnSync('node', ['--check', scriptPath(script)], {
         encoding: 'utf8',
         stdio: 'pipe',
       });

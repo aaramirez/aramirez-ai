@@ -2,7 +2,7 @@ import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, existsSync } from 'fs';
 import { join, resolve, dirname } from 'path';
-import { fileURLToPath } from 'url';
+import { fileURLToPath, pathToFileURL } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = resolve(__dirname, '..', '..');
@@ -14,11 +14,11 @@ const BRAND_PATH = join(REPO_ROOT, 'shared', 'brand.json');
 let buildDeckHtml, buildReportHtml, brand;
 
 test('load modules', async () => {
-  const htmlTheme = await import(join(DOCGEN_DIR, 'html-theme.js'));
+  const htmlTheme = await import(pathToFileURL(join(DOCGEN_DIR, 'html-theme.js')).href);
   buildDeckHtml = htmlTheme.buildHtml;
-  const reportTheme = await import(join(DOCGEN_DIR, 'report-theme.js'));
+  const reportTheme = await import(pathToFileURL(join(DOCGEN_DIR, 'report-theme.js')).href);
   buildReportHtml = reportTheme.buildHtml;
-  const idx = await import(join(DOCGEN_DIR, 'index.js'));
+  const idx = await import(pathToFileURL(join(DOCGEN_DIR, 'index.js')).href);
   brand = idx.brand;
 });
 
