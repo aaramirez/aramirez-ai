@@ -94,5 +94,10 @@
     "name": "aaramirez/chatbots-kb",
     "url": "https://github.com/aaramirez/chatbots-kb.git",
     "description": "Chatbots Empresariales - Base de conocimiento generica de industria (diseno conversacional, arquitectura, canales, IA/RAG/agentes, flujos de negocio, integraciones, guardrails, costos)"
+  },
+  {
+    "name": "aaramirez/soev",
+    "url": "https://github.com/aaramirez/soev.git",
+    "description": "SOEV - Sistema Organizacional de Entrega de Valor: base de conocimiento (principios, liderazgo, modelo operativo, gobierno, entrega de valor, medicion, aprendizaje, implementacion)"
   }
 ]

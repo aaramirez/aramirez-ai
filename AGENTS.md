@@ -70,6 +70,8 @@ aramirez-ai/
 | **chatbots-expert** | subagent | edit: deny, bash: deny, read: allow |
 | **arnes** | primary | edit: deny, bash: deny, read: allow |
 | **arnes-expert** | subagent | edit: deny, bash: deny, read: allow |
+| **soev** | primary | edit: deny, bash: deny, read: allow |
+| **soev-expert** | subagent | edit: deny, bash: deny, read: allow |
 
 ## Available skills
 
@@ -96,6 +98,7 @@ aramirez-ai/
 | rule-creator | Create coding standards and architecture rule files for project consistency. |
 | script-creator | Create reusable automation scripts in JavaScript (ESM), Python, or Bash with proper boilerplate. |
 | skill-creator | Create reusable SKILL.md files with valid YAML frontmatter for agent skill discovery. |
+| soev | Navigation guide for the SOEV knowledge base (Sistema Organizacional de Entrega de Valor) — principles, operating model, governance, value delivery, measurement, learning and adoption, indexed for topic lookup and problem-driven retrieval. |
 | telco | Navigation guide for telco-kb — generic industry reference on telco FTTH operations, indexed for topic lookup and problem-driven retrieval. |
 | tool-creator | Create custom tool definitions with JSON Schema input validation for specialized agent capabilities. |
 

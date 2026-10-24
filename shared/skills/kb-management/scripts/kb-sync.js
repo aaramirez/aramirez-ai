@@ -69,7 +69,9 @@ function extractWikilinks(content) {
     // Obsidian alias syntax [[target|display text]] — the target is only
     // the part before the first pipe; strip it here so every caller gets
     // a resolvable note name instead of re-deriving this themselves.
-    const target = match[1].split('|')[0].trim();
+    // Inside a Markdown table the pipe must be escaped ([[target\|text]]),
+    // and [[target#Heading]] points into a note — drop both suffixes too.
+    const target = match[1].split('|')[0].replace(/\\$/, '').split('#')[0].trim();
     links.push({ text: match[1], target, index: match.index });
   }
   return links;
