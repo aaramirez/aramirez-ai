@@ -99,5 +99,15 @@
     "name": "aaramirez/soev",
     "url": "https://github.com/aaramirez/soev.git",
     "description": "SOEV - Sistema Organizacional de Entrega de Valor: base de conocimiento (principios, liderazgo, modelo operativo, gobierno, entrega de valor, medicion, aprendizaje, implementacion)"
+  },
+  {
+    "name": "GrupoConex/noticias-mercado-harness",
+    "url": "https://github.com/GrupoConex/noticias-mercado-harness.git",
+    "description": "Noticias de Mercado harness — agente diario de noticias de mercado (Claude Agent SDK) con borradores en Outlook"
+  },
+  {
+    "name": "aaramirez/noticias-mercado",
+    "url": "https://github.com/aaramirez/noticias-mercado.git",
+    "description": "Centro de Inteligencia de Mercado — noticias de mercado multi-perfil (Fibex, VNET, Netuno) en páginas web"
   }
 ]
