@@ -122,6 +122,7 @@ aramirez-ai/
 | .opencode/skills/script-creator/scripts/create-script.js | file |
 | .opencode/skills/skill-creator/scripts/create-skill.js | file |
 | .opencode/skills/tool-creator/scripts/create-tool.js | file |
+| .opencode/scripts/backup-github.sh | file (respaldo de repos de un owner de GitHub: `bash .opencode/scripts/backup-github.sh <owner> [destino]`) |
 | .opencode/scripts/getrepo.js | file |
 | .opencode/scripts/mytasks-import.js | file |
 | .opencode/scripts/mytasks.js | file |
